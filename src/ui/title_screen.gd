@@ -54,7 +54,7 @@ func _ready() -> void:
 		plate.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		plate.add_child(info)
 		v.add_child(plate)
-	v.add_child(_button("NEW GAME", func(): Router.goto(Router.CREATOR)))
+	v.add_child(_button("NEW GAME", func(): Router.new_suzunari()))
 	v.add_child(_button("CREDITS & LICENSES", _show_credits))
 	if not OS.has_feature("mobile") and not OS.has_feature("web"):
 		v.add_child(_button("QUIT", func(): get_tree().quit()))

@@ -15,7 +15,9 @@ static var _rng := RandomNumberGenerator.new()
 
 
 ## Grammar files, merged in order (later files may extend a symbol: alternatives are appended).
-const FILES := ["res://data/copy.json", "res://data/copy_people.json", "res://data/copy_reactions.json"]
+const FILES := ["res://data/copy.json", "res://data/copy_people.json", "res://data/copy_reactions.json", "res://data/copy_suzunari.json"]
+## When set (e.g. "suzunari"), make(X) prefers the symbol "<theme>_X" (data/copy_suzunari.json).
+static var theme := ""
 
 
 static func rules() -> Dictionary:
@@ -42,6 +44,8 @@ static func has(symbol: String) -> bool:
 
 
 static func make(symbol: String, rng: RandomNumberGenerator = null, vars: Dictionary = {}) -> String:
+	if theme != "" and has(theme + "_" + symbol):
+		symbol = theme + "_" + symbol
 	return expand("#%s#" % symbol, rng, vars)
 
 

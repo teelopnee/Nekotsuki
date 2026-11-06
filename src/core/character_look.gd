@@ -33,6 +33,9 @@ const FACTION_STYLE := {
 static var _variants: Dictionary = {}
 static var _palette_cache: Dictionary = {}
 static var _cast: Dictionary = {}
+## "suzunari": no robots, visors, jetpacks or neon hair - townsfolk and students only.
+static var theme := ""
+const SCIFI_ACC := ["helmet", "jetpack", "visor", "goggles", "mask", "cybereye", "pads"]
 ## The "flash" slot's bands 0-4 are face FX colours painted by sprite_forge (outline, deep blush,
 ## blush / tongue / hearts, tear, tear highlight); band 5 stays the weapon/muzzle flash.
 const FACE_FX := ["#1a1030", "#d9455f", "#ff8fa8", "#5fb4ee", "#d4f0ff"]
@@ -72,7 +75,13 @@ static func random_look(rng: RandomNumberGenerator, style: String = "civilian") 
 		tag = "drone"
 	elif kind == "bug":
 		tag = "bug"
+	if theme == "suzunari":
+		if kind in ["robot", "drone", "bug", "cop", "punk", "corporate", "hero"]:
+			kind = "civilian"
+		tag = "student" if kind == "student" else "civilian"
 	var pool := variants_with(tag)
+	if theme == "suzunari" and tag != "student":
+		pool = pool.filter(func(v): return _plain_variant(str(v)))
 	if pool.is_empty():
 		pool = variants_with("civilian")
 	if pool.is_empty():
@@ -81,10 +90,20 @@ static func random_look(rng: RandomNumberGenerator, style: String = "civilian") 
 	return {"variant": variant, "colors": random_colors(rng, kind, faction)}
 
 
+static func _plain_variant(v: String) -> bool:
+	var cfg: Dictionary = variants().get(v, {}).get("cfg", {})
+	if cfg.get("robot", false):
+		return false
+	for a in cfg.get("acc", []):
+		if SCIFI_ACC.has(a):
+			return false
+	return true
+
+
 static func random_colors(rng: RandomNumberGenerator, kind: String = "civilian", faction: String = "") -> Dictionary:
 	var c := {}
 	c["skin"] = _pick(rng, SKIN.slice(0, 9)) if rng.randf() < 0.88 else _pick(rng, SKIN)
-	var neon := kind == "punk" or (kind in ["hero", "civilian"] and rng.randf() < 0.35)
+	var neon := theme != "suzunari" and (kind == "punk" or (kind in ["hero", "civilian"] and rng.randf() < 0.35))
 	c["hair"] = _pick(rng, HAIR_NEON) if neon else _pick(rng, HAIR_NATURAL)
 	c["top"] = _pick(rng, CLOTH_MID if rng.randf() < 0.6 else CLOTH_DARK)
 	c["pants"] = _pick(rng, CLOTH_DARK)

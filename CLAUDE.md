@@ -19,6 +19,25 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
 - Keep everything editable on a tablet: data in `data/*.json`, ASCII level layouts, small scripts. Touch controls must keep working.
 - Original IP only: never copy another game's characters, art, music or names (Easter eggs may reference the owner's own games).
 
+## NEKOTSUKI systems (episode 0)
+- NEW GAME = `Router.new_suzunari()` (Toru, cast look) -> `scenes/world/suzunari.tscn` (`src/world/suzunari.gd`, map
+  `data/maps/suzunari.txt`, LevelBuilder legend below). Continue routes there when `Game.location_id == "suzunari"`.
+  The old sci-fi flow (creator, station, planets, saga) still exists for the smoke test until it is replaced.
+- Themes: `palette.theme = "suzunari"` (LevelBuilder: no wanted posters, Japanese shop types, DRINKS vending),
+  `CharacterLook.theme` (no robots / sci-fi accessories / neon hair; "student" looks), `Copy.theme` (prefers
+  `suzunari_<symbol>` from `data/copy_suzunari.json`: shop names, news, flyers, graffiti, streets).
+- `Clock` autoload: 1 real s = `rate` game minutes, periods, Omagatoki 18:00-18:30, day ends 22:00 (`level.end_day()` saves
+  and reloads), `light()` drives the sun. State in `Game.flags["clock"]`.
+- `Amane` autoload (state in `Game.flags["amane"]`, lines `data/amane.json`): tears 0-5 -> `rain` (level particles + gloom),
+  route none/friend/romance/boundary/ignore, `choices()` (reject button shrinks via HUD choice `scale`), `choose()`
+  returns text + `> impact` block + feeling, `converse()`, phone (`send`, `phone_reply`), jealousy from
+  `EventBus.interaction_done` near him, `morning_event()` (blocked -> doorstep). `AmaneNPC` (`src/actors/amane_npc.gd`)
+  follows at `follow_distance()`, peeks when looked at, slips behind you when far/stuck, walks up to talk.
+  `src/ui/neko_overlay.gd`: date/time/forecast + Rinrin phone. HUD objective line = `Amane.objective_text()` in Suzunari.
+- Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
+  `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
+  (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).
+
 ## Engine notes (inherited from ODD-SPACE)
 Everything below still describes the inherited code, which keeps its sci-fi names (planets, Consortium, Paragon, crew...).
 Rename and rewrite these notes as systems are replaced (GDD section 10). `docs/REVIEW.md` is this repo's critique log.

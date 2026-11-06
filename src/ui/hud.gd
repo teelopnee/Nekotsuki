@@ -650,6 +650,8 @@ func _connect_signals() -> void:
 	EventBus.inventory_changed.connect(func(_i, _c): _refresh_status())
 	EventBus.overclock_changed.connect(_on_overclock)
 	Saga.objective_changed.connect(_refresh_objective)
+	Clock.period_changed.connect(func(_p): _refresh_objective())
+	Amane.changed.connect(_refresh_objective)
 	EventBus.stats_changed.connect(_refresh_objective)  # FirstDay steps
 	_refresh_objective()
 
@@ -660,7 +662,7 @@ func _refresh_status() -> void:
 	_hp_bar.max_value = Game.max_hp()
 	_hp_bar.value = Game.hp
 	_hp_label.text = " %d/%d" % [roundi(Game.hp), roundi(Game.max_hp())]
-	_credits_label.text = "%d CR   MEDKITS x%d" % [Game.credits, Game.item_count("medkit")]
+	_credits_label.text = ("%d YEN" % Game.credits) if Game.location_id == "suzunari" else "%d CR   MEDKITS x%d" % [Game.credits, Game.item_count("medkit")]
 	if _weapon_label:
 		var nb := Arsenal.owned("melee").size()
 		var ng := Arsenal.owned("ranged").size()
@@ -700,6 +702,9 @@ func toast(text: String, color: Color = Color(0.85, 0.97, 1.0)) -> void:
 
 func _refresh_objective() -> void:
 	if _objective_label == null:
+		return
+	if Game.location_id == "suzunari":
+		_objective_label.text = "> " + Amane.objective_text()
 		return
 	var lines: Array[String] = []
 	var fd := FirstDay.next_text()
@@ -889,9 +894,11 @@ func _next_ticker() -> void:
 	_ticker_index = (_ticker_index + 1) % _ticker_items.size()
 	var item: String = _ticker_items[_ticker_index]
 	# Two out of three items are freshly written news from the copywriter (data/copy.json).
-	if randf() < 0.66:
+	if randf() < 0.66 or Game.location_id == "suzunari":
 		item = Copy.make("news", null, {"planet": Game.location_name.to_upper() if Game.location_name != "" else "THE SPRAWL"})
 	var desk: String = ["LUMEN NEWS", "LUMEN NEWS", "BREAKING", "MARKETS", "LUMEN SPORT", "WEATHER", "LOCAL"][randi() % 7]
+	if Game.location_id == "suzunari":
+		desk = ["SUZUNARI FM", "TOWN NEWS", "WEATHER", "SCHOOL BOARD"][randi() % 4]
 	_ticker_label.text = desk + " //  " + item + "  //  "
 	_ticker_label.reset_size()
 	_ticker_label.position = Vector2(_ticker_clip.size.x + 20.0, 2)
@@ -968,6 +975,11 @@ func show_dialogue(speaker: String, text: String, choices: Array, callback: Call
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.disabled = ch.get("disabled", false)
 		b.pressed.connect(_on_choice.bind(str(ch.get("id", ""))))
+		if ch.has("scale"):
+			# Amane's tears: "no" shrinks and fades, "yes" grows (NEKOTSUKI GDD 4.3).
+			var sc := clampf(float(ch["scale"]), 0.3, 1.6)
+			b.add_theme_font_size_override("font_size", maxi(8, roundi(b.get_theme_font_size("font_size") * sc)))
+			b.modulate.a = clampf(0.25 + 0.75 * sc, 0.25, 1.0)
 		_dialogue_choices.add_child(b)
 		if first and not b.disabled:
 			_safe_focus.call_deferred(b)

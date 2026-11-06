@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/suzunari.gd" id="1_level"]
+
+[node name="Suzunari" type="Node3D"]
+script = ExtResource("1_level")

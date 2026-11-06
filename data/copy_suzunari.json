@@ -1,0 +1,115 @@
+{
+ "_doc": "Suzunari theme for Copy: when Copy.theme == \"suzunari\", make(X) uses suzunari_X if it exists. Shop names, signs, news.",
+ "rules": {
+  "suzunari_food_name": [
+   "Ramen Suzuya",
+   "Taiyaki Kiku",
+   "Oden Hanabi",
+   "Udon Tsuru",
+   "Takoyaki Maru",
+   "Soba Kazamidori",
+   "Bento Asahi",
+   "Okonomi Mame",
+   "Dango Ohana",
+   "Curry Shirokuma"
+  ],
+  "suzunari_bar_name": [
+   "Cafe Neko no Te",
+   "Kissa Amagasa",
+   "Izakaya Tanuki",
+   "Kissa Hoshizora",
+   "Cafe Kuroneko"
+  ],
+  "suzunari_arcade_name": [
+   "Game Center Maneki",
+   "Game Spot Rin",
+   "Arcade Kaminari"
+  ],
+  "suzunari_karaoke_name": [
+   "Karaoke Utahime",
+   "Karaoke Hibiki",
+   "Karaoke Nekomimi"
+  ],
+  "suzunari_pawn_name": [
+   "Antiques Kitsune",
+   "Old Things Mujina",
+   "Kotto Sanpo"
+  ],
+  "suzunari_fortune_name": [
+   "Omikuji Corner",
+   "Uranai Tsukimi",
+   "Fortunes by Madame Inari"
+  ],
+  "suzunari_clinic_name": [
+   "Pharmacy Sakura",
+   "Kusuri Fujimura",
+   "Drugstore Hikari"
+  ],
+  "suzunari_tapes_name": [
+   "Books Hanamaru",
+   "Records Amaoto",
+   "Manga Kissa Shiori"
+  ],
+  "suzunari_news": [
+   "Rain warning extended for the eleventh straight day",
+   "Shopping street association asks: has anyone seen the shrine bell?",
+   "Suzunari Gakuen track team second at the prefecture meet",
+   "Cats now outnumber residents, says town hall, again",
+   "Tanabata festival committee looking for volunteers",
+   "Lost: one black umbrella. Answers to nothing",
+   "Fishermen report strange lights off the harbor",
+   "Maneki-neko on Ginza street found with a cracked paw",
+   "Weather office: we don't know why it rains either",
+   "School reminds students: do not climb the shrine steps after six",
+   "Asagiri-do sweet shop: new matcha mochi this week",
+   "Library committee still recruiting. Snacks promised"
+  ],
+  "suzunari_street": [
+   "SUZUNARI GINZA",
+   "NEKO-DORI",
+   "SAKURA-ZAKA",
+   "EKIMAE-DORI",
+   "KAWABATA",
+   "999 STEPS"
+  ],
+  "suzunari_menu": [
+   "RAMEN 680",
+   "TAIYAKI 150",
+   "ODEN SET 480",
+   "DANGO 120",
+   "CURRY 750",
+   "MELON SODA 300"
+  ],
+  "suzunari_flyer": [
+   "LOST CAT: answers to Mochi",
+   "TANABATA FESTIVAL JUL 7",
+   "PIANO LESSONS - ASK INSIDE",
+   "ROOM FOR RENT",
+   "HAVE YOU SEEN THIS BELL?",
+   "LIBRARY COMMITTEE WANTS YOU"
+  ],
+  "suzunari_graffiti": [
+   "NYA",
+   "999",
+   "AME AME FURE FURE",
+   "1-A WAS HERE",
+   "WHO IS WAITING?",
+   "DON'T COUNT THE STEPS"
+  ],
+  "suzunari_floor_notice": [
+   "NO RUNNING IN THE CORRIDOR",
+   "INDOOR SHOES ONLY",
+   "MIND THE STEP"
+  ],
+  "suzunari_headline": [
+   "RAIN, AGAIN",
+   "SHRINE BELL MISSING SINCE 2010?",
+   "SPRING TERM BEGINS"
+  ],
+  "suzunari_ad_body": [
+   "Asagiri-do: sweets since 1868",
+   "Neko no Te: cats included",
+   "Suzunari Line: next train in 40 min"
+  ]
+ }
+}

@@ -12,3 +12,13 @@
 - gen_fx: 20 manga emotes. Runtime: `Emotion.express`, `BillboardSprite.emote`, `FX.emote`, NPC reactions show emotions.
 - Open: Amane's ears read small at 64 px; skirts are simple cones; emotions are not yet triggered by the story
   (comes with M2/M3); generic sci-fi variants have no emotion animations (they fall back to idle + emote icon).
+
+## M2 (2026-11-06): first day in Suzunari
+- New game starts in Suzunari: school (classrooms, pillared corridor, courtyard), shopping street, river, home.
+- Clock with periods and lighting (gold morning -> red Omagatoki -> night), day end saves and starts the next morning.
+- Amane: meets you at the school gate, trails you, freezes and peeks when you look at him, walks up to talk;
+  four choices (kind / flirt / boundary / reject), the reject button shrinks as he cries; tears -> rain + gloom;
+  jealousy when he sees you with someone; Rinrin phone (reply / read / mute / block -> doorstep morning).
+- Tests: day_test + all inherited tests pass. Screenshots: docs/preview/suzunari_day1.png.
+- Open: shop interiors, keeper greetings, NPC small talk and barks are still sci-fi text (M3/M4); combat key hints
+  still on screen; buildings are the generic facade kit (no Japanese roofs yet); no real school timetable for NPCs.

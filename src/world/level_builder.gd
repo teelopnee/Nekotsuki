@@ -50,6 +50,7 @@ var owner_faction := ""
 var grid: Array[String] = []
 var width := 0
 var height := 0
+var theme := "scifi"  ## palette "theme": "suzunari" swaps sci-fi dressing for a Japanese town
 var venue_spots: Array = []  ## PropInteractable venue doors (shop owners stand next to them)
 var result := {"spawns": {}, "entities": [], "dock": Vector3.ZERO, "has_dock": false, "size": Vector2.ZERO}
 
@@ -78,6 +79,7 @@ func build(layout: Array) -> Dictionary:
 		grid.append(str(row).rpad(width, " "))
 	height = grid.size()
 	result.size = Vector2(width * TILE, height * TILE)
+	theme = str(palette.get("theme", "scifi"))
 	_make_materials()
 	_walls_body = StaticBody3D.new()
 	_walls_body.name = "Walls"
@@ -550,7 +552,8 @@ func _building(x0: int, z0: int, x1: int, z1: int) -> void:
 	deco.append(add_mesh(body, box(Vector3(shop_w + 0.4, 0.06, 0.06)), emissive(sign_color, 4.0), Vector3(shop_x, 1.95, front + 0.86), 0.0, false))
 	var label := Label3D.new()
 	var corp_label: bool = fid != "" and DataDB.factions.has(fid) and sign_color == DataDB.faction_color(fid)
-	var venue_id: String = "corp_store" if corp_label else SHOP_TYPES[rng.randi() % SHOP_TYPES.size()]
+	var types: Array = SHOP_TYPES if theme != "suzunari" else ["food", "food", "food", "bar", "bar", "arcade", "karaoke", "pawn", "fortune", "clinic", "tapes"]
+	var venue_id: String = "corp_store" if corp_label else str(types[rng.randi() % types.size()])
 	label.text = str(DataDB.factions.get(fid, {}).get("short", "STORE")) if corp_label else Copy.make(venue_id + "_name", rng).to_upper()
 	label.font_size = 96 if label.text.length() <= 10 else (72 if label.text.length() <= 16 else 54)
 	label.pixel_size = 0.009
@@ -600,7 +603,8 @@ func _building(x0: int, z0: int, x1: int, z1: int) -> void:
 	for i in rng.randi_range(1, 3):
 		var ac_pos := Vector3(rng.randf_range(-w * 0.5 + 0.4, w * 0.5 - 0.4), rng.randf_range(3.2, maxf(3.3, h - 0.8)), front + 0.2)
 		deco.append(add_mesh(body, box(Vector3(0.6, 0.45, 0.4)), _mats["metal"], ac_pos, 0.0, true))
-	_wanted_poster(body, w, front, deco)
+	if theme != "suzunari":
+		_wanted_poster(body, w, front, deco)
 	_glow_spots.append([pos + Vector3(shop_x, 0, front + 0.6), sign_color, 1.0])
 	if _city and rng.randf() < 0.55:
 		# Neon tubes tracing the facade edges.
@@ -1173,7 +1177,7 @@ func _vending(p: Vector3) -> void:
 	add_mesh(body, box(Vector3(1.0, 1.1, 0.04)), emissive(c, 2.2), Vector3(0, 1.3, 0.41), 0.0, false)
 	add_box_collider(body, Vector3(1.3, 2.1, 0.8), Vector3(0, 1.05, 0))
 	var label := Label3D.new()
-	label.text = "AIR-O-MAT\nby OxyGenix"
+	label.text = "DRINKS\n120 YEN" if theme == "suzunari" else "AIR-O-MAT\nby OxyGenix"
 	label.font_size = 40
 	label.pixel_size = 0.006
 	label.modulate = Color(0.05, 0.1, 0.2)
@@ -1183,7 +1187,7 @@ func _vending(p: Vector3) -> void:
 	var it := PropInteractable.new()
 	it.kind = "vending"
 	it.owner_faction = "oxy"
-	it.prompt = "Use AIR-O-MAT"
+	it.prompt = "Buy a drink" if theme == "suzunari" else "Use AIR-O-MAT"
 	it.position = Vector3(0, 0.8, 0.8)
 	body.add_child(it)
 

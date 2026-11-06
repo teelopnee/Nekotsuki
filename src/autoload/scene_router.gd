@@ -8,6 +8,7 @@ const CREATOR := "res://scenes/ui/character_creation.tscn"
 const STATION := "res://scenes/world/station_prologue.tscn"
 const PLANET := "res://scenes/world/planet_surface.tscn"
 const STAR_MAP := "res://scenes/ui/star_map.tscn"
+const SUZUNARI := "res://scenes/world/suzunari.tscn"
 
 var params: Dictionary = {}
 var busy := false
@@ -87,9 +88,19 @@ func goto(path: String, new_params: Dictionary = {}, fade: float = 0.35) -> void
 	busy = false
 
 
+## NEKOTSUKI episode 0: a new life as Asagiri Toru, first morning in Suzunari.
+func new_suzunari(player_name: String = "Toru") -> void:
+	Game.new_game(player_name, {}, -1, CharacterLook.cast_look("toru"), "", 17)
+	Game.location_id = "suzunari"
+	Game.location_name = "Suzunari"
+	goto(SUZUNARI)
+
+
 ## Continue a loaded save at the right place.
 func continue_run() -> void:
-	if not Game.current_planet.is_empty():
+	if Game.location_id == "suzunari":
+		goto(SUZUNARI)
+	elif not Game.current_planet.is_empty():
 		goto(PLANET, {"planet_id": Game.current_planet.get("id", "")})
 	elif Game.location_id == "station_lot47":
 		goto(STATION)
