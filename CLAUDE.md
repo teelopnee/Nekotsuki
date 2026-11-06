@@ -189,6 +189,16 @@ Commit the generated `*.uid` / `*.import` files; never commit `.godot/`.
   in-engine) -> `<variant>.png/.json` + `variants.json`. Variants h00-h33 (humans), r00/r01 (robots),
   drone, drone_quad, grub; ~60 min for all on 4 cores. Colours are applied at runtime by
   `indexed_sprite.gdshader` from `CharacterLook` palettes - never bake colours into sheets.
+- NEKOTSUKI additions to `sprite_forge.py`: school outfits (`blazer`, `teacher`, `track`, `miko`, `apron`, `skirt` short/long),
+  hair `messy/neat/bob/hime/fluffy`, acc `catears/ahoge/choker/headphones/glasses/camera/armband`, cast variants `c_<id>`
+  (`CAST`) and students `s00-s09` (`STUDENTS`). Variants with cfg `school` also get 25 `EMOTE_ANIMS` (cry, wail, pout,
+  fluster, shock, angry, sulk, peek, tug, bow, dogeza, laugh, think, facepalm, shrug, sneeze, yandere, loaf, pat_get,
+  pat_give, offer, pinky, faint, happy, sad), each with its own face (`p.eyes/brows/mouth/cheek/tears/ears`; styles in
+  `_eye/_brow/_mouth/_cheek`). The flash slot's bands 1-4 are face FX colours (blush, tears) - `CharacterLook.FACE_FX`.
+  Check poses fast without forging: `python3 tools/cast_preview.py out.png --cast amane --anims cry,wail --cols 6`.
+  Cast colours: `data/cast_looks.json` (`CharacterLook.cast_look(id)`). Runtime: `Emotion.express(actor, feeling)` =
+  `BillboardSprite.emote(anim, s)` (held over idle/talk) + `FX.emote(actor, kind)` (`data/emotions.json`); manga emote
+  glyphs are ASCII in `gen_fx.py GLYPHS`. Test: `tools/emote_test.gd`.
 - `python3 tools/gen_textures.py` - 64px pixel textures + normal maps (`*_n.png`, incl. asphalt, planks),
   space backdrop, horizon silhouettes, foliage atlas, light-shaft gradient.
 - `python3 tools/gen_fx.py` - pixel VFX sheets (slashes, sparks, explosion, dust, break, telegraph) + fx.json.

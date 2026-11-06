@@ -144,3 +144,16 @@ static func rumble(weak: float, strong: float, duration: float) -> void:
 		Input.start_joy_vibration(id, clampf(weak, 0, 1), clampf(strong, 0, 1), duration)
 	if OS.has_feature("mobile") and Input.get_connected_joypads().is_empty() and strong > 0.5:
 		Input.vibrate_handheld(int(duration * 400.0))
+
+
+## Manga emote (assets/sprites/fx/emote_<kind>.png) bobbing above an actor's head; follows the actor.
+static func emote(actor: Node3D, kind: String, seconds: float = 2.5) -> void:
+	if actor == null or not actor.is_inside_tree() or kind == "":
+		return
+	for c in actor.get_children():
+		if c is FXSprite and (c as FXSprite).fx_name.begins_with("emote_"):
+			c.queue_free()
+	var s := FXSprite.play_at(actor, "emote_" + kind, actor.global_position + Vector3(0.0, 2.3, 0.0), 1.0, 1.15)
+	if s != null:
+		s.loop = true
+		s.life = seconds

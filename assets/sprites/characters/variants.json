@@ -568,6 +568,296 @@
    ]
   }
  },
+ "c_amane": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "hoodie",
+   "hair": "messy",
+   "acc": [
+    "catears",
+    "ahoge",
+    "choker"
+   ],
+   "eyes": "sleepy",
+   "school": true
+  }
+ },
+ "c_toru": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "blazer",
+   "hair": "neat",
+   "acc": [
+    "headphones"
+   ],
+   "eyes": "sleepy",
+   "brows": "flat",
+   "school": true
+  }
+ },
+ "c_hayate": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "track",
+   "hair": "spiky",
+   "acc": [],
+   "school": true
+  }
+ },
+ "c_hina": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "blazer",
+   "hair": "bob",
+   "acc": [
+    "glasses",
+    "camera"
+   ],
+   "skirt": "short",
+   "school": true
+  }
+ },
+ "c_reiji": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "blazer",
+   "hair": "neat",
+   "acc": [
+    "armband"
+   ],
+   "brows": "flat",
+   "school": true
+  }
+ },
+ "c_mio": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "blazer",
+   "hair": "hime",
+   "acc": [],
+   "skirt": "short",
+   "mouth": "smile",
+   "school": true
+  }
+ },
+ "c_makabe": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "teacher",
+   "hair": "fluffy",
+   "acc": [
+    "glasses"
+   ],
+   "school": true
+  }
+ },
+ "c_haruka": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "apron",
+   "hair": "ponytail",
+   "acc": [],
+   "skirt": "long",
+   "mouth": "smile",
+   "school": true
+  }
+ },
+ "c_chiyo": {
+  "kind": "human",
+  "tags": [
+   "cast"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "miko",
+   "hair": "bun",
+   "acc": [],
+   "skirt": "long",
+   "eyes": "sleepy",
+   "school": true
+  }
+ },
+ "s00": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "boy"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "blazer",
+   "hair": "neat",
+   "acc": [],
+   "school": true
+  }
+ },
+ "s01": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "boy"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "blazer",
+   "hair": "messy",
+   "acc": [],
+   "school": true
+  }
+ },
+ "s02": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "boy"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "blazer",
+   "hair": "spiky",
+   "acc": [],
+   "school": true
+  }
+ },
+ "s03": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "boy"
+  ],
+  "cfg": {
+   "body": "broad",
+   "outfit": "blazer",
+   "hair": "short",
+   "acc": [
+    "glasses"
+   ],
+   "school": true
+  }
+ },
+ "s04": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "boy"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "hoodie",
+   "hair": "curly",
+   "acc": [],
+   "school": true
+  }
+ },
+ "s05": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "girl"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "blazer",
+   "hair": "bob",
+   "acc": [],
+   "skirt": "short",
+   "school": true
+  }
+ },
+ "s06": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "girl"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "blazer",
+   "hair": "long",
+   "acc": [],
+   "skirt": "short",
+   "school": true
+  }
+ },
+ "s07": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "girl"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "blazer",
+   "hair": "ponytail",
+   "acc": [],
+   "skirt": "short",
+   "school": true
+  }
+ },
+ "s08": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "girl"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "blazer",
+   "hair": "hime",
+   "acc": [
+    "glasses"
+   ],
+   "skirt": "short",
+   "school": true
+  }
+ },
+ "s09": {
+  "kind": "human",
+  "tags": [
+   "student",
+   "girl"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "blazer",
+   "hair": "bun",
+   "acc": [],
+   "skirt": "short",
+   "school": true
+  }
+ },
  "drone": {
   "kind": "drone",
   "tags": [

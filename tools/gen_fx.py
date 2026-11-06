@@ -226,6 +226,97 @@ def shield_icon(name, w=16):
             img[y, x] = (0.15, 0.25, 0.4, 1) if edge else (0.55, 0.85, 1.0, 1) if y < w * 0.45 else (0.3, 0.55, 0.85, 1)
     save(name, [img], 1)
 
+# ---------------------------------------------------------------------------- manga emotes
+# Hand-placed pixel glyphs, animated by small procedural moves. Played above heads by Fx.emote().
+EPAL = {"K": "#1a1030", "R": "#e8344a", "r": "#ff8a9a", "W": "#ffffff", "w": "#d8dcef", "B": "#4fa8ec",
+        "b": "#cdeeff", "Y": "#ffd23e", "y": "#fff3b0", "P": "#ff6a9e", "p": "#ffc4d6", "G": "#7a7a92",
+        "g": "#c4c4d6", "D": "#3a2a5a", "V": "#8a6ac0", "O": "#ff9a3a", "L": "#7ad66a"}
+GLYPHS = {
+    "anger": ["..KK.....KK..", ".KRRK...KRRK.", ".KRrRK.KRrRK.", "..KKRK.KRKK..", "....K...K....",
+              "..KKRK.KRKK..", ".KRrRK.KRrRK.", ".KRRK...KRRK.", "..KK.....KK.."],
+    "sweat": ["....K....", "...KbK...", "..KbBBK..", ".KbBBBBK.", ".KbBBBBK.", ".KBBBBBK.", "..KBBBK..", "...KKK..."],
+    "sparkle": ["....Y.......", "...yYy......", "..YYWYY.....", "...yYy......", "....Y....Y..",
+                ".........W..", ".......YYWYY", ".........W..", ".........Y.."],
+    "heart": [".KK.KK.", "KPPKPPK", "KPpPPPK", "KPPPPPK", ".KPPPK.", "..KPK..", "...K..."],
+    "heartbreak": [".KK..KK.", "KPPK.PPK", "KPpK.PPK", "KPPPK.PK", ".KPK.PK.", "..KPKK..", "...K...."],
+    "question": [".KKKK.", "KWWWWK", "KWKKWK", ".KKWWK", "..KWK.", "..KWK.", "..KK..", "..KWK.", "..KKK."],
+    "exclaim": ["KKK", "KYK", "KYK", "KYK", "KYK", "KKK", "KYK", "KKK"],
+    "surprise": ["KKK.KKKK.", "KYK.KWWWK", "KYK.KKKWK", "KYK..KWWK", "KKK..KWK.", "KYK..KKK.", "KKK..KWK."],
+    "dots": ["..............", ".KKK.KKK.KKK..", ".KWK.KWK.KWK..", ".KKK.KKK.KKK.."],
+    "zzz": ["....bBBB", "......B.", ".....B..", "....BBBb", "bBBB....", "..B.....", ".B......", "BBBb...."],
+    "note": ["...KKK", "...KYK", "...KYK", ".KKKYK", "KYYYYK", "KYYYK.", ".KKK.."],
+    "gloom": ["D.V..D.V..D", "D.V..D.V..D", "D.V..D....D", "D....D....D", "D....D.....", "......."],
+    "soul": ["..KKK..", ".KWWWK.", "KWKWKWK", "KWWWWWK", "KWWWWK.", ".KWWK..", "..KWK..", "...KK.."],
+    "steam": ["..gg...gg..", ".gwwg.gwwg.", "gwwwwgwwwwg", ".gwwgggwwg.", "..gg...gg.."],
+    "flower": ["..P...", ".PpP..", "..P.L.", "....L.", "...LL."],
+    "cloud": ["...KKKK.....", "..KgggKKK...", ".KgwwwgggK..", "KgwwwwwwggK.", "KgggggggggK.", ".KKKKKKKKK.."],
+    "bubble": [".KKK.", "KbbWK", "KbbbK", "KbbbK", ".KKK."],
+    "bell": ["...K...", "..KYK..", ".KYyYK.", ".KYYYK.", "KYYYYYK", "KKKKKKK", "...K..."],
+    "shock": ["W.....W.....W", ".w....W....w.", "..w.......w..", ".............", "WW.........WW"],
+    "dark": ["..D...D..", ".DVD.DVD.", "DV.VDV.VD", ".D.....D."],
+}
+EMOTE_MOVES = {"anger": "pulse", "sweat": "drip", "sparkle": "blink", "heart": "rise", "heartbreak": "shake",
+               "question": "bob", "exclaim": "pop", "surprise": "pop", "dots": "dots", "zzz": "rise",
+               "note": "rise", "gloom": "bob", "soul": "rise", "steam": "rise", "flower": "rise",
+               "cloud": "rain", "bubble": "pulse", "bell": "shake", "shock": "blink", "dark": "bob"}
+
+
+def _hex(h):
+    return [int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+
+
+def emote(name, size=24, frames=6, fps=8):
+    rows = GLYPHS[name]
+    gh, gw = len(rows), max(len(r) for r in rows)
+    glyph = canvas(gw, gh)
+    for y, row in enumerate(rows):
+        for x, ch in enumerate(row):
+            if ch in EPAL:
+                glyph[y, x, :3] = _hex(EPAL[ch])
+                glyph[y, x, 3] = 1.0
+    move = EMOTE_MOVES[name]
+    out = []
+    for f in range(frames):
+        k = f / frames
+        img = canvas(size, size)
+        g = glyph
+        dx, dy, a = (size - gw) // 2, (size - gh) // 2, 1.0
+        if move == "bob":
+            dy += round(math.sin(k * 2 * math.pi))
+        elif move == "pulse" and f % 2 == 1:
+            g = np.kron(glyph, np.ones((1, 1, 1)))
+            dx -= 0
+            dy -= 1
+        elif move == "drip":
+            dy += f // 2 - 1
+        elif move == "rise":
+            dy += 3 - f
+            a = 1.0 if f < frames - 2 else 0.55
+        elif move == "shake":
+            dx += (-1, 1, 0, 1, -1, 0)[f % 6]
+        elif move == "pop":
+            dy += (2, -1, 0, 0, 0, 0)[f % 6]
+        elif move == "blink":
+            a = 1.0 if f % 3 else 0.35
+        elif move == "dots":
+            g = glyph.copy()
+            vis = f % 4
+            for i, x0 in enumerate((1, 5, 9)):
+                if i >= vis:
+                    g[:, x0:x0 + 3, 3] = 0
+        h, w = g.shape[:2]
+        y0, x0 = max(0, min(size - h, dy)), max(0, min(size - w, dx))
+        img[y0:y0 + h, x0:x0 + w] = g
+        img[..., 3] *= a
+        if move == "rain":
+            for i, x in enumerate((3, 6, 9)):
+                yy = y0 + h + (f * 2 + i * 3) % 7
+                if yy < size:
+                    img[yy, x0 + x, :3] = _hex(EPAL["B"])
+                    img[yy, x0 + x, 3] = 1.0
+        out.append(img)
+    save("emote_" + name, out, fps)
+
 
 def main():
     os.makedirs(OUT, exist_ok=True)
@@ -241,6 +332,8 @@ def main():
     chip("chip")
     ring("telegraph", 64)
     shield_icon("shield")
+    for name in GLYPHS:
+        emote(name)
     with open(os.path.join(OUT, "fx.json"), "w") as f:
         json.dump(META, f, indent=1)
     print("fx written:", ", ".join(META))

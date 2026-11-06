@@ -70,5 +70,125 @@
   "h": 16,
   "frames": 1,
   "fps": 1
+ },
+ "emote_anger": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_sweat": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_sparkle": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_heart": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_heartbreak": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_question": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_exclaim": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_surprise": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_dots": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_zzz": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_note": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_gloom": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_soul": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_steam": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_flower": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_cloud": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_bubble": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_bell": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_shock": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
+ },
+ "emote_dark": {
+  "w": 24,
+  "h": 24,
+  "frames": 6,
+  "fps": 8
  }
 }

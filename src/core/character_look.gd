@@ -32,6 +32,11 @@ const FACTION_STYLE := {
 
 static var _variants: Dictionary = {}
 static var _palette_cache: Dictionary = {}
+static var _cast: Dictionary = {}
+## The "flash" slot's bands 0-4 are face FX colours painted by sprite_forge (outline, deep blush,
+## blush / tongue / hearts, tear, tear highlight); band 5 stays the weapon/muzzle flash.
+const FACE_FX := ["#1a1030", "#d9455f", "#ff8fa8", "#5fb4ee", "#d4f0ff"]
+const UNIFORM := {"coat": "#2c3557", "top": "#eceaf0"}
 
 
 static func variants() -> Dictionary:
@@ -95,6 +100,13 @@ static func random_colors(rng: RandomNumberGenerator, kind: String = "civilian",
 	c["cap"] = _pick(rng, CLOTH_BRIGHT + CLOTH_DARK)
 	c["gloves"] = _pick(rng, CLOTH_DARK)
 	c["flash"] = "#bff8ff"
+	if kind == "student":
+		c["hair"] = _pick(rng, HAIR_NATURAL.slice(0, 6))
+		c["coat"] = UNIFORM["coat"]
+		c["top"] = UNIFORM["top"]
+		c["pants"] = _pick(rng, ["#2b2f45", "#3a3f6a", "#2c3557"])
+		c["accent"] = _pick(rng, ["#a8323f", "#2c3557", "#c9a227", "#3a6a4a"])
+		c["boots"] = _pick(rng, ["#3a2a22", "#24242c", "#f0f0f4"])
 	if kind == "corporate":
 		c["coat"] = _pick(rng, ["#24242e", "#e8e4dc", "#3a2434", "#1e2838"])
 		c["top"] = "#f0f0f4"
@@ -142,11 +154,27 @@ static func palette_texture(colors: Dictionary) -> ImageTexture:
 	for y in SLOTS.size():
 		var base := Color.from_string(str(colors.get(SLOTS[y], "#808080")), Color.GRAY)
 		var r := ramp(base)
+		if SLOTS[y] == "flash":
+			for b in FACE_FX.size():
+				r[b] = Color.from_string(FACE_FX[b], Color.WHITE)
 		for x in 6:
 			img.set_pixel(x, y, r[x])
 	var tex := ImageTexture.create_from_image(img)
 	_palette_cache[key] = tex
 	return tex
+
+
+## Fixed look of a named cast member (data/cast_looks.json), e.g. "amane".
+static func cast_look(id: String) -> Dictionary:
+	if _cast.is_empty():
+		var path := "res://data/cast_looks.json"
+		if FileAccess.file_exists(path):
+			var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
+			if parsed is Dictionary:
+				_cast = parsed
+	if _cast.has(id):
+		return (_cast[id] as Dictionary).duplicate(true)
+	return default_look()
 
 
 static func default_look() -> Dictionary:

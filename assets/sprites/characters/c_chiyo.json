@@ -1,0 +1,555 @@
+{
+ "frame_w": 64,
+ "frame_h": 64,
+ "foot_row": 60,
+ "indexed": true,
+ "dirs": [
+  "S",
+  "SE",
+  "E",
+  "NE",
+  "N"
+ ],
+ "tags": [
+  "cast"
+ ],
+ "cfg": {
+  "body": "short",
+  "outfit": "miko",
+  "hair": "bun",
+  "acc": [],
+  "skirt": "long",
+  "eyes": "sleepy",
+  "school": true
+ },
+ "anims": {
+  "idle": {
+   "fps": 7,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 0,
+    "SE": 1,
+    "E": 2,
+    "NE": 3,
+    "N": 4
+   }
+  },
+  "walk": {
+   "fps": 11,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 5,
+    "SE": 6,
+    "E": 7,
+    "NE": 8,
+    "N": 9
+   }
+  },
+  "run": {
+   "fps": 14,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 10,
+    "SE": 11,
+    "E": 12,
+    "NE": 13,
+    "N": 14
+   }
+  },
+  "roll": {
+   "fps": 16,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 15,
+    "SE": 16,
+    "E": 17,
+    "NE": 18,
+    "N": 19
+   }
+  },
+  "shoot": {
+   "fps": 18,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 20,
+    "SE": 21,
+    "E": 22,
+    "NE": 23,
+    "N": 24
+   }
+  },
+  "slash1": {
+   "fps": 18,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 25,
+    "SE": 26,
+    "E": 27,
+    "NE": 28,
+    "N": 29
+   }
+  },
+  "slash2": {
+   "fps": 18,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 30,
+    "SE": 31,
+    "E": 32,
+    "NE": 33,
+    "N": 34
+   }
+  },
+  "slash3": {
+   "fps": 16,
+   "loop": false,
+   "frames": 7,
+   "rows": {
+    "S": 35,
+    "SE": 36,
+    "E": 37,
+    "NE": 38,
+    "N": 39
+   }
+  },
+  "guard": {
+   "fps": 14,
+   "loop": false,
+   "frames": 4,
+   "rows": {
+    "S": 40,
+    "SE": 41,
+    "E": 42,
+    "NE": 43,
+    "N": 44
+   }
+  },
+  "hurt": {
+   "fps": 12,
+   "loop": false,
+   "frames": 3,
+   "rows": {
+    "S": 45,
+    "SE": 46,
+    "E": 47,
+    "NE": 48,
+    "N": 49
+   }
+  },
+  "dead": {
+   "fps": 9,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 50,
+    "SE": 51,
+    "E": 52,
+    "NE": 53,
+    "N": 54
+   }
+  },
+  "talk": {
+   "fps": 7,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 55,
+    "SE": 56,
+    "E": 57,
+    "NE": 58,
+    "N": 59
+   }
+  },
+  "charge": {
+   "fps": 12,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 60,
+    "SE": 61,
+    "E": 62,
+    "NE": 63,
+    "N": 64
+   }
+  },
+  "sit": {
+   "fps": 5,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 65,
+    "SE": 66,
+    "E": 67,
+    "NE": 68,
+    "N": 69
+   }
+  },
+  "phone": {
+   "fps": 6,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 70,
+    "SE": 71,
+    "E": 72,
+    "NE": 73,
+    "N": 74
+   }
+  },
+  "dance": {
+   "fps": 10,
+   "loop": true,
+   "frames": 8,
+   "rows": {
+    "S": 75,
+    "SE": 76,
+    "E": 77,
+    "NE": 78,
+    "N": 79
+   }
+  },
+  "cheer": {
+   "fps": 9,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 80,
+    "SE": 81,
+    "E": 82,
+    "NE": 83,
+    "N": 84
+   }
+  },
+  "wave": {
+   "fps": 9,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 85,
+    "SE": 86,
+    "E": 87,
+    "NE": 88,
+    "N": 89
+   }
+  },
+  "surrender": {
+   "fps": 6,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 90,
+    "SE": 91,
+    "E": 92,
+    "NE": 93,
+    "N": 94
+   }
+  },
+  "cry": {
+   "fps": 8,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 95,
+    "SE": 96,
+    "E": 97,
+    "NE": 98,
+    "N": 99
+   }
+  },
+  "wail": {
+   "fps": 9,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 100,
+    "SE": 101,
+    "E": 102,
+    "NE": 103,
+    "N": 104
+   }
+  },
+  "pout": {
+   "fps": 4,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 105,
+    "SE": 106,
+    "E": 107,
+    "NE": 108,
+    "N": 109
+   }
+  },
+  "fluster": {
+   "fps": 10,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 110,
+    "SE": 111,
+    "E": 112,
+    "NE": 113,
+    "N": 114
+   }
+  },
+  "shock": {
+   "fps": 12,
+   "loop": false,
+   "frames": 5,
+   "rows": {
+    "S": 115,
+    "SE": 116,
+    "E": 117,
+    "NE": 118,
+    "N": 119
+   }
+  },
+  "angry": {
+   "fps": 9,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 120,
+    "SE": 121,
+    "E": 122,
+    "NE": 123,
+    "N": 124
+   }
+  },
+  "sulk": {
+   "fps": 4,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 125,
+    "SE": 126,
+    "E": 127,
+    "NE": 128,
+    "N": 129
+   }
+  },
+  "peek": {
+   "fps": 3,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 130,
+    "SE": 131,
+    "E": 132,
+    "NE": 133,
+    "N": 134
+   }
+  },
+  "tug": {
+   "fps": 5,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 135,
+    "SE": 136,
+    "E": 137,
+    "NE": 138,
+    "N": 139
+   }
+  },
+  "bow": {
+   "fps": 8,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 140,
+    "SE": 141,
+    "E": 142,
+    "NE": 143,
+    "N": 144
+   }
+  },
+  "dogeza": {
+   "fps": 6,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 145,
+    "SE": 146,
+    "E": 147,
+    "NE": 148,
+    "N": 149
+   }
+  },
+  "laugh": {
+   "fps": 10,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 150,
+    "SE": 151,
+    "E": 152,
+    "NE": 153,
+    "N": 154
+   }
+  },
+  "think": {
+   "fps": 3,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 155,
+    "SE": 156,
+    "E": 157,
+    "NE": 158,
+    "N": 159
+   }
+  },
+  "facepalm": {
+   "fps": 5,
+   "loop": false,
+   "frames": 4,
+   "rows": {
+    "S": 160,
+    "SE": 161,
+    "E": 162,
+    "NE": 163,
+    "N": 164
+   }
+  },
+  "shrug": {
+   "fps": 8,
+   "loop": false,
+   "frames": 5,
+   "rows": {
+    "S": 165,
+    "SE": 166,
+    "E": 167,
+    "NE": 168,
+    "N": 169
+   }
+  },
+  "sneeze": {
+   "fps": 10,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 170,
+    "SE": 171,
+    "E": 172,
+    "NE": 173,
+    "N": 174
+   }
+  },
+  "yandere": {
+   "fps": 3,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 175,
+    "SE": 176,
+    "E": 177,
+    "NE": 178,
+    "N": 179
+   }
+  },
+  "loaf": {
+   "fps": 3,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 180,
+    "SE": 181,
+    "E": 182,
+    "NE": 183,
+    "N": 184
+   }
+  },
+  "pat_get": {
+   "fps": 5,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 185,
+    "SE": 186,
+    "E": 187,
+    "NE": 188,
+    "N": 189
+   }
+  },
+  "pat_give": {
+   "fps": 5,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 190,
+    "SE": 191,
+    "E": 192,
+    "NE": 193,
+    "N": 194
+   }
+  },
+  "offer": {
+   "fps": 4,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 195,
+    "SE": 196,
+    "E": 197,
+    "NE": 198,
+    "N": 199
+   }
+  },
+  "pinky": {
+   "fps": 4,
+   "loop": false,
+   "frames": 4,
+   "rows": {
+    "S": 200,
+    "SE": 201,
+    "E": 202,
+    "NE": 203,
+    "N": 204
+   }
+  },
+  "faint": {
+   "fps": 9,
+   "loop": false,
+   "frames": 6,
+   "rows": {
+    "S": 205,
+    "SE": 206,
+    "E": 207,
+    "NE": 208,
+    "N": 209
+   }
+  },
+  "happy": {
+   "fps": 10,
+   "loop": true,
+   "frames": 6,
+   "rows": {
+    "S": 210,
+    "SE": 211,
+    "E": 212,
+    "NE": 213,
+    "N": 214
+   }
+  },
+  "sad": {
+   "fps": 4,
+   "loop": true,
+   "frames": 4,
+   "rows": {
+    "S": 215,
+    "SE": 216,
+    "E": 217,
+    "NE": 218,
+    "N": 219
+   }
+  }
+ }
+}

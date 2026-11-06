@@ -811,7 +811,12 @@ func after_interaction(before_rel: String, before_att: int) -> String:
 
 ## Behaviour reactions requested by interaction effects ("react" key in data/interactions.json).
 ## Returns a line describing the consequence for the dialogue.
+const REACT_FEELING := {"grateful": "happy", "scared": "shock", "bow": "bow", "leave": "sad",
+	"grudge": "angry", "smitten": "love", "repossessed": "heartbroken"}
+
+
 func react(kind: String) -> String:
+	Emotion.express(self, str(REACT_FEELING.get(kind, "")))
 	match kind:
 		"grateful":
 			owes_favour = true

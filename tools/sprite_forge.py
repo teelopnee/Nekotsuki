@@ -265,33 +265,176 @@ def paint_decals(sl, bd, depth):
         if dp[py, px] > 1e8 or t_pt - dp[py, px] > 1.8:
             continue
         if kind == "eye":
-            # 2x2 eye: iris on the inner side, white on the outer side (front view),
-            # single iris column when seen from the side. Lid line on top, brow above.
+            # Eye anchor = bottom pixel of the iris column. `outer` points away from the nose.
             side = extra["side"]
-            outer = -1 if side > 0 else 1  # screen-space direction away from the nose
+            outer = -1 if side > 0 else 1
             if np.dot(nrm, CAM.right) * side < 0:
                 outer = -outer
             profile = abs(float(np.dot(nrm, CAM.right))) > 0.6
             iris_slot = SLOTS["glow"] if extra.get("cyber") else SLOTS["iris"]
-            put(px, py, iris_slot, 3 if iris_slot == SLOTS["iris"] else 4, skinish)
-            put(px, py - 1, iris_slot, 3 if iris_slot == SLOTS["iris"] else 4, skinish)
-            put(px, py - 2, SLOTS["dark"], 3, skinish)
-            if not profile:
-                put(px + outer, py, SLOTS["eyewhite"], 4, skinish)
-                put(px + outer, py - 1, SLOTS["eyewhite"], 4, skinish)
-                put(px + outer, py - 2, SLOTS["dark"], 3, skinish)
-            put(px, py - 4, SLOTS["hair"], 2, (SLOTS["skin"],))
-            put(px + outer, py - 4, SLOTS["hair"], 2, (SLOTS["skin"],))
+            ib = 3 if iris_slot == SLOTS["iris"] else 4
+            _eye(put, px, py, outer, profile, extra.get("style", "eye"), iris_slot, ib, skinish)
+            _brow(put, px, py, outer, extra.get("brow", "normal"))
+            if extra.get("tears"):
+                _tears(put, px, py, outer, extra["tears"], extra.get("tf", 0))
+            if extra.get("glasses"):
+                _glasses(put, px, py, outer, profile)
         elif kind == "closed":
             put(px, py - 1, SLOTS["dark"], 3, skinish)
             put(px + 1, py - 1, SLOTS["dark"], 3, skinish)
         elif kind == "mouth":
-            put(px, py, SLOTS["skin"], 1, (SLOTS["skin"],))
-            if not extra.get("small"):
-                put(px + 1, py, SLOTS["skin"], 1, (SLOTS["skin"],))
+            _mouth(put, px, py, extra.get("style", "line"), extra.get("small"))
+        elif kind == "cheek":
+            _cheek(put, px, py, extra.get("style", "blush"))
         elif kind == "dot":
             put(px, py, SLOTS[extra["slot"]], extra["band"])
     return sl, bd
+
+
+# Face parts. The "flash" slot's bands 1-4 are face FX colours (only band 5 is used by
+# geometry): 1 deep blush, 2 blush / tongue / hearts, 3 tear, 4 tear highlight.
+def _eye(put, px, py, o, profile, style, isl, ib, sk):
+    D, W, F, G = SLOTS["dark"], SLOTS["eyewhite"], SLOTS["flash"], SLOTS["glow"]
+
+    def base(lid=-2, shine=False):
+        put(px, py, isl, ib, sk)
+        if lid < -1:
+            put(px, py - 1, isl, ib, sk)
+        put(px, py + lid, D, 3, sk)
+        if not profile:
+            put(px + o, py, W, 4, sk)
+            if lid < -1:
+                put(px + o, py - 1, W, 4, sk)
+            put(px + o, py + lid, D, 3, sk)
+        if shine:
+            put(px, py - 1, W, 5, sk)
+
+    if style in ("sleepy", "flat"):
+        base(lid=-1)
+    elif style == "teary":
+        base(shine=True)
+        put(px + o, py + 1, F, 3, sk)
+    elif style == "star":
+        base()
+        put(px, py - 1, F, 5, sk)
+        put(px + o, py, F, 5, sk)
+    elif style == "closed":
+        put(px, py - 1, D, 3, sk)
+        put(px + o, py - 1, D, 3, sk)
+    elif style == "happy":
+        put(px - o, py, D, 3, sk)
+        put(px, py - 1, D, 3, sk)
+        put(px + o, py, D, 3, sk)
+    elif style == "shut":
+        put(px + o, py - 2, D, 3, sk)
+        put(px, py - 1, D, 3, sk)
+        put(px - o, py - 1, D, 3, sk)
+        put(px + o, py, D, 3, sk)
+    elif style == "wide":
+        for dx in (-o, 0, o):
+            put(px + dx, py - 2, D, 3, sk)
+            put(px + dx, py - 1, W, 4, sk)
+            put(px + dx, py, W, 4, sk)
+        put(px, py, isl, 1, sk)
+    elif style == "dead":
+        for dy in (3, 4, 5):
+            for dx in (-o, 0, o, 2 * o):
+                put(px + dx, py - dy, SLOTS["skin"], 2, (SLOTS["skin"],))
+        for dx in (0, o):
+            put(px + dx, py, isl, 1, sk)
+            put(px + dx, py - 1, isl, 1, sk)
+            put(px + dx, py - 2, D, 3, sk)
+    elif style == "cat":
+        for dx in (-o, 0, o):
+            put(px + dx, py - 2, D, 3, sk)
+        for dy in (0, 1):
+            put(px - o, py - dy, G, 4, sk)
+            put(px, py - dy, D, 3, sk)
+            put(px + o, py - dy, G, 4, sk)
+    elif style == "heart":
+        put(px - o, py - 1, F, 1, sk)
+        put(px + o, py - 1, F, 1, sk)
+        put(px, py - 1, F, 2, sk)
+        put(px, py, F, 1, sk)
+    elif style == "dizzy":
+        for dx in (-o, 0, o):
+            put(px + dx, py - 2, D, 3, sk)
+            put(px + dx, py, D, 3, sk)
+        put(px - o, py - 1, D, 3, sk)
+        put(px + o, py - 1, D, 3, sk)
+        put(px, py - 1, W, 4, sk)
+    else:
+        base()
+
+
+BROWS = {"normal": (4, 4), "worried": (5, 4), "angry": (3, 4), "raised": (5, 5), "flat": (3, 3)}
+
+
+def _brow(put, px, py, o, style):
+    rows = BROWS.get(style)
+    if rows:
+        put(px, py - rows[0], SLOTS["hair"], 2, (SLOTS["skin"],))
+        put(px + o, py - rows[1], SLOTS["hair"], 2, (SLOTS["skin"],))
+
+
+def _tears(put, px, py, o, level, tf):
+    F = SLOTS["flash"]
+    if level == 1:
+        put(px + o, py + 1, F, 3)
+        put(px + o, py + 2, F, 4)
+        return
+    n = 3 if level == 2 else 7
+    for c in ((px + o,) if level == 2 else (px + o, px)):
+        for k in range(n):
+            put(c, py + 1 + k, F, 4 if (k + tf) % 3 == 0 else 3)
+
+
+def _glasses(put, px, py, o, profile):
+    for dx in (-o, 0, o, 2 * o):
+        put(px + dx, py - 2, SLOTS["dark"], 3)
+    put(px + 2 * o, py - 1, SLOTS["dark"], 3)
+    if not profile:
+        put(px + o, py - 1, SLOTS["eyewhite"], 5)
+
+
+# (dx, dy, code): l = soft line (skin band 1), d = dark, w = teeth, t = tongue
+MOUTHS = {
+    "smile": [(-1, -1, "l"), (0, 0, "l"), (1, 0, "l"), (2, -1, "l")],
+    "frown": [(-1, 0, "l"), (0, -1, "l"), (1, -1, "l"), (2, 0, "l")],
+    "flat": [(-1, 0, "l"), (0, 0, "l"), (1, 0, "l"), (2, 0, "l")],
+    "wavy": [(-1, 0, "d"), (0, -1, "d"), (1, 0, "d"), (2, -1, "d")],
+    "open": [(0, 0, "d"), (1, 0, "d"), (0, 1, "d"), (1, 1, "d")],
+    "o": [(0, 0, "d")],
+    "wail": [(x, y, "d") for x in (-1, 0, 1, 2) for y in (0, 1)] + [(-1, 2, "d"), (0, 2, "t"), (1, 2, "t"), (2, 2, "d")],
+    "grin": [(x, 0, "w") for x in (-1, 0, 1, 2)] + [(-2, 0, "d"), (3, 0, "d"), (0, 1, "d"), (1, 1, "d")],
+    "grit": [(x, 0, "w") for x in (-1, 0, 1, 2)] + [(x, y, "d") for x in (-1, 0, 1, 2) for y in (-1, 1)],
+    "pout": [(0, 0, "d"), (1, 0, "d"), (0, -1, "l")],
+    "yan": [(-2, -1, "l"), (-1, 0, "l"), (0, 0, "l"), (1, 0, "l"), (2, 0, "l"), (3, -1, "l")],
+    "cat": [(-2, 0, "d"), (-1, 1, "d"), (0, 0, "d"), (1, 1, "d"), (2, 0, "d")],
+}
+
+
+def _mouth(put, px, py, style, small=False):
+    if style not in MOUTHS:
+        put(px, py, SLOTS["skin"], 1, (SLOTS["skin"],))
+        if not small:
+            put(px + 1, py, SLOTS["skin"], 1, (SLOTS["skin"],))
+        return
+    code = {"l": (SLOTS["skin"], 1), "d": (SLOTS["dark"], 3), "w": (SLOTS["eyewhite"], 4), "t": (SLOTS["flash"], 2)}
+    for dx, dy, c in MOUTHS[style]:
+        put(px + dx, py + dy, code[c][0], code[c][1], (SLOTS["skin"], SLOTS["dark"], SLOTS["eyewhite"]))
+
+
+def _cheek(put, px, py, style):
+    F, need = SLOTS["flash"], (SLOTS["skin"],)
+    if style == "blush":
+        put(px, py, F, 2, need)
+        put(px + 1, py, F, 2, need)
+    elif style == "blush2":
+        for dx in (-1, 0, 1):
+            put(px + dx, py, F, 2, need)
+        put(px - 1, py - 1, F, 1, need)
+        put(px + 1, py - 1, F, 1, need)
 
 
 def encode(sl, bd):
@@ -314,6 +457,16 @@ ANIMS = [
     ("sit", 8, 5, True), ("phone", 8, 6, True), ("dance", 8, 10, True), ("cheer", 6, 9, True),
     ("wave", 6, 9, True), ("surrender", 6, 6, True),
 ]
+# Emotion animations (each carries its own face). Rendered only for variants with cfg "school".
+EMOTE_ANIMS = [
+    ("cry", 6, 8, True), ("wail", 6, 9, True), ("pout", 4, 4, True), ("fluster", 6, 10, True),
+    ("shock", 5, 12, False), ("angry", 6, 9, True), ("sulk", 4, 4, True), ("peek", 4, 3, True),
+    ("tug", 4, 5, True), ("bow", 6, 8, False), ("dogeza", 6, 6, False), ("laugh", 6, 10, True),
+    ("think", 4, 3, True), ("facepalm", 4, 5, False), ("shrug", 5, 8, False), ("sneeze", 6, 10, False),
+    ("yandere", 4, 3, True), ("loaf", 4, 3, True), ("pat_get", 4, 5, True), ("pat_give", 4, 5, True),
+    ("offer", 4, 4, True), ("pinky", 4, 4, False), ("faint", 6, 9, False), ("happy", 6, 10, True),
+    ("sad", 4, 4, True),
+]
 
 
 def ease(t):
@@ -326,7 +479,9 @@ def pose(anim, t):
          "lthigh": 0.0, "lknee": 0.05, "rthigh": 0.0, "rknee": 0.05,
          "larm": (0.06, 0.18), "rarm": (0.06, 0.18), "lelbow": 0.15, "relbow": 0.15,
          "rarm_dir": None, "rfore_dir": None, "larm_dir": None, "lfore_dir": None,
-         "weapon": "holster", "flash": False, "lay": 0.0, "tail": 0.0, "blink": False}
+         "weapon": "holster", "flash": False, "lay": 0.0, "tail": 0.0, "blink": False,
+         "side": 0.0, "eyes": None, "brows": None, "mouth": None, "cheek": None, "tears": 0,
+         "tf": int(t * 6), "ears": None}
     if anim == "idle":
         b = s(t * tau)
         p["bob"] = -0.5 + 0.5 * b
@@ -501,7 +656,227 @@ def pose(anim, t):
         p["crouch"] = 0.2 + 0.05 * g
         p["lthigh"], p["rthigh"] = 0.35, -0.35
         p["weapon"] = "baton"
+    if anim in EMOTES:
+        EMOTES[anim](p, t)
     return p
+
+
+def _e_cry(p, t):
+    k = abs(math.sin(t * 2 * math.pi * 2))
+    p["bob"] = -0.6 + 0.4 * k
+    p["head_tilt"] = 0.22 + 0.05 * k
+    p["rarm_dir"], p["rfore_dir"] = (-0.25, 0.45, 0.85), (-0.6, 0.78, 0.15)
+    p["larm_dir"], p["lfore_dir"] = (0.25, 0.45, 0.85), (0.6, 0.78, 0.15)
+    p["lknee"] = p["rknee"] = 0.25
+    p.update(eyes="shut", brows="worried", mouth="wavy", cheek="blush", tears=2, ears="droop")
+
+
+def _e_wail(p, t):
+    k = math.sin(t * 2 * math.pi * 2)
+    p["head_tilt"], p["lean"], p["bob"] = -0.28 + 0.04 * k, -0.08, -0.4 + 0.3 * abs(k)
+    p["larm"], p["rarm"] = (0.05, 0.35 + 0.05 * k), (0.05, 0.35 - 0.05 * k)
+    p["lelbow"] = p["relbow"] = 0.25
+    p["lknee"] = p["rknee"] = 0.35
+    p["crouch"] = 0.12
+    p.update(eyes="shut", brows="worried", mouth="wail", cheek="blush2", tears=3, ears="flat")
+
+
+def _e_pout(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (0.05, -0.55, 0.8), (-1.0, 0.15, 0.15)
+    p["larm_dir"], p["lfore_dir"] = (-0.05, -0.5, 0.8), (1.0, 0.25, 0.1)
+    p["twist"], p["side"], p["head_tilt"] = 0.3, 0.06 * g, -0.06
+    p.update(eyes="flat", brows="angry", mouth="pout", cheek="blush", ears="flat")
+
+
+def _e_fluster(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (-0.05, 0.35, 0.9), (-0.5, 0.85, 0.2)
+    p["larm_dir"], p["lfore_dir"] = (0.05, 0.35, 0.9), (0.5, 0.85, 0.2)
+    p["twist"], p["side"], p["bob"], p["head_tilt"] = 0.18 * g, 0.1 * g, -0.3 + 0.3 * abs(g), 0.12
+    p["lthigh"], p["rthigh"] = 0.1 * g, -0.1 * g
+    p["lknee"] = p["rknee"] = 0.3
+    p.update(eyes="shut", brows="worried", mouth="wavy", cheek="blush2", ears="up")
+
+
+def _e_shock(p, t):
+    k = math.sin(min(1.0, t * 1.6) * math.pi * 0.5)
+    jump = math.sin(min(1.0, t * 2.2) * math.pi)
+    p["bob"], p["lean"] = 2.2 * jump - 0.2, -0.25 * k
+    p["rarm_dir"], p["rfore_dir"] = (0.55, 0.55 * k, 0.45), (0.15, 1.0, 0.1)
+    p["larm_dir"], p["lfore_dir"] = (-0.55, 0.55 * k, 0.45), (-0.15, 1.0, 0.1)
+    p["lthigh"], p["lknee"] = 0.3 * jump, 0.4 * jump
+    p.update(eyes="wide", brows="raised", mouth="open", ears="up")
+
+
+def _e_angry(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["lthigh"], p["rthigh"] = 0.55 * max(0.0, g), 0.55 * max(0.0, -g)
+    p["lknee"], p["rknee"] = 0.2 + 0.7 * max(0.0, g), 0.2 + 0.7 * max(0.0, -g)
+    p["larm"] = p["rarm"] = (-0.15, 0.32)
+    p["lelbow"] = p["relbow"] = 0.9
+    p["lean"], p["bob"], p["head_tilt"] = 0.12, -0.3 + 0.5 * abs(g), 0.05
+    p.update(eyes="eye", brows="angry", mouth="grit", ears="flat")
+
+
+def _e_sulk(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["crouch"], p["lean"], p["head_tilt"], p["bob"] = 1.4, 0.35, 0.35 + 0.03 * g, 0.1 * g
+    p["lthigh"] = p["rthigh"] = 1.9
+    p["lknee"] = p["rknee"] = 2.6
+    p["larm"] = p["rarm"] = (1.25, 0.15)
+    p["lelbow"] = p["relbow"] = 0.9
+    p.update(eyes="sleepy", brows="worried", mouth="frown", ears="droop")
+
+
+def _e_peek(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["side"], p["crouch"], p["head_tilt"] = 0.32 + 0.04 * g, 0.15, -0.04
+    p["rarm_dir"], p["rfore_dir"] = (0.25, 0.35, 0.9), (-0.05, 0.5, 0.85)
+    p["larm_dir"], p["lfore_dir"] = (0.1, 0.1, 0.9), (0.2, 0.6, 0.75)
+    p.update(brows="worried", ears="up")
+
+
+def _e_tug(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (-0.05, -0.25, 1.0), (-0.15, 0.05 + 0.08 * g, 1.0)
+    p["larm_dir"], p["lfore_dir"] = (0.15, -0.55, 0.6), (0.85, 0.45, 0.35)
+    p["head_tilt"], p["lean"], p["bob"] = 0.3, 0.08, -0.2 + 0.1 * g
+    p.update(eyes="sleepy", brows="worried", mouth="wavy", cheek="blush", ears="droop")
+
+
+def _e_bow(p, t):
+    k = ease(min(1.0, t * 1.8))
+    p["lean"], p["head_tilt"] = 0.75 * k, 0.15 * k
+    p["larm"] = p["rarm"] = (0.25 * k, 0.06)
+    p["lelbow"] = p["relbow"] = 0.3
+    p.update(eyes="closed")
+
+
+def _e_dogeza(p, t):
+    k = ease(min(1.0, t * 1.5))
+    p["crouch"], p["head_tilt"] = 1.43 * k, 0.25 * k
+    p["lthigh"] = p["rthigh"] = 1.57 * k
+    p["lknee"] = p["rknee"] = 3.0 * k
+    p["lean"] = 1.3 * ease(max(0.0, min(1.0, (t - 0.3) * 1.6)))
+    p["larm_dir"], p["lfore_dir"] = (-0.15, -0.55, 0.9), (0.05, -0.2, 1.0)
+    p["rarm_dir"], p["rfore_dir"] = (0.15, -0.55, 0.9), (-0.05, -0.2, 1.0)
+    p.update(eyes="shut", brows="worried", mouth="wavy")
+
+
+def _e_laugh(p, t):
+    g = math.sin(t * 2 * math.pi * 2)
+    p["lean"], p["head_tilt"], p["bob"] = -0.15, -0.18, -0.2 + 0.5 * abs(g)
+    p["larm_dir"], p["lfore_dir"] = (0.15, -0.5, 0.75), (0.9, 0.2, 0.3)
+    p["rarm_dir"], p["rfore_dir"] = (0.35, 0.1, 0.8), (0.0, 0.8 + 0.2 * g, 0.4)
+    p.update(eyes="happy", mouth="grin", cheek="blush", ears="up")
+
+
+def _e_think(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (-0.1, -0.05, 1.0), (-0.45, 0.88, 0.1)
+    p["larm_dir"], p["lfore_dir"] = (0.1, -0.6, 0.6), (0.9, 0.2, 0.3)
+    p["head_tilt"], p["side"] = -0.06, 0.08 + 0.02 * g
+    p.update(eyes="sleepy", brows="raised", mouth="flat")
+
+
+def _e_facepalm(p, t):
+    k = ease(min(1.0, t * 2.0))
+    p["rarm_dir"], p["rfore_dir"] = (-0.3, 0.5 * k, 0.85), (-0.7, 0.7 * k, 0.15)
+    p["head_tilt"], p["bob"] = 0.35 * k, -0.6 * k
+    p.update(eyes="closed", brows="worried", mouth="frown")
+
+
+def _e_shrug(p, t):
+    k = math.sin(min(1.0, t * 1.4) * math.pi)
+    p["larm_dir"], p["lfore_dir"] = (-0.6, -0.5 + 0.2 * k, 0.45), (-0.45, 0.45, 0.75)
+    p["rarm_dir"], p["rfore_dir"] = (0.6, -0.5 + 0.2 * k, 0.45), (0.45, 0.45, 0.75)
+    p["bob"], p["head_tilt"], p["side"] = 0.5 * k, -0.06, 0.12 * k
+    p.update(eyes="flat", brows="raised", mouth="flat")
+
+
+def _e_sneeze(p, t):
+    if t < 0.55:
+        k = t / 0.55
+        p["lean"], p["head_tilt"] = -0.25 * k, -0.3 * k
+        p.update(eyes="shut", brows="raised", mouth="open")
+    else:
+        k = (t - 0.55) / 0.45
+        p["lean"], p["head_tilt"] = 0.35 * (1 - k * 0.5), 0.3
+        p["rarm_dir"], p["rfore_dir"] = (-0.2, 0.2, 0.9), (-0.6, 0.75, 0.2)
+        p.update(eyes="shut", mouth="o")
+
+
+def _e_yandere(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["larm_dir"], p["lfore_dir"] = (0.3, -0.6, -0.55), (0.75, 0.15, -0.6)
+    p["rarm_dir"], p["rfore_dir"] = (-0.3, -0.6, -0.55), (-0.75, 0.15, -0.6)
+    p["head_tilt"], p["side"], p["bob"] = 0.14, 0.22 + 0.02 * g, -0.1
+    p.update(eyes="dead", brows="none", mouth="yan", ears="perk")
+
+
+def _e_loaf(p, t):
+    _e_sulk(p, t)
+    p["lean"], p["head_tilt"] = 0.6, 0.25
+    p["larm"] = p["rarm"] = (1.35, 0.05)
+    p["lelbow"] = p["relbow"] = 0.6
+    p.update(eyes="closed", brows="none", mouth="cat", ears="up")
+
+
+def _e_pat_get(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["head_tilt"], p["bob"] = 0.2 + 0.04 * g, -0.4 + 0.2 * abs(g)
+    p["larm_dir"], p["lfore_dir"] = (0.2, -0.55, 0.65), (0.75, 0.45, 0.45)
+    p["rarm_dir"], p["rfore_dir"] = (-0.2, -0.55, 0.65), (-0.75, 0.45, 0.45)
+    p.update(eyes="happy", mouth="cat", cheek="blush2", ears="flat")
+
+
+def _e_pat_give(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (-0.05, 0.25, 1.0), (-0.05, -0.35 + 0.15 * g, 1.0)
+    p.update(eyes="sleepy", mouth="smile")
+
+
+def _e_offer(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["rarm_dir"], p["rfore_dir"] = (-0.15, -0.15, 1.0), (-0.35, 0.2 + 0.05 * g, 1.0)
+    p["larm_dir"], p["lfore_dir"] = (0.15, -0.15, 1.0), (0.35, 0.2 + 0.05 * g, 1.0)
+    p["head_tilt"], p["lean"], p["weapon"] = 0.35, 0.12, "bento"
+    p.update(eyes="shut", brows="worried", mouth="wavy", cheek="blush2", ears="droop")
+
+
+def _e_pinky(p, t):
+    k = ease(min(1.0, t * 1.6))
+    p["rarm_dir"], p["rfore_dir"] = (0.0, -0.1 + 0.15 * k, 1.0), (-0.2, 0.5 * k, 0.85)
+    p.update(mouth="smile", cheek="blush")
+
+
+def _e_faint(p, t):
+    k = ease(min(1.0, t * 1.2))
+    p["lay"], p["lean"] = k, -0.4 * k
+    p["larm"], p["rarm"] = (-0.4, 0.5 * k + 0.14), (-0.2, 0.7 * k + 0.14)
+    p.update(eyes="dizzy", mouth="open")
+
+
+def _e_happy(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["bob"] = 1.6 * max(0.0, g) - 0.3
+    p["rarm_dir"], p["rfore_dir"] = (-0.05, -0.35, 0.75), (-0.35, 0.9, 0.25)
+    p["larm_dir"], p["lfore_dir"] = (0.05, -0.35, 0.75), (0.35, 0.9, 0.25)
+    p["lthigh"] = p["rthigh"] = -0.1 * max(0.0, g)
+    p["lknee"] = p["rknee"] = 0.15 + 0.5 * max(0.0, g)
+    p.update(eyes="happy", mouth="grin", cheek="blush", ears="up")
+
+
+def _e_sad(p, t):
+    g = math.sin(t * 2 * math.pi)
+    p["head_tilt"], p["bob"], p["lean"] = 0.35, -0.8 + 0.1 * g, 0.08
+    p["larm"] = p["rarm"] = (0.12, 0.06)
+    p["lelbow"] = p["relbow"] = 0.1
+    p.update(eyes="sleepy", brows="worried", mouth="frown", ears="droop")
+
+
+EMOTES = {a[0]: globals()["_e_" + a[0]] for a in EMOTE_ANIMS}
 
 
 # ---------------------------------------------------------------------------- humanoid
@@ -526,6 +901,8 @@ def build_human(cfg, facing, anim, t):
     pelvis = fr.w(0, hip_h - p["crouch"] * 6.0 + p["bob"], 0)
     up = rot_axis(fr.U, fr.R, -p["lean"])
     fwd = rot_axis(fr.F, fr.R, -p["lean"])
+    if p["side"]:
+        up = rot_axis(up, fwd, p["side"])
     fwd_t = rot_axis(fwd, up, p["twist"])
     right_t = np.cross(fwd_t, up)
     basis = [right_t, up, fwd_t]
@@ -548,27 +925,39 @@ def build_human(cfg, facing, anim, t):
         a2 = th - kn
         d2 = norm(-fr.U * math.cos(a2) + fr.F * math.sin(a2))
         ankle = knee + d2 * shin_l
-        prims.append(P_cone(hip, knee, 3.2 * min(Wd, 1.25), 2.8, pants))
-        prims.append(P_cone(knee, ankle, 2.8, 2.6, pants))
+        leg = "skin" if cfg.get("skirt") == "short" else pants
+        prims.append(P_cone(hip, knee, 3.2 * min(Wd, 1.25), 2.8, leg))
+        prims.append(P_cone(knee, ankle, 2.8, 2.6, leg))
         prims.append(P_cone(knee + (ankle - knee) * 0.4, ankle, 3.0, 2.9, "boots"))
         prims.append(P_ell(ankle + fr.F * 1.7 - fr.U * 1.0, [2.7, 2.0, 3.9], [fr.R, fr.U, fr.F], "boots"))
 
     # torso / outfit
     prims.append(P_ell(bp(0, 2.0, 0), [5.0 * Wd, 3.6, 3.7], basis, pants))
     prims.append(P_ell(chest, [6.4 * Wd, 6.6, 4.4], basis, top))
-    if outfit not in ("hoodie", "coat", "suit") or robot:
+    if cfg.get("skirt"):
+        hem = -3.0 if cfg["skirt"] == "short" else -10.8
+        prims.append(P_cone(bp(0, 3.0, 0), bp(0, hem, -0.3), 4.9 * Wd, (6.1 if cfg["skirt"] == "short" else 6.4) * Wd, pants))
+    if outfit not in ("hoodie", "coat", "suit", "blazer", "teacher", "track", "miko", "apron") or robot:
         prims.append(P_ell(bp(0, 3.5, 0.1), [5.5 * Wd, 1.8, 4.0], basis, "accent"))
         DECALS.append(("dot", bp(0, 3.6, 4.15), fwd_t, {"slot": "accent", "band": 5}))
-    if outfit in ("jacket", "coat", "suit") and not robot:
+    if outfit in ("jacket", "coat", "suit", "blazer", "track") and not robot:
         prims.append(P_ell(chest + fwd_t * -0.4, [6.8 * Wd, 6.9, 4.7], basis, "coat"))
         if outfit == "coat":
             prims.append(P_cone(bp(0, torso_h * 0.5, -0.3), bp(0, -8.0, -1.0 - 2.4 * tail), 6.5 * Wd, 6.4 * Wd, "coat"))
         else:
             prims.append(P_ell(bp(0, 2.6, -0.2), [5.9 * Wd, 2.6, 4.4], basis, "coat"))
         prims.append(P_ell(chest + fwd_t * 3.7, [2.1, 5.4, 1.4], basis, top))
+        if outfit == "blazer":
+            prims.append(P_box(chest + fwd_t * 4.4 + up * 0.2, [0.75, 3.4, 0.35], basis, 0.25, "accent"))
         if outfit == "suit":
             for k in range(3):
                 DECALS.append(("dot", chest + fwd_t * 5.05 + up * (2.4 - k * 1.2), fwd_t, {"slot": "accent", "band": 3}))
+    elif outfit == "teacher" and not robot:
+        prims.append(P_ell(chest + fwd_t * -0.1, [6.9 * Wd, 6.6, 4.9], basis, "coat"))
+        prims.append(P_ell(chest + fwd_t * 4.0 + up * 1.6, [2.0, 3.6, 1.2], basis, top))
+        prims.append(P_box(chest + fwd_t * 4.9 + up * 1.2, [0.7, 2.6, 0.3], basis, 0.25, "accent"))
+    elif outfit == "apron" and not robot:
+        prims.append(P_box(bp(0, 3.5, 3.6), [4.3 * Wd, 6.8, 0.5], basis, 0.6, "accent"))
     elif outfit == "vest" and not robot:
         prims.append(P_ell(chest + fwd_t * -0.3, [6.7 * Wd, 6.5, 4.6], basis, "coat"))
         for k in range(3):
@@ -604,7 +993,7 @@ def build_human(cfg, facing, anim, t):
             prims.append(P_ell(pc, [4.0, 4.6, 2.5], basis, "gear"))
 
     # arms
-    sleeve = "coat" if outfit in ("jacket", "coat", "suit") else ("skin" if outfit in ("tank", "vest", "overalls") else top)
+    sleeve = "coat" if outfit in ("jacket", "coat", "suit", "blazer", "track") else ("skin" if outfit in ("tank", "vest", "overalls") else top)
     if robot:
         sleeve = "gear"
 
@@ -625,6 +1014,8 @@ def build_human(cfg, facing, anim, t):
         return sh, el, el + d2 * 4.7 * S, d2
 
     lsh, lel, lhand, _ = arm(-1, p["larm"], p["lelbow"], p["larm_dir"], p["lfore_dir"])
+    if "armband" in acc:
+        prims.append(P_cone(lsh + (lel - lsh) * 0.35, lsh + (lel - lsh) * 0.7, 2.95, 2.7, "accent"))
     rsh, rel, rhand, rd = arm(1, p["rarm"], p["relbow"], p["rarm_dir"], p["rfore_dir"])
     hand_mat = "gloves" if ("gloves" in acc or outfit == "armor" or robot) else "skin"
     for sh, el, hand in ((lsh, lel, lhand), (rsh, rel, rhand)):
@@ -645,6 +1036,10 @@ def build_human(cfg, facing, anim, t):
     elif w == "baton":
         prims.append(P_cone(rhand - rd * 1.5, rhand + rd * 2.5, 1.0, 1.0, "gear"))
         prims.append(P_cone(rhand + rd * 2.5, rhand + rd * 12.0, 1.2, 0.9, "flash"))
+    elif w == "bento":
+        bc = (lhand + rhand) * 0.5 + fwd_t * 1.2 + up * 0.8
+        prims.append(P_box(bc, [3.2, 1.7, 2.3], basis, 0.5, "accent"))
+        prims.append(P_sphere(bc + up * 1.9, 1.0, "scarf"))
     elif w == "phone":
         # A glowing wristpad screen held between the hands.
         pc = (lhand + rhand) * 0.5 + fwd_t * 0.6 + up * 0.6
@@ -663,12 +1058,44 @@ def build_human(cfg, facing, anim, t):
         prims.append(P_ell(head_c + fwd_t * head_r * 0.2 - up * head_r * 0.42, [head_r * 0.62, head_r * 0.46, head_r * 0.6], hb, "skin"))
         for sd in (-1, 1):
             prims.append(P_ell(head_c + right_t * sd * head_r * 0.95 - up * head_r * 0.05, [1.0, 1.8, 1.4], hb, "skin"))
+        eyes = "closed" if p["blink"] and not p["eyes"] else (p["eyes"] or cfg.get("eyes", "eye"))
+        face = {"style": eyes, "brow": p["brows"] or cfg.get("brows", "normal"), "tears": p["tears"],
+                "tf": p["tf"], "glasses": "glasses" in acc}
         for sd in (-1, 1):
             ln = norm(fwd_t * 0.86 + right_t * sd * 0.40 - up * 0.04)
-            kind = "closed" if p["blink"] else "eye"
-            DECALS.append((kind, head_c + ln * head_r * 0.985, ln, {"side": sd, "cyber": "cybereye" in acc and sd == 1}))
+            DECALS.append(("eye", head_c + ln * head_r * 0.985, ln, dict(face, side=sd, cyber="cybereye" in acc and sd == 1)))
         mn = norm(fwd_t * 0.9 - up * 0.42)
-        DECALS.append(("mouth", head_c + mn * head_r * 0.92, mn, {"small": "mustache" in acc}))
+        DECALS.append(("mouth", head_c + mn * head_r * 0.92, mn, {"small": "mustache" in acc, "style": p["mouth"] or cfg.get("mouth", "line")}))
+        cheek = p["cheek"] or cfg.get("cheek")
+        if cheek:
+            for sd in (-1, 1):
+                cn = norm(fwd_t * 0.8 + right_t * sd * 0.56 - up * 0.3)
+                DECALS.append(("cheek", head_c + cn * head_r * 0.98, cn, {"style": cheek}))
+        if "catears" in acc and p["ears"]:
+            for sd in (-1, 1):
+                eb = head_c + up * head_r * 0.66 + right_t * sd * head_r * 0.56 - fwd_t * head_r * 0.08
+                ed = {"up": up + right_t * sd * 0.35, "perk": up + right_t * sd * 0.25 + fwd_t * 0.35,
+                      "droop": up * 0.15 + right_t * sd * 1.0 - fwd_t * 0.1,
+                      "flat": up * 0.35 + right_t * sd * 0.45 - fwd_t * 0.85}[p["ears"]]
+                tip = eb + norm(ed) * head_r * 0.8
+                prims.append(P_cone(eb, tip, 3.3, 0.45, "hair"))
+                prims.append(P_cone(eb + fwd_t * 1.4 + (tip - eb) * 0.1, eb + fwd_t * 1.0 + (tip - eb) * 0.75, 1.9, 0.3, "scarf"))
+        if "ahoge" in acc:
+            a0 = head_c + up * head_r * 0.98 + fwd_t * 1.0
+            a1 = a0 + norm(up + right_t * 0.45 + fwd_t * 0.2) * 3.6
+            prims.append(P_cone(a0, a1, 1.0, 0.6, "hair"))
+            prims.append(P_cone(a1, a1 + norm(fwd_t * 0.7 - up * 0.4 + right_t * 0.3) * 2.6, 0.6, 0.25, "hair"))
+        if "choker" in acc:
+            prims.append(P_ell(neck - up * 0.7, [3.3, 0.9, 3.1], basis, "accent"))
+            prims.append(P_sphere(neck - up * 1.4 + fwd_t * 3.0, 1.15, "glow"))
+        if "headphones" in acc:
+            prims.append(P_ell(neck - up * 0.3, [4.4, 1.0, 4.0], basis, "gear"))
+            for sd in (-1, 1):
+                prims.append(P_sphere(neck + right_t * sd * 3.4 + fwd_t * 1.6 - up * 0.6, 1.5, "accent"))
+        if "camera" in acc:
+            cc = chest + fwd_t * 4.9 - up * 1.8
+            prims.append(P_box(cc, [1.9, 1.3, 0.9], basis, 0.3, "gear"))
+            prims.append(P_sphere(cc + fwd_t * 1.0, 0.7, "dark"))
         hair = cfg.get("hair", "short")
         hc = "hair"
         if "helmet" in acc:
@@ -679,7 +1106,7 @@ def build_human(cfg, facing, anim, t):
             prims.append(P_ell(head_c + up * head_r * 0.55 + fwd_t * head_r * 0.62, [head_r * 0.7, head_r * 0.2, head_r * 0.3], hb, hc))
         elif hair != "bald":
             prims.append(P_ell(head_c + up * head_r * 0.44 - fwd_t * head_r * 0.30, [head_r * 1.08, head_r * 0.8, head_r * 1.0], hb, hc))
-            if hair != "sidecut":
+            if hair not in ("sidecut", "messy", "bob", "hime"):
                 prims.append(P_ell(head_c + up * head_r * 0.66 + fwd_t * head_r * 0.48, [head_r * 0.84, head_r * 0.24, head_r * 0.38], hb, hc))
             for sd in (-1, 1):
                 prims.append(P_ell(head_c + right_t * sd * head_r * 0.88 + up * head_r * 0.18 - fwd_t * head_r * 0.12, [head_r * 0.22, head_r * 0.5, head_r * 0.42], hb, hc))
@@ -690,6 +1117,36 @@ def build_human(cfg, facing, anim, t):
                     prims.append(P_cone(base, base + tipd * head_r * 0.9, 2.7, 0.3, hc))
             elif hair == "long":
                 prims.append(P_cone(head_c - fwd_t * head_r * 0.5, head_c - fwd_t * (head_r * 0.6 + 1.5 * tail) - up * head_r * 1.8, head_r * 0.86, head_r * 0.55, hc))
+            elif hair == "messy":
+                for ax in (-0.62, -0.3, 0.02, 0.34, 0.62):
+                    base = head_c + up * head_r * 0.86 + fwd_t * head_r * 0.4 + right_t * ax * head_r * 0.8
+                    tipd = norm(-up * 0.7 + fwd_t * 0.6 + right_t * ax * 0.4)
+                    prims.append(P_cone(base, base + tipd * head_r * (0.44 if abs(ax) < 0.5 else 0.7), 2.5, 0.35, hc))
+                for k in range(7):
+                    a = -2.3 + k * 0.77
+                    d = right_t * math.sin(a) - fwd_t * math.cos(a)
+                    base = head_c + d * head_r * 0.82 + up * head_r * 0.25
+                    prims.append(P_cone(base, base + norm(d * 0.9 - up * 0.45) * head_r * 0.55, 2.8, 0.3, hc))
+                for ax in (-0.4, 0.15):
+                    base = head_c + up * head_r * 0.85 + right_t * ax * head_r - fwd_t * 1.0
+                    prims.append(P_cone(base, base + norm(up + right_t * ax - fwd_t * 0.4) * head_r * 0.45, 2.4, 0.3, hc))
+            elif hair == "neat":
+                c0 = head_c + up * head_r * 0.74 + fwd_t * head_r * 0.5 + right_t * head_r * 0.45
+                prims.append(P_cone(c0, head_c + up * head_r * 0.22 + fwd_t * head_r * 0.86 - right_t * head_r * 0.2, 2.6, 0.7, hc))
+            elif hair == "bob":
+                prims.append(P_ell(head_c + up * head_r * 0.5 + fwd_t * head_r * 0.56, [head_r * 0.9, head_r * 0.3, head_r * 0.4], hb, hc))
+                prims.append(P_ell(head_c - fwd_t * head_r * 0.3 - up * head_r * 0.12, [head_r * 1.02, head_r * 0.86, head_r * 0.78], hb, hc))
+                for sd in (-1, 1):
+                    prims.append(P_ell(head_c + right_t * sd * head_r * 0.82 - up * head_r * 0.22 + fwd_t * head_r * 0.08, [head_r * 0.32, head_r * 0.76, head_r * 0.66], hb, hc))
+            elif hair == "hime":
+                prims.append(P_cone(head_c - fwd_t * head_r * 0.5, head_c - fwd_t * (head_r * 0.6 + 1.5 * tail) - up * head_r * 2.0, head_r * 0.9, head_r * 0.6, hc))
+                prims.append(P_ell(head_c + up * head_r * 0.45 + fwd_t * head_r * 0.6, [head_r * 0.88, head_r * 0.28, head_r * 0.36], hb, hc))
+                for sd in (-1, 1):
+                    prims.append(P_cone(head_c + right_t * sd * head_r * 0.78 + fwd_t * head_r * 0.22 + up * head_r * 0.1,
+                                        head_c + right_t * sd * head_r * 0.86 + fwd_t * head_r * 0.32 - up * head_r * 1.55, head_r * 0.24, head_r * 0.18, hc))
+            elif hair == "fluffy":
+                for ax, ay, az in ((-0.6, 0.62, 0.1), (0.6, 0.6, 0.0), (0.0, 0.92, -0.05), (0.32, 0.8, 0.42), (-0.36, 0.74, 0.46), (0.0, 0.45, -0.72), (-0.75, 0.2, -0.2), (0.75, 0.2, -0.2)):
+                    prims.append(P_sphere(head_c + right_t * ax * head_r + up * ay * head_r + fwd_t * az * head_r, head_r * 0.38, hc))
             elif hair == "mohawk":
                 for i in range(6):
                     a = -0.6 + i * 0.26
@@ -827,6 +1284,32 @@ HAIRS = ["short", "spiky", "long", "mohawk", "bun", "ponytail", "bald", "curly",
 ACCS = ["visor", "goggles", "mask", "cybereye", "cap", "scarf", "backpack", "pads", "gloves", "beard", "mustache"]
 
 
+# NEKOTSUKI cast (docs/CAST.md). Colours live in data/cast_looks.json.
+CAST = {
+    "c_amane": {"body": "slim", "outfit": "hoodie", "hair": "messy", "acc": ["catears", "ahoge", "choker"], "eyes": "sleepy"},
+    "c_toru": {"body": "normal", "outfit": "blazer", "hair": "neat", "acc": ["headphones"], "eyes": "sleepy", "brows": "flat"},
+    "c_hayate": {"body": "normal", "outfit": "track", "hair": "spiky", "acc": []},
+    "c_hina": {"body": "short", "outfit": "blazer", "hair": "bob", "acc": ["glasses", "camera"], "skirt": "short"},
+    "c_reiji": {"body": "slim", "outfit": "blazer", "hair": "neat", "acc": ["armband"], "brows": "flat"},
+    "c_mio": {"body": "slim", "outfit": "blazer", "hair": "hime", "acc": [], "skirt": "short", "mouth": "smile"},
+    "c_makabe": {"body": "normal", "outfit": "teacher", "hair": "fluffy", "acc": ["glasses"]},
+    "c_haruka": {"body": "short", "outfit": "apron", "hair": "ponytail", "acc": [], "skirt": "long", "mouth": "smile"},
+    "c_chiyo": {"body": "short", "outfit": "miko", "hair": "bun", "acc": [], "skirt": "long", "eyes": "sleepy"},
+}
+STUDENTS = [
+    ("s00", {"body": "normal", "outfit": "blazer", "hair": "neat", "acc": []}, ["student", "boy"]),
+    ("s01", {"body": "slim", "outfit": "blazer", "hair": "messy", "acc": []}, ["student", "boy"]),
+    ("s02", {"body": "normal", "outfit": "blazer", "hair": "spiky", "acc": []}, ["student", "boy"]),
+    ("s03", {"body": "broad", "outfit": "blazer", "hair": "short", "acc": ["glasses"]}, ["student", "boy"]),
+    ("s04", {"body": "short", "outfit": "hoodie", "hair": "curly", "acc": []}, ["student", "boy"]),
+    ("s05", {"body": "short", "outfit": "blazer", "hair": "bob", "acc": [], "skirt": "short"}, ["student", "girl"]),
+    ("s06", {"body": "slim", "outfit": "blazer", "hair": "long", "acc": [], "skirt": "short"}, ["student", "girl"]),
+    ("s07", {"body": "normal", "outfit": "blazer", "hair": "ponytail", "acc": [], "skirt": "short"}, ["student", "girl"]),
+    ("s08", {"body": "slim", "outfit": "blazer", "hair": "hime", "acc": ["glasses"], "skirt": "short"}, ["student", "girl"]),
+    ("s09", {"body": "short", "outfit": "blazer", "hair": "bun", "acc": [], "skirt": "short"}, ["student", "girl"]),
+]
+
+
 def variant_list():
     """Curated + seeded-random geometry variants. Tags drive the runtime randomiser."""
     vs = {}
@@ -870,6 +1353,10 @@ def variant_list():
             tags.append("heavy")
         vs["h%02d" % i] = ("human", {"body": body, "outfit": outfit, "hair": hair, "acc": acc}, tags)
         i += 1
+    for name, cfg in CAST.items():
+        vs[name] = ("human", dict(cfg, school=True), ["cast"])
+    for name, cfg, tags in STUDENTS:
+        vs[name] = ("human", dict(cfg, school=True), tags)
     vs["drone"] = ("drone", {}, ["drone"])
     vs["drone_quad"] = ("drone", {"quad": True}, ["drone"])
     vs["grub"] = ("grub", {}, ["bug"])
@@ -881,8 +1368,9 @@ def forge(name, spec):
     rows = []
     meta = {"frame_w": FRAME_W, "frame_h": FRAME_H, "foot_row": FOOT_ROW, "indexed": True,
             "dirs": list(DIRS.keys()), "tags": tags, "cfg": cfg, "anims": {}}
-    max_frames = max(a[1] for a in ANIMS)
-    for (aname, nframes, fps, loop) in ANIMS:
+    anims = ANIMS + (EMOTE_ANIMS if cfg.get("school") else [])
+    max_frames = max(a[1] for a in anims)
+    for (aname, nframes, fps, loop) in anims:
         meta["anims"][aname] = {"fps": fps, "loop": loop, "frames": nframes, "rows": {}}
         for dname, deg in DIRS.items():
             row = []
@@ -929,11 +1417,21 @@ def ramp6(hexc):
     return [colorsys.hsv_to_rgb(*t) for t in tones]
 
 
-def colorize(img_path, out_path, scale=3):
-    im = np.array(Image.open(img_path).convert("RGBA"))
+FACE_FX = ["#1a1030", "#d9455f", "#ff8fa8", "#5fb4ee", "#d4f0ff"]  # flash slot bands 0-4
+
+
+def palette(colors=None):
     pal = np.zeros((16, 6, 3))
     for mat, slot in SLOTS.items():
-        pal[slot] = ramp6(PREVIEW[mat])
+        pal[slot] = ramp6((colors or {}).get(mat, PREVIEW[mat]))
+    for b, hx in enumerate(FACE_FX):
+        pal[SLOTS["flash"], b] = [int(hx[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    return pal
+
+
+def colorize(img_path, out_path, scale=3, colors=None):
+    im = np.array(Image.open(img_path).convert("RGBA"))
+    pal = palette(colors)
     out = np.zeros_like(im)
     m = im[..., 3] > 0
     out[m, :3] = (pal[im[..., 0][m] // 16, np.clip(im[..., 1][m] // 40, 0, 5)] * 255).astype(np.uint8)

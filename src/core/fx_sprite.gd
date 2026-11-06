@@ -12,6 +12,7 @@ var loop := false
 var _fw := 32
 var _fh := 32
 var _t := 0.0
+var life := 0.0  ## > 0: looping effect that frees itself after this many seconds
 
 
 static func meta() -> Dictionary:
@@ -63,6 +64,9 @@ static func play_at(parent: Node, fx: String, pos: Vector3, size: float = 1.0, g
 
 func _process(delta: float) -> void:
 	_t += delta
+	if life > 0.0 and _t >= life:
+		queue_free()
+		return
 	var idx := int(_t * fps)
 	if idx >= frames:
 		if loop:

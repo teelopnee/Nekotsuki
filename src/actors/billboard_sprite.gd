@@ -38,6 +38,8 @@ var y_offset := 0.0  ## extra lift (e.g. sitting on a bench seat)
 var holo := false  ## giant additive hologram (Hologram node); set before entering the tree
 
 var _time := 0.0
+var hold_anim := ""  ## emotion anim that ordinary state anims may not override (see emote())
+var hold_until := 0.0
 var _fw := 48
 var _fh := 64
 var _flash_time := 0.0
@@ -132,6 +134,10 @@ func has_anim(anim: String) -> bool:
 
 
 func play(anim: String, restart: bool = false) -> void:
+	if hold_anim != "" and anim != hold_anim and not anim in ["walk", "run", "roll", "hurt", "dead"]:
+		if Time.get_ticks_msec() / 1000.0 < hold_until:
+			return
+		hold_anim = ""
 	if not has_anim(anim):
 		anim = "idle" if has_anim("idle") else anim
 	if anim == current and not restart:
@@ -140,6 +146,17 @@ func play(anim: String, restart: bool = false) -> void:
 	finished = false
 	_time = 0.0
 	_apply_frame()
+
+
+## Play an emotion animation (cry, pout, fluster...) and keep it over idle/talk for `seconds`.
+## Returns false when this sheet has no such animation (non-school variants).
+func emote(anim: String, seconds: float = 2.5) -> bool:
+	if not has_anim(anim):
+		return false
+	hold_anim = anim
+	hold_until = Time.get_ticks_msec() / 1000.0 + seconds
+	play(anim, true)
+	return true
 
 
 func anim_length(anim: String) -> float:

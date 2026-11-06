@@ -1,0 +1,192 @@
+{
+ "_doc": "Fixed looks of the NEKOTSUKI cast (docs/CAST.md). variant = sprite sheet in assets/sprites/characters; colors fill the palette slots (CharacterLook). The flash slot's bands 1-4 are face FX colours and are set in code.",
+ "amane": {
+  "variant": "c_amane",
+  "colors": {
+   "skin": "#f6c29c",
+   "hair": "#24202e",
+   "top": "#46465c",
+   "pants": "#2b3050",
+   "boots": "#3a2a22",
+   "accent": "#c4303f",
+   "coat": "#2c3557",
+   "gear": "#5a5a6a",
+   "glow": "#f2c14e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#8d8aa8",
+   "dark": "#1a1030",
+   "scarf": "#e0849c",
+   "cap": "#2a2838",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "toru": {
+  "variant": "c_toru",
+  "colors": {
+   "skin": "#f3c7a4",
+   "hair": "#3b2a24",
+   "top": "#eceaf0",
+   "pants": "#2b2f45",
+   "boots": "#3a2a22",
+   "accent": "#a8323f",
+   "coat": "#2c3557",
+   "gear": "#3a3a48",
+   "glow": "#3ee6ff",
+   "eyewhite": "#f4f4f0",
+   "iris": "#5a3e30",
+   "dark": "#1a1030",
+   "scarf": "#a8323f",
+   "cap": "#3b2a24",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "hayate": {
+  "variant": "c_hayate",
+  "colors": {
+   "skin": "#eaa877",
+   "hair": "#b8682f",
+   "top": "#f2f0f4",
+   "pants": "#2b2f45",
+   "boots": "#e8e8f0",
+   "accent": "#f2f0f4",
+   "coat": "#b3303d",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#c07a2a",
+   "dark": "#1a1030",
+   "scarf": "#b3303d",
+   "cap": "#b3303d",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "hina": {
+  "variant": "c_hina",
+  "colors": {
+   "skin": "#f6cfae",
+   "hair": "#5a3a2c",
+   "top": "#eceaf0",
+   "pants": "#3a3f6a",
+   "boots": "#2a2230",
+   "accent": "#d23a4a",
+   "coat": "#2c3557",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#6a4a3a",
+   "dark": "#1a1030",
+   "scarf": "#d23a4a",
+   "cap": "#5a3a2c",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "reiji": {
+  "variant": "c_reiji",
+  "colors": {
+   "skin": "#f2d0b8",
+   "hair": "#c8ccd8",
+   "top": "#eceaf0",
+   "pants": "#2b2f45",
+   "boots": "#24242c",
+   "accent": "#c9a227",
+   "coat": "#2c3557",
+   "gear": "#4a4a52",
+   "glow": "#8fb2d8",
+   "eyewhite": "#f4f4f0",
+   "iris": "#8fb2d8",
+   "dark": "#1a1030",
+   "scarf": "#c9a227",
+   "cap": "#c8ccd8",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "mio": {
+  "variant": "c_mio",
+  "colors": {
+   "skin": "#f2d6c4",
+   "hair": "#16141c",
+   "top": "#eceaf0",
+   "pants": "#3a3f6a",
+   "boots": "#24242c",
+   "accent": "#7a2a5a",
+   "coat": "#2c3557",
+   "gear": "#4a4a52",
+   "glow": "#b07dff",
+   "eyewhite": "#f4f4f0",
+   "iris": "#4a2a5a",
+   "dark": "#1a1030",
+   "scarf": "#7a2a5a",
+   "cap": "#16141c",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "makabe": {
+  "variant": "c_makabe",
+  "colors": {
+   "skin": "#f1c39e",
+   "hair": "#94704e",
+   "top": "#b9d4ec",
+   "pants": "#2a2a33",
+   "boots": "#3a2a22",
+   "accent": "#3a3f6a",
+   "coat": "#2a2a33",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#4f5f7a",
+   "dark": "#1a1030",
+   "scarf": "#3a3f6a",
+   "cap": "#94704e",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "haruka": {
+  "variant": "c_haruka",
+  "colors": {
+   "skin": "#f3c19c",
+   "hair": "#3a2a24",
+   "top": "#f2e6d6",
+   "pants": "#8a5a4a",
+   "boots": "#4a3a32",
+   "accent": "#f6c4d0",
+   "coat": "#f2e6d6",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#5a3e30",
+   "dark": "#1a1030",
+   "scarf": "#e07a8a",
+   "cap": "#3a2a24",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ },
+ "chiyo": {
+  "variant": "c_chiyo",
+  "colors": {
+   "skin": "#e8b896",
+   "hair": "#c8c4cc",
+   "top": "#f4f2ee",
+   "pants": "#b8343f",
+   "boots": "#f4f2ee",
+   "accent": "#b8343f",
+   "coat": "#f4f2ee",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#3a2a24",
+   "dark": "#1a1030",
+   "scarf": "#b8343f",
+   "cap": "#c8c4cc",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
+ }
+}
