@@ -1,0 +1,116 @@
+name: Build Android APK
+
+# Builds a signed APK on every push to main and publishes it as the "latest"
+# pre-release (download it on the tablet and open it to install/update).
+# Needs two repository secrets (Settings > Secrets and variables > Actions):
+#   ANDROID_KEYSTORE_BASE64   - base64 of the release keystore (alias: nekotsuki)
+#   ANDROID_KEYSTORE_PASSWORD - its password
+# Without them the build still runs the checks but skips the APK.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["docs/**", "**.md"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-build
+  cancel-in-progress: true
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "4.7.2"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache Godot + export templates
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-android-desktop
+
+      - name: Install Godot and Android templates
+        run: |
+          if [ ! -x ~/godot/godot ]; then
+            mkdir -p ~/godot && cd ~/godot
+            curl -sSL -o g.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            unzip -q g.zip && mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" godot && rm g.zip
+            curl -sSL -o t.tpz "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+            T=~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+            mkdir -p "$T"
+            unzip -q -j t.tpz templates/android_release.apk templates/android_debug.apk templates/version.txt \
+              templates/windows_release_x86_64.exe templates/linux_release.x86_64 -d "$T"
+            rm t.tpz
+          fi
+
+      - name: Point Godot at the Android SDK
+        run: |
+          ~/godot/godot --headless --editor --quit --path . || true
+          ES=$(ls ~/.config/godot/editor_settings-*.tres | head -1)
+          sed -i '/^export\/android\/android_sdk_path/d; /^export\/android\/java_sdk_path/d' "$ES"
+          sed -i "s|^\[resource\]|[resource]\nexport/android/android_sdk_path = \"${ANDROID_SDK_ROOT}\"\nexport/android/java_sdk_path = \"${JAVA_HOME}\"|" "$ES"
+
+      - name: Import and verify scripts
+        run: |
+          ~/godot/godot --headless --path . --import
+          ~/godot/godot --headless --path . --script res://tools/check_project.gd
+
+      - name: Export signed APK
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ runner.temp }}/release.keystore
+          GODOT_ANDROID_KEYSTORE_RELEASE_USER: nekotsuki
+          GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KS_B64" ]; then
+            echo "::warning::Signing secrets not set - skipping APK export. See docs/TABLET_WORKFLOW.md."
+            exit 0
+          fi
+          echo "$KS_B64" | base64 -d > "$GODOT_ANDROID_KEYSTORE_RELEASE_PATH"
+          # Every CI build gets a higher Android versionCode so it installs as an update.
+          sed -i "s/^version\/code=.*/version\/code=$((100 + GITHUB_RUN_NUMBER))/" export_presets.cfg
+          mkdir -p build
+          ~/godot/godot --headless --path . --export-release "Android" build/nekotsuki.apk
+          ls -la build
+
+      - name: Export Windows + Linux builds (for PC stores such as Gumroad)
+        run: |
+          mkdir -p build/windows build/linux
+          ~/godot/godot --headless --path . --export-release "Windows Desktop" build/windows/NEKOTSUKI.exe || echo "::warning::Windows export failed"
+          ~/godot/godot --headless --path . --export-release "Linux" build/linux/NEKOTSUKI.x86_64 || echo "::warning::Linux export failed"
+          chmod +x build/linux/NEKOTSUKI.x86_64 2>/dev/null || true
+          (cd build/windows && ls NEKOTSUKI.exe >/dev/null 2>&1 && zip -q -r ../nekotsuki-windows.zip .) || true
+          (cd build/linux && ls NEKOTSUKI.x86_64 >/dev/null 2>&1 && zip -q -r ../nekotsuki-linux.zip .) || true
+          ls -la build
+
+      - name: Publish "latest" pre-release
+        if: hashFiles('build/nekotsuki.apk') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Never delete-then-create: if GitHub's API hiccups halfway, the tablet would have nothing to
+          # download. Update the existing release in place, retrying on 5xx errors.
+          retry() { for i in 1 2 3 4 5; do "$@" && return 0; echo "retry $i: $*"; sleep $((i * 10)); done; return 1; }
+          TITLE="Latest build ($(git rev-parse --short HEAD))"
+          NOTES="Auto-built from main @ ${GITHUB_SHA}. On the tablet: download nekotsuki.apk and open it to install/update."
+          git tag -f latest && retry git push -f origin refs/tags/latest
+          FILES="build/nekotsuki.apk"
+          for f in build/nekotsuki-windows.zip build/nekotsuki-linux.zip; do [ -f "$f" ] && FILES="$FILES $f"; done
+          if gh release view latest >/dev/null 2>&1; then
+            retry gh release upload latest $FILES --clobber
+            retry gh release edit latest --prerelease --title "$TITLE" --notes "$NOTES"
+          else
+            retry gh release create latest $FILES --prerelease --title "$TITLE" --notes "$NOTES"
+          fi
