@@ -7,6 +7,7 @@ extends Node3D
 ## screen shake, and fading of buildings that hide the player.
 
 const POST := preload("res://assets/shaders/hd2d_post.gdshader")
+const LENS := preload("res://assets/shaders/hd2d_depth.gdshader")
 
 @export var distance := 18.0
 @export var pitch_degrees := 38.0
@@ -16,7 +17,7 @@ const POST := preload("res://assets/shaders/hd2d_post.gdshader")
 ## "tilt_shift" = screen-space HD-2D lens (default, works on every GPU)
 ## "physical"   = depth-based DOF via CameraAttributes (GPU/driver dependent)
 ## "off"        = lens effects off (fastest)
-@export_enum("tilt_shift", "physical", "off") var dof_mode := "tilt_shift"
+@export_enum("depth", "tilt_shift", "physical", "off") var dof_mode := "depth"
 @export var dof_near_margin := 6.0
 @export var dof_far_margin := 5.0
 @export var dof_amount := 0.05
@@ -27,6 +28,9 @@ var camera: Camera3D
 var attributes: CameraAttributesPractical
 var post_rect: ColorRect
 var post_mat: ShaderMaterial
+## "depth" lens (hd2d_depth.gdshader): depth of field by real distance + SSAO, drawn as a full-screen quad.
+var lens_quad: MeshInstance3D
+var lens_mat: ShaderMaterial
 var dof_enabled := false
 var _shake := 0.0
 var _punch := 0.0
@@ -49,6 +53,20 @@ func _ready() -> void:
 	add_child(camera)
 	camera.make_current()
 	_apply_pose(0.0)
+	lens_mat = ShaderMaterial.new()
+	lens_mat.shader = LENS
+	lens_mat.render_priority = -128  # first in the transparent pass: sees the opaque frame, under labels/rain
+	var q := QuadMesh.new()
+	q.size = Vector2(1, 1)
+	lens_quad = MeshInstance3D.new()
+	lens_quad.name = "DepthLens"
+	lens_quad.mesh = q
+	lens_quad.material_override = lens_mat
+	lens_quad.extra_cull_margin = 16384.0
+	lens_quad.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	lens_quad.position = Vector3(0, 0, -1.0)
+	lens_quad.visible = false
+	camera.add_child(lens_quad)
 	var layer := CanvasLayer.new()
 	layer.layer = 1  # under the HUD (layer 10)
 	add_child(layer)
@@ -87,6 +105,8 @@ func set_dof_mode(mode: String) -> void:
 	if post_mat:
 		post_rect.visible = mode != "off"
 		post_mat.set_shader_parameter("tilt_shift", mode == "tilt_shift")
+	if lens_quad:
+		lens_quad.visible = mode == "depth" and str(Game.settings.get("graphics", "high")) != "low"
 
 
 func set_grade(shadow: Color, highlight: Color, toning: float = 0.22) -> void:
@@ -113,6 +133,9 @@ func punch(amount: float = 0.12, duration: float = 0.25) -> void:
 
 func _process(delta: float) -> void:
 	var rdelta := delta / maxf(Engine.time_scale, 0.05)  # real-time camera feel during slow-mo
+	if lens_quad and lens_quad.visible and target != null and is_instance_valid(target):
+		var local := camera.global_transform.affine_inverse() * (target.global_position + Vector3(0, 0.9, 0))
+		lens_mat.set_shader_parameter("focus_dist", maxf(2.0, -local.z))
 	if target != null and is_instance_valid(target):
 		var vel := Vector3.ZERO
 		if target is CharacterBody3D:

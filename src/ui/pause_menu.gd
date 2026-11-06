@@ -353,7 +353,7 @@ func _tab_system() -> void:
 	v.add_child(HUD.make_label("-- DEVICE SETTINGS --", 16, Color(1.0, 0.4, 0.85)))
 	_cycle_setting(v, "Graphics (LOW = faster on older devices)", "graphics", ["high", "medium", "low"])
 	_cycle_setting(v, "Text and button size", "ui_scale", [1.0, 1.15, 1.3, 0.9])
-	_cycle_setting(v, "Depth of field", "dof_mode", ["tilt_shift", "physical", "off"])
+	_cycle_setting(v, "Depth of field", "dof_mode", ["depth", "tilt_shift", "physical", "off"])
 	_cycle_setting(v, "Touch controls", "touch", ["auto", "on", "off"])
 	_cycle_setting(v, "Music volume (dB)", "music_db", [-8.0, -14.0, -20.0, -80.0, 0.0])
 	_cycle_setting(v, "SFX volume (dB)", "sfx_db", [-4.0, -10.0, -16.0, -80.0, 0.0])

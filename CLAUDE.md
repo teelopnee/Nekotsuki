@@ -78,6 +78,13 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   LevelBuilder. Ambient life: `TownLife` (sparrows that scatter, butterflies), petals (GPUParticles following the player),
   kei cars (`Critter.style = "kei"`). Textures: `python3 tools/jp_textures.py <cache>` (Poly Haven CC0 -> pixelized
   128 px, credited on the title screen) and `python3 tools/jp_facades.py` (facade panels + blossom); commit the PNGs.
+- HD-2D depth lens (Octopath look, default `dof_mode` "depth"; Settings cycles depth / tilt_shift / physical / off;
+  off on graphics "low"): `assets/shaders/hd2d_depth.gdshader` on a full-screen quad under the camera (`CameraRig.lens_quad`,
+  render_priority -128 = first in the transparent pass, so it sees the opaque frame + depth and labels/rain stay crisp):
+  depth-of-field by real distance (`focus_dist` = camera->hero each frame, `focus_range`/`far_range`, golden-spiral blur
+  with bokeh weighting) + normal-oriented SSAO (contact shadows). The canvas post (`hd2d_post`) still does vignette,
+  grain and toning. Suzunari light: strong sun x1.25, ambient x0.62, contrast 1.14 / saturation 1.16; god rays
+  (`JPKit._shafts` + `set_sun`, morning + Omagatoki), dust motes (`Suzunari._build_motes`), morning ground mist (fog height).
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

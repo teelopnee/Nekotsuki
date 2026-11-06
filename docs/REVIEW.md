@@ -77,3 +77,17 @@
 - Cost: ~3,000 mesh instances + ~200 multimeshes for the whole town, frustum-culled; lights hidden by day.
 - Open: interiors are still diorama cut-aways; the station has no railway yet; no birdsong/ambience; foreground sakura
   south of the player can fill the bottom of the frame; check frame time on the tablet (Settings > graphics).
+
+## Octopath pass (2026-11-06): the HD-2D lens
+- Research (HD-2D articles, an HD-2D pipeline write-up): the look = depth of field that grows with distance from a sharp
+  band, ambient occlusion, soft bloom, vignette, sprites lit by the scene's lights, god rays and floating particles.
+- New depth lens (`hd2d_depth.gdshader`): real depth of field around the hero (foreground sakura becomes bokeh, distant
+  rooftops melt) + SSAO contact shadows (wall feet, eaves, under cars and characters). Old saves switch to it once.
+- Light: stronger key light and darker cool fill (no more flat grey daylight), more contrast and saturation, god rays
+  through alleys / shrine trees / the steps / the riverside sakura at dawn and Omagatoki, dust motes in the beams,
+  ground mist in the morning.
+- Cost: one full-screen pass (12 blur + 11 depth taps per pixel); off on graphics "low". Check on the tablet.
+- Open: the lens is skipped by transparent effects on purpose (labels, rain, shafts stay crisp); water has no reflections.
+- Known flaky (pre-existing, also on the previous commit): `interact_back_test` "an NPC walked up and started a
+  conversation" fails ~1 run in 3 - the approaching NPC sometimes stops at ~1.8 m and returns to idle without opening the
+  talk (`NPC` "approach" state, distance threshold vs. stop distance). A longer wait made it fail every time.

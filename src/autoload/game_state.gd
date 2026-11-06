@@ -33,7 +33,7 @@ var play_time := 0.0
 var stats := StatBlock.new()
 var has_active_run := false
 ## Per-device settings (not part of save slots).
-var settings := {"dof_mode": "tilt_shift", "touch": "auto", "music_db": -8.0, "sfx_db": -4.0,
+var settings := {"dof_mode": "depth", "touch": "auto", "music_db": -8.0, "sfx_db": -4.0,
 	"difficulty": "normal", "graphics": "medium" if OS.has_feature("mobile") else "high", "ui_scale": 1.0,
 	"followups": "sometimes", "tips": "on", "tips_seen": [], "hud_fade": "on"}
 

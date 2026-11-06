@@ -461,7 +461,10 @@ func apply_settings() -> void:
 	if not _modal.visible:
 		_touch_root.visible = touch_enabled()
 	if camera_rig:
-		camera_rig.set_dof_mode(str(Game.settings.get("dof_mode", "tilt_shift")))
+		if not Game.settings.has("lens_v2"):  # one-time switch of old saves to the new depth lens
+			Game.settings["lens_v2"] = true
+			Game.settings["dof_mode"] = "depth"
+		camera_rig.set_dof_mode(str(Game.settings.get("dof_mode", "depth")))
 	_update_hint()
 
 

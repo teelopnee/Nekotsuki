@@ -25,6 +25,7 @@ var _tufts: Array[Vector3] = []
 var _flowers: Array[Vector3] = []
 var _wire_xf: Array[Transform3D] = []
 var _poles: Array[Vector3] = []
+var shaft_mats: Array[StandardMaterial3D] = []  ## god rays (alpha scaled by set_sun)
 
 
 func _init(builder) -> void:
@@ -530,6 +531,7 @@ func finish() -> void:
 	_garlands()
 	_boats()
 	_planters()
+	_shafts()
 
 
 func _plants(spots: Array[Vector3], colors: Array, cells: Array, nm: String, scale: float = 1.0) -> void:
@@ -856,3 +858,51 @@ func _planters() -> void:
 	_plants(spots, [Color(0.4, 0.62, 0.32), Color(0.48, 0.7, 0.36)], [0, 4], "PlanterLeaves", 0.8)
 	_plants(blooms, [Color(1.0, 0.45, 0.55), Color(1.0, 0.85, 0.3), Color(0.98, 0.98, 1.0), Color(0.75, 0.55, 1.0)], [0, 4], "PlanterBlooms", 0.6)
 	_flowers.append_array(blooms)
+
+
+## God rays: tall additive beams slanting down through alley gaps, shrine trees, the steps, the courtyard and
+## between the riverside sakura. Strongest in the morning and at Omagatoki (set_sun).
+func _shafts() -> void:
+	var spots: Array[Vector3] = []
+	for z in range(34, 43):
+		for x in range(1, b.width - 1):
+			if b.cell(x, z) == "." and b.cell(x - 1, z) == "b" and b.cell(x + 1, z) == "b" and rng.randf() < 0.6:
+				spots.append(b.center(x, z) + Vector3(0, 0, 1.0))
+	for k in 7:
+		spots.append(b.center(rng.randi_range(18, 37), rng.randi_range(2, 8)))
+	for z in range(11, 19, 3):
+		spots.append(b.center(4, z))
+	for x in range(6, 38, 7):
+		spots.append(b.center(x, 29))
+	for x in range(5, b.width - 3, 9):
+		spots.append(b.center(x, 44) + Vector3(T * 0.5, 0, 0))
+	var tex: Texture2D = b._tex("light_shaft")
+	for p in spots:
+		var q := QuadMesh.new()
+		q.size = Vector2(rng.randf_range(1.6, 3.2), rng.randf_range(6.0, 8.0))
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
+		m.albedo_texture = tex
+		var base := rng.randf_range(0.22, 0.38)
+		m.albedo_color = Color(1.0, 0.86, 0.62, base)
+		m.set_meta("base", base)
+		var mi := MeshInstance3D.new()
+		mi.mesh = q
+		mi.material_override = m
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mi.position = p + Vector3(0, q.size.y * 0.42, -0.4)
+		mi.rotation = Vector3(0, 0, -0.42 + rng.randf_range(-0.08, 0.08))
+		b.root.add_child(mi)
+		shaft_mats.append(m)
+
+
+## Sun shafts: 0 = none (noon, night, rain), 1 = full golden beams. `warm` 0..1 shifts gold -> rose at dusk.
+func set_sun(strength: float, warm: float) -> void:
+	var col := Color(1.0, 0.88, 0.62).lerp(Color(1.0, 0.6, 0.45), warm)
+	for m in shaft_mats:
+		col.a = float(m.get_meta("base", 0.2)) * strength
+		m.albedo_color = col

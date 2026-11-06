@@ -5,7 +5,7 @@ extends SceneTree
 ## Shots: home morning, shopping street (Amane crying, rain), school gate, school corridor at dusk.
 
 ## [name, tile, minute, tears, Amane emote ("talk" = open a topic talk and show the exact-words menu)]
-const SHOTS := [["shrine_morning", Vector2i(27, 5), 480, 0.0, ""], ["steps_dusk", Vector2i(5, 14), 1085, 2.4, "peek"],
+const SHOTS := [["shrine_morning", Vector2i(24, 6), 480, 0.0, ""], ["steps_dusk", Vector2i(5, 14), 1085, 2.4, "peek"],
 	["school_gate", Vector2i(22, 30), 800, 0.0, "fluster"], ["river_rain", Vector2i(17, 43), 720, 4.2, "wail"],
 	["jizo_crossroads", Vector2i(47, 33), 1095, 0.0, ""], ["station_night", Vector2i(9, 38), 1200, 1.0, ""],
 	["talk_words", Vector2i(27, 40), 900, 1.6, "talk"], ["street_noon", Vector2i(20, 39), 740, 0.0, "happy"],

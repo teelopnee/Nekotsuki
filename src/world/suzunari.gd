@@ -15,6 +15,7 @@ var overlay: Node
 var _rain: Array[CPUParticles3D] = []
 var _storm_t := 0.0
 var _petals: GPUParticles3D
+var _motes: GPUParticles3D
 
 
 func _setup() -> void:
@@ -72,6 +73,7 @@ func _post_build() -> void:
 	Clock.running = true
 	_build_rain()
 	_build_petals()
+	_build_motes()
 	var jp = build.get("jp")
 	if jp:
 		var life := TownLife.new()
@@ -91,8 +93,8 @@ func _post_build() -> void:
 		car.lane_to = lane[1]
 		car.seed_value = 7700 + i
 		actors.add_child(car)
-	environment.adjustment_saturation = 1.08
-	environment.adjustment_contrast = 1.06
+	environment.adjustment_saturation = 1.16
+	environment.adjustment_contrast = 1.14
 	environment.fog_density = 0.0035
 	var a = NPC_SCENE.instantiate()
 	a.set_script(load("res://src/actors/amane_npc.gd"))
@@ -161,6 +163,8 @@ func _process(delta: float) -> void:
 	_set_rain(r)
 	if _petals and player:
 		_petals.global_position = player.global_position + Vector3(0, 6.0, -5.0)
+		if _motes:
+			_motes.global_position = player.global_position + Vector3(0, 1.6, -3.0)
 		_petals.amount_ratio = clampf(1.0 - r * 0.8, 0.15, 1.0)
 	if Amane.tears_level() >= 5 and sun:
 		_storm_t -= delta
@@ -183,10 +187,11 @@ func _apply_light() -> void:
 		return
 	var l := Clock.light()
 	var gloom := 1.0 - 0.45 * float(Amane.st()["rain"])
+	# HD-2D contrast: a strong key light with real shadows, a low cool fill (flat ambient killed the depth).
 	sun.light_color = l.sun
-	sun.light_energy = float(l.sun_energy) * gloom
+	sun.light_energy = float(l.sun_energy) * gloom * 1.25
 	environment.ambient_light_color = l.ambient
-	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 + 0.25 * gloom)
+	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 + 0.25 * gloom) * 0.62
 	# The sun crosses the sky behind the camera: low and golden from the south-east in the morning,
 	# high at noon, long red shadows from the south-west at Omagatoki.
 	var t := clampf((float(Clock.minute()) - 450.0) / (Clock.NIGHT - 450.0), 0.0, 1.0)
@@ -204,8 +209,20 @@ func _apply_light() -> void:
 			camera_rig.post_mat.set_shader_parameter("grain", 0.02)
 			camera_rig.post_mat.set_shader_parameter("vignette", 0.42)
 	var jp = build.get("jp")
+	var rain := float(Amane.st()["rain"])
+	var m := float(Clock.minute())
+	var morning := clampf(1.0 - (m - 470.0) / 160.0, 0.0, 1.0)
+	var dusk := clampf((m - 990.0) / 90.0, 0.0, 1.0) * clampf((1125.0 - m) / 30.0, 0.0, 1.0)
+	var sun_rays := maxf(morning, dusk) * (1.0 - rain)
 	if jp:
-		jp.set_night(maxf(night, 0.35 * float(Amane.st()["rain"])))
+		jp.set_night(maxf(night, 0.35 * rain))
+		jp.set_sun(maxf(sun_rays, 0.18 * (1.0 - night) * (1.0 - rain)), dusk)
+	if _motes:
+		_motes.amount_ratio = clampf(sun_rays, 0.05, 1.0)
+		_motes.visible = night < 0.6 and rain < 0.5
+	# Morning mist hugging the ground, a thin haze by day, none in the dark.
+	environment.fog_height = 0.8
+	environment.fog_height_density = 0.12 * morning + 0.02
 
 
 func nearest_walkable(p: Vector3) -> Vector3:
@@ -282,3 +299,51 @@ func _build_petals() -> void:
 	_petals.local_coords = false
 	_petals.visibility_aabb = AABB(Vector3(-26, -12, -22), Vector3(52, 24, 44))
 	add_child(_petals)
+
+
+## Dust and pollen motes glittering in the sunbeams (morning and Omagatoki), like an HD-2D diorama.
+func _build_motes() -> void:
+	_motes = GPUParticles3D.new()
+	_motes.name = "Motes"
+	var pm := ParticleProcessMaterial.new()
+	pm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	pm.emission_box_extents = Vector3(12.0, 1.6, 9.0)
+	pm.direction = Vector3(0.3, 1.0, 0.0)
+	pm.spread = 60.0
+	pm.initial_velocity_min = 0.03
+	pm.initial_velocity_max = 0.15
+	pm.gravity = Vector3(0, 0.01, 0)
+	pm.turbulence_enabled = true
+	pm.turbulence_noise_strength = 0.6
+	pm.turbulence_noise_scale = 3.0
+	pm.turbulence_influence_min = 0.02
+	pm.turbulence_influence_max = 0.06
+	pm.scale_min = 0.5
+	pm.scale_max = 1.2
+	var fade := Curve.new()
+	fade.add_point(Vector2(0.0, 0.0))
+	fade.add_point(Vector2(0.3, 1.0))
+	fade.add_point(Vector2(0.7, 1.0))
+	fade.add_point(Vector2(1.0, 0.0))
+	var ct := CurveTexture.new()
+	ct.curve = fade
+	pm.scale_curve = ct
+	_motes.process_material = pm
+	var q := QuadMesh.new()
+	q.size = Vector2(0.035, 0.035)
+	var m := StandardMaterial3D.new()
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color(1.0, 0.92, 0.7)
+	m.emission_enabled = true
+	m.emission = Color(1.0, 0.85, 0.55)
+	m.emission_energy_multiplier = 2.5
+	q.material = m
+	_motes.draw_pass_1 = q
+	_motes.amount = maxi(20, int(120 * quality_mult()))
+	_motes.lifetime = 7.0
+	_motes.preprocess = 7.0
+	_motes.local_coords = false
+	_motes.visibility_aabb = AABB(Vector3(-16, -4, -12), Vector3(32, 10, 24))
+	add_child(_motes)
