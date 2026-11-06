@@ -1,64 +1,195 @@
 {
  "_doc": "Amane's lines (docs/CAST.md, GDD 4.3). {player} = the protagonist's name, {rival} = the last person Amane saw you get close to. Narration has speaker \"\".",
  "first_meeting": [
-  ["", "A first-year in an oversized black hoodie is standing in your way. Rain drips off his bangs. There is a little gold bell on his collar."],
-  ["Amane", "S-Senpai... you came back."],
-  ["{player}", "...Do I know you?"],
-  ["", "His face crumples. Somewhere above the clouds, it starts to rain harder."],
-  ["Amane", "N-no. It's fine. I'm Nekomori Amane, class 1-A. I'm not crying. It's just raining."]
+  [
+   "",
+   "A first-year in an oversized black hoodie is standing in your way. Rain drips off his bangs. There is a little gold bell on his collar."
+  ],
+  [
+   "Amane",
+   "S-Senpai... you came back."
+  ],
+  [
+   "{player}",
+   "...Do I know you?"
+  ],
+  [
+   "",
+   "His face crumples. Somewhere above the clouds, it starts to rain harder."
+  ],
+  [
+   "Amane",
+   "N-no. It's fine. I'm Nekomori Amane, class 1-A. I'm not crying. It's just raining."
+  ]
  ],
  "openers": {
-  "0": ["Senpai! I made too much rice this morning. It's not for you. ...It's for you.",
-        "Good morning, Senpai. I wasn't waiting. I just happened to be here. For forty minutes.",
-        "Senpai, your tie is crooked. Can I-- no. Sorry. Never mind.",
-        "I found a four-leaf clover. I'm keeping it in my notebook. Next to your timetable. I mean-- next to MY timetable."],
-  "1": ["Senpai... are you busy? It's okay. I can wait. I'm good at waiting.",
-        "You walked right past me. It's fine. I'm used to it."],
-  "2": ["Did I do something wrong, Senpai? *sniff*",
-        "I-I'm not crying. Something got in my eye. Both eyes."],
-  "3": ["Senpai hates me now, doesn't he... *hic*",
-        "Everyone's staring. Please don't look at me. No-- look at me. No--"],
-  "4": ["Waaaah! Senpai is so meaaan!",
-        "I waited nine summers and you don't even remember my naaaame!"],
-  "5": ["*The rain is so loud you can barely hear him.* SENPAIIII...!"]
+  "0": [
+   "Senpai! I made too much rice this morning. It's not for you. ...It's for you.",
+   "Hi, Senpai. I wasn't waiting. I just happened to be here. For forty minutes.",
+   "Senpai, your tie is crooked. Can I-- no. Sorry. Never mind.",
+   "I found a four-leaf clover. I'm keeping it in my notebook. Next to your timetable. I mean-- next to MY timetable."
+  ],
+  "1": [
+   "Senpai... are you busy? It's okay. I can wait. I'm good at waiting.",
+   "You walked right past me. It's fine. I'm used to it."
+  ],
+  "2": [
+   "Did I do something wrong, Senpai? *sniff*",
+   "I-I'm not crying. Something got in my eye. Both eyes."
+  ],
+  "3": [
+   "Senpai hates me now, doesn't he... *hic*",
+   "Everyone's staring. Please don't look at me. No-- look at me. No--"
+  ],
+  "4": [
+   "Waaaah! Senpai is so meaaan!",
+   "I waited nine summers and you don't even remember my naaaame!"
+  ],
+  "5": [
+   "*The rain is so loud you can barely hear him.* SENPAIIII...!"
+  ]
  },
  "openers_route": {
-  "romance": ["Senpai! You're here! ...I mean. Hello. Normally.",
-              "I saved you a seat on the roof. And the seat next to it, so nobody else sits there."],
-  "ignore": ["...Senpai. I'll stand over here. Far away. Like you wanted.",
-             "I won't bother you. I'm just... going the same way. Every way."],
-  "boundary": ["I joined the library committee today, Senpai. Like you said. Nobody talked to me. But I joined.",
-               "I ate lunch with someone from my class. We didn't talk. But it counts, right?"]
+  "romance": [
+   "Senpai! You're here! ...I mean. Hello. Normally.",
+   "I saved you a seat on the roof. And the seat next to it, so nobody else sits there."
+  ],
+  "ignore": [
+   "...Senpai. I'll stand over here. Far away. Like you wanted.",
+   "I won't bother you. I'm just... going the same way. Every way."
+  ],
+  "boundary": [
+   "I joined the library committee today, Senpai. Like you said. Nobody talked to me. But I joined.",
+   "I ate lunch with someone from my class. We didn't talk. But it counts, right?"
+  ]
  },
- "dusk": ["It's almost Omagatoki, Senpai. Please don't count the steps on the way home.",
-          "The town chime is playing. Go home before the song ends, Senpai. Promise me."],
+ "dusk": [
+  "It's almost Omagatoki, Senpai. Please don't count the steps on the way home.",
+  "The town chime is playing. Go home before the song ends, Senpai. Promise me."
+ ],
  "responses": {
-  "kind": ["*His ears pop out from under his hair.* S-Senpai is being nice to me...",
-           "Thank you. I'll remember this. I remember everything."],
-  "flirt": ["W-what? Senpai, you can't just-- *steam rises from his head*",
-            "*He hides his whole face in his sleeves.* Say that again. No, don't. Yes, do."],
-  "boundary": ["...Okay. My own friends. I can try that. I think. For Senpai.",
-               "That hurt a little. But you said it kindly, so I'll keep it."],
-  "reject_soft": ["O-okay... *sniff* I'll go stand somewhere else.", "...Right. Sorry. Sorry."],
-  "reject_cry": ["Why does Senpai always leave... *hic*", "You said that last time too. You don't remember last time."],
-  "reject_wail": ["WAAAAH! SENPAI, YOU PROMISED! YOU PROMISED NINE YEARS AGO!"]
+  "kind": [
+   "*His ears pop out from under his hair.* S-Senpai is being nice to me...",
+   "Thank you. I'll remember this. I remember everything."
+  ],
+  "flirt": [
+   "W-what? Senpai, you can't just-- *steam rises from his head*",
+   "*He hides his whole face in his sleeves.* Say that again. No, don't. Yes, do."
+  ],
+  "boundary": [
+   "...Okay. My own friends. I can try that. I think. For Senpai.",
+   "That hurt a little. But you said it kindly, so I'll keep it."
+  ],
+  "reject_soft": [
+   "O-okay... *sniff* I'll go stand somewhere else.",
+   "...Right. Sorry. Sorry."
+  ],
+  "reject_cry": [
+   "Why does Senpai always leave... *hic*",
+   "You said that last time too. You don't remember last time."
+  ],
+  "reject_wail": [
+   "WAAAAH! SENPAI, YOU PROMISED! YOU PROMISED NINE YEARS AGO!"
+  ]
  },
  "choices": {
   "kind": "Be nice to him.",
   "flirt": "Tease him a little. (flirt)",
   "boundary": "\"You need friends besides me, Amane.\"",
   "boundary_locked": "\"You need friends...\" (wait until he calms down)",
-  "reject": ["Leave me alone.", "Leave me alone.", "L-leave me alone.", "...l-leave...", "...n-no...", "n...o"]
+  "reject": [
+   "Leave me alone.",
+   "Leave me alone.",
+   "L-leave me alone.",
+   "...l-leave...",
+   "...n-no...",
+   "n...o"
+  ]
  },
  "phone": {
-  "clingy": ["Senpai are you awake", "Senpai", "Senpai?", "Did you eat? I can bring something.",
-             "Which way are you walking home tomorrow? Just asking.", "I'll be at the school gate at 7:40. Not because of you."],
-  "sad": ["You read it and didn't answer.", "It's okay. I'm used to waiting.", "It's raining here. It's raining everywhere, actually. Sorry."],
-  "happy": ["Senpai answered!!!", "I'm going to sleep now. With my phone. In case.", "Good night Senpai (=^.^=)"],
-  "jealous": ["Senpai, who was that?", "I saw you laughing with {rival}. I'm not upset. I'm just asking.", "{rival} has a nice laugh. I counted."]
+  "clingy": [
+   "Senpai are you awake",
+   "Senpai",
+   "Senpai?",
+   "Did you eat? I can bring something.",
+   "Which way are you walking home tomorrow? Just asking.",
+   "I'll be at the school gate at 7:40. Not because of you."
+  ],
+  "sad": [
+   "You read it and didn't answer.",
+   "It's okay. I'm used to waiting.",
+   "It's raining here. It's raining everywhere, actually. Sorry."
+  ],
+  "happy": [
+   "Senpai answered!!!",
+   "I'm going to sleep now. With my phone. In case.",
+   "Good night Senpai (=^.^=)"
+  ],
+  "jealous": [
+   "Senpai, who was that?",
+   "I saw you laughing with {rival}. I'm not upset. I'm just asking.",
+   "{rival} has a nice laugh. I counted."
+  ]
  },
  "doorstep": "You slide the shop door open. Amane is sitting on the step outside, soaked, holding a bento. \"You blocked me,\" he says, \"so I came to say good morning in person.\"",
- "jealous_bark": ["...Who's that?", "Senpai?", "*stares*", "Hmm."],
- "peek_bark": ["!", "...", "(hides)"],
- "approach_bark": ["S-Senpai!", "Senpai, wait!", "Um!"]
+ "jealous_bark": [
+  "...Who's that?",
+  "Senpai?",
+  "*stares*",
+  "Hmm."
+ ],
+ "peek_bark": [
+  "!",
+  "...",
+  "(hides)"
+ ],
+ "approach_bark": [
+  "S-Senpai!",
+  "Senpai, wait!",
+  "Um!"
+ ],
+ "stages": {
+  "1": "{rival} looks wrecked this morning. \"I dreamed a black cat sat on my chest all night,\" he says. There are black cat hairs on his desk.",
+  "2": "{rival}'s indoor shoes were found floating in the school pond. Wet paw prints lead from the shoe lockers. Two sets? One cat. Two tails?",
+  "3": "Every cat in Suzunari ignores {rival} now. He tripped over three of them on the way to school. They didn't even look up.",
+  "4": "{rival} walks right past you in the corridor like you're a stranger. When you call his name, he frowns, as if trying to remember it.",
+  "5": "{rival} fell down the shrine steps last night. A sprained ankle - he'll be out all week. He says something pushed him. Something small.",
+  "6": "{rival} didn't come to school. Nobody has seen him since the town chime played at dusk. His bike is still at the bottom of the 999 steps."
+ },
+ "calm_night": "Amane slept soundly last night. Nobody saw a black cat on the rooftops.",
+ "guarded_night": "Someone saw a black cat with two tails sitting outside {rival}'s window all night. It never went in.",
+ "night_watch": {
+  "intro": "Past nine. The rain has stopped. On the roof across the street, a black cat with two tails is walking toward {rival}'s house. Its bell makes no sound.",
+  "choices": {
+   "chase": "Chase it off.",
+   "name": "Call it by its name: \"Amane.\"",
+   "let_go": "Let it go."
+  },
+  "chase": "You throw a pebble. The cat hisses, flows off the roof like ink and is gone. Somewhere up the hill, someone starts crying in their sleep.",
+  "name": "The cat stops dead. It turns, and looks at you with Amane's sleepy eyes. Then there is no cat - only rain starting again. You think you heard \"...Senpai?\"",
+  "let_go": "You watch it go. It doesn't look back."
+ },
+ "ura": {
+  "wail": [
+   "A first-year was bawling in the {place} again. Who did it?? (We all know. Second-year B. Rhymes with Toru.)",
+   "Is it me or does it rain every time that hoodie kid cries",
+   "Crying first-year spotted. Umbrella sales up 40%."
+  ],
+  "stage": [
+   "Anyone else see a black cat with TWO tails last night??",
+   "Pray for {rival}'s shoes",
+   "Why are all the cats avoiding {rival}? What did he do",
+   "{rival} is acting so weird lately. Like he forgot half the class",
+   "{rival} fell down the shrine steps!! Get well soon",
+   "Has ANYONE seen {rival}???"
+  ],
+  "cat": [
+   "A cat ran all the way up the shrine steps today. They say cats tell the shrine everything.",
+   "Saw a cat follow {player} around then sprint off. Spy cat?"
+  ],
+  "rival": [
+   "{player} and {rival} hanging out again. The first-year was watching. From a bush.",
+   "New ship: {player} x {rival}?? (someone in a hoodie disliked this post 40 times)"
+  ]
+ }
 }

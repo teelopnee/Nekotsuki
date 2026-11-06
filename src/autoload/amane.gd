@@ -9,7 +9,10 @@ signal message_received(text: String)
 
 const DEFAULTS := {"met": false, "route": "none", "bond_now": 0.0, "bond_past": 100.0, "tears": 0.0,
 	"trust": 10.0, "self": 10.0, "jealousy": {}, "rival": "", "blocked": false, "muted": false,
-	"unread": 0, "messages": [], "talks": 0, "rain": 0.0, "pending": "", "last_msg": 0}
+	"unread": 0, "messages": [], "talks": 0, "rain": 0.0, "pending": "", "last_msg": 0,
+	"closeness": {}, "plan": {"target": "", "stage": 0, "guarded": false, "warned": false}, "fates": {}, "news": [],
+	"ura": [], "cat_reports": 0, "ikiryo_named": false, "woke_crying": false}
+const FRIEND := "Inukai Hayate"  ## the week-2 rival unless you got closer to someone else
 const TEAR_NAMES := ["calm", "pouting", "teary", "crying", "wailing", "storm"]
 const FORECAST := ["Clear", "Clear", "Clouds", "Drizzle", "Rain", "Storm"]
 const RAIN := [0.0, 0.0, 0.18, 0.45, 0.78, 1.0]
@@ -244,6 +247,12 @@ func _tick(m: int) -> void:
 
 func _new_day(_d: int) -> void:
 	var s := st()
+	_ikiryo_night()
+	if Clock.weekday() == "Mon":
+		pick_rival()
+	if s["woke_crying"]:
+		s["woke_crying"] = false
+		s["tears"] = float(s["tears"]) + 2.0
 	set_tears(float(s["tears"]) * 0.5 + (1.0 if s["muted"] and int(s["unread"]) > 2 else 0.0))
 	s["rain"] = rain_target()
 	s["talks"] = 0
@@ -256,16 +265,23 @@ func _new_day(_d: int) -> void:
 ## The world calls this every morning: returns a scene note (e.g. the doorstep visit) or "".
 func morning_event() -> String:
 	var s := st()
+	var notes: Array[String] = []
 	if str(s["pending"]) == "doorstep":
 		s["pending"] = ""
 		set_tears(3.0)
-		return str(data.get("doorstep", ""))
-	return ""
+		notes.append(str(data.get("doorstep", "")))
+	for n in s["news"]:
+		notes.append(str(n))
+	s["news"] = []
+	return "\n\n".join(notes)
 
 
 ## Bystander verbs (Interactions): if Amane can see you get close to someone else, he notices.
 func _on_interaction(_verb: String, success: bool, npc: Node) -> void:
-	if not success or npc == null or not st()["met"] or npc.is_in_group("amane"):
+	if not success or npc == null or npc.is_in_group("amane"):
+		return
+	add_closeness(str(npc.get("npc_name")), 4)
+	if not st()["met"]:
 		return
 	var a := get_tree().get_first_node_in_group("amane") as Node3D
 	var p := get_tree().get_first_node_in_group("player") as Node3D
@@ -280,6 +296,8 @@ func notice_rival(who: String, actor: Node3D = null) -> void:
 	j[who] = int(j.get(who, 0)) + (16 if route() == "romance" else 10)
 	s["rival"] = who
 	add("tears", 0.4)
+	if _rng.randf() < 0.3:
+		post("rival", who)
 	if actor != null:
 		Emotion.express(actor, "pout" if int(j[who]) < 30 else "yandere", 2.8)
 		if actor.has_method("say"):
@@ -295,3 +313,122 @@ func objective_text() -> String:
 		return "Go home before it gets late. (Phone: end the day)"
 	return "%s · %s · Route: %s · Forecast: %s" % [Clock.period(), "Amane is " + TEAR_NAMES[tears_level()],
 		ROUTE_NAMES.get(route(), "-"), FORECAST[tears_level()]]
+
+
+# --- Rivals and the living spirit (生霊) --------------------------------------------------
+## Each Monday Amane fixes on whoever got closest to Senpai. Every night his jealousy walks out of
+## his body as a black cat with two tails and takes the next step (docs/GDD.md 4.3) - unless the rival
+## was warned, Senpai watched the rooftops, or Amane is secure enough in himself (self >= 55).
+
+func add_closeness(who: String, v: int) -> void:
+	if who == "" or who == "Amane":
+		return
+	var c: Dictionary = st()["closeness"]
+	c[who] = int(c.get(who, 0)) + v
+
+
+func rival() -> String:
+	return str(st()["plan"]["target"])
+
+
+func fate(who: String) -> String:
+	return str(st()["fates"].get(who, ""))
+
+
+func pick_rival() -> String:
+	var s := st()
+	var best := FRIEND if fate(FRIEND) == "" else ""
+	var best_v := 25 + int(s["closeness"].get(FRIEND, 0)) if best != "" else -1
+	for who in s["closeness"]:
+		if fate(str(who)) in ["injured", "hidden"]:
+			continue
+		var v := int(s["closeness"][who])
+		if v > best_v:
+			best = str(who)
+			best_v = v
+	s["plan"] = {"target": best, "stage": 0, "guarded": false, "warned": false}
+	if best != "":
+		s["rival"] = best
+	return best
+
+
+func _ikiryo_night() -> void:
+	var s := st()
+	var p: Dictionary = s["plan"]
+	var who := str(p.get("target", ""))
+	if who == "" or fate(who) in ["injured", "hidden"]:
+		return
+	if float(s["self"]) >= 55.0:
+		s["news"].append(str(data.get("calm_night", "")))
+		return
+	if p.get("guarded", false):
+		p["guarded"] = false
+		s["news"].append(fill(str(data.get("guarded_night", ""))).replace("{rival}", who))
+		add("self", 3.0)
+		return
+	var step := 1
+	if route() == "romance" and _rng.randf() < 0.4:
+		step += 1
+	if Clock.weekday() == "Sat" and int(p["stage"]) >= 2:
+		step += 1  # Friday night is the deadline
+	p["stage"] = mini(6, int(p["stage"]) + step)
+	apply_stage(who, int(p["stage"]))
+
+
+func apply_stage(who: String, stage: int) -> void:
+	var s := st()
+	s["news"].append(str(data.get("stages", {}).get(str(stage), "")).replace("{rival}", who))
+	post("stage", who)
+	match stage:
+		4:
+			s["fates"][who] = "cut"
+			s["closeness"][who] = 0
+		5:
+			s["fates"][who] = "injured"
+		6:
+			s["fates"][who] = "hidden"
+
+
+## Senpai warned the rival (Hayate's "be careful around cats"): tonight the cat turns back at the window.
+func warn(who: String) -> bool:
+	var p: Dictionary = st()["plan"]
+	if str(p.get("target", "")) != who:
+		return false
+	p["guarded"] = true
+	var first: bool = not p.get("warned", false)
+	p["warned"] = true
+	return first
+
+
+## Night watch from the phone (after 21:00): chase | name | let_go.
+func night_choice(id: String) -> String:
+	var s := st()
+	var p: Dictionary = s["plan"]
+	var w: Dictionary = data.get("night_watch", {})
+	match id:
+		"chase":
+			p["guarded"] = true
+			s["woke_crying"] = true
+		"name":
+			p["guarded"] = true
+			s["ikiryo_named"] = true
+			add("self", 10.0)
+		"let_go":
+			var j: Dictionary = s["jealousy"]
+			j[rival()] = maxi(0, int(j.get(rival(), 0)) - 10)
+	return fill(str(w.get(id, "")))
+
+
+# --- The school's anonymous board (裏サイト) ------------------------------------------------
+
+func post(kind: String, who: String = "", place: String = "") -> void:
+	var s := st()
+	var t := _pick(data.get("ura", {}).get(kind, []))
+	if t == "":
+		return
+	t = t.replace("{rival}", who if who != "" else str(s["rival"])).replace("{place}", place if place != "" else "corridor")
+	var u: Array = s["ura"]
+	u.append({"day": Clock.date_text(), "time": Clock.clock_text(), "text": t})
+	while u.size() > 40:
+		u.pop_front()
+	changed.emit()

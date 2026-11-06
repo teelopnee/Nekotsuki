@@ -10,6 +10,9 @@ var _panel: PanelContainer
 var _log: RichTextLabel
 var _note: Label
 var _end_btn: Button
+var _watch_btn: Button
+var _ura := false
+var _title: Label
 
 
 func _ready() -> void:
@@ -53,7 +56,19 @@ func _build_panel() -> void:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 8)
 	_panel.add_child(v)
-	v.add_child(HUD.make_label("RINRIN  -  Amane (1-A)", 22, Color(1.0, 0.8, 0.88)))
+	var top := HBoxContainer.new()
+	v.add_child(top)
+	_title = HUD.make_label("RINRIN  -  Amane (1-A)", 22, Color(1.0, 0.8, 0.88))
+	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(_title)
+	var tab := Button.new()
+	tab.text = "Ura board"
+	tab.custom_minimum_size = Vector2(130, 40)
+	tab.pressed.connect(func():
+		_ura = not _ura
+		tab.text = "Rinrin" if _ura else "Ura board"
+		_fill_log())
+	top.add_child(tab)
 	_log = RichTextLabel.new()
 	_log.bbcode_enabled = true
 	_log.scroll_following = true
@@ -75,6 +90,14 @@ func _build_panel() -> void:
 		row.add_child(b)
 	var row2 := HBoxContainer.new()
 	v.add_child(row2)
+	_watch_btn = Button.new()
+	_watch_btn.text = "Watch the rooftops"
+	_watch_btn.custom_minimum_size = Vector2(200, 44)
+	_watch_btn.pressed.connect(func():
+		close_phone()
+		if level and level.has_method("night_watch"):
+			level.night_watch())
+	row2.add_child(_watch_btn)
 	_end_btn = Button.new()
 	_end_btn.text = "Go to bed (end the day)"
 	_end_btn.custom_minimum_size = Vector2(240, 44)
@@ -97,6 +120,16 @@ func _refresh() -> void:
 
 
 func _fill_log() -> void:
+	_watch_btn.disabled = Clock.minute() < 21 * 60 or Amane.rival() == "" or Amane.fate(Amane.rival()) in ["injured", "hidden"]
+	_end_btn.disabled = Clock.minute() < Clock.NIGHT
+	if _ura:
+		_title.text = "URA BOARD  -  Suzunari Gakuen (anonymous)"
+		var u := ""
+		for p in Amane.st()["ura"]:
+			u += "[color=#8a8aa8]%s %s[/color]  %s\n" % [p.get("day", ""), p.get("time", ""), str(p.get("text", ""))]
+		_log.text = u if u != "" else "[color=#8a8aa8]Nothing yet. Give it a day.[/color]"
+		return
+	_title.text = "RINRIN  -  Amane (1-A)"
 	var t := ""
 	for m in Amane.st()["messages"]:
 		var mine: bool = str(m.get("from", "")) == "me"

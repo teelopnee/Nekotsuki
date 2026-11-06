@@ -1,0 +1,43 @@
+{
+ "_doc": "Inukai Hayate's lines (docs/CAST.md). Episode 0 week-2 rival by default. {player} = the protagonist.",
+ "openers": {
+  "low": [
+   "Yo, transfer student! You look like you need running. Everyone needs running.",
+   "Oi, {player}! Lunch? Roof? Track? All three?"
+  ],
+  "mid": [
+   "There you are! I saved you a yakisoba bread. I ate half. Saved is a strong word.",
+   "Walk you home later? Not because I'm worried. Okay, a bit because I'm worried."
+  ],
+  "high": [
+   "{player}! Best friend! Don't tell anyone I said best friend.",
+   "You know you can tell me stuff, right? Even weird stuff. Especially weird stuff."
+  ]
+ },
+ "stage_lines": {
+  "1": "Man... I keep dreaming a cat's sitting on me. Heavy little thing. Smells like rain.",
+  "2": "Someone threw my shoes in the pond. Who does that? There were paw prints. Paw prints, {player}!",
+  "3": "Is it just me or do the cats hate me now? Dogs love me. Cats used to tolerate me.",
+  "4": "Uh... sorry, have we talked before? You look familiar. Weird."
+ },
+ "choices": {
+  "hang": "Hang out with him.",
+  "warn": "\"Be careful around cats this week.\"",
+  "shrine": "Ask about the dog shrine.",
+  "bye": "See you."
+ },
+ "hang": [
+  "You run three laps for no reason and eat melon bread on the bleachers. It's nice. Somewhere behind the bleachers, a bell jingles.",
+  "He teaches you a stretch that 'fixes everything'. It fixes nothing. You laugh anyway."
+ ],
+ "warn_first": "\"Cats? Ha! I'm an Inukai, {player}. Dog shrine. Cats are scared of ME.\" He stops laughing. \"...Okay. I'll keep my window shut.\"",
+ "warn_again": "\"Window's shut, salt's on the sill. My dad gave me a look when I asked for it. A long look.\"",
+ "shrine": [
+  "\"Our shrine's for the okuri-inu. Dogs that walk travellers home at night. Dad says we walk the dead home at Obon. I just walk you home. Same thing, kind of.\"",
+  "\"Dad says the cat shrine and the dog shrine haven't spoken in a hundred years. Something about a promise. He won't say whose.\""
+ ],
+ "bye": [
+  "\"Later! Don't trip!\"",
+  "\"I'll walk you to the gate. No arguments.\""
+ ]
+}

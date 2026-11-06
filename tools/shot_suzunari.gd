@@ -48,6 +48,14 @@ func _process(_d: float) -> bool:
 			p.facing = Vector3(0, 0, -1)
 			var a = get_first_node_in_group("amane")
 			a.global_position = p.global_position + Vector3(2.2, 0.1, 1.2)
+			for n in get_nodes_in_group("npc"):
+				if str(n.get("npc_name")) == "Inukai Hayate":
+					n.global_position = p.global_position + Vector3(-2.4, 0.1, 1.0)
+					n.spot = n.global_position
+			var cs := get_nodes_in_group("cat")
+			for i in mini(2, cs.size()):
+				cs[i].global_position = p.global_position + Vector3(0.8 + i * 1.6, 0.05, 2.6)
+				cs[i].home = cs[i].global_position
 			if str(s[4]) != "":
 				load("res://src/core/emotion.gd").express(a, str(s[4]), 30.0)
 			current_scene.camera_rig.snap_to_target()

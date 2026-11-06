@@ -33,3 +33,11 @@
 - day_test now fails on sci-fi words in townsfolk talk (0/40 leaks) and off-theme verbs.
 - Open: shop option texts are auto-converted (readable but plain); 25 lines kept with sci-fi words where a list had
   nothing else; music is still the synthwave set; title backdrop is still the synthwave sunset.
+
+## M3 first pass (2026-11-06): the town's brain
+- Cats (8, named, remembered) spy for Amane; petting wins them over. Weekly rival (Hayate by default) and the nightly
+  living-spirit plan with six stages, morning news, clues on the Ura board; warn the rival, watch the rooftops at night
+  (chase / call it "Amane" / let it go) or help Amane grow (self >= 55) to stop it. Hayate walks you home.
+  Enma's Ledger v1 written every night. Tests: m3_test (19 checks) + all others pass.
+- Open: the night watch is a dialogue, not yet a playable cat-spirit level (M5); rumours come from Amane's events,
+  not yet from every witnessed act; spirited-away rivals cannot be rescued yet (Dusk Side, M5); music still synthwave.

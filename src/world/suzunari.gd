@@ -83,6 +83,13 @@ func _post_build() -> void:
 	add_child(overlay)
 	Clock.minute_passed.connect(_on_minute)
 	_apply_light()
+	Cats.spawn_in(self, 8)
+	if not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
+		var h = NPC_SCENE.instantiate()
+		h.set_script(load("res://src/actors/hayate_npc.gd"))
+		actors.add_child(h)
+		h.global_position = builder.center(17, 11) + Vector3(0, 0.1, 0)
+		h.spot = h.global_position
 	_morning.call_deferred()
 
 
@@ -166,4 +173,17 @@ func end_day() -> void:
 	Clock.running = false
 	Clock.next_day()
 	Game.save_game()
+	Ledger.write()
 	Router.goto(Router.SUZUNARI)
+
+
+## Phone "watch the rooftops" (after 21:00 while Amane has a rival): meet his living spirit on the roofs.
+func night_watch() -> void:
+	if hud == null or Amane.rival() == "":
+		return
+	var w: Dictionary = Amane.data.get("night_watch", {})
+	var c: Dictionary = w.get("choices", {})
+	var picked: String = await hud.say("", Amane.fill(str(w.get("intro", ""))).replace("{rival}", Amane.rival()),
+		[{"id": "chase", "text": str(c.get("chase", "Chase it."))}, {"id": "name", "text": str(c.get("name", "Name it."))},
+		{"id": "let_go", "text": str(c.get("let_go", "Let it go."))}])
+	await hud.say("", Amane.night_choice(picked))

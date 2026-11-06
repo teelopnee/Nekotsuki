@@ -1275,7 +1275,65 @@ def build_grub(cfg, facing, anim, t):
     return prims
 
 
-BUILDERS = {"human": build_human, "drone": build_drone, "grub": build_grub}
+CAT_ANIMS = [("idle", 6, 6, True), ("walk", 6, 10, True), ("run", 6, 14, True), ("sit", 6, 5, True),
+             ("wash", 6, 8, True), ("loaf", 4, 3, True)]
+
+
+def build_cat(cfg, facing, anim, t):
+    """Town cats (NEKOTSUKI): fur = hair slot, patches = scarf, eyes = iris. ~1/3 of a human."""
+    fr = Frame3(facing)
+    tau = 2 * math.pi
+    s = 1.25 if cfg.get("chonk") else 1.0
+    prims = []
+    g = math.sin(t * tau)
+    run = anim == "run"
+    sit = anim in ("sit", "wash")
+    loaf = anim == "loaf"
+    lift = 0.6 * abs(math.sin(t * tau * 2)) if anim in ("walk", "run") else 0.0
+    pitch = -0.55 if sit else 0.0
+    up = rot_axis(fr.U, fr.R, pitch)
+    fw = rot_axis(fr.F, fr.R, pitch)
+    basis = [fr.R, up, fw]
+    by = (2.6 if loaf else (4.6 if sit else 4.2)) + lift
+    body = fr.w(0, by, -0.8 if sit else 0)
+    prims.append(P_ell(body, [2.6 * s, 2.3 * s, 4.4], basis, "hair"))
+    prims.append(P_ell(body - up * 0.7 + fw * 0.6, [1.9 * s, 1.5, 3.0], basis, "scarf"))
+    head = (body + fw * 4.2 + up * 2.2) if not loaf else body + fw * 3.6 + up * 0.6
+    if anim == "wash":
+        head = head - fr.U * 0.4
+    prims.append(P_sphere(head, 2.8, "hair"))
+    prims.append(P_ell(head + fr.F * 2.1 - fr.U * 0.8, [1.2, 0.9, 0.8], [fr.R, fr.U, fr.F], "scarf"))
+    for sd in (-1, 1):
+        eb = head + fr.R * sd * 1.4 + fr.U * 1.9
+        prims.append(P_cone(eb, eb + fr.R * sd * 0.6 + fr.U * 2.2 + fr.F * 0.3, 1.1, 0.2, "hair"))
+        closed = loaf or (anim == "idle" and 0.7 <= t < 0.8) or anim == "wash"
+        DECALS.append(("dot", head + fr.F * 2.55 + fr.R * sd * 1.0 + fr.U * 0.35, fr.F,
+                       {"slot": "dark" if closed else "iris", "band": 3 if closed else 4}))
+    if not loaf:
+        for i, (sx, sz) in enumerate(((-1, 1), (1, 1), (-1, -1), (1, -1))):
+            ph = t * tau * (2 if run else 1) + (0 if i in (0, 3) else math.pi)
+            swing = (math.sin(ph) * (1.6 if run else 1.0)) if anim in ("walk", "run") else 0.0
+            if sit and sz < 0:
+                top = body + fr.R * sx * 1.6 - fw * 2.4
+                prims.append(P_cone(top, fr.w(sx * 1.9, 0.6, -2.0), 1.3, 0.9, "hair"))
+                continue
+            top = body + fr.R * sx * 1.4 + fw * sz * 2.6 - up * 1.2
+            foot = fr.w(sx * 1.4, 0.5, (body - fr.w(0, 0, 0)).dot(fr.F) + sz * 2.6 + swing)
+            if anim == "wash" and i == 0:
+                foot = head + fr.F * 1.6 - fr.U * 0.6 + fr.R * 0.4 * math.sin(t * tau * 2)
+            prims.append(P_cone(top, foot, 1.0, 0.8, "hair"))
+    tb = body - fw * 4.0 + up * 0.8
+    if cfg.get("tail") == "bob":
+        prims.append(P_sphere(tb, 1.4, "hair"))
+    else:
+        sway = 0.9 * g if not run else 0.3 * g
+        mid = tb - fr.F * 1.6 + fr.U * 3.2 + fr.R * sway
+        prims.append(P_cone(tb, mid, 0.9, 0.75, "hair"))
+        prims.append(P_cone(mid, mid + fr.U * 2.6 + fr.R * sway * 1.6 - fr.F * 0.6, 0.75, 0.45, "hair"))
+    return prims
+
+
+BUILDERS = {"human": build_human, "drone": build_drone, "grub": build_grub, "cat": build_cat}
 
 # ---------------------------------------------------------------------------- variants
 
@@ -1357,6 +1415,9 @@ def variant_list():
         vs[name] = ("human", dict(cfg, school=True), ["cast"])
     for name, cfg, tags in STUDENTS:
         vs[name] = ("human", dict(cfg, school=True), tags)
+    vs["cat_a"] = ("cat", {"tail": "long"}, ["cat"])
+    vs["cat_b"] = ("cat", {"tail": "bob"}, ["cat"])
+    vs["cat_c"] = ("cat", {"tail": "long", "chonk": True}, ["cat"])
     vs["drone"] = ("drone", {}, ["drone"])
     vs["drone_quad"] = ("drone", {"quad": True}, ["drone"])
     vs["grub"] = ("grub", {}, ["bug"])
@@ -1368,7 +1429,7 @@ def forge(name, spec):
     rows = []
     meta = {"frame_w": FRAME_W, "frame_h": FRAME_H, "foot_row": FOOT_ROW, "indexed": True,
             "dirs": list(DIRS.keys()), "tags": tags, "cfg": cfg, "anims": {}}
-    anims = ANIMS + (EMOTE_ANIMS if cfg.get("school") else [])
+    anims = CAT_ANIMS if kind == "cat" else ANIMS + (EMOTE_ANIMS if cfg.get("school") else [])
     max_frames = max(a[1] for a in anims)
     for (aname, nframes, fps, loop) in anims:
         meta["anims"][aname] = {"fps": fps, "loop": loop, "frames": nframes, "rows": {}}

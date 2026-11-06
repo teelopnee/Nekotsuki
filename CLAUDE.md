@@ -42,6 +42,15 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `EventBus.interaction_done` near him, `morning_event()` (blocked -> doorstep). `AmaneNPC` (`src/actors/amane_npc.gd`)
   follows at `follow_distance()`, peeks when looked at, slips behind you when far/stuck, walks up to talk.
   `src/ui/neko_overlay.gd`: date/time/forecast + Rinrin phone. HUD objective line = `Amane.objective_text()` in Suzunari.
+- M3 town brain: `Cats` autoload + `CatNPC` (8 cats, `Game.flags["cats"]`, sprites `cat_a/b/c` from `build_cat` /
+  `CAT_ANIMS`): a cat within 12 m that doesn't like you (attitude < 40) runs to Amane after you talk to someone
+  (`EventBus.interaction_done`); petting raises attitude / cancels the report. `Amane`: `closeness` per NPC, weekly
+  `pick_rival()` (Monday; Hayate +25 by default), `_ikiryo_night()` each night = next stage of the living-spirit plan
+  (`data/amane.json stages` 1-6: nightmare, shoes, cats, ties cut, injured, spirited away -> `fates`), blocked by
+  `warn()` (Hayate dialogue), the phone "Watch the rooftops" `night_choice()` (chase / name / let_go) or self >= 55;
+  Friday night jumps a step. `post()` = Ura board (phone tab). `HayateNPC` (`src/actors/hayate_npc.gd`,
+  `data/hayate.json`): courtyard by day, walks you home after 15:20. `Ledger` autoload writes `user://ledger.json`
+  every night (`snapshot()`, `read()`). Test: `tools/m3_test.gd`.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

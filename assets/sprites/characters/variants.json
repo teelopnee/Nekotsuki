@@ -858,6 +858,34 @@
    "school": true
   }
  },
+ "cat_a": {
+  "kind": "cat",
+  "tags": [
+   "cat"
+  ],
+  "cfg": {
+   "tail": "long"
+  }
+ },
+ "cat_b": {
+  "kind": "cat",
+  "tags": [
+   "cat"
+  ],
+  "cfg": {
+   "tail": "bob"
+  }
+ },
+ "cat_c": {
+  "kind": "cat",
+  "tags": [
+   "cat"
+  ],
+  "cfg": {
+   "tail": "long",
+   "chonk": true
+  }
+ },
  "drone": {
   "kind": "drone",
   "tags": [

@@ -109,6 +109,12 @@ func _start_talk() -> void:
 
 func _on_tears(level: int) -> void:
 	if level >= 4:
+		var near := 0
+		for n in get_tree().get_nodes_in_group("npc"):
+			if n != self and n.global_position.distance_to(global_position) < 12.0:
+				near += 1
+		if near >= 2:
+			Amane.post("wail", "", "shopping street" if global_position.z > 28.0 else "school")
 		Emotion.express(self, "wail", 4.0)
 	elif level >= 2:
 		Emotion.express(self, "cry", 3.0)
