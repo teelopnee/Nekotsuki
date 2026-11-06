@@ -12,6 +12,26 @@ uniform vec3 flash_color : source_color = vec3(1.0);
 uniform float alpha = 1.0;
 uniform bool ghost = false;
 
+uniform float wrap = 0.35;  // half-Lambert floor: sprites stay readable when the sun is beside or behind them
+
+// Y-axis billboard toward whoever is looking: the camera when drawing, the LIGHT in the shadow pass, so every
+// character casts a full-silhouette shadow whatever the sun's direction (a flat card would cast a thin line).
+void vertex() {
+	vec3 up = vec3(0.0, 1.0, 0.0);
+	vec3 right = normalize(cross(up, INV_VIEW_MATRIX[2].xyz));
+	vec3 fwd = normalize(cross(right, up));
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(vec4(right, 0.0), vec4(up, 0.0), vec4(fwd, 0.0), MODEL_MATRIX[3]);
+	MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0),
+		vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0),
+		vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+}
+
+void light() {
+	float ndl = abs(dot(NORMAL, LIGHT));
+	DIFFUSE_LIGHT += (wrap + (1.0 - wrap) * ndl) * ATTENUATION * LIGHT_COLOR / PI;
+}
+
 void fragment() {
 	vec4 s = texture(sheet, UV);
 	if (s.a < 0.5) {

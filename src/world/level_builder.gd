@@ -2443,7 +2443,7 @@ func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
 			jp.night_mats.append(bulb)
 			add_mesh(b, box(Vector3(0.36, 0.12, 0.2)), bulb, Vector3(0.8, 4.05, 0), 0.0, false)
 			add_box_collider(b, Vector3(0.2, 3.0, 0.2), Vector3(0, 1.5, 0))
-			var l2 := add_light(p + Vector3(0.8, 3.6, 0.3), Color(1.0, 0.9, 0.75), 0.0, 9.0)
+			var l2 := add_light(p + Vector3(0.8, 3.6, 0.3), Color(1.0, 0.9, 0.75), 0.0, 9.0, true)  # night shadows
 			l2.visible = false
 			jp.night_lights.append(l2)
 			return true

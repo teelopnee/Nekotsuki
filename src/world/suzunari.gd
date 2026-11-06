@@ -16,6 +16,8 @@ var _rain: Array[CPUParticles3D] = []
 var _storm_t := 0.0
 var _petals: GPUParticles3D
 var _motes: GPUParticles3D
+var _key: DirectionalLight3D  ## shadowless front key light (see _apply_light)
+var _clouds: MeshInstance3D  ## invisible cloud layer: only its shadows drift over the town
 
 
 func _setup() -> void:
@@ -26,7 +28,7 @@ func _setup() -> void:
 		"path_tex": "asphalt", "horizon": ["skyline_mountains", "skyline_city", "skyline_mountains"], "foliage": 0.0,
 		"foliage_cells": [0, 4], "plant": "#6aa84f", "plant_glow": 0.0, "puddles": "water", "weather": "",
 		"water": "#1d4c5e", "water_glow": "#a8e6ee", "water_glow_strength": 0.05, "water_glow_b": "#ffb35a",
-		"water_reflect": 0.0, "building_h": [4.0, 7.0], "exposure": 1.12}
+		"water_reflect": 0.0, "building_h": [4.0, 7.0], "exposure": 0.98}
 	level_seed = 2026
 	camera_pitch = 30.0
 	camera_distance = 16.0
@@ -74,6 +76,7 @@ func _post_build() -> void:
 	_build_rain()
 	_build_petals()
 	_build_motes()
+	_build_clouds()
 	var jp = build.get("jp")
 	if jp:
 		var life := TownLife.new()
@@ -95,7 +98,7 @@ func _post_build() -> void:
 		actors.add_child(car)
 	environment.adjustment_saturation = 1.16
 	environment.adjustment_contrast = 1.14
-	environment.fog_density = 0.0035
+	environment.fog_density = 0.0025
 	var a = NPC_SCENE.instantiate()
 	a.set_script(load("res://src/actors/amane_npc.gd"))
 	amane = a
@@ -165,6 +168,9 @@ func _process(delta: float) -> void:
 		_petals.global_position = player.global_position + Vector3(0, 6.0, -5.0)
 		if _motes:
 			_motes.global_position = player.global_position + Vector3(0, 1.6, -3.0)
+	if _clouds:
+		_clouds.position.x = fmod(_clouds.position.x + delta * 0.9, 160.0 / 3.0) if r < 0.5 else _clouds.position.x
+		_clouds.visible = r < 0.5  # under rain the whole sky is one cloud
 		_petals.amount_ratio = clampf(1.0 - r * 0.8, 0.15, 1.0)
 	if Amane.tears_level() >= 5 and sun:
 		_storm_t -= delta
@@ -189,14 +195,29 @@ func _apply_light() -> void:
 	var gloom := 1.0 - 0.45 * float(Amane.st()["rain"])
 	# HD-2D contrast: a strong key light with real shadows, a low cool fill (flat ambient killed the depth).
 	sun.light_color = l.sun
-	sun.light_energy = float(l.sun_energy) * gloom * 1.25
+	sun.light_energy = float(l.sun_energy) * gloom * 1.35
 	environment.ambient_light_color = l.ambient
-	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 + 0.25 * gloom) * 0.62
+	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 + 0.25 * gloom) * 0.55
 	# The sun crosses the sky behind the camera: low and golden from the south-east in the morning,
 	# high at noon, long red shadows from the south-west at Omagatoki.
 	var t := clampf((float(Clock.minute()) - 450.0) / (Clock.NIGHT - 450.0), 0.0, 1.0)
-	var elev := lerpf(24.0, 58.0, sin(t * PI)) if t < 0.92 else lerpf(18.0, 10.0, (t - 0.92) / 0.08)
-	sun.rotation_degrees = Vector3(-elev, lerpf(48.0, -55.0, t), 0.0)
+	# Two suns, the HD-2D trick: the shadow sun swings round BEHIND the town (east -> north -> west), so every
+	# shadow stretches toward the camera where you can see it (the sprites' shadow cards turn to face it); a
+	# shadowless key light from the camera side keeps facades and faces lit.
+	var elev := lerpf(24.0, 52.0, sin(t * PI)) if t < 0.92 else lerpf(18.0, 10.0, (t - 0.92) / 0.08)
+	sun.rotation_degrees = Vector3(-elev, lerpf(115.0, 245.0, t), 0.0)
+	sun.shadow_opacity = 1.0
+	sun.shadow_blur = 0.9
+	sun.directional_shadow_max_distance = 40.0
+	if _key == null:
+		_key = DirectionalLight3D.new()
+		_key.name = "KeyLight"
+		_key.shadow_enabled = false
+		add_child(_key)
+	_key.rotation_degrees = Vector3(-38.0, lerpf(45.0, -45.0, t), 0.0)
+	_key.light_color = (l.sun as Color).lerp(Color.WHITE, 0.25)
+	_key.light_energy = sun.light_energy * 0.5
+	sun.light_energy *= 0.85
 	var haze: Color = (l.ambient as Color).lerp(l.sun, 0.35)
 	environment.fog_light_color = haze.lerp(Color(0.55, 0.58, 0.66), 0.5 * float(Amane.st()["rain"]))
 	environment.background_color = environment.fog_light_color
@@ -222,7 +243,7 @@ func _apply_light() -> void:
 		_motes.visible = night < 0.6 and rain < 0.5
 	# Morning mist hugging the ground, a thin haze by day, none in the dark.
 	environment.fog_height = 0.8
-	environment.fog_height_density = 0.12 * morning + 0.02
+	environment.fog_height_density = 0.05 * morning
 
 
 func nearest_walkable(p: Vector3) -> Vector3:
@@ -347,3 +368,26 @@ func _build_motes() -> void:
 	_motes.local_coords = false
 	_motes.visibility_aabb = AABB(Vector3(-16, -4, -12), Vector3(32, 10, 24))
 	add_child(_motes)
+
+
+## Cloud shadows: a high quad that casts shadows only (never drawn), drifting with the wind.
+func _build_clouds() -> void:
+	var q := QuadMesh.new()
+	q.size = Vector2(160.0, 160.0)
+	var m := StandardMaterial3D.new()
+	m.albedo_texture = load("res://assets/textures/jp_f_clouds.png")
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+	m.alpha_scissor_threshold = 0.5
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.uv1_scale = Vector3(3, 3, 1)
+	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+	_clouds = MeshInstance3D.new()
+	_clouds.name = "CloudShadows"
+	_clouds.mesh = q
+	_clouds.material_override = m
+	_clouds.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+	_clouds.rotation.x = -PI * 0.5
+	_clouds.position = Vector3(0.0, 24.0, builder.height * LevelBuilder.TILE * 0.5)
+	_clouds.extra_cull_margin = 200.0
+	add_child(_clouds)
+	_clouds.position.x = builder.width * LevelBuilder.TILE * 0.5

@@ -116,7 +116,7 @@ func floor_color(kind: String, x: int, z: int) -> Color:
 		"jp_grass", "jp_forest":
 			return Color(0.92 + n * 0.12, 1.0 + n * 0.08, 0.86 + n * 0.1)
 		"jp_gravel":
-			return Color(0.8, 0.8, 0.83) * (0.97 + n * 0.08)
+			return Color(0.7, 0.7, 0.74) * (0.97 + n * 0.08)
 	return Color.WHITE * (0.95 + n * 0.06 + rng.randf_range(-0.02, 0.02))
 
 

@@ -85,6 +85,12 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   with bokeh weighting) + normal-oriented SSAO (contact shadows). The canvas post (`hd2d_post`) still does vignette,
   grain and toning. Suzunari light: strong sun x1.25, ambient x0.62, contrast 1.14 / saturation 1.16; god rays
   (`JPKit._shafts` + `set_sun`, morning + Omagatoki), dust motes (`Suzunari._build_motes`), morning ground mist (fog height).
+- Shadows (they used to fall behind everything): `indexed_sprite.gdshader` billboards in `vertex()` toward whoever
+  looks - the camera when drawing, the LIGHT in the shadow pass - so characters cast full-silhouette shadows from any sun
+  angle; `light()` = half-Lambert `wrap` so backlit sprites stay readable. Suzunari uses two suns: `sun` (casts shadows)
+  swings BEHIND the town (yaw 115 -> 245 deg), so shadows stretch toward the camera; `_key` (no shadows) lights facades
+  from the camera side. Cloud shadows: `_clouds`, a shadows-only quad at 24 m with `jp_f_clouds.png`, drifting.
+  Street lamps 'L' cast shadows at night. Directional shadow map 4096. Debug tip: test shadows with ambient + key at 0.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

@@ -201,7 +201,30 @@ def leaves(rnd):
     return im, Image.new("RGB", (64, 64), (0, 0, 0))
 
 
-GEN = {"blossom": blossom, "leaves": leaves, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
+def clouds(rnd):
+    """Tileable cloud-shadow mask (alpha = cloud) for the invisible shadow-casting cloud layer."""
+    import math
+    n = 128
+    grid = [[rnd.random() for _ in range(8)] for _ in range(8)]
+    def val(x, y, f):
+        gx, gy = x * f / n, y * f / n
+        x0, y0 = int(gx) % f, int(gy) % f
+        tx, ty = gx - int(gx), gy - int(gy)
+        tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+        g = lambda i, j: grid[(i % f) % 8][(j % f) % 8]
+        a = g(x0, y0) * (1 - tx) + g(x0 + 1, y0) * tx
+        b = g(x0, y0 + 1) * (1 - tx) + g(x0 + 1, y0 + 1) * tx
+        return a * (1 - ty) + b * ty
+    im = Image.new("RGBA", (n, n), (0, 0, 0, 0))
+    px = im.load()
+    for y in range(n):
+        for x in range(n):
+            v = val(x, y, 4) * 0.65 + val(x, y, 8) * 0.35
+            px[x, y] = (255, 255, 255, 255 if v > 0.56 else 0)
+    return im, Image.new("RGB", (n, n), (0, 0, 0))
+
+
+GEN = {"blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
        "win": lambda r: window(r, "win"), "shoji": lambda r: window(r, "shoji"), "alu": lambda r: window(r, "alu")}
 
 

@@ -91,3 +91,12 @@
 - Known flaky (pre-existing, also on the previous commit): `interact_back_test` "an NPC walked up and started a
   conversation" fails ~1 run in 3 - the approaching NPC sometimes stops at ~1.8 m and returns to idle without opening the
   talk (`NPC` "approach" state, distance threshold vs. stop distance). A longer wait made it fail every time.
+
+## Shadow pass (2026-11-06)
+- Why no shadows were visible: the sun shone from behind the camera (shadows fell behind every object), and the
+  character cards faced the camera, so from a side sun they cast a thin line.
+- Fix: sprites billboard in the vertex shader (they turn to the light in the shadow pass -> full silhouettes), half-Lambert
+  wrap lighting; a shadow sun behind the town + a shadowless key light in front; drifting cloud shadows; lamp shadows at
+  night; 4096 shadow map; less ground mist; exposure 0.98.
+- Open: the shopping street is in building shade most of the day (sunlit only at alley gaps) - intended, but check that
+  it does not feel too dark on the tablet.
