@@ -12,6 +12,7 @@ var lane_to := Vector3.ZERO
 var _stopped := 0.0
 var bounds := Rect2(0, 0, 40, 40)
 var seed_value := 0
+var style := ""  ## "kei": a boxy Japanese kei car / van on wheels instead of a hovercar (Suzunari)
 
 var _rng := RandomNumberGenerator.new()
 var _target := Vector3.ZERO
@@ -35,7 +36,10 @@ func _ready() -> void:
 		"flyby":
 			_build_flyby()
 		"car", "streetcar":
-			_build_car()
+			if style == "kei":
+				_build_kei()
+			else:
+				_build_car()
 	_pick_target()
 	if kind == "car" or kind == "streetcar":
 		position = position.lerp(_target, _rng.randf())
@@ -164,6 +168,36 @@ func _build_car() -> void:
 	var b := _add(beam, bm, Vector3(3.6, -0.1, 0), false)
 	b.rotation.x = -PI * 0.5
 	_speed = _rng.randf_range(6.0, 11.0)
+
+
+## Kei car or kei van: tall box, big windows, four wheels, round headlights (body sits on the lane at y=0.45).
+func _build_kei() -> void:
+	var van := _rng.randf() < 0.4
+	var col: Color = [Color(0.95, 0.95, 0.93), Color(0.96, 0.9, 0.78), Color(0.72, 0.84, 0.92), Color(0.9, 0.72, 0.7),
+		Color(0.35, 0.4, 0.48), Color(0.98, 0.8, 0.45)][_rng.randi() % 6]
+	var paint := _mat(col, 0.0, 0.3)
+	var glass := _mat(Color(0.32, 0.42, 0.5), 0.0, 0.6)
+	var black := _mat(Color(0.08, 0.08, 0.09), 0.0, 0.1)
+	var ln := 2.6 if van else 2.3
+	_add(_box(Vector3(ln, 0.55, 1.15)), paint, Vector3(0, -0.02, 0), true)
+	_add(_box(Vector3(ln * (0.92 if van else 0.6), 0.55, 1.08)), paint, Vector3(-0.08 if van else -0.15, 0.53, 0), true)
+	_add(_box(Vector3(ln * (0.9 if van else 0.58), 0.4, 1.12)), glass, Vector3(-0.08 if van else -0.15, 0.55, 0), false)
+	for sx in [-0.75, 0.75]:
+		for sz in [-0.55, 0.55]:
+			var w := _add(_cyl(0.22, 0.16), black, Vector3(sx * ln / 2.3, -0.25, sz), false)
+			w.rotation.x = PI * 0.5
+	_add(_box(Vector3(0.04, 0.12, 0.85)), _mat(Color(1.0, 0.95, 0.8), 3.0), Vector3(ln * 0.5 + 0.01, 0.08, 0), false)
+	_add(_box(Vector3(0.04, 0.1, 0.9)), _mat(Color(1.0, 0.2, 0.15), 2.0), Vector3(-ln * 0.5 - 0.01, 0.08, 0), false)
+	_speed = _rng.randf_range(4.0, 6.5)
+
+
+func _cyl(r: float, h: float) -> CylinderMesh:
+	var c := CylinderMesh.new()
+	c.top_radius = r
+	c.bottom_radius = r
+	c.height = h
+	c.radial_segments = 8
+	return c
 
 
 func _blocked(to: Vector3) -> bool:

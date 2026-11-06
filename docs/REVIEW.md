@@ -57,3 +57,23 @@
 - Open: Hayate still has the old 4-choice menu; townsfolk small talk is still the generic Copy grammar; CAST.md says
   Chiyo is Amane's grandmother but calls Sayo her granddaughter (check); interiors (3rd-floor toilet, old building)
   are not walkable yet so Hanako and Mio stand outside; kuchisake chase minigame not built; music still synthwave.
+
+## Visual pass (2026-11-06): a Suzunari that looks alive
+- Ground: 20 Poly Haven CC0 photo textures pixelized to 128 px (32 texels/m, quantized palettes) by
+  `tools/jp_textures.py`; each town zone has its own ground (white shrine gravel + sando slabs, stone steps, shopping
+  paving with a stone centre strip, cracked asphalt with white lines and gutters, grass embankment, sandy schoolyard,
+  beach, classroom floorboards, the wooden bridge and pier).
+- Buildings: every 'b' block becomes a row of narrow Japanese units (machiya, modern shops, houses, the station, the old
+  wooden schoolhouse, the Nekomori house) with kawara gable roofs in five tints, pixel facades (lattice, shop windows,
+  shutters, shoji, aluminium sashes, house doors) that light up at dusk, hisashi eaves, balconies with futons and laundry,
+  potted plants, noren, red lanterns, nobori banners.
+- Shrines: a real haiden (stone base, vermilion pillars, copper-green roof with chigi and katsuogi, shimenawa + shide,
+  lanterns) and sculpted guardian cats/dogs; the hill is a cedar/camphor/bamboo forest on a stone wall.
+- Nature and life: sakura with fluffy textured crowns (riverside row, courtyard, shrine), fallen petals, drifting petals,
+  grass tufts and flowers along every wall, planters, sparrows that scatter, butterflies, kei cars and vans (left-hand
+  traffic), fishing boats, utility poles with sagging wires, lantern garlands, classroom desks and blackboards.
+- Light: the sun moves (long golden shadows in the morning, red at Omagatoki), haze and colour grade follow the sky,
+  windows/lanterns/street lamps come on at dusk; softer lens (less aberration and grain), no litter (Japanese streets).
+- Cost: ~3,000 mesh instances + ~200 multimeshes for the whole town, frustum-culled; lights hidden by day.
+- Open: interiors are still diorama cut-aways; the station has no railway yet; no birdsong/ambience; foreground sakura
+  south of the player can fill the bottom of the frame; check frame time on the tablet (Settings > graphics).

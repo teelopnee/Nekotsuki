@@ -66,6 +66,18 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   Yokai sprites `y_*` (`sprite_forge.py YOKAI`, eyes/mouth "none" = nopperabo). Test: `tools/talk_test.gd`.
   Townsfolk verbs show exact words: `verbs.<id>.say` lists in `data/suzunari/_manual/interactions.json` (menu =
   `"line"  (verb)`). Suzunari '^' = wooded hill (`_jp_hill`: mossy bank, stone wall, cedars; trees only near paths).
+- Suzunari look (`src/world/jp_kit.gd`, `JPKit`, created by LevelBuilder when palette theme = "suzunari"): ground kind
+  per town zone (`floor_kind`: gravel, sando slabs, stone path, paving, asphalt, grass, schoolyard, beach, classroom wood,
+  bridge), Japanese buildings (`building` splits a 'b' block into 4-8 m units: machiya, modern shop, house, keeper's
+  house, old school, station; kawara gable roofs, pixel facade quads with night emission, hisashi, balconies with futons
+  and laundry, potted plants, nobori flags, noren, lanterns, shop venues), sakura ('g' + every 3rd embankment tile,
+  textured fluffy crowns + fallen-petal carpets) and shrine pines, utility-pole wires, road paint + gutters, classroom
+  desks + blackboards, lantern garlands over the shopping street, planters, fishing boats, sea/forest margin.
+  `set_night(t)` drives `night_mats` / `night_lights` (from `Suzunari._apply_light`, which also moves the sun, sets the
+  haze colour and the HD-2D colour grade). Shrine hall `_jp_hall`, guardians `_jp_guardian`, street lamps 'L' in
+  LevelBuilder. Ambient life: `TownLife` (sparrows that scatter, butterflies), petals (GPUParticles following the player),
+  kei cars (`Critter.style = "kei"`). Textures: `python3 tools/jp_textures.py <cache>` (Poly Haven CC0 -> pixelized
+  128 px, credited on the title screen) and `python3 tools/jp_facades.py` (facade panels + blossom); commit the PNGs.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

@@ -80,6 +80,8 @@ func build(layout: Array) -> Dictionary:
 	height = grid.size()
 	result.size = Vector2(width * TILE, height * TILE)
 	theme = str(palette.get("theme", "scifi"))
+	if theme == "suzunari":
+		jp = JPKit.new(self)
 	_make_materials()
 	_walls_body = StaticBody3D.new()
 	_walls_body.name = "Walls"
@@ -100,6 +102,9 @@ func build(layout: Array) -> Dictionary:
 		_build_reflections()
 		_build_biome_extras()
 		_build_margin()
+	if jp:
+		jp.finish()
+		result["jp"] = jp
 	return result
 
 
@@ -218,6 +223,8 @@ func _make_materials() -> void:
 	glass.emission_energy_multiplier = 1.5
 	glass.roughness = 0.1
 	_mats["glass"] = glass
+	if jp:
+		jp.materials()
 
 
 # --- Primitive helpers ---------------------------------------------------------------------
@@ -282,6 +289,8 @@ func add_light(pos: Vector3, color: Color, energy: float = 2.0, light_range: flo
 # --- Floor ----------------------------------------------------------------------------------
 
 func _floor_kind(x: int, z: int) -> String:
+	if jp:
+		return jp.floor_kind(x, z)
 	var c := cell(x, z)
 	if c == "~":
 		return "water"
@@ -341,6 +350,8 @@ func _build_floor() -> void:
 						# Alpha = open water (1) vs shoreline (0.25): the shader puts foam on the banks.
 						var shore := cell(x + 1, z) != "~" or cell(x - 1, z) != "~" or cell(x, z + 1) != "~" or cell(x, z - 1) != "~"
 						groups[kind][1].append(Color(1, 1, 1, 0.25 if shore else 1.0))
+					elif jp:
+						groups[kind][1].append(jp.floor_color(kind, x, z))
 					else:
 						groups[kind][1].append(base.lightened(rng.randf_range(-0.06, 0.08)))
 			for kind in groups:
@@ -486,6 +497,9 @@ func _build_buildings() -> void:
 
 
 func _building(x0: int, z0: int, x1: int, z1: int) -> void:
+	if jp:
+		jp.building(x0, z0, x1, z1)
+		return
 	var w := (x1 - x0 + 1) * TILE - 0.3
 	var d := (z1 - z0 + 1) * TILE - 0.3
 	var hr: Array = palette.get("building_h", [4.0, 8.5])
@@ -659,6 +673,9 @@ func _wanted_poster(body: Node3D, w: float, front: float, deco: Array[Node]) -> 
 ## city) a row of low lit buildings continue past the edges - especially the south edge,
 ## which sits right in front of the camera.
 func _build_margin() -> void:
+	if jp:
+		jp.margin()
+		return
 	var south := 8
 	var side := 7
 	var north := 3
@@ -720,7 +737,7 @@ func _build_biome_extras() -> void:
 	# Lily pads / ice floes / crystal shards floating on water.
 	var pads: Array[Transform3D] = []
 	for w in water:
-		if rng.randf() < 0.3:
+		if rng.randf() < (0.3 if jp == null else 0.0):
 			var b := Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(0.6, 1.3))
 			pads.append(Transform3D(b, w + Vector3(rng.randf_range(-0.7, 0.7), -0.2, rng.randf_range(-0.7, 0.7))))
 	if not pads.is_empty():
@@ -872,7 +889,7 @@ func _build_street_details() -> void:
 	# Litter & stains everywhere people live.
 	var litter: Array[Transform3D] = []
 	var litter_cols: Array[Color] = []
-	var count := 520 if _city else 200
+	var count := (520 if _city else 200) if jp == null else 0  # Suzunari's streets are swept every morning
 	var paper := [Color(0.92, 0.9, 0.85), Color(1.0, 0.4, 0.75), Color(0.35, 0.9, 1.0), Color(1.0, 0.85, 0.3), Color(0.6, 0.6, 0.65)]
 	for i in count:
 		var x := rng.randi_range(1, width - 2)
@@ -1058,6 +1075,8 @@ func _add_venue(parent: Node3D, sign_text: String, faction: String, local_pos: V
 
 ## Sagging power/data cables with paper lanterns strung between nearby rooftops.
 func _build_cables() -> void:
+	if jp:
+		return  # Suzunari: utility poles and wires (JPKit._wires)
 	if _roofs.size() < 2:
 		return
 	var cable_mat: Material = _mats["dark"]
@@ -2037,7 +2056,7 @@ func _build_outdoor() -> void:
 	om.albedo_color = pcolor("ground", "#404040").darkened(0.15)
 	add_mesh(root, outer, om, Vector3(w * 0.5, -0.32, d * 0.5 - 5.0), 0.0, false)
 	# Scattered decor outside the walls (no collision).
-	for i in 46:
+	for i in (46 if jp == null else 0):
 		var side := rng.randi() % 3
 		var pos := Vector3.ZERO
 		match side:
@@ -2176,6 +2195,7 @@ func _build_puddles() -> void:
 # o jizo (six at the crossroads, also save points)  m ema board  X purification basin  q bicycle
 # n utility pole  c bamboo  u hydrangea  l stone step. Examining them shows lore (Town autoload).
 var _jizo_count := 0
+var jp: JPKit  ## Suzunari look (src/world/jp_kit.gd); null for every other theme
 
 
 func _jp_mat(key: String, c: Color) -> StandardMaterial3D:
@@ -2197,15 +2217,16 @@ func _jp_examine(body: Node3D, prompt: String, kind: String, idx: int = 0, at: V
 ## wall where it meets a path, cedars and round camphor crowns. Fades like the cliffs when in the way.
 func _jp_hill(body: Node3D, x0: int, x1: int, z: int, length: float) -> void:
 	var hh := rng.randf_range(0.7, 1.3)
-	var moss := _flat(Color(0.27, 0.38, 0.24).lightened(rng.randf_range(-0.06, 0.06)))
-	var top := _flat(Color(0.33, 0.47, 0.27).lightened(rng.randf_range(-0.05, 0.05)))
-	var stone := _flat(Color(0.56, 0.55, 0.52))
+	var moss := _textured("jp_moss", Color(0.85, 0.92, 0.82).lightened(rng.randf_range(-0.05, 0.05)), 0.25, 0.95, 0.0, 1.0)
+	var top := _textured("jp_forest", Color(0.95, 1.0, 0.9), 0.25, 0.95, 0.0, 0.8)
+	var stone := _textured("jp_ishigaki", Color(0.95, 0.95, 0.92), 0.25, 0.95, 0.0, 1.2)
 	var bark := _flat(Color(0.33, 0.23, 0.17))
 	var cedar := _flat(Color(0.16, 0.3, 0.2))
-	var camphor := _flat(Color(0.25, 0.42, 0.22))
+	var camphor := _leafy("", Color(0.75, 0.9, 0.7))
 	var mats := [moss, top, stone, bark, cedar, camphor]
 	for m in mats:
-		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
+		if m != camphor:
+			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
 	add_mesh(body, box(Vector3(length + 0.2, hh, TILE + 0.1)), moss, Vector3(0, hh * 0.5, 0))
 	add_mesh(body, box(Vector3(length + 0.3, 0.2, TILE + 0.2)), top, Vector3(0, hh, 0))
 	var x_left := x0 * TILE + length * 0.5
@@ -2236,6 +2257,127 @@ func _jp_hill(body: Node3D, x0: int, x1: int, z: int, length: float) -> void:
 	body.set_meta("fade_hide", [])
 
 
+## Shrine hall (haiden): stone base, vermilion pillars, lattice doors, a big copper-green (or kawara) roof
+## with chigi and katsuogi on the ridge, a shimenawa rope with shide paper and two hanging lanterns.
+func _jp_hall(p: Vector3, dog: bool) -> void:
+	var b := static_body(p)
+	var hall := Node3D.new()
+	hall.position = Vector3(0, 0, -0.6)
+	b.add_child(hall)
+	var red := _jp_mat("vermilion", Color(0.85, 0.24, 0.15))
+	var hinoki := _textured("jp_hinoki", Color(0.85, 0.72, 0.58), 0.25, 0.8, 0.0, 0.8)
+	add_mesh(hall, box(Vector3(7.4, 0.7, 5.6)), _textured("jp_ishigaki", Color(0.9, 0.9, 0.88), 0.25, 0.95, 0.0, 1.0), Vector3(0, 0.35, 0))
+	add_mesh(hall, box(Vector3(7.0, 0.16, 5.2)), hinoki, Vector3(0, 0.78, 0))
+	for k in 3:  # wooden steps up to the deck
+		add_mesh(hall, box(Vector3(2.4, 0.2, 0.4)), hinoki, Vector3(0, 0.1 + k * 0.22, 3.2 - k * 0.32))
+	for sx in [-3.2, -1.1, 1.1, 3.2]:
+		for sz in [2.4, -2.4]:
+			add_mesh(hall, cylinder(0.17, 2.7, 8), red, Vector3(sx, 2.2, sz))
+	add_mesh(hall, box(Vector3(5.6, 2.5, 3.8)), hinoki, Vector3(0, 2.1, -0.3))
+	var doors := QuadMesh.new()
+	doors.size = Vector2(5.2, 2.2)
+	var dm := StandardMaterial3D.new()
+	dm.albedo_texture = _tex("jp_f_koshi")
+	dm.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	dm.uv1_scale = Vector3(1.5, 1, 1)
+	dm.albedo_color = Color(1.0, 0.9, 0.75)
+	add_mesh(hall, doors, dm, Vector3(0, 2.0, 1.62), 0.0, false)
+	add_mesh(hall, box(Vector3(7.2, 0.3, 0.3)), red, Vector3(0, 3.45, 2.4))  # front beam
+	var roof := _textured("jp_kawara" if dog else "jp_kawara_old", Color(0.62, 0.66, 0.74) if dog else Color(0.55, 0.85, 0.72), 0.25, 0.6, 0.15, 1.0)
+	var top := jp.gable(hall, 7.0, 5.6, 3.55, roof, hinoki, 0.62)
+	# chigi (crossed boards) at both ridge ends, katsuogi logs along the ridge
+	var gold := _jp_mat("gilt", Color(0.85, 0.68, 0.3))
+	for sx in [-1.0, 1.0]:
+		for sd in [-1.0, 1.0]:
+			var c := add_mesh(hall, box(Vector3(0.12, 1.3, 0.12)), hinoki, Vector3(sx * 4.0, top + 0.5, sd * 0.25), 0.0, false)
+			c.rotation.x = sd * 0.6
+	for k in 4:
+		var katsuo := add_mesh(hall, cylinder(0.14, 0.9, 8), gold, Vector3(-1.8 + k * 1.2, top + 0.36, 0), 0.0, false)
+		katsuo.rotation.x = PI * 0.5
+	# kohai: the little roof over the steps
+	var kohai := add_mesh(hall, box(Vector3(3.2, 0.14, 1.8)), roof, Vector3(0, 3.35, 3.2))
+	kohai.rotation.x = 0.35
+	# shimenawa + shide
+	var rope := add_mesh(hall, cylinder(0.14, 5.6, 8, 0.14), _jp_mat("straw", Color(0.85, 0.74, 0.48)), Vector3(0, 3.1, 2.6), 0.0, false)
+	rope.rotation.z = PI * 0.5
+	for k in 5:
+		add_mesh(hall, box(Vector3(0.16, 0.5, 0.02)), _jp_mat("shide", Color(1, 1, 0.98)), Vector3(-2.0 + k * 1.0, 2.75, 2.62), 0.0, false)
+	for sx in [-2.6, 2.6]:  # hanging lanterns
+		var lan := SphereMesh.new()
+		lan.radius = 0.26
+		lan.height = 0.7
+		lan.radial_segments = 8
+		lan.rings = 4
+		var lm := emissive(Color(1.0, 0.95, 0.85) if not dog else Color(1.0, 0.5, 0.3), 0.0)
+		jp.night_mats.append(lm)
+		add_mesh(hall, lan, lm, Vector3(sx, 2.6, 2.75), 0.0, false)
+	add_box_collider(b, Vector3(7.4, 3.0, 5.6), Vector3(0, 1.5, -0.6))
+	_jp_examine(b, "Look at the hall", "hall_dog" if dog else "hall", 0, Vector3(0, 0.8, 2.9))
+
+
+## Komaneko / komainu: a sitting stone animal on a pedestal. Cats wear a red bib; the open-mouthed one is "a".
+func _jp_guardian(p: Vector3, dog: bool, x: int) -> void:
+	var b := static_body(p)
+	var stone := _textured("jp_concrete", Color(0.72, 0.72, 0.7), 0.5, 0.95, 0.0, 1.0)
+	add_mesh(b, box(Vector3(0.95, 0.75, 0.95)), _textured("jp_ishigaki", Color(0.92, 0.92, 0.9), 0.5, 0.95, 0.0, 1.0), Vector3(0, 0.37, 0))
+	var face_x := 1.0 if x < (27 if not dog else 47) else -1.0  # they face the path between them
+	var g := Node3D.new()
+	g.position = Vector3(0, 0.75, 0)
+	g.rotation.y = face_x * 0.6
+	b.add_child(g)
+	var haunch := SphereMesh.new()
+	haunch.radius = 0.33
+	haunch.height = 0.5
+	add_mesh(g, haunch, stone, Vector3(0, 0.22, -0.1))
+	var chest := SphereMesh.new()
+	chest.radius = 0.24
+	chest.height = 0.62
+	add_mesh(g, chest, stone, Vector3(0, 0.5, 0.12))
+	for sd in [-0.12, 0.12]:
+		add_mesh(g, cylinder(0.06, 0.45, 6), stone, Vector3(sd, 0.22, 0.25), 0.0, false)
+	var head := SphereMesh.new()
+	head.radius = 0.24 if not dog else 0.27
+	head.height = 0.44 if not dog else 0.5
+	add_mesh(g, head, stone, Vector3(0, 0.92, 0.18))
+	add_mesh(g, box(Vector3(0.16, 0.1, 0.12)), stone, Vector3(0, 0.86, 0.38), 0.0, false)  # muzzle
+	for sd in [-1.0, 1.0]:
+		if dog:
+			var mane := SphereMesh.new()
+			mane.radius = 0.13
+			mane.height = 0.22
+			add_mesh(g, mane, stone, Vector3(sd * 0.22, 0.86, 0.12), 0.0, false)
+		else:
+			var ear := PrismMesh.new()
+			ear.size = Vector3(0.16, 0.2, 0.06)
+			var em := add_mesh(g, ear, stone, Vector3(sd * 0.13, 1.16, 0.16), 0.0, false)
+			em.rotation.z = -sd * 0.25
+	var tail := add_mesh(g, cylinder(0.05, 0.5, 6), stone, Vector3(0.2, 0.35, -0.38), 0.0, false)
+	tail.rotation = Vector3(0.6, 0, 0.5)
+	if not dog:
+		add_mesh(g, box(Vector3(0.36, 0.2, 0.04)), _jp_mat("bib", Color(0.82, 0.16, 0.14)), Vector3(0, 0.62, 0.34), 0.0, false)
+	add_box_collider(b, Vector3(0.95, 1.9, 0.95), Vector3(0, 0.95, 0))
+	_jp_examine(b, "Look at the guardian", "komainu" if dog else "komaneko")
+
+
+## Fluffy foliage: leaf-cluster texture with holes (tools/jp_facades.py "leaves"), both faces drawn.
+## key "" = a fresh material (for bodies that fade on their own).
+func _leafy(key: String, tint: Color) -> StandardMaterial3D:
+	if key != "" and _mats.has("leafy_" + key):
+		return _mats["leafy_" + key]
+	var m := StandardMaterial3D.new()
+	m.albedo_color = tint
+	m.albedo_texture = _tex("jp_f_leaves")
+	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	m.uv1_scale = Vector3(4, 2, 1)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+	m.alpha_scissor_threshold = 0.5
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.roughness = 1.0
+	if key != "":
+		_mats["leafy_" + key] = m
+	return m
+
+
 func _near_walkable(x: int, z: int, r: int) -> bool:
 	for dz in range(-r, r + 1):
 		for dx in range(-r, r + 1):
@@ -2245,7 +2387,12 @@ func _near_walkable(x: int, z: int, r: int) -> bool:
 
 
 func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
+	if jp == null:
+		return false
 	match c:
+		"g":
+			jp.tree(p, x, _z)
+			return true
 		"A":
 			var b := static_body(p)
 			var red := _jp_mat("vermilion", Color(0.85, 0.24, 0.15))
@@ -2258,16 +2405,7 @@ func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
 			_jp_examine(b, "Look at the torii", "torii_dog" if x >= 40 else ("torii_steps" if x < 8 else "torii"), 0, Vector3(0, 0.8, 0.6))
 			return true
 		"Y":
-			var b := static_body(p)
-			var wood := _jp_mat("wood", Color(0.42, 0.26, 0.16))
-			add_mesh(b, box(Vector3(4.0, 0.5, 3.4)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.25, -0.4))
-			add_mesh(b, box(Vector3(3.4, 2.2, 2.8)), wood, Vector3(0, 1.6, -0.4))
-			add_mesh(b, box(Vector3(1.4, 1.6, 0.05)), _jp_mat("paper", Color(0.93, 0.9, 0.8)), Vector3(0, 1.4, 1.02), 0.0, false)
-			for sd in [-1.0, 1.0]:
-				var roof := add_mesh(b, box(Vector3(4.8, 0.2, 2.6)), _jp_mat("kawara_dark", Color(0.2, 0.22, 0.28)), Vector3(0, 3.15, -0.4 + sd * 1.0))
-				roof.rotation.x = sd * 0.55
-			add_box_collider(b, Vector3(4.0, 3.0, 3.4), Vector3(0, 1.5, -0.4))
-			_jp_examine(b, "Look at the hall", "hall_dog" if x >= 40 else "hall", 0, Vector3(0, 0.8, 1.6))
+			_jp_hall(p, x >= 40)
 			return true
 		"T":
 			var b := static_body(p)
@@ -2278,28 +2416,36 @@ func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
 			_jp_examine(b, "Ring the bell", "offering_dog" if x >= 40 else "offering")
 			return true
 		"C":
-			var b := static_body(p)
-			var stone := _jp_mat("statue", Color(0.6, 0.6, 0.62))
-			add_mesh(b, box(Vector3(0.8, 0.7, 0.8)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.35, 0))
-			var dog := x >= 40
-			add_mesh(b, box(Vector3(0.55, 0.6, 0.7)), stone, Vector3(0, 1.0, 0))
-			add_mesh(b, box(Vector3(0.5 if not dog else 0.62, 0.45, 0.45)), stone, Vector3(0, 1.45, 0.15))
-			for sd in [-0.16, 0.16]:
-				var ear := add_mesh(b, box(Vector3(0.12, 0.22, 0.08) if not dog else Vector3(0.16, 0.12, 0.16)), stone, Vector3(sd * (1.0 if not dog else 1.4), 1.75, 0.15), 0.0, false)
-				ear.rotation.z = 0.3 * signf(sd)
-			add_box_collider(b, Vector3(0.8, 1.9, 0.8), Vector3(0, 0.95, 0))
-			_jp_examine(b, "Look at the guardian", "komainu" if dog else "komaneko")
+			_jp_guardian(p, x >= 40, x)
 			return true
 		"h":
 			var b := static_body(p)
 			var stone := _jp_mat("lantern_stone", Color(0.62, 0.62, 0.6))
 			add_mesh(b, box(Vector3(0.6, 0.25, 0.6)), stone, Vector3(0, 0.12, 0))
 			add_mesh(b, cylinder(0.12, 0.9, 6), stone, Vector3(0, 0.7, 0))
-			add_mesh(b, box(Vector3(0.5, 0.45, 0.5)), emissive(Color(1.0, 0.7, 0.35), 1.6), Vector3(0, 1.38, 0), 0.0, false)
+			var fire := emissive(Color(1.0, 0.7, 0.35), 0.0)
+			jp.night_mats.append(fire)
+			add_mesh(b, box(Vector3(0.5, 0.45, 0.5)), fire, Vector3(0, 1.38, 0), 0.0, false)
 			add_mesh(b, box(Vector3(0.75, 0.15, 0.75)), stone, Vector3(0, 1.68, 0))
 			add_box_collider(b, Vector3(0.6, 1.8, 0.6), Vector3(0, 0.9, 0))
 			if rng.randf() < 0.5:
-				add_light(p + Vector3(0, 1.4, 0.3), Color(1.0, 0.7, 0.4), 1.0, 3.5)
+				var l := add_light(p + Vector3(0, 1.4, 0.3), Color(1.0, 0.7, 0.4), 0.0, 3.5)
+				l.visible = false
+				jp.night_lights.append(l)
+			return true
+		"L":
+			# Town street lamp: grey pole, curved arm, a lamp that wakes at dusk.
+			var b := static_body(p)
+			var grey := _jp_mat("lamp_pole", Color(0.55, 0.57, 0.6))
+			add_mesh(b, cylinder(0.07, 4.2, 6), grey, Vector3(0, 2.1, 0))
+			add_mesh(b, box(Vector3(0.9, 0.06, 0.06)), grey, Vector3(0.4, 4.15, 0), 0.0, false)
+			var bulb := emissive(Color(1.0, 0.93, 0.8), 0.0)
+			jp.night_mats.append(bulb)
+			add_mesh(b, box(Vector3(0.36, 0.12, 0.2)), bulb, Vector3(0.8, 4.05, 0), 0.0, false)
+			add_box_collider(b, Vector3(0.2, 3.0, 0.2), Vector3(0, 1.5, 0))
+			var l2 := add_light(p + Vector3(0.8, 3.6, 0.3), Color(1.0, 0.9, 0.75), 0.0, 9.0)
+			l2.visible = false
+			jp.night_lights.append(l2)
 			return true
 		"o":
 			var b := static_body(p)
@@ -2355,10 +2501,10 @@ func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
 		"c":
 			var b := static_body(p)
 			var green := _jp_mat("bamboo", Color(0.35, 0.6, 0.3))
-			var leaf := _jp_mat("bamboo_leaf", Color(0.42, 0.62, 0.3))
+			var leaf := _leafy("bamboo_leaf", Color(0.85, 1.0, 0.8))
 			var spray := SphereMesh.new()
-			spray.radius = 0.42
-			spray.height = 0.22
+			spray.radius = 0.5
+			spray.height = 0.55
 			spray.radial_segments = 6
 			spray.rings = 2
 			for i in 6:

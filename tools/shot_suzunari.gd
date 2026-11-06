@@ -8,7 +8,8 @@ extends SceneTree
 const SHOTS := [["shrine_morning", Vector2i(27, 5), 480, 0.0, ""], ["steps_dusk", Vector2i(5, 14), 1085, 2.4, "peek"],
 	["school_gate", Vector2i(22, 30), 800, 0.0, "fluster"], ["river_rain", Vector2i(17, 43), 720, 4.2, "wail"],
 	["jizo_crossroads", Vector2i(47, 33), 1095, 0.0, ""], ["station_night", Vector2i(9, 38), 1200, 1.0, ""],
-	["talk_words", Vector2i(27, 40), 900, 1.6, "talk"]]
+	["talk_words", Vector2i(27, 40), 900, 1.6, "talk"], ["street_noon", Vector2i(20, 39), 740, 0.0, "happy"],
+	["home_evening", Vector2i(24, 47), 1060, 0.0, ""]]
 var _step := 0
 var _wait := 0
 var _shot := 0
@@ -55,6 +56,7 @@ func _process(_d: float) -> bool:
 			p.facing = Vector3(0, 0, -1)
 			var a = get_first_node_in_group("amane")
 			a.global_position = p.global_position + Vector3(2.2, 0.1, 1.2)
+			a.set("_approach_cd", 9999.0)
 			for n in get_nodes_in_group("npc"):
 				if str(n.get("npc_name")) == "Inukai Hayate":
 					n.global_position = p.global_position + Vector3(-2.4, 0.1, 1.0)

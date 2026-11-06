@@ -14,6 +14,7 @@ var amane: AmaneNPC
 var overlay: Node
 var _rain: Array[CPUParticles3D] = []
 var _storm_t := 0.0
+var _petals: GPUParticles3D
 
 
 func _setup() -> void:
@@ -21,10 +22,10 @@ func _setup() -> void:
 		"theme": "suzunari", "bg": "#8a9cc4", "ground": "#8c8796", "ground_alt": "#9a94a4", "wall": "#e6dccb",
 		"fog": "#d8cfe2", "fog_density": 0.004, "sun": "#ffe2b8", "sun_energy": 1.2, "ambient": "#b8c0dc",
 		"ambient_energy": 1.3, "neon": ["#ffb35a", "#ff6a7a", "#7ad0ff"], "props": ["crate"], "ground_tex": "concrete",
-		"path_tex": "asphalt", "horizon": ["skyline_mountains", "skyline_city", "skyline_mountains"], "foliage": 0.05,
-		"foliage_cells": [0, 4], "plant": "#f2a6c2", "plant_glow": 0.0, "puddles": "water", "weather": "",
-		"water": "#20304a", "water_glow": "#7ad0ff", "water_glow_strength": 0.08, "water_glow_b": "#ffb35a",
-		"water_reflect": 0.5, "building_h": [4.0, 7.0], "exposure": 1.45}
+		"path_tex": "asphalt", "horizon": ["skyline_mountains", "skyline_city", "skyline_mountains"], "foliage": 0.0,
+		"foliage_cells": [0, 4], "plant": "#6aa84f", "plant_glow": 0.0, "puddles": "water", "weather": "",
+		"water": "#1d4c5e", "water_glow": "#a8e6ee", "water_glow_strength": 0.05, "water_glow_b": "#ffb35a",
+		"water_reflect": 0.0, "building_h": [4.0, 7.0], "exposure": 1.12}
 	level_seed = 2026
 	camera_pitch = 30.0
 	camera_distance = 16.0
@@ -70,6 +71,29 @@ func _post_build() -> void:
 	Game.set_deferred("air_billing_active", false)
 	Clock.running = true
 	_build_rain()
+	_build_petals()
+	var jp = build.get("jp")
+	if jp:
+		var life := TownLife.new()
+		life.name = "TownLife"
+		add_child(life)
+		life.setup(jp.ground_spots(), jp.flower_spots())
+	# Kei cars and vans on the roads (left-hand traffic: eastbound on the north lane).
+	var w := builder.width
+	var lanes := [[builder.center(-3, 32), builder.center(w + 2, 32)], [builder.center(w + 2, 33), builder.center(-3, 33)],
+		[builder.center(-3, 43), builder.center(w + 2, 43)], [builder.center(w + 2, 43), builder.center(-3, 43)]]
+	for i in 6:
+		var car := Critter.new()
+		car.kind = "streetcar"
+		car.style = "kei"
+		var lane: Array = lanes[i % lanes.size()]
+		car.lane_from = lane[0]
+		car.lane_to = lane[1]
+		car.seed_value = 7700 + i
+		actors.add_child(car)
+	environment.adjustment_saturation = 1.08
+	environment.adjustment_contrast = 1.06
+	environment.fog_density = 0.0035
 	var a = NPC_SCENE.instantiate()
 	a.set_script(load("res://src/actors/amane_npc.gd"))
 	amane = a
@@ -135,6 +159,9 @@ func _set_rain(r: float) -> void:
 func _process(delta: float) -> void:
 	var r := float(Amane.st()["rain"])
 	_set_rain(r)
+	if _petals and player:
+		_petals.global_position = player.global_position + Vector3(0, 6.0, -5.0)
+		_petals.amount_ratio = clampf(1.0 - r * 0.8, 0.15, 1.0)
 	if Amane.tears_level() >= 5 and sun:
 		_storm_t -= delta
 		if _storm_t <= 0.0:
@@ -160,6 +187,25 @@ func _apply_light() -> void:
 	sun.light_energy = float(l.sun_energy) * gloom
 	environment.ambient_light_color = l.ambient
 	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 + 0.25 * gloom)
+	# The sun crosses the sky behind the camera: low and golden from the south-east in the morning,
+	# high at noon, long red shadows from the south-west at Omagatoki.
+	var t := clampf((float(Clock.minute()) - 450.0) / (Clock.NIGHT - 450.0), 0.0, 1.0)
+	var elev := lerpf(24.0, 58.0, sin(t * PI)) if t < 0.92 else lerpf(18.0, 10.0, (t - 0.92) / 0.08)
+	sun.rotation_degrees = Vector3(-elev, lerpf(48.0, -55.0, t), 0.0)
+	var haze: Color = (l.ambient as Color).lerp(l.sun, 0.35)
+	environment.fog_light_color = haze.lerp(Color(0.55, 0.58, 0.66), 0.5 * float(Amane.st()["rain"]))
+	environment.background_color = environment.fog_light_color
+	var night := clampf((1.05 - float(l.sun_energy)) / 0.7, 0.0, 1.0)
+	# Colour grade follows the sky: cool blue shadows, highlights the colour of the sun.
+	if camera_rig:
+		camera_rig.set_grade((l.ambient as Color).darkened(0.6).lerp(Color(0.12, 0.16, 0.3), 0.4), (l.sun as Color).lightened(0.35), 0.2)
+		if camera_rig.post_mat:
+			camera_rig.post_mat.set_shader_parameter("aberration", 0.5)
+			camera_rig.post_mat.set_shader_parameter("grain", 0.02)
+			camera_rig.post_mat.set_shader_parameter("vignette", 0.42)
+	var jp = build.get("jp")
+	if jp:
+		jp.set_night(maxf(night, 0.35 * float(Amane.st()["rain"])))
 
 
 func nearest_walkable(p: Vector3) -> Vector3:
@@ -188,3 +234,51 @@ func night_watch() -> void:
 		[{"id": "chase", "text": str(c.get("chase", "Chase it."))}, {"id": "name", "text": str(c.get("name", "Name it."))},
 		{"id": "let_go", "text": str(c.get("let_go", "Let it go."))}])
 	await hud.say("", Amane.night_choice(picked))
+
+
+## Cherry petals drifting through the frame all spring (fewer in heavy rain).
+func _build_petals() -> void:
+	_petals = GPUParticles3D.new()
+	_petals.name = "Petals"
+	var pm := ParticleProcessMaterial.new()
+	pm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	pm.emission_box_extents = Vector3(18.0, 2.0, 14.0)
+	pm.direction = Vector3(1.0, -0.4, 0.5)
+	pm.spread = 30.0
+	pm.initial_velocity_min = 0.4
+	pm.initial_velocity_max = 1.3
+	pm.gravity = Vector3(0, -0.5, 0)
+	pm.angular_velocity_min = -220.0
+	pm.angular_velocity_max = 220.0
+	pm.turbulence_enabled = true
+	pm.turbulence_noise_strength = 1.6
+	pm.turbulence_noise_scale = 5.0
+	pm.turbulence_influence_min = 0.04
+	pm.turbulence_influence_max = 0.14
+	pm.scale_min = 0.7
+	pm.scale_max = 1.4
+	var grad := Gradient.new()
+	grad.set_color(0, Color(0.98, 0.66, 0.78))
+	grad.set_color(1, Color(0.93, 0.5, 0.66))
+	var gt := GradientTexture1D.new()
+	gt.gradient = grad
+	pm.color_initial_ramp = gt
+	_petals.process_material = pm
+	var q := QuadMesh.new()
+	q.size = Vector2(0.09, 0.065)
+	var m := StandardMaterial3D.new()
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true
+	m.vertex_color_use_as_albedo = true
+	m.emission_enabled = true
+	m.emission = Color(1.0, 0.6, 0.72)
+	m.emission_energy_multiplier = 0.0
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	q.material = m
+	_petals.draw_pass_1 = q
+	_petals.amount = maxi(40, int(200 * quality_mult()))
+	_petals.lifetime = 10.0
+	_petals.preprocess = 10.0
+	_petals.local_coords = false
+	_petals.visibility_aabb = AABB(Vector3(-26, -12, -22), Vector3(52, 24, 44))
+	add_child(_petals)
