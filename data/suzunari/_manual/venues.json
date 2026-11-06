@@ -1,0 +1,12 @@
+{
+ "venues": {
+  "food": {"name": "Shopping Street Eatery", "greet": ["Steam on the windows, a radio playing old enka, and a cook who calls everyone 'kid'.", "\"Irasshai! Sit anywhere, the rain's free.\"", "A row of soaked salarymen slurps in silence under a hand-written menu."]},
+  "bar": {"name": "Kissa (Old Coffee House)", "greet": ["Dark wood, a ticking clock and a master who has polished the same cup since 1987.", "\"Coffee or melon soda? ...Melon soda. Of course.\"", "A cat sleeps on the counter. Nobody moves it. Nobody would dare."]},
+  "karaoke": {"name": "Karaoke Box", "greet": ["Tambourines, a sticky microphone and a menu of fries the size of a phone book.", "\"Two hours? Free drinks bar's broken, sorry. The cat broke it.\""]},
+  "arcade": {"name": "Game Center", "greet": ["Crane machines full of cat plushies and a rhythm game everyone is too shy to play.", "\"Medals are at the counter. Don't feed the claw machine, it's rigged. I mean - good luck!\""]},
+  "clinic": {"name": "Pharmacy", "greet": ["White shelves, cough drops, and a pharmacist who already knows what's wrong with you.", "\"Rainy season cold? Second one today.\""]},
+  "pawn": {"name": "Antique Shop", "greet": ["Old kettles, older dolls, and a shopkeeper whose shadow has a tail.", "\"Everything here is at least a hundred years old. Some of it is still awake.\""]},
+  "fortune": {"name": "Fortune Corner", "greet": ["A fortune slip box, a beckoning cat and an old woman who smiles like she's read your diary.", "\"Draw a slip. If it's bad luck, tie it to the tree and walk away.\""]},
+  "tapes": {"name": "Book & Record Shop", "greet": ["Stacks of manga, a crate of city-pop records and a sign that says NO READING (everyone is reading).", "\"Looking for anything? We have everything except what you want.\""]}
+ }
+}

@@ -1,0 +1,357 @@
+{
+ "rules": {
+  "pc_new": [
+   "You're the Asagiri grandson, aren't you? You have his eyebrows.",
+   "The transfer student! Tokyo, right? Bet it doesn't rain like this there.",
+   "You're the one that first-year follows around.",
+   "Your grandpa used to give us free sweets. Just saying.",
+   "New kid. You'll get used to the cats. They won't get used to you.",
+   "Second-year, class B? Makabe-sensei's class. He's nice. Sad, but nice."
+  ],
+  "chatter": [
+   "Rain again",
+   "The shrine bell rang by itself",
+   "Tanabata's next month",
+   "The taiyaki shop has custard now",
+   "Exams are coming",
+   "Someone's crying on the roof",
+   "The cats are acting weird",
+   "The old tunnel is still closed"
+  ],
+  "product": [
+   "melon pan",
+   "canned coffee",
+   "a gacha capsule",
+   "instant ramen",
+   "a lucky cat keychain",
+   "umbrella insurance"
+  ],
+  "brand": [
+   "Neko Cola",
+   "Suzunari Milk",
+   "Kame Coffee",
+   "Hoshi Ramen",
+   "Asagiri-do"
+  ],
+  "paste_product": [
+   "cup noodles",
+   "curry bread",
+   "onigiri with mystery filling",
+   "konbini fried chicken"
+  ],
+  "gristle_brand": [
+   "Hoshi Ramen",
+   "Neko Cola",
+   "Suzunari Milk"
+  ],
+  "oxy_brand": [
+   "Umi Water",
+   "Kame Tea"
+  ],
+  "lumen_brand": [
+   "Suzunari FM",
+   "Channel 7 Local",
+   "the school newspaper"
+  ],
+  "halcyon_brand": [
+   "Suzunari Shinkin Bank",
+   "Post Office Savings"
+  ],
+  "paragon_brand": [
+   "the neighbourhood watch",
+   "the koban"
+  ],
+  "media_product": [
+   "the late-night drama",
+   "the weather girl's show",
+   "the anime about the cat bus driver",
+   "the idol variety show"
+  ],
+  "air_product": [
+   "canned coffee",
+   "melon soda"
+  ],
+  "indie_brand": [
+   "Records Amaoto",
+   "Taiyaki Kiku"
+  ],
+  "gadget": [
+   "a phone strap",
+   "a pocket umbrella",
+   "a gacha figure",
+   "a bicycle bell"
+  ],
+  "team": [
+   "the Suzunari Seagulls",
+   "the school baseball team",
+   "the town volleyball club"
+  ],
+  "band": [
+   "the light music club",
+   "a city-pop cover band",
+   "the enka singer at the kissa"
+  ],
+  "song": [
+   "an old enka song",
+   "the Tanabata song",
+   "a city-pop classic",
+   "the school anthem, badly"
+  ],
+  "dish": [
+   "oden",
+   "curry rice",
+   "taiyaki",
+   "yakisoba bread",
+   "tamagoyaki",
+   "cold soba"
+  ],
+  "thing": [
+   "sunshine",
+   "dry socks",
+   "summer",
+   "quiet mornings",
+   "the old shrine festival"
+  ],
+  "radio": [
+   "Suzunari FM says rain again.",
+   "The radio's playing enka.",
+   "Weather report: yes."
+  ],
+  "station": [
+   "Suzunari Station",
+   "the bus stop by the river"
+  ],
+  "genre": [
+   "city pop",
+   "enka",
+   "idol pop",
+   "lo-fi"
+  ],
+  "sport": [
+   "baseball",
+   "volleyball",
+   "kendo",
+   "sumo on TV"
+  ],
+  "pet_kind": [
+   "cat",
+   "shiba",
+   "goldfish",
+   "turtle"
+  ],
+  "weather": [
+   "Rain.",
+   "More rain.",
+   "Clouds, then rain.",
+   "A rare sunny hour."
+  ],
+  "found_item": [
+   "an umbrella",
+   "a cat collar with a bell",
+   "a fortune slip",
+   "a 100-yen coin"
+  ],
+  "job": [
+   "work at the konbini",
+   "help at the fish market",
+   "do deliveries",
+   "run the family shop"
+  ],
+  "show_opinion": [
+   "It was so good.",
+   "The ending made me cry.",
+   "Don't spoil it!"
+  ],
+  "food_name": [
+   "Ramen Suzuya",
+   "Taiyaki Kiku",
+   "Oden Hanabi",
+   "Udon Tsuru",
+   "Takoyaki Maru",
+   "Soba Kazamidori",
+   "Bento Asahi",
+   "Okonomi Mame",
+   "Dango Ohana",
+   "Curry Shirokuma"
+  ],
+  "bar_name": [
+   "Cafe Neko no Te",
+   "Kissa Amagasa",
+   "Izakaya Tanuki",
+   "Kissa Hoshizora",
+   "Cafe Kuroneko"
+  ],
+  "arcade_name": [
+   "Game Center Maneki",
+   "Game Spot Rin",
+   "Arcade Kaminari"
+  ],
+  "karaoke_name": [
+   "Karaoke Utahime",
+   "Karaoke Hibiki",
+   "Karaoke Nekomimi"
+  ],
+  "pawn_name": [
+   "Antiques Kitsune",
+   "Old Things Mujina",
+   "Kotto Sanpo"
+  ],
+  "fortune_name": [
+   "Omikuji Corner",
+   "Uranai Tsukimi",
+   "Fortunes by Madame Inari"
+  ],
+  "clinic_name": [
+   "Pharmacy Sakura",
+   "Kusuri Fujimura",
+   "Drugstore Hikari"
+  ],
+  "tapes_name": [
+   "Books Hanamaru",
+   "Records Amaoto",
+   "Manga Kissa Shiori"
+  ],
+  "news": [
+   "Rain warning extended for the eleventh straight day",
+   "Shopping street association asks: has anyone seen the shrine bell?",
+   "Suzunari Gakuen track team second at the prefecture meet",
+   "Cats now outnumber residents, says town hall, again",
+   "Tanabata festival committee looking for volunteers",
+   "Lost: one black umbrella. Answers to nothing",
+   "Fishermen report strange lights off the harbor",
+   "Maneki-neko on Ginza street found with a cracked paw",
+   "Weather office: we don't know why it rains either",
+   "School reminds students: do not climb the shrine steps after six",
+   "Asagiri-do sweet shop: new matcha mochi this week",
+   "Library committee still recruiting. Snacks promised"
+  ],
+  "street": [
+   "SUZUNARI GINZA",
+   "NEKO-DORI",
+   "SAKURA-ZAKA",
+   "EKIMAE-DORI",
+   "KAWABATA",
+   "999 STEPS"
+  ],
+  "menu": [
+   "RAMEN 680",
+   "TAIYAKI 150",
+   "ODEN SET 480",
+   "DANGO 120",
+   "CURRY 750",
+   "MELON SODA 300"
+  ],
+  "flyer": [
+   "LOST CAT: answers to Mochi",
+   "TANABATA FESTIVAL JUL 7",
+   "PIANO LESSONS - ASK INSIDE",
+   "ROOM FOR RENT",
+   "HAVE YOU SEEN THIS BELL?",
+   "LIBRARY COMMITTEE WANTS YOU"
+  ],
+  "graffiti": [
+   "NYA",
+   "999",
+   "AME AME FURE FURE",
+   "1-A WAS HERE",
+   "WHO IS WAITING?",
+   "DON'T COUNT THE STEPS"
+  ],
+  "floor_notice": [
+   "NO RUNNING IN THE CORRIDOR",
+   "INDOOR SHOES ONLY",
+   "MIND THE STEP"
+  ],
+  "headline": [
+   "RAIN, AGAIN",
+   "SHRINE BELL MISSING SINCE 2010?",
+   "SPRING TERM BEGINS"
+  ],
+  "ad_body": [
+   "Asagiri-do: sweets since 1868",
+   "Neko no Te: cats included",
+   "Suzunari Line: next train in 40 min"
+  ],
+  "npc_name": [
+   "Sato #given#",
+   "Suzuki #given#",
+   "Takahashi #given#",
+   "Tanaka #given#",
+   "Ito #given#",
+   "Watanabe #given#",
+   "Yamamoto #given#",
+   "Nakamura #given#",
+   "Kobayashi #given#",
+   "Kato #given#",
+   "Old man #surname#",
+   "Auntie #surname#",
+   "#surname#-san"
+  ],
+  "merchant_name": [
+   "Old man #surname#",
+   "Auntie #surname#",
+   "#surname# the shopkeeper",
+   "Master #surname#",
+   "Granny #surname#"
+  ],
+  "robot_name": [
+   "Sato #given#",
+   "Suzuki #given#",
+   "Takahashi #given#",
+   "Tanaka #given#",
+   "Ito #given#",
+   "Watanabe #given#",
+   "Yamamoto #given#",
+   "Nakamura #given#",
+   "Kobayashi #given#",
+   "Kato #given#",
+   "Old man #surname#",
+   "Auntie #surname#",
+   "#surname#-san"
+  ],
+  "surname": [
+   "Sato",
+   "Suzuki",
+   "Takahashi",
+   "Tanaka",
+   "Ito",
+   "Watanabe",
+   "Yamamoto",
+   "Nakamura",
+   "Kobayashi",
+   "Kato",
+   "Yoshida",
+   "Yamada",
+   "Sasaki",
+   "Matsumoto",
+   "Inoue",
+   "Kimura",
+   "Hayashi",
+   "Shimizu",
+   "Mori",
+   "Ikeda"
+  ],
+  "given": [
+   "Haruto",
+   "Sota",
+   "Yuto",
+   "Ren",
+   "Kaito",
+   "Yui",
+   "Hina",
+   "Mei",
+   "Sakura",
+   "Aoi",
+   "Koharu",
+   "Yuna",
+   "Taiga",
+   "Nanami",
+   "Kenta",
+   "Masao",
+   "Fumiko",
+   "Tetsuo",
+   "Chieko",
+   "Shigeru"
+  ]
+ }
+}

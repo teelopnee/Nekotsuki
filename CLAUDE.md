@@ -23,9 +23,17 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
 - NEW GAME = `Router.new_suzunari()` (Toru, cast look) -> `scenes/world/suzunari.tscn` (`src/world/suzunari.gd`, map
   `data/maps/suzunari.txt`, LevelBuilder legend below). Continue routes there when `Game.location_id == "suzunari"`.
   The old sci-fi flow (creator, station, planets, saga) still exists for the smoke test until it is replaced.
-- Themes: `palette.theme = "suzunari"` (LevelBuilder: no wanted posters, Japanese shop types, DRINKS vending),
-  `CharacterLook.theme` (no robots / sci-fi accessories / neon hair; "student" looks), `Copy.theme` (prefers
-  `suzunari_<symbol>` from `data/copy_suzunari.json`: shop names, news, flyers, graffiti, streets).
+- Suzunari theme (the inherited sci-fi text and dressing, re-skinned):
+  `python3 tools/suzunari_theme.py` turns the base data into `data/suzunari/*.json` (barks, venues, interactions,
+  counters, items, tips) and `data/copy_suzunari_auto.json` (Copy symbols `suzunari_<symbol>`): REPLACE rules
+  (credits -> yen, Paragon -> the police, paste -> instant noodles...), BAD lines dropped from line lists, then the
+  hand-written overrides in `data/suzunari/_manual/*.json` merged on top. Edit the manual files (or the base data) and
+  re-run the script; never edit the generated files. Runtime: `DataDB.apply_theme("suzunari")` (themed venues /
+  interactions / counters / items; `DataDB.themed_path()` for barks and tips; `DataDB.money(n)` = n x 100 yen),
+  `Copy.theme` (also nested #symbols#), `CharacterLook.theme` (no robots / sci-fi accessories / neon hair),
+  `palette.theme` (LevelBuilder: tiled eaves, noren, red lanterns, Japanese shop types and blade signs, no wanted
+  posters or neon tubes), `Interactions.SUZUNARI_VERBS` (town verbs only), `NPCVoice` (`pc_new` remarks instead of
+  sci-fi biography), HUD hints / pause "Town" tab / witness "CALLING THE POLICE". day_test checks for sci-fi leaks.
 - `Clock` autoload: 1 real s = `rate` game minutes, periods, Omagatoki 18:00-18:30, day ends 22:00 (`level.end_day()` saves
   and reloads), `light()` drives the sun. State in `Game.flags["clock"]`.
 - `Amane` autoload (state in `Game.flags["amane"]`, lines `data/amane.json`): tears 0-5 -> `rain` (level particles + gloom),

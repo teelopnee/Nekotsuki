@@ -513,6 +513,12 @@ func _update_hint() -> void:
 	if _hint_label == null:
 		return
 	var dev := Router.input_device
+	if DataDB.theme == "suzunari":
+		# No fights in town: just how to talk, walk and check the phone.
+		_hint_label.text = {"touch": "Walk with the stick  |  middle button: talk / use  |  PHONE (top right): Amane's messages",
+			"gamepad": "Left stick walk  |  Y talk / use  |  A dodge  |  PHONE in the top right"}.get(dev,
+			"WASD walk  |  F talk / use  |  SPACE dodge  |  PHONE in the top right  |  F11 fullscreen")
+		return
 	if dev == "touch":
 		_hint_label.text = "MELEE near a foe = DASH STRIKE  |  hold FIRE = charge  |  GUN / BLADE swap weapons  |  tap enemy parts to target"
 	elif dev == "gamepad":
@@ -662,7 +668,7 @@ func _refresh_status() -> void:
 	_hp_bar.max_value = Game.max_hp()
 	_hp_bar.value = Game.hp
 	_hp_label.text = " %d/%d" % [roundi(Game.hp), roundi(Game.max_hp())]
-	_credits_label.text = ("%d YEN" % Game.credits) if Game.location_id == "suzunari" else "%d CR   MEDKITS x%d" % [Game.credits, Game.item_count("medkit")]
+	_credits_label.text = DataDB.money(Game.credits).to_upper() if DataDB.theme == "suzunari" else "%d CR   MEDKITS x%d" % [Game.credits, Game.item_count("medkit")]
 	if _weapon_label:
 		var nb := Arsenal.owned("melee").size()
 		var ng := Arsenal.owned("ranged").size()
@@ -1040,7 +1046,7 @@ func _fill_shop(vendor: String, faction_id: String, stock: Array) -> void:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 6)
 	_shop_panel.add_child(v)
-	v.add_child(make_label("%s  //  %d CR" % [vendor.to_upper(), Game.credits], 22, Color(1.0, 0.82, 0.24)))
+	v.add_child(make_label("%s  //  %s" % [vendor.to_upper(), DataDB.money(Game.credits).to_upper()], 22, Color(1.0, 0.82, 0.24)))
 	var standing := "%s standing: %s  (prices x%.2f)" % [DataDB.faction_name(faction_id), Factions.standing(faction_id), Factions.price_multiplier(faction_id)] if faction_id != "" else "Independent trader"
 	v.add_child(make_label(standing, 14, Color(0.6, 0.85, 1.0)))
 	var scroll := ScrollContainer.new()

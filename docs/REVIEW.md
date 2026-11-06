@@ -22,3 +22,14 @@
 - Tests: day_test + all inherited tests pass. Screenshots: docs/preview/suzunari_day1.png.
 - Open: shop interiors, keeper greetings, NPC small talk and barks are still sci-fi text (M3/M4); combat key hints
   still on screen; buildings are the generic facade kit (no Japanese roofs yet); no real school timetable for NPCs.
+
+## Theme pass (2026-11-06): no more ODD-SPACE in Suzunari
+- `tools/suzunari_theme.py`: auto-rewrites ~4,600 inherited strings (510 changed, 265 sci-fi lines dropped) into
+  `data/suzunari/*.json` + `data/copy_suzunari_auto.json`; hand-written town text in `data/suzunari/_manual/`
+  (barks, shop names and greetings, verb names, jobs, tips, vocabulary, Japanese names).
+- Runtime theme switch (DataDB / Copy / CharacterLook / LevelBuilder / Interactions / NPCVoice / HUD / pause menu /
+  witness label / title slogans). Money shows as yen (1 credit = 100 yen).
+- Shop fronts: tiled eaves, noren curtains, red paper lanterns, romaji blade signs; no neon tubes or wanted posters.
+- day_test now fails on sci-fi words in townsfolk talk (0/40 leaks) and off-theme verbs.
+- Open: shop option texts are auto-converted (readable but plain); 25 lines kept with sci-fi words where a list had
+  nothing else; music is still the synthwave set; title backdrop is still the synthwave sunset.

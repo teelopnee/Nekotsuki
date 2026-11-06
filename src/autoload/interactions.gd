@@ -85,12 +85,20 @@ func fill(text: String, npc: Node = null) -> String:
 
 # --- Availability -------------------------------------------------------------------------
 
+## Verbs that make sense for a high-schooler in a seaside town (data/suzunari/_manual/interactions.json).
+const SUZUNARI_VERBS := ["smalltalk", "ask_need", "give_credits", "buy_meal", "share_meal", "street_gossip", "spread_the_word",
+	"ask_reputation", "charm", "joke", "lie", "confess", "apologise", "commiserate", "inspire", "ask_love", "insult",
+	"threaten", "pickpocket", "haggle", "deliver_message", "dance_with_them"]
+
+
 ## Choice dictionaries for a conversation: {"id": "act:<verb>", "text", "disabled"}.
 func choices_for(npc: Node, role: String) -> Array:
 	var gated := []
 	var generic := []
 	var used: Array = npc.get_meta("used_verbs", [])
 	for id in verbs():
+		if DataDB.theme == "suzunari" and not SUZUNARI_VERBS.has(id):
+			continue
 		var d: Dictionary = verbs()[id]
 		var roles: Array = d.get("roles", ["civilian"])
 		if not roles.has(role):
@@ -647,7 +655,8 @@ func open_venue(venue_id: String, sign_text: String, faction: String, door: Node
 		var base := int(o.get("cost", 0))
 		var cost := _venue_cost(o)
 		if base > 0 and cost != base:
-			t = t.replace("%d cr" % base, "%d cr" % cost).replace("bet %d" % base, "bet %d" % cost)
+			t = t.replace("%d cr" % base, "%d cr" % cost).replace("bet %d" % base, "bet %d" % cost) \
+				.replace("{0} yen".format([base * 100]), "{0} yen".format([cost * 100]))
 		if o.has("chance"):
 			t += "  [%d%%]" % roundi(chance_of(o, keeper) * 100.0)
 		choices.append({"id": o.id, "text": t, "disabled": cost > 0 and not Game.can_afford(cost)})
@@ -695,7 +704,7 @@ func _closed_shop(sign_text: String) -> void:
 	var store: Dictionary = Game.flags.get("keepers_" + Game.location_id, {})
 	var who := str(store.get(str(_venue_ctx.get("key", "")), {}).get("name", "the owner"))
 	var text := "The shutters of %s are half down. Nobody's behind the counter any more. Someone has left flowers and a photo of %s by the door." % [sign_text, who]
-	var choices := [{"id": "loot", "text": "Empty the till"}, {"id": "flowers", "text": "Leave something for the family (10 cr)", "disabled": not Game.can_afford(10)},
+	var choices := [{"id": "loot", "text": "Empty the till"}, {"id": "flowers", "text": "Leave something for the family (%s)" % DataDB.money(10), "disabled": not Game.can_afford(10)},
 		{"id": "leave", "text": "Leave"}]
 	EventBus.dialogue_requested.emit(sign_text, text, choices, _on_closed_choice)
 

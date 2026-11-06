@@ -465,7 +465,7 @@ func bribe_cost() -> int:
 func _talk_witness() -> void:
 	var cost := bribe_cost()
 	var choices := [
-		{"id": "bribe", "text": "Bribe them (%d cr)" % cost, "disabled": not Game.can_afford(cost)},
+		{"id": "bribe", "text": "Bribe them (%s)" % DataDB.money(cost), "disabled": not Game.can_afford(cost)},
 		{"id": "voucher", "text": "Hand over a Bribe Voucher", "disabled": Game.item_count("bribe_voucher") <= 0},
 		{"id": "threaten", "text": "Threaten them (%d%% chance)" % roundi(_threaten_chance() * 100)},
 	]
@@ -1242,9 +1242,13 @@ func _pick(options: Array) -> String:
 
 # --- Ambient life -----------------------------------------------------------------------------
 
+static var _barks_theme := "-"
+
+
 static func barks() -> Dictionary:
-	if _barks.is_empty():
-		var parsed = JSON.parse_string(FileAccess.get_file_as_string("res://data/barks.json"))
+	if _barks.is_empty() or _barks_theme != DataDB.theme:
+		_barks_theme = DataDB.theme
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string(DataDB.themed_path("barks.json")))
 		_barks = parsed if parsed is Dictionary else {"civilian": ["..."]}
 	return _barks
 

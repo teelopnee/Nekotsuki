@@ -33,6 +33,7 @@ func _setup() -> void:
 	spawn_key = "default"
 	CharacterLook.theme = "suzunari"
 	Copy.theme = "suzunari"
+	DataDB.apply_theme("suzunari")
 	Game.location_id = "suzunari"
 	Game.location_name = "Suzunari"
 

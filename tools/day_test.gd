@@ -71,6 +71,33 @@ func _process(_d: float) -> bool:
 			var a = get_first_node_in_group("amane")
 			var p = get_first_node_in_group("player")
 			_check(a.global_position.distance_to(p.global_position) < 22.0, "Amane keeps up (%.1f m)" % a.global_position.distance_to(p.global_position))
+			# Suzunari theme: town verbs only, Japanese shops, no sci-fi words in what people say.
+			var db = root.get_node("DataDB")
+			_check(db.theme == "suzunari" and str(db.venues.venues.food.name) == "Shopping Street Eatery", "themed venues")
+			var bad := RegEx.new()
+			bad.compile("(?i)paragon|consortium|credit|planet|implant|android|oxygenix|halcyon|gristle|lumen|protein paste|\\bcr\\b")
+			var npc: Node = null
+			for n in get_nodes_in_group("npc"):
+				if not n.is_in_group("amane") and n.get("role") == "civilian":
+					npc = n
+					break
+			if npc:
+				var ids: Array = root.get_node("Interactions").choices_for(npc, "civilian").map(func(c): return str(c.id).trim_prefix("act:"))
+				var ok := true
+				for id in ids:
+					if id.begins_with("act") or id == "" or id == "leave":
+						continue
+					if not root.get_node("Interactions").SUZUNARI_VERBS.has(id) and not id.contains(":"):
+						ok = false
+						print("    off-theme verb: ", id)
+				_check(ok, "only town verbs (%d choices)" % ids.size())
+				var leaks := 0
+				for i in 40:
+					var line: String = npc._opening_line()
+					if bad.search(line):
+						leaks += 1
+						print("    sci-fi leak: ", line)
+				_check(leaks <= 2, "townsfolk talk like townsfolk (%d/40 leaks)" % leaks)
 			amane.notice_rival("Sato Yui", a)
 			_check(str(amane.st()["rival"]) == "Sato Yui", "jealousy remembers the rival")
 			amane.send("jealous")

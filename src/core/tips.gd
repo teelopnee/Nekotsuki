@@ -6,11 +6,13 @@ extends RefCounted
 
 static var _data: Dictionary = {}
 static var _shown_this_run: Dictionary = {}
+static var _theme := "-"
 
 
 static func data() -> Dictionary:
-	if _data.is_empty():
-		var path := "res://data/tips.json"
+	if _data.is_empty() or _theme != DataDB.theme:
+		_theme = DataDB.theme
+		var path := DataDB.themed_path("tips.json")
 		if FileAccess.file_exists(path):
 			var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
 			if parsed is Dictionary:

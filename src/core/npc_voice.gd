@@ -133,6 +133,9 @@ static func remark(npc: Node, rng: RandomNumberGenerator, bubble: bool = false) 
 static func _pick_topic(npc: Node, rng: RandomNumberGenerator) -> String:
 	var w := {}  # topic -> weight
 	var t: Dictionary = Game.tags
+	if DataDB.theme == "suzunari":
+		t = {}
+		w["pc_new"] = 4.0
 	if Copy.has("pc_class_" + str(t.get("class", ""))):
 		w["pc_class_" + str(t["class"])] = 3.0
 	if Copy.has("pc_age_" + str(t.get("age", ""))):

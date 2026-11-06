@@ -226,6 +226,12 @@ func _tab_perks() -> void:
 
 
 func _tab_factions() -> void:
+	if DataDB.theme == "suzunari":
+		var t := _page("Town")
+		t.add_child(HUD.make_label("SUZUNARI  //  %s  //  %s %s" % [Game.location_name, Clock.date_text(), Clock.clock_text()], 18, Color(1.0, 0.85, 0.7)))
+		t.add_child(HUD.make_label("Amane: %s   Route: %s   Forecast: %s" % [Amane.TEAR_NAMES[Amane.tears_level()],
+			Amane.ROUTE_NAMES.get(Amane.route(), "-"), Amane.FORECAST[Amane.tears_level()]], 16, Color(1.0, 0.8, 0.88)))
+		return
 	var v := _page("Factions")
 	v.add_child(HUD.make_label("THE CONSORTIUM  //  your standing with the five companies that own the sky", 16, Color(0.6, 0.85, 1.0)))
 	for fid in Factions.ids():

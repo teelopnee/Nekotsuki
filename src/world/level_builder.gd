@@ -564,6 +564,8 @@ func _building(x0: int, z0: int, x1: int, z1: int) -> void:
 	deco.append(label)
 	_add_venue(body, label.text, fid if corp_label else "", Vector3(shop_x, 0.8, front + 0.95), venue_id)
 	_facade_paper(body, w, front, shop_x, shop_w, deco)
+	if theme == "suzunari":
+		_japanese_front(body, w, front, shop_x, shop_w, deco)
 	if rng.randf() < 0.18:
 		var fl := Flicker.new()
 		fl.seed_value = rng.randi()
@@ -578,7 +580,9 @@ func _building(x0: int, z0: int, x1: int, z1: int) -> void:
 	# Vertical neon blade sign on a corner.
 	if h > 5.0 and rng.randf() < 0.6:
 		var side := -1.0 if rng.randf() < 0.5 else 1.0
-		var word: String = ["HOTEL", "BAR", "LOANS", "CLUB", "RAMEN", "DEBT", "CRYO", "SALE", "OBEY", "NOVA"][rng.randi() % 10]
+		var words: Array = ["HOTEL", "BAR", "LOANS", "CLUB", "RAMEN", "DEBT", "CRYO", "SALE", "OBEY", "NOVA"] if theme != "suzunari" \
+			else ["RAMEN", "KISSA", "SOBA", "ODEN", "HONYA", "KUSURI", "SUSHI", "DANGO", "YUBIN", "SALE"]
+		var word: String = str(words[rng.randi() % words.size()])
 		var blade_h := 0.42 * word.length() + 0.4
 		var bx := side * (w * 0.5 - 0.1)
 		var by := minf(h - blade_h * 0.5 - 0.3, 3.0 + blade_h * 0.5)
@@ -606,7 +610,7 @@ func _building(x0: int, z0: int, x1: int, z1: int) -> void:
 	if theme != "suzunari":
 		_wanted_poster(body, w, front, deco)
 	_glow_spots.append([pos + Vector3(shop_x, 0, front + 0.6), sign_color, 1.0])
-	if _city and rng.randf() < 0.55:
+	if _city and theme != "suzunari" and rng.randf() < 0.55:
 		# Neon tubes tracing the facade edges.
 		var tube := next_neon()
 		for sx in [-1.0, 1.0]:
@@ -961,6 +965,42 @@ func _life_spot(pos: Vector3, kind: String, face: Vector3) -> void:
 
 
 ## Flyers, posters and graffiti on the street-level facade (texts from data/copy.json).
+## Suzunari shop front: a tiled eave over the ground floor, a noren curtain in the doorway and a red paper lantern.
+func _japanese_front(body: Node3D, w: float, front: float, shop_x: float, shop_w: float, deco: Array[Node]) -> void:
+	if not _mats.has("kawara"):
+		_mats["kawara"] = _flat(Color(0.24, 0.27, 0.34))
+		_mats["kawara_edge"] = _flat(Color(0.13, 0.14, 0.19))
+		_mats["noren_white"] = _flat(Color(0.95, 0.93, 0.88))
+		_mats["lantern_cap"] = _flat(Color(0.1, 0.08, 0.08))
+	var eave := add_mesh(body, box(Vector3(w + 0.3, 0.14, 1.2)), _mats["kawara"], Vector3(0, 3.1, front + 0.5), 0.0, true)
+	eave.rotation.x = 0.34
+	deco.append(eave)
+	for i in 3:
+		deco.append(add_mesh(body, box(Vector3(w + 0.32, 0.05, 0.06)), _mats["kawara_edge"], Vector3(0, 3.27 - i * 0.14, front + 0.18 + i * 0.36), 0.0, false))
+	var noren := _flat([Color(0.16, 0.2, 0.44), Color(0.58, 0.13, 0.17), Color(0.13, 0.32, 0.24), Color(0.36, 0.22, 0.12)][rng.randi() % 4])
+	var strip := shop_w / 3.0
+	for i in 3:
+		var nx := shop_x - shop_w * 0.5 + strip * (i + 0.5)
+		deco.append(add_mesh(body, box(Vector3(strip - 0.07, 0.8, 0.03)), noren, Vector3(nx, 1.65, front + 0.62), 0.0, false))
+	deco.append(add_mesh(body, box(Vector3(0.26, 0.26, 0.01)), _mats["noren_white"], Vector3(shop_x, 1.7, front + 0.645), 0.0, false))
+	var side := -1.0 if rng.randf() < 0.5 else 1.0
+	var lx := clampf(shop_x + side * (shop_w * 0.5 + 0.35), -w * 0.5 + 0.3, w * 0.5 - 0.3)
+	var lan := CylinderMesh.new()
+	lan.top_radius = 0.2
+	lan.bottom_radius = 0.2
+	lan.height = 0.52
+	deco.append(add_mesh(body, lan, emissive(Color(1.0, 0.3, 0.16), 2.2), Vector3(lx, 2.25, front + 0.4), 0.0, false))
+	for dy in [-0.29, 0.29]:
+		deco.append(add_mesh(body, box(Vector3(0.3, 0.06, 0.3)), _mats["lantern_cap"], Vector3(lx, 2.25 + dy, front + 0.4), 0.0, false))
+
+
+func _flat(c: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = c
+	m.roughness = 0.85
+	return m
+
+
 func _facade_paper(body: Node3D, w: float, front: float, shop_x: float, shop_w: float, deco: Array[Node]) -> void:
 	var paper_cols := [Color(0.95, 0.92, 0.82), Color(1.0, 0.85, 0.4), Color(0.6, 0.95, 1.0), Color(1.0, 0.6, 0.8), Color(0.85, 1.0, 0.6)]
 	for i in rng.randi_range(1, 4):

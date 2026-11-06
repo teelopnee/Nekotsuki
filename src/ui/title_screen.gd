@@ -3,11 +3,11 @@ extends Control
 
 const SLOGANS := [
 	"Rain on the 999 steps. Somebody is still waiting.",
-	"OxyGenix reminds you: holding your breath is a breach of contract.",
-	"Halcyon Debt & Trust: proud sponsor of your frozen years.",
-	"Lumen Omnimedia: if we didn't report it, it didn't happen.",
-	"Paragon Compliance: report a friend today!",
-	"Gristle Nutrition: chew responsibly.",
+	"Don't count the steps after six.",
+	"When a cat washes its face, it's going to rain.",
+	"A promise is a word with a soul in it.",
+	"Tadaima. Okaeri.",
+	"Senpai, you came back.",
 ]
 
 var _slogan: Label

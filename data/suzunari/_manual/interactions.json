@@ -1,0 +1,23 @@
+{
+ "verbs": {
+  "smalltalk": {"text": "Make small talk"}, "ask_need": {"text": "Ask if they need anything"},
+  "give_credits": {"text": "Lend them some money"}, "buy_meal": {"text": "Buy them a snack"},
+  "share_meal": {"text": "Share your lunch"}, "street_gossip": {"text": "Ask what people are saying"},
+  "spread_the_word": {"text": "Start a rumour"}, "ask_reputation": {"text": "Ask what people say about you"},
+  "charm": {"text": "Pay them a compliment"}, "joke": {"text": "Tell a joke"}, "lie": {"text": "Tell a white lie"},
+  "confess": {"text": "Confide a secret"}, "apologise": {"text": "Apologise"}, "commiserate": {"text": "Complain about life together"},
+  "inspire": {"text": "Cheer them up"}, "ask_love": {"text": "Ask about their crush"}, "insult": {"text": "Make fun of them"},
+  "threaten": {"text": "Threaten them"}, "pickpocket": {"text": "Pick their pocket"}, "haggle": {"text": "Haggle"},
+  "deliver_message": {"text": "Offer to pass on a message"}, "dance_with_them": {"text": "Dance with them"}
+ },
+ "npc": {
+  "jobs": {
+   "poor": ["part-timer at the konbini", "newspaper delivery kid", "dishwasher at the ramen shop", "flyer handout person", "unpaid club manager", "fish market night shift"],
+   "worker": ["fishmonger", "bus driver", "carpenter", "delivery rider", "school janitor", "station attendant"],
+   "artsy": ["light music club guitarist", "manga club member", "calligraphy teacher", "street musician", "photography club president"],
+   "corporate": ["salaryman at the shipping company", "bank teller", "insurance saleswoman", "real-estate agent"],
+   "rebel": ["delinquent with a heart of gold", "skipper of fourth period", "graffiti artist", "motorbike enthusiast"],
+   "weird": ["occult club regular", "cat whisperer", "self-proclaimed ghost hunter", "person who talks to the vending machine"]
+  }
+ }
+}

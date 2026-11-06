@@ -117,7 +117,8 @@ func _process(delta: float) -> void:
 	progress += delta / maxf(duration, 0.1)
 	var pct := clampi(roundi(progress * 100.0), 0, 100)
 	var bar := "|".repeat(pct / 10) + ".".repeat(10 - pct / 10)
-	_label.text = "((o)) CALLING %s\n[%s] %d%%" % [calls_faction.to_upper(), bar, pct]
+	var who := "THE POLICE" if DataDB.theme == "suzunari" else calls_faction.to_upper()
+	_label.text = "((o)) CALLING %s\n[%s] %d%%" % [who, bar, pct]
 	if progress >= 1.0:
 		_finish()
 
