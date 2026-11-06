@@ -1,23 +1,232 @@
 {
  "verbs": {
-  "smalltalk": {"text": "Make small talk"}, "ask_need": {"text": "Ask if they need anything"},
-  "give_credits": {"text": "Lend them some money"}, "buy_meal": {"text": "Buy them a snack"},
-  "share_meal": {"text": "Share your lunch"}, "street_gossip": {"text": "Ask what people are saying"},
-  "spread_the_word": {"text": "Start a rumour"}, "ask_reputation": {"text": "Ask what people say about you"},
-  "charm": {"text": "Pay them a compliment"}, "joke": {"text": "Tell a joke"}, "lie": {"text": "Tell a white lie"},
-  "confess": {"text": "Confide a secret"}, "apologise": {"text": "Apologise"}, "commiserate": {"text": "Complain about life together"},
-  "inspire": {"text": "Cheer them up"}, "ask_love": {"text": "Ask about their crush"}, "insult": {"text": "Make fun of them"},
-  "threaten": {"text": "Threaten them"}, "pickpocket": {"text": "Pick their pocket"}, "haggle": {"text": "Haggle"},
-  "deliver_message": {"text": "Offer to pass on a message"}, "dance_with_them": {"text": "Dance with them"}
+  "smalltalk": {
+   "text": "Make small talk",
+   "say": [
+    "\"Rain again, huh. Third week running.\"",
+    "\"Do you know a good place for melon bread around here?\"",
+    "\"Is it always this quiet after the 5 o'clock chime?\"",
+    "\"I'm new. Asagiri. From the sweet shop.\"",
+    "\"Nice day for it. ...Whatever 'it' is.\"",
+    "\"Have you lived in Suzunari long?\"",
+    "\"The cats here stare a lot, don't they?\""
+   ]
+  },
+  "ask_need": {
+   "text": "Ask if they need anything",
+   "say": [
+    "\"You look busy. Need a hand with anything?\"",
+    "\"Is something wrong? You keep looking at your phone.\"",
+    "\"Anything I can do? I'm free till the bell.\"",
+    "\"You dropped something - oh. You didn't. Need help, though?\""
+   ]
+  },
+  "give_credits": {
+   "text": "Lend them some money",
+   "say": [
+    "\"Here. For the vending machine. Don't argue.\"",
+    "\"Take it. Pay me back in melon bread someday.\"",
+    "\"For the train fare. Go home, it's getting dark.\""
+   ]
+  },
+  "buy_meal": {
+   "text": "Buy them a snack",
+   "say": [
+    "\"Let me buy you a yakisoba bread. I insist.\"",
+    "\"Konbini onigiri? My treat. Tuna mayo or salmon?\"",
+    "\"There's a ramen stand by the station. I'm paying.\""
+   ]
+  },
+  "share_meal": {
+   "text": "Share your lunch",
+   "say": [
+    "\"Want half my bento? My aunt packs too much.\"",
+    "\"Itadakimasu - here, try the tamagoyaki.\"",
+    "\"I've got two rice balls and one stomach.\""
+   ]
+  },
+  "street_gossip": {
+   "text": "Ask what people are saying",
+   "say": [
+    "\"Heard anything weird around town lately?\"",
+    "\"What's the story with the shrine on the hill?\"",
+    "\"Is it true about the 1000th step?\"",
+    "\"Who's the girl in the red kimono near my aunt's shop?\""
+   ]
+  },
+  "spread_the_word": {
+   "text": "Start a rumour",
+   "say": [
+    "\"Tell people the Asagiri sweet shop has a new mochi.\"",
+    "\"If anyone asks - I'm just a normal guy. Spread that around.\"",
+    "\"Could you put in a good word for me? With... everyone?\""
+   ]
+  },
+  "ask_reputation": {
+   "text": "Ask what people say about you",
+   "say": [
+    "\"What do people say about me? Be honest.\"",
+    "\"Am I the guy from the Ura board? Don't answer that. ...Am I?\"",
+    "\"Do people think I'm weird? Scale of one to Kuroe-senpai.\""
+   ]
+  },
+  "charm": {
+   "text": "Pay them a compliment",
+   "say": [
+    "\"That hairpin suits you. Seriously.\"",
+    "\"You've got a great laugh, you know that?\"",
+    "\"I'd remember a face like yours. ...I'm bad with faces. But I'd remember.\"",
+    "\"Your handwriting on the notice board is the nicest one.\""
+   ]
+  },
+  "joke": {
+   "text": "Tell a joke",
+   "say": [
+    "\"Why did the kappa fail his exam? He kept losing his head-water.\"",
+    "\"I asked the maneki-neko for luck. It waved goodbye.\"",
+    "\"My aunt says I'm sweet. Occupational hazard.\"",
+    "\"Knock knock. - Who's there? - Hanako. - ...Oh no.\""
+   ]
+  },
+  "lie": {
+   "text": "Tell a white lie",
+   "say": [
+    "\"I'm actually a transfer student from Tokyo. Big shot. Very cool.\"",
+    "\"I'm allergic to cats. Very allergic. Tell the cats.\"",
+    "\"Me? I've never been to this town before in my life.\"",
+    "\"The teacher said there's no homework this week.\""
+   ]
+  },
+  "confess": {
+   "text": "Confide a secret",
+   "say": [
+    "\"Can I tell you something? I'm scared of this town.\"",
+    "\"I have dreams about a man in 1868. Every night.\"",
+    "\"I think something's following me. Something small. With ears.\""
+   ]
+  },
+  "apologise": {
+   "text": "Apologise",
+   "say": [
+    "\"Sorry about earlier. That was out of line.\"",
+    "\"I'm really sorry. I'll make it up to you, promise. ...Wait, not promise.\"",
+    "\"Gomen. I mean it.\""
+   ]
+  },
+  "commiserate": {
+   "text": "Complain about life together",
+   "say": [
+    "\"Rough day? Yeah. Me too.\"",
+    "\"Exams, rain, and cats. This town, huh.\"",
+    "\"It'll be okay. ...I don't know that. But it might.\""
+   ]
+  },
+  "inspire": {
+   "text": "Cheer them up",
+   "say": [
+    "\"You can do it. Seriously - I've seen you try.\"",
+    "\"Don't give up on it. Things in this town have waited longer.\"",
+    "\"If you want to leave and become a manga artist - go. Write about us.\""
+   ]
+  },
+  "ask_love": {
+   "text": "Ask about their crush",
+   "say": [
+    "\"Is there someone you like? You can tell me.\"",
+    "\"How do you know when someone likes you? Asking for a... cat.\"",
+    "\"Tanabata's coming. Got someone to wish for?\""
+   ]
+  },
+  "insult": {
+   "text": "Make fun of them",
+   "say": [
+    "\"Wow. Did you get dressed in the dark?\"",
+    "\"Your bike bell is the most annoying sound in Suzunari.\"",
+    "\"You talk like the station announcement. Slow and wrong.\""
+   ]
+  },
+  "threaten": {
+   "text": "Threaten them",
+   "say": [
+    "\"Back off. Now.\"",
+    "\"Say that again and see what happens.\"",
+    "\"I know where the 1000th step is. Want to go there?\""
+   ]
+  },
+  "pickpocket": {
+   "text": "Pick their pocket",
+   "say": [
+    "(Bump into them. \"Ah - sorry!\")",
+    "(Ask the time while your hand moves.)",
+    "(Point at a cat on the roof. \"Look!\")"
+   ]
+  },
+  "haggle": {
+   "text": "Haggle",
+   "say": [
+    "\"Come on, a little discount for a local?\"",
+    "\"My aunt runs Asagiri-do. Neighbours' price?\"",
+    "\"Two for the price of one? It's raining.\""
+   ]
+  },
+  "deliver_message": {
+   "text": "Offer to pass on a message",
+   "say": [
+    "\"I've got a note for you. From... a friend.\"",
+    "\"Someone asked me to give you this. Don't ask who.\""
+   ]
+  },
+  "dance_with_them": {
+   "text": "Dance with them",
+   "say": [
+    "\"Bon-odori practice? Teach me the steps.\"",
+    "\"Dance with me. Nobody's watching. ...The cats are watching.\""
+   ]
+  }
  },
  "npc": {
   "jobs": {
-   "poor": ["part-timer at the konbini", "newspaper delivery kid", "dishwasher at the ramen shop", "flyer handout person", "unpaid club manager", "fish market night shift"],
-   "worker": ["fishmonger", "bus driver", "carpenter", "delivery rider", "school janitor", "station attendant"],
-   "artsy": ["light music club guitarist", "manga club member", "calligraphy teacher", "street musician", "photography club president"],
-   "corporate": ["salaryman at the shipping company", "bank teller", "insurance saleswoman", "real-estate agent"],
-   "rebel": ["delinquent with a heart of gold", "skipper of fourth period", "graffiti artist", "motorbike enthusiast"],
-   "weird": ["occult club regular", "cat whisperer", "self-proclaimed ghost hunter", "person who talks to the vending machine"]
+   "poor": [
+    "part-timer at the konbini",
+    "newspaper delivery kid",
+    "dishwasher at the ramen shop",
+    "flyer handout person",
+    "unpaid club manager",
+    "fish market night shift"
+   ],
+   "worker": [
+    "fishmonger",
+    "bus driver",
+    "carpenter",
+    "delivery rider",
+    "school janitor",
+    "station attendant"
+   ],
+   "artsy": [
+    "light music club guitarist",
+    "manga club member",
+    "calligraphy teacher",
+    "street musician",
+    "photography club president"
+   ],
+   "corporate": [
+    "salaryman at the shipping company",
+    "bank teller",
+    "insurance saleswoman",
+    "real-estate agent"
+   ],
+   "rebel": [
+    "delinquent with a heart of gold",
+    "skipper of fourth period",
+    "graffiti artist",
+    "motorbike enthusiast"
+   ],
+   "weird": [
+    "occult club regular",
+    "cat whisperer",
+    "self-proclaimed ghost hunter",
+    "person who talks to the vending machine"
+   ]
   }
  }
 }

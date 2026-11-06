@@ -1,0 +1,994 @@
+{
+ "_doc": "Suzunari lore in the world (docs/LORE.md is the source). landmarks: text shown when you examine a LevelBuilder landmark (A torii, Y hall, T offering box, C guardian, o jizo x6, m ema, X basin). lore_points: signs placed at map tiles [x, z]. spirits: people and yokai placed at tiles during hours (minute windows), each with a short scene: opener + exact choices (say, fx). fx keys: zukan (Hyakki Zukan entry), egg (Easter egg id, docs/EASTER_EGGS.md), flag, money (credits; x100 yen), luck (shop luck), hp, amane_self, promise, lore. lore_titles: names of remembered lore flags (Amane talks).",
+ "landmarks": {
+  "torii": {
+   "name": "Torii of Suzune Shrine",
+   "text": "A vermilion gate. Past it you are on the shrine's ground. The paint is fresh every year, except on one post, where something has clawed the wood in neat rows of four. Nobody repaints those."
+  },
+  "torii_steps": {
+   "name": "Torii at the foot of the 999 steps",
+   "text": "Children are told to bow here and not to look back on the way down. The old folks say the gate is where the town ends at dusk. Someone has tied a tiny bell to the crossbeam with red string."
+  },
+  "torii_dog": {
+   "name": "Torii of Inukai Shrine",
+   "text": "Plain wood, no paint. Dogs sleep in its shade. The Inukai family say their shrine was here first, and the cat shrine says the same, and they have not agreed on anything since 1868."
+  },
+  "hall": {
+   "name": "Suzune Shrine hall",
+   "text": "The hall of Suzune-sama, the cat who waited. Inside, behind the paper doors, the altar has an empty silk cushion where the shrine's sacred object should sit. It has been empty since 2010. The town's luck has been leaking ever since."
+  },
+  "hall_dog": {
+   "name": "Inukai Shrine hall",
+   "text": "A hall for the okuri-inu, the dogs that walk travellers home at night. On the wall, a hand-painted map of every night road in the prefecture. One road, from Kyushu to Suzunari, is traced in red."
+  },
+  "offering": {
+   "name": "Offering box and bell rope",
+   "text": "You reach for the rope - and stop. The big bell is only rung once a year, on Tanabata night. A paper notice in old handwriting says: IF IT RINGS ON ANY OTHER NIGHT, SOMEONE HAS COME HOME.",
+   "choices": [
+    {
+     "t": "Toss a five-yen coin. Pray: \"Let me live a normal, quiet life.\"",
+     "say": "Go-en: five yen, and also 'a bond'. The coin clinks into the box. Somewhere behind the hall a bell you can't see rings once, very softly, like a laugh.",
+     "fx": {
+      "money": -1,
+      "lore": "go_en"
+     }
+    },
+    {
+     "t": "Toss a five-yen coin. Pray: \"Let Amane stop crying.\"",
+     "say": "Two bows, two claps, one bow. When you lift your head, the rain over the steps has thinned. A cat on the roof stares at you as if you said something you shouldn't have.",
+     "fx": {
+      "money": -1,
+      "amane_self": 3
+     }
+    },
+    {
+     "t": "Pray without a coin: \"Who was I, before?\"",
+     "say": "Nothing answers. Then the wind turns the pages of the shrine's visitor book on the table, and stops on a page from 1868. One line, in brush: 'I will come back for you. - S.'",
+     "fx": {
+      "lore": "soichiro"
+     }
+    },
+    {
+     "t": "Reach for the bell rope.",
+     "say": "Your fingers close on the rope. Every cat in the plaza turns to look at you at the same time. You let go.",
+     "fx": {
+      "egg": "bell_rope"
+     }
+    },
+    {
+     "t": "Just look.",
+     "say": "The offering box is old cedar. Carved on the side, worn almost smooth: a cat sitting very straight, waiting."
+    }
+   ]
+  },
+  "offering_dog": {
+   "name": "Offering box (Inukai)",
+   "text": "The bell here is a dog's collar bell, enormous. You ring it. Every dog in town barks once, then goes quiet, as if counting you in."
+  },
+  "komaneko": {
+   "name": "Komaneko (guardian cat)",
+   "text": "Most shrines are guarded by stone lion-dogs. Suzune Shrine has cats - one with its mouth open, one closed, the beginning and the end of every sound. Someone has left a dried sardine on the pedestal.",
+   "choices": [
+    {
+     "t": "Pat the open-mouthed one.",
+     "say": "A, the first sound. The stone is warm, like a cat that has been sleeping in the sun. 'A-un': together they mean everything, from the first breath to the last."
+    },
+    {
+     "t": "Pat the closed-mouthed one.",
+     "say": "Un, the last sound. Its stone collar has a tiny hole, the size of a bell's string. Something used to hang there.",
+     "fx": {
+      "lore": "bell_old"
+     }
+    },
+    {
+     "t": "Take the dried sardine.",
+     "say": "You take it. Somewhere up the steps, someone hisses. You put it back.",
+     "fx": {
+      "egg": "sardine"
+     }
+    }
+   ]
+  },
+  "komainu": {
+   "name": "Komainu (guardian dog)",
+   "text": "A stone dog with one paw raised, as if about to walk somewhere. The moss on its back is worn away in the shape of a hand: generations of Inukai children patting it for luck before night walks."
+  },
+  "jizo": [
+   {
+    "name": "Jizo of the Hell realm",
+    "text": "First of the six Jizo of the crossroads. Each stands for one of the six realms a soul can be reborn into. This one watches the road to the hells. His red bib is new. You put your hands together. (The game is saved.)"
+   },
+   {
+    "name": "Jizo of the Hungry Ghosts",
+    "text": "For the realm of the always-hungry. Someone leaves a rice ball here every morning. Nobody knows who. You bow. (The game is saved.)"
+   },
+   {
+    "name": "Jizo of the Animal realm",
+    "text": "For souls reborn as animals. Cats sleep at his feet. An old woman once told the town that one animal earned its way up from this realm by waiting. You bow. (The game is saved.)"
+   },
+   {
+    "name": "Jizo of the Asura",
+    "text": "For the fighting spirits. His face has been worn smooth, as if he has been frowning for three hundred years. You bow. (The game is saved.)"
+   },
+   {
+    "name": "Jizo of the Human realm",
+    "text": "For us. The plaque says these six were carved in 1952, to replace six older ones thrown into the sea in 1868. The old ones were never found. You bow. (The game is saved.)"
+   },
+   {
+    "name": "Jizo of the Heavens",
+    "text": "For the realm of the gods. Children's pinwheels spin in front of him though there is no wind. You bow. (The game is saved.)"
+   }
+  ],
+  "ema": {
+   "name": "Ema (wooden wishes)",
+   "text": "#ema#\n#ema#\n#ema#",
+   "choices": [
+    {
+     "t": "Write: \"I want to be transparent.\"",
+     "say": "You hang it with the others. The next morning someone has written underneath, in round, careful letters: 'But I can see you, Senpai.'",
+     "fx": {
+      "egg": "ema_transparent",
+      "amane_self": -1
+     }
+    },
+    {
+     "t": "Write: \"I want Amane to be happy.\"",
+     "say": "You hang it. A gust turns it around so it faces the hall. The shrine maiden says that means the god read it.",
+     "fx": {
+      "amane_self": 2
+     }
+    },
+    {
+     "t": "Look for old wishes from 2016.",
+     "say": "Deep under the newer ones: a child's ema, crayon on wood. 'I want Toru-kun to come back. - Amane, 6.' And next to it, in your own childish handwriting: 'I promise.'",
+     "fx": {
+      "lore": "promise_2016"
+     }
+    },
+    {
+     "t": "Leave it.",
+     "say": "Not every wish has to be written down. In this town, saying it out loud is already heavy enough."
+    }
+   ]
+  },
+  "chozuya": {
+   "name": "Purification basin",
+   "text": "Left hand, right hand, rinse the mouth, never drink from the ladle. The water is cold even in summer. In the reflection, for a second, there is a white-and-black cat sitting on your shoulder.",
+   "choices": [
+    {
+     "t": "Purify properly: left hand, right hand, mouth.",
+     "say": "The cold runs up your arms. For the rest of the day, your head feels clearer, and the cats keep their distance.",
+     "fx": {
+      "hp": 10
+     }
+    },
+    {
+     "t": "Look at the reflection again.",
+     "say": "The cat on your shoulder in the water is white with a black patch over one eye, and it is wearing a bell. It closes its eyes, slowly. In cat, that means 'I love you.'",
+     "fx": {
+      "lore": "cat_habits",
+      "egg": "slow_blink"
+     }
+    },
+    {
+     "t": "Drink from the ladle.",
+     "say": "An old lady sweeping the steps clicks her tongue at you so hard that you put it back at once. Never from the ladle."
+    }
+   ]
+  }
+ },
+ "lore_points": [
+  {
+   "id": "sacred_tree",
+   "tile": [
+    20,
+    3
+   ],
+   "name": "Sacred camphor tree",
+   "text": "A shimenawa rope circles the trunk. Lower down, hidden on the shaded side: rows of rusted nail holes, some new. Somebody in Suzunari is doing the ox-hour curse, 1 to 3 a.m., straw doll and all. The newest nail is from the 13th of last month."
+  },
+  {
+   "id": "shrine_plaque",
+   "tile": [
+    25,
+    4
+   ],
+   "name": "Shrine history plaque",
+   "text": "SUZUNE SHRINE. Enshrined 1890. Deity: Suzune-sama, the cat who waited on these steps for twenty-two years for a promise to be kept. Keepers: the Nekomori family. Visitors are asked not to ring the bell, count the steps after six, or make promises they cannot keep."
+  },
+  {
+   "id": "cat_grave",
+   "tile": [
+    36,
+    8
+   ],
+   "name": "A small grave",
+   "text": "A stone the size of a loaf of bread. Carved: SUZU. 1859 - 1890 (Tanabata). Someone has left a little dish of water and a folded paper crane. The crane is new every week.",
+   "lore": "suzu_grave"
+  },
+  {
+   "id": "steps_plaque",
+   "tile": [
+    6,
+    9
+   ],
+   "name": "The 999 steps",
+   "text": "BUILT 1703 after the great tsunami, so that the town could run up the hill. 999 steps. Count them in daylight only. (Underneath, scratched by a child: 1000.)",
+   "lore": "steps_1703"
+  },
+  {
+   "id": "old_building",
+   "tile": [
+    5,
+    25
+   ],
+   "name": "Old wooden schoolhouse",
+   "text": "The 1931 school building. Home to the occult research club (one member). The corridor inside is longer than the building. Students say that if you walk it at dusk without turning around, you come out somewhere else."
+  },
+  {
+   "id": "ninomiya",
+   "tile": [
+    10,
+    28
+   ],
+   "name": "Statue of Ninomiya Kinjiro",
+   "text": "The boy carrying firewood and reading a book, like in every old school in Japan. His feet are muddy. The janitor swears he mops them every evening."
+  },
+  {
+   "id": "school_plaque",
+   "tile": [
+    19,
+    30
+   ],
+   "name": "Suzunari Gakuen founding stone",
+   "text": "Founded 1949 on the site of the old temple school. Motto: 'Keep your word.' The second-years say the motto was carved by the founder after he broke a promise and spent the rest of his life sorry."
+  },
+  {
+   "id": "dog_plaque",
+   "tile": [
+    44,
+    28
+   ],
+   "name": "Inukai Shrine plaque",
+   "text": "INUKAI SHRINE. Deity: the okuri-inu, the escorting dogs of the night roads. If one follows you, do not fall; if you trip, say 'just resting' and sit down. They walk the dead home at Obon. Keepers: the Inukai family."
+  },
+  {
+   "id": "rokujizo",
+   "tile": [
+    50,
+    34
+   ],
+   "name": "Six Jizo of the crossroads",
+   "text": "Crossroads are where the worlds touch. These six stand for the six realms of rebirth. Pray here and you will not lose your way. (The Jizo here keep your progress: praying saves the game.)"
+  },
+  {
+   "id": "temple_ruins",
+   "tile": [
+    45,
+    36
+   ],
+   "name": "Ruins of Suzunari Temple",
+   "text": "Foundation stones of the temple that shared the hill with the shrine until 1868, when the order separating Buddhas from gods tore it down. The last nun is said to have carried the old Jizo statues down to the sea before the mob arrived.",
+   "lore": "jizo_sea"
+  },
+  {
+   "id": "notice_board",
+   "tile": [
+    16,
+    35
+   ],
+   "name": "Shopping street notice board",
+   "text": "LOST CAT: Mochi (grey, rude). / TANABATA FESTIVAL JULY 7 - volunteers wanted. / PIANO LESSONS. / FOUND: one umbrella, black, very old, has an eye? / TOWN COUNCIL: has anyone seen the shrine's bell since 2010?"
+  },
+  {
+   "id": "maneki",
+   "tile": [
+    27,
+    38
+   ],
+   "name": "Giant maneki-neko",
+   "text": "The street's lucky cat, two metres of chipped plaster. Left paw raised: it beckons people, not money. Its raised paw has a crack running through it, and the crack gets longer every rainy week."
+  },
+  {
+   "id": "station",
+   "tile": [
+    8,
+    38
+   ],
+   "name": "Suzunari Station",
+   "text": "One line, one platform, a train every forty minutes. At the level crossing the pedestrian signal plays 'Toryanse': going in is easy, coming back is frightening. At dusk the melody plays slower.",
+   "egg": "toryanse_sign"
+  },
+  {
+   "id": "tunnel",
+   "tile": [
+    1,
+    38
+   ],
+   "name": "Sealed tunnel",
+   "text": "The old road tunnel to the next town, bricked up in 1960. KEEP OUT. The bricks are warm. Someone on the other side is knocking - in the rhythm of a children's song."
+  },
+  {
+   "id": "river",
+   "tile": [
+    22,
+    44
+   ],
+   "name": "Kawabata embankment",
+   "text": "At Obon the town floats paper lanterns down this river to send the dead back out to sea. The river spirit lives under the bridge. He likes cucumbers and good manners.",
+   "lore": "obon_lanterns"
+  },
+  {
+   "id": "asagiri",
+   "tile": [
+    24,
+    47
+   ],
+   "name": "Asagiri-do sign",
+   "text": "ASAGIRI-DO. Rice merchants since 1712. Your grandfather Genzo was the last one. Your aunt Haruka turned it into a sweet shop because she 'got bored of rice'. The best seller is a mochi shaped like a sleeping cat. She says she just thought of it."
+  },
+  {
+   "id": "harbor_memorial",
+   "tile": [
+    37,
+    52
+   ],
+   "name": "Harbour memorial, 1945",
+   "text": "For those lost in the air raid on the harbour, August 1945. Among the names: SHIMURA SEIICHI, teacher, who sheltered evacuated children with his own body. For a moment the name looks like your own handwriting.",
+   "lore": "shimura"
+  },
+  {
+   "id": "beach",
+   "tile": [
+    20,
+    52
+   ],
+   "name": "The beach",
+   "text": "The drowned of Suzunari don't go to the river of the dead, the fishermen say. They go out, past the horizon, to the eternal land, and the sea gives back only their sandals. There are always sandals on this beach."
+  }
+ ],
+ "spirits": [
+  {
+   "id": "chiyo",
+   "name": "Nekomori Chiyo",
+   "label": "SHRINE KEEPER",
+   "look": "chiyo",
+   "tile": [
+    29,
+    6
+   ],
+   "hours": [
+    [
+     360,
+     1080
+    ]
+   ],
+   "open": [
+    "Asagiri's grandson. You have his eyebrows and his bad timing. Sit. Not there, that's the cat's step."
+   ],
+   "choices": [
+    {
+     "t": "\"What is Amane, really?\"",
+     "say": "\"A boy who cries too much. And something that waited too long. Both. Don't try to pull them apart, you'll tear him.\"",
+     "fx": {
+      "lore": "chiyo_two"
+     }
+    },
+    {
+     "t": "\"Why did you put the shrine's bell on a baby?\"",
+     "say": "\"Because it rang by itself the night he was born. A bell like that is never wrong about who has come home.\"",
+     "fx": {
+      "lore": "bell_goshintai"
+     }
+    },
+    {
+     "t": "\"I promise I won't leave him.\"",
+     "say": "\"...Words are heavier in this town, boy. I'll hold you to that one. So will something older than me.\"",
+     "fx": {
+      "promise": "chiyo_stay",
+      "amane_self": 2
+     }
+    },
+    {
+     "t": "\"I can't promise anything.\"",
+     "say": "\"Good. Your great-great-something promised too easily. Honest is better than kind.\""
+    }
+   ],
+   "again": [
+    "\"Again? Sweep the steps if you want to be useful.\""
+   ]
+  },
+  {
+   "id": "makabe",
+   "name": "Makabe-sensei",
+   "label": "HOMEROOM 2-B",
+   "look": "makabe",
+   "tile": [
+    12,
+    26
+   ],
+   "hours": [
+    [
+     480,
+     1020
+    ]
+   ],
+   "open": [
+    "Asagiri. Settling in? You look more like your father every day. ...That wasn't a compliment, by the way. Or an insult. Just a fact."
+   ],
+   "choices": [
+    {
+     "t": "\"You knew my father?\"",
+     "say": "\"We sat at the same table in the canteen for three years. Him, me and Nekomori Sayo. Then one Tanabata he caught the last train and didn't come back.\"",
+     "fx": {
+      "lore": "makabe_2001"
+     }
+    },
+    {
+     "t": "\"How do I deal with Amane?\"",
+     "say": "\"Be kind. But be careful - in this town kindness works like a promise. Don't hand it out if you can't keep paying it.\""
+    },
+    {
+     "t": "\"What's in your desk drawer?\"",
+     "say": "\"...Ungraded essays.\" He doesn't blink. \"Go to class.\"",
+     "fx": {
+      "flag": "makabe_letter_hint"
+     }
+    },
+    {
+     "t": "\"See you in class, Sensei.\"",
+     "say": "\"Try to be awake this time.\""
+    }
+   ],
+   "again": [
+    "\"Asagiri. The bell rang. Class.\""
+   ]
+  },
+  {
+   "id": "mio",
+   "name": "Kuroe Mio",
+   "label": "OCCULT CLUB",
+   "look": "mio",
+   "tile": [
+    5,
+    26
+   ],
+   "hours": [
+    [
+     920,
+     1110
+    ]
+   ],
+   "open": [
+    "Fufu. The boy who came back. You're the only person besides me who looks at the first-year's hood when it twitches."
+   ],
+   "choices": [
+    {
+     "t": "\"Tell me the seven mysteries of the school.\"",
+     "say": "\"The toilet girl on the third floor. The thirteenth step. The 4:44 mirror. The walking statue. The piano. The running anatomy model. The corridor that doesn't end. Know all seven and you'll meet the eighth.\"",
+     "fx": {
+      "lore": "seven_mysteries"
+     }
+    },
+    {
+     "t": "\"What happens on the thousandth step?\"",
+     "say": "\"You go to the town at dusk, forever. The other Suzunari. I went in when I was ten - through Nekoneko Land, the dead amusement park. Three days. I came back with this.\" A ferris wheel ticket, stamped ONE WAY.",
+     "fx": {
+      "lore": "dusk_side",
+      "egg": "nekoneko_ticket"
+     }
+    },
+    {
+     "t": "\"Why are you always alone?\"",
+     "say": "\"Ghosts are better company. They never leave halfway through a sentence.\""
+    },
+    {
+     "t": "\"Bye, Kuroe-senpai.\"",
+     "say": "\"Don't look back on the way out. Fufu.\""
+    }
+   ],
+   "again": [
+    "\"Fufu. The ghosts and I are busy. Come back at dusk tomorrow.\""
+   ]
+  },
+  {
+   "id": "hina",
+   "name": "Hayase Hina",
+   "label": "NEWSPAPER CLUB",
+   "look": "hina",
+   "tile": [
+    26,
+    29
+   ],
+   "hours": [
+    [
+     600,
+     1050
+    ]
+   ],
+   "open": [
+    "Toru! You really don't remember me? Summer, age six, you ate my watermelon and blamed a cat?"
+   ],
+   "choices": [
+    {
+     "t": "\"Sorry... I really don't remember those summers.\"",
+     "say": "\"Figures. Look - I have this photo from the festival nine years ago. Two little kids on the shrine steps. One of them is you. The other one has a bell.\"",
+     "fx": {
+      "lore": "photo_2016"
+     }
+    },
+    {
+     "t": "\"What's the Ura board saying about me?\"",
+     "say": "\"That you made a first-year cry, three times, on camera. I'm writing the real story. Readers deserve the truth. Also, it sells.\""
+    },
+    {
+     "t": "\"Want to walk home together?\"",
+     "say": "\"Sure! ...Why is that hooded kid glaring at me from the vending machine?\"",
+     "fx": {
+      "closeness": 10,
+      "who": "Hayase Hina"
+     }
+    },
+    {
+     "t": "\"Later, Hina.\"",
+     "say": "\"Later! I'll find out what you're hiding!\""
+    }
+   ],
+   "again": [
+    "\"No comment! ...That's my line, wait.\""
+   ]
+  },
+  {
+   "id": "hanako",
+   "name": "Hanako",
+   "label": "3RD STALL",
+   "look": "hanako",
+   "tile": [
+    37,
+    26
+   ],
+   "hours": [
+    [
+     900,
+     1110
+    ]
+   ],
+   "open": [
+    "*Knock, knock, knock.* A small voice: \"Is that you, Sensei? You came back. I still haven't finished my arithmetic.\""
+   ],
+   "choices": [
+    {
+     "t": "\"Let's finish your homework together.\"",
+     "say": "\"Seven times eight... fifty-six! Sensei, you always made me say it twice. Come back tomorrow, there are two pages left.\"",
+     "fx": {
+      "egg": "hanako_homework",
+      "flag": "hanako_hw"
+     }
+    },
+    {
+     "t": "\"Sensei? Who do you think I am?\"",
+     "say": "\"Shimura-sensei. You told us to hide in the school when the planes came, and ran to the harbour for the little ones. You're taller now. You don't remember me, do you.\"",
+     "fx": {
+      "lore": "shimura"
+     }
+    },
+    {
+     "t": "\"...Sorry, wrong door.\"",
+     "say": "Giggling, then silence. The stall is empty."
+    }
+   ],
+   "again": [
+    "*Knock, knock.* Silence. A tiny voice: \"Tomorrow, Sensei.\""
+   ]
+  },
+  {
+   "id": "kappa",
+   "name": "Gataro",
+   "label": "RIVER KAPPA",
+   "look": "kappa",
+   "tile": [
+    15,
+    44
+   ],
+   "hours": [
+    [
+     0,
+     1320
+    ]
+   ],
+   "open": [
+    "A boy with green skin and a little dish of water on his head squats by the river, staring at your hands. You are not holding a cucumber. He looks disappointed."
+   ],
+   "choices": [
+    {
+     "t": "Bow politely.",
+     "say": "He bows back - deeper - and the water spills from his dish. He goes limp. \"Ugh. Manners. My one weakness. Fine. Ask me about the drowned. I know them all.\"",
+     "fx": {
+      "egg": "kappa_bow",
+      "zukan": "kappa",
+      "lore": "kappa_drowned"
+     }
+    },
+    {
+     "t": "\"Wrestle me. Sumo. Right now.\"",
+     "say": "You lose in under a second. He is very pleased. \"Come back with a cucumber and I'll let you win once.\"",
+     "fx": {
+      "zukan": "kappa",
+      "hp": -10
+     }
+    },
+    {
+     "t": "\"What do you know about Amane?\"",
+     "say": "\"The rain boy? He drank from my river every morning when he was a cat. A hundred and fifty years ago. You humans are bad at noticing.\"",
+     "fx": {
+      "zukan": "kappa",
+      "lore": "kappa_suzu"
+     }
+    },
+    {
+     "t": "Back away slowly.",
+     "say": "He watches you go, unblinking, the way only something four hundred years old can."
+    }
+   ],
+   "again": [
+    "The kappa is asleep on his back, dish carefully balanced."
+   ]
+  },
+  {
+   "id": "tanuki",
+   "name": "The antique dealer",
+   "label": "ANTIQUES",
+   "look": "tanuki",
+   "tile": [
+    21,
+    38
+   ],
+   "hours": [
+    [
+     540,
+     1140
+    ]
+   ],
+   "open": [
+    "An old man polishes a teapot that is definitely older than him. His shadow on the wall has a fat, bushy tail."
+   ],
+   "choices": [
+    {
+     "t": "Hold up your phone so he can see his reflection.",
+     "say": "In the screen: a tanuki in a cardigan. He sighs. \"Fine, fine. Fifty percent off, forever, if you never do that again.\"",
+     "fx": {
+      "egg": "tanuki_mirror",
+      "zukan": "tanuki",
+      "flag": "tanuki_discount"
+     }
+    },
+    {
+     "t": "\"What's the oldest thing in here?\"",
+     "say": "\"An Asagiri rice ledger from 1868. The last page has a list: 100 letters, burned. Someone wrote the dates of each one. Your family is very thorough about its regrets.\"",
+     "fx": {
+      "lore": "hundred_letters"
+     }
+    },
+    {
+     "t": "\"Nice teapot.\"",
+     "say": "\"It's a tsukumogami. A hundred years old - it's awake. It likes you. Teapots have terrible taste.\"",
+     "fx": {
+      "zukan": "tsukumogami"
+     }
+    },
+    {
+     "t": "\"What's that old arcade cabinet in the corner?\"",
+     "say": "\"ODD-SPACE. A space game from before your time. Plays itself at night. Sometimes it tells people their past lives. It said mine was 'a raccoon'. It's very rude.\"",
+     "fx": {
+      "egg": "odd_space"
+     }
+    },
+    {
+     "t": "\"Just looking.\"",
+     "say": "\"Everybody's just looking. That's how the oldest things get you.\""
+    }
+   ],
+   "again": [
+    "\"Just looking again? Hmph.\""
+   ]
+  },
+  {
+   "id": "rokuro",
+   "name": "Yamane-san",
+   "label": "KONBINI NIGHT SHIFT",
+   "look": "rokuro",
+   "tile": [
+    33,
+    39
+   ],
+   "hours": [
+    [
+     1140,
+     1320
+    ]
+   ],
+   "open": [
+    "The night-shift clerk is restocking the top shelf. Without a ladder. Her neck is... long. Very long. She notices you noticing."
+   ],
+   "choices": [
+    {
+     "t": "\"I didn't see anything.\"",
+     "say": "Her neck folds back down like a measuring tape. \"You're sweet. Here, free oden. Daikon's the best one.\"",
+     "fx": {
+      "zukan": "rokurokubi",
+      "hp": 25
+     }
+    },
+    {
+     "t": "\"That's a great reach. Can you get the top-shelf melon bread?\"",
+     "say": "She laughs so hard her head bonks the ceiling. \"Finally, someone practical!\"",
+     "fx": {
+      "zukan": "rokurokubi"
+     }
+    },
+    {
+     "t": "\"Who shops here at night?\"",
+     "say": "\"After midnight, the dead buy cigarettes for people they miss. At Obon, I sell out of rice balls. Nobody pays. Everybody says thank you.\"",
+     "fx": {
+      "zukan": "rokurokubi",
+      "lore": "night_shop"
+     }
+    },
+    {
+     "t": "Scream.",
+     "say": "She sighs, and her neck shrinks back. \"Every new kid. Every time.\""
+    }
+   ],
+   "again": [
+    "\"Daikon's sold out. Come back tomorrow, kid.\""
+   ]
+  },
+  {
+   "id": "noppera",
+   "name": "Salaryman at the bus stop",
+   "label": "LAST BUS",
+   "look": "noppera",
+   "tile": [
+    4,
+    40
+   ],
+   "hours": [
+    [
+     1200,
+     1320
+    ]
+   ],
+   "open": [
+    "A man in a suit waits at the bus stop. He turns around. He has no face. Just smooth skin, like an egg."
+   ],
+   "choices": [
+    {
+     "t": "\"G-good evening.\"",
+     "say": "He bows, perfectly polite. A voice from nowhere: \"Good evening. The last bus is late again. It's always late. I've been waiting since 1983.\"",
+     "fx": {
+      "zukan": "nopperabo"
+     }
+    },
+    {
+     "t": "\"Are you okay? You look... unwell.\"",
+     "say": "He touches where his mouth should be. \"Was it like this?\" Then he is gone, and the bus stop light flickers back on.",
+     "fx": {
+      "zukan": "nopperabo",
+      "lore": "mujina"
+     }
+    },
+    {
+     "t": "Run!",
+     "say": "You run to the shopping street. At the konbini, the clerk asks if you're okay. You look up. She has no face either. ...She does. She does have a face. You need sleep.",
+     "fx": {
+      "zukan": "nopperabo"
+     }
+    }
+   ],
+   "again": [
+    "The bus stop is empty. The timetable has one line circled: 23:59."
+   ]
+  },
+  {
+   "id": "kuchisake",
+   "name": "A woman in a mask",
+   "label": "STATION",
+   "look": "kuchisake",
+   "tile": [
+    8,
+    39
+   ],
+   "hours": [
+    [
+     1140,
+     1290
+    ]
+   ],
+   "open": [
+    "A tall woman in a long coat and a white surgical mask blocks your way at the station. \"Am I... pretty?\""
+   ],
+   "choices": [
+    {
+     "t": "\"You're... so-so.\"",
+     "say": "She tilts her head for a long moment, confused, and walks away into the rain. That was the right answer.",
+     "fx": {
+      "egg": "kuchisake",
+      "zukan": "kuchisake"
+     }
+    },
+    {
+     "t": "Toss her a piece of candy.",
+     "say": "She catches it, unwraps it under the mask, and forgets about you entirely. Old trick. Still works.",
+     "fx": {
+      "egg": "kuchisake",
+      "zukan": "kuchisake",
+      "money": -1
+     }
+    },
+    {
+     "t": "\"Pomade, pomade, pomade!\"",
+     "say": "She flinches like you threw salt and vanishes. The rumour was true: she hates the smell of pomade.",
+     "fx": {
+      "zukan": "kuchisake"
+     }
+    },
+    {
+     "t": "\"Yes, you're pretty.\"",
+     "say": "She pulls down the mask. \"Even... like this?\" You don't remember running home. Your shoes are soaked. Your wallet is lighter.",
+     "fx": {
+      "zukan": "kuchisake",
+      "money": -5,
+      "hp": -15
+     }
+    }
+   ],
+   "again": [
+    "The station is empty. A white mask lies on the bench."
+   ]
+  },
+  {
+   "id": "kiku",
+   "name": "Kiku",
+   "label": "?",
+   "look": "kiku",
+   "tile": [
+    31,
+    47
+   ],
+   "hours": [
+    [
+     360,
+     540
+    ],
+    [
+     1020,
+     1200
+    ]
+   ],
+   "open": [
+    "A little girl in a red kimono is hiding behind the shop's noren. Your aunt walks right past her without a glance."
+   ],
+   "choices": [
+    {
+     "t": "\"Want to play hide-and-seek?\"",
+     "say": "She's gone before you finish the sentence. You find her inside the rice chest. She laughs like a bell. The shop sells out of mochi by noon.",
+     "fx": {
+      "egg": "zashiki_tag",
+      "zukan": "zashiki_warashi",
+      "luck": 1
+     }
+    },
+    {
+     "t": "Give her a sweet from the shop.",
+     "say": "She eats it in one bite and pats your hand. \"Haru-neechan used to give me these.\"",
+     "fx": {
+      "zukan": "zashiki_warashi",
+      "luck": 1,
+      "lore": "kiku_haru"
+     }
+    },
+    {
+     "t": "\"Who are you?\"",
+     "say": "\"Kiku. I live here. I've lived here since the fever, the winter after the cat died. Don't make me leave. Houses I leave go dark.\"",
+     "fx": {
+      "zukan": "zashiki_warashi",
+      "lore": "kiku"
+     }
+    },
+    {
+     "t": "Ignore her.",
+     "say": "She pouts. A cup slides off a shelf inside the shop and breaks.",
+     "fx": {
+      "luck": -1
+     }
+    }
+   ],
+   "again": [
+    "Giggling somewhere inside the rice chest."
+   ]
+  }
+ ],
+ "lore_titles": {
+  "rain_tears": "The rain follows his tears",
+  "cat_ears": "Ears under the hood",
+  "bell_old": "The bell is older than the steps",
+  "bell_goshintai": "The bell was the shrine's sacred object",
+  "bell_silent": "The bell goes silent when he is upset",
+  "cats_spies": "The cats tell him things",
+  "remembers_child": "He remembered things as a child",
+  "nekomori_once": "Nekomori love only once",
+  "chiyo_knows": "Chiyo knew who you were",
+  "sayo_court": "His mother went to the courts past the steps",
+  "sayo_waiting": "A woman hums on the steps at Tanabata",
+  "steps_1703": "The steps were built after a tsunami",
+  "thousandth_step": "The thousandth step",
+  "waited_nine": "He waited nine summers",
+  "promise_2016": "The promise, nine years ago",
+  "kamikakushi_2016": "You were spirited away at seven",
+  "kotodama": "Words have souls here",
+  "tabaruzaka": "The hill in the rain",
+  "soichiro": "The man who left in 1868",
+  "will_2027": "Grandfather's deadline: next Tanabata",
+  "ikiryo": "The black cat is his sleeping heart",
+  "tanabata_wish": "Nine wishes for someone to come home",
+  "cat_habits": "He eats like a cat",
+  "okuri_inu": "The dogs that walk the dead home",
+  "chiyo_two": "A boy and something that waited",
+  "makabe_2001": "Tanabata 2001",
+  "seven_mysteries": "The seven mysteries",
+  "dusk_side": "The other Suzunari, at dusk",
+  "photo_2016": "Hina's photo from 2016",
+  "shimura": "Shimura-sensei, 1945",
+  "kappa_drowned": "The kappa knows the drowned",
+  "kappa_suzu": "The cat drank from the river",
+  "hundred_letters": "One hundred letters, burned",
+  "night_shop": "The dead shop at night",
+  "mujina": "Was it like this?",
+  "kiku_haru": "Haru-neechan",
+  "kiku": "The girl from the fever year",
+  "go_en": "Five yen, go-en, a bond",
+  "suzu_grave": "Suzu's grave, 1859 - 1890",
+  "jizo_sea": "Six Jizo under the sea",
+  "obon_lanterns": "Lanterns sent down the river"
+ },
+ "ema_wishes": [
+  "Pass the entrance exam. PLEASE.",
+  "I want Mochi to come home. (Grey, rude.)",
+  "Let the fish come back to the harbour. - Fishermen's union",
+  "I want to see Grandpa one more time at Obon.",
+  "Senpai, notice me. (Not that Senpai. A different one.)",
+  "Let the rain stop before the festival.",
+  "Let me get the new Gacha cat. 300 pulls. I believe.",
+  "Please let Hayate stop eating my lunch.",
+  "Let my mother come home from the hill.",
+  "Safe birth for our daughter. - The Inukai family",
+  "I want to stop being afraid of the old building.",
+  "Let the café on the corner survive the winter.",
+  "Let the person who nails dolls to the tree be found. - Shrine office",
+  "I want to be a manga artist and leave this town. Sorry, town.",
+  "Help me tell her before graduation.",
+  "Let the shop stay lucky. (And let my nephew eat breakfast.) - Asagiri Haruka",
+  "Let the tunnel stay closed.",
+  "I want my bell back. - Suzune",
+  "Make the station melody normal speed again.",
+  "I wish my dog could talk. (He already does at night. Please make him stop.)",
+  "To whoever reads this: you are doing fine.",
+  "Let my brother wake up.",
+  "1000 steps. I counted twice. Help."
+ ],
+ "eggs": {
+  "hanako_homework": "Hanako-san finished her arithmetic. Seventy-nine years late, but finished.",
+  "kappa_bow": "The kappa's weakness was always good manners.",
+  "tanuki_mirror": "A tanuki's disguise never survives a mirror. Lifetime discount at the antique shop.",
+  "kuchisake": "'So-so' - the only safe answer, since the 1979 rumour panic.",
+  "zashiki_tag": "Kiku likes hide-and-seek. Houses where she plays never go broke.",
+  "six_jizo": "You prayed to all six Jizo. Whatever realm you are reborn into, someone will be waiting at the crossroads.",
+  "bell_rope": "You almost rang the bell. If it rings on any night but Tanabata, someone has come home.",
+  "ema_transparent": "You wished to be invisible. Somebody is very good at seeing you anyway.",
+  "slow_blink": "A slow blink. In cat, it is the whole sentence.",
+  "sardine": "Never take the cat god's sardine.",
+  "odd_space": "A dusty arcade cabinet in the antique shop: ODD-SPACE. Insert coin. The screen says: 'Not in this life.'",
+  "toryanse_sign": "You hummed along to Toryanse. 'Going in is easy, coming back is frightening.'",
+  "nekoneko_ticket": "A Nekoneko Land ferris wheel ticket, stamped ONE WAY. The park closed in 2010."
+ }
+}

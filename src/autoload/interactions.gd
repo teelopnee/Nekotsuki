@@ -112,6 +112,9 @@ func choices_for(npc: Node, role: String) -> Array:
 			continue
 		var cost := cost_of(d)
 		var text := fill(str(d.get("text", id)), npc).replace("{cost}", str(cost))
+		if d.has("say") and (d["say"] as Array).size() > 0:
+			# Suzunari: the exact words you'd say, the kind of act in brackets.
+			text = "%s  (%s)" % [fill(str((d["say"] as Array).pick_random()), npc), text.to_lower()]
 		if d.has("chance"):
 			text += "  [%d%%]" % roundi(chance_of(d, npc) * 100.0)
 		var entry := {"id": "act:" + id, "text": text, "disabled": cost > 0 and not Game.can_afford(cost)}

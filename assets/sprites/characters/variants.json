@@ -858,6 +858,96 @@
    "school": true
   }
  },
+ "y_kappa": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "tank",
+   "hair": "bob",
+   "acc": [
+    "dish",
+    "backpack"
+   ],
+   "mouth": "smile"
+  }
+ },
+ "y_noppera": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "normal",
+   "outfit": "suit",
+   "hair": "short",
+   "acc": [],
+   "eyes": "none",
+   "mouth": "none",
+   "brows": "none"
+  }
+ },
+ "y_kuchisake": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "coat",
+   "hair": "long",
+   "acc": [
+    "mask"
+   ]
+  }
+ },
+ "y_tanuki": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "broad",
+   "outfit": "vest",
+   "hair": "short",
+   "acc": [
+    "catears",
+    "glasses",
+    "mustache"
+   ],
+   "eyes": "sleepy"
+  }
+ },
+ "y_rokuro": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "slim",
+   "outfit": "apron",
+   "hair": "bun",
+   "acc": [],
+   "skirt": "long",
+   "mouth": "smile"
+  }
+ },
+ "y_kiku": {
+  "kind": "human",
+  "tags": [
+   "yokai"
+  ],
+  "cfg": {
+   "body": "short",
+   "outfit": "miko",
+   "hair": "bob",
+   "acc": [],
+   "skirt": "long",
+   "mouth": "smile"
+  }
+ },
  "cat_a": {
   "kind": "cat",
   "tags": [

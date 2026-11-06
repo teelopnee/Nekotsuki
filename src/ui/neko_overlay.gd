@@ -11,7 +11,8 @@ var _log: RichTextLabel
 var _note: Label
 var _end_btn: Button
 var _watch_btn: Button
-var _ura := false
+var _tab := 0  ## 0 Rinrin, 1 Ura board, 2 Notes (Town codex)
+const TABS := ["Rinrin", "Ura board", "Notes"]
 var _title: Label
 
 
@@ -46,9 +47,9 @@ func _ready() -> void:
 func _build_panel() -> void:
 	_panel = PanelContainer.new()
 	_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_panel.custom_minimum_size = Vector2(520, 560)
-	_panel.offset_left = -260
-	_panel.offset_right = 260
+	_panel.custom_minimum_size = Vector2(600, 560)
+	_panel.offset_left = -300
+	_panel.offset_right = 300
 	_panel.offset_top = -280
 	_panel.offset_bottom = 280
 	_panel.visible = false
@@ -58,17 +59,17 @@ func _build_panel() -> void:
 	_panel.add_child(v)
 	var top := HBoxContainer.new()
 	v.add_child(top)
-	_title = HUD.make_label("RINRIN  -  Amane (1-A)", 22, Color(1.0, 0.8, 0.88))
+	_title = HUD.make_label("RINRIN  -  Amane (1-A)", 18, Color(1.0, 0.8, 0.88))
 	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(_title)
-	var tab := Button.new()
-	tab.text = "Ura board"
-	tab.custom_minimum_size = Vector2(130, 40)
-	tab.pressed.connect(func():
-		_ura = not _ura
-		tab.text = "Rinrin" if _ura else "Ura board"
-		_fill_log())
-	top.add_child(tab)
+	for i in TABS.size():
+		var tab := Button.new()
+		tab.text = TABS[i]
+		tab.custom_minimum_size = Vector2(96, 40)
+		tab.pressed.connect(func():
+			_tab = i
+			_fill_log())
+		top.add_child(tab)
 	_log = RichTextLabel.new()
 	_log.bbcode_enabled = true
 	_log.scroll_following = true
@@ -122,7 +123,13 @@ func _refresh() -> void:
 func _fill_log() -> void:
 	_watch_btn.disabled = Clock.minute() < 21 * 60 or Amane.rival() == "" or Amane.fate(Amane.rival()) in ["injured", "hidden"]
 	_end_btn.disabled = Clock.minute() < Clock.NIGHT
-	if _ura:
+	if _tab == 2:
+		_title.text = "NOTES  -  what Suzunari told you"
+		_log.scroll_following = false
+		_log.text = _notes_text()
+		return
+	_log.scroll_following = true
+	if _tab == 1:
 		_title.text = "URA BOARD  -  Suzunari Gakuen (anonymous)"
 		var u := ""
 		for p in Amane.st()["ura"]:
@@ -163,3 +170,25 @@ func _end_day() -> void:
 	close_phone()
 	if level and level.has_method("end_day"):
 		level.end_day()
+
+
+## The codex: remembered lore, places read, people met, the Hyakki Zukan, promises and Easter eggs.
+func _notes_text() -> String:
+	var c := Town.codex()
+	var t := "[color=#ffd6a0]REMEMBERED[/color]  (%d)\n" % c.lore.size()
+	for l in c.lore:
+		t += "  - %s\n" % l
+	t += "\n[color=#ffd6a0]PROMISES[/color]\n"
+	for pr in c.promises:
+		t += "  - %s\n" % str(pr).replace("_", " ")
+	if c.promises.is_empty():
+		t += "  [color=#8a8aa8](none - careful what you say in this town)[/color]\n"
+	t += "\n[color=#ffd6a0]PEOPLE[/color]\n"
+	for p in c.people:
+		t += "  - %s\n" % p
+	t += "\n[color=#ffd6a0]HYAKKI ZUKAN[/color]  (%d / %d)\n  %s\n" % [c.zukan.filter(func(z): return z != "???").size(), c.zukan.size(), ", ".join(c.zukan)]
+	t += "\n[color=#ffd6a0]PLACES[/color]  (%d)\n" % c.places.size()
+	for p in c.places:
+		t += "  - %s\n" % p
+	t += "\n[color=#b07dff]??? found: %d / %d[/color]\n" % [c.eggs, c.eggs_total]
+	return t

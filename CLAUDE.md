@@ -51,6 +51,21 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   Friday night jumps a step. `post()` = Ura board (phone tab). `HayateNPC` (`src/actors/hayate_npc.gd`,
   `data/hayate.json`): courtyard by day, walks you home after 15:20. `Ledger` autoload writes `user://ledger.json`
   every night (`snapshot()`, `read()`). Test: `tools/m3_test.gd`.
+- M4 words & world: map `data/maps/suzunari.txt` is 56x56 (shrine plaza + 999 steps north, school z20-31 with the gate at
+  x21-24 z31, Inukai dog shrine x41-54, road z32-33, Rokujizo crossroads, station, shopping street, river + bridge, home,
+  beach). LevelBuilder `_jp_cell` builds Japanese landmarks (A torii, Y hall, T offering box, C komaneko/komainu
+  (east of x=40 = dog), h stone lantern, o jizo x6 = save points, m ema, X basin, q bike, n pole, c bamboo, u hydrangea,
+  l stone steps); each one is an Interactable -> `Town.examine(kind, idx)`.
+  `Town` autoload (`data/town.json`, state `Game.flags["town"]`): landmark texts (+ optional choices), 18 lore signs
+  (`lore_points`, tiles), 11 `spirits` (cast + yokai, `hours` in minutes, `SpiritNPC` at a tile, `Town.meet`), scene
+  choices `{t, say, fx}` with fx `lore / egg / zukan / promise / flag / luck / money / hp / amane_self / closeness`.
+  Known lore lives in `Amane.st()["lore"]` (shared with talk requirements); titles in `lore_titles`; Notes tab =
+  `Town.codex()`. Amane talks: `data/amane_talk.json` topics (`when` requirements, `menu`, `a` = his line, 5 `replies`
+  with exact words `t`, `tone` kind/curious/flirt/tease/honest/boundary/cold -> `Amane.TONE_FX`, `say`, `say_crying`,
+  `fx`, `lore`, `promise`, `feel`). `Amane.converse`: up to 3 topics per talk, cold words shrink as he cries.
+  Yokai sprites `y_*` (`sprite_forge.py YOKAI`, eyes/mouth "none" = nopperabo). Test: `tools/talk_test.gd`.
+  Townsfolk verbs show exact words: `verbs.<id>.say` lists in `data/suzunari/_manual/interactions.json` (menu =
+  `"line"  (verb)`). Suzunari '^' = wooded hill (`_jp_hill`: mossy bank, stone wall, cedars; trees only near paths).
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

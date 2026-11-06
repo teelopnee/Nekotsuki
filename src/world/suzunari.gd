@@ -4,7 +4,7 @@ extends Level
 ## night), Amane's tears drive the rain, and the day ends at night (save + next morning).
 
 const MAP := "res://data/maps/suzunari.txt"
-const GATE := Vector2i(21, 14)
+const GATE := Vector2i(22, 31)  ## school gate (the wall at z = 31)
 const SURNAMES := ["Sato", "Suzuki", "Takahashi", "Tanaka", "Ito", "Watanabe", "Yamamoto", "Nakamura", "Kobayashi",
 	"Kato", "Yoshida", "Yamada", "Sasaki", "Matsumoto", "Inoue", "Kimura", "Hayashi", "Shimizu", "Mori", "Ikeda"]
 const GIVEN := ["Haruto", "Sota", "Yuto", "Ren", "Riku", "Kaito", "Yui", "Hina", "Mei", "Rin", "Sakura", "Aoi",
@@ -88,8 +88,9 @@ func _post_build() -> void:
 		var h = NPC_SCENE.instantiate()
 		h.set_script(load("res://src/actors/hayate_npc.gd"))
 		actors.add_child(h)
-		h.global_position = builder.center(17, 11) + Vector3(0, 0.1, 0)
+		h.global_position = builder.center(16, 29) + Vector3(0, 0.1, 0)
 		h.spot = h.global_position
+	Town.spawn_in(self)
 	_morning.call_deferred()
 
 

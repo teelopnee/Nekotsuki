@@ -22,7 +22,16 @@
      "attitude": 8,
      "rumor": true
     }
-   }
+   },
+   "say": [
+    "\"Rain again, huh. Third week running.\"",
+    "\"Do you know a good place for melon bread around here?\"",
+    "\"Is it always this quiet after the 5 o'clock chime?\"",
+    "\"I'm new. Asagiri. From the sweet shop.\"",
+    "\"Nice day for it. ...Whatever 'it' is.\"",
+    "\"Have you lived in Suzunari long?\"",
+    "\"The cats here stare a lot, don't they?\""
+   ]
   },
   "ask_need": {
    "text": "Ask if they need anything",
@@ -40,7 +49,13 @@
      "attitude": 5,
      "need_hint": true
     }
-   }
+   },
+   "say": [
+    "\"You look busy. Need a hand with anything?\"",
+    "\"Is something wrong? You keep looking at your phone.\"",
+    "\"Anything I can do? I'm free till the bell.\"",
+    "\"You dropped something - oh. You didn't. Need help, though?\""
+   ]
   },
   "give_credits": {
    "text": "Lend them some money",
@@ -60,7 +75,12 @@
      "rumor": true,
      "react": "grateful"
     }
-   }
+   },
+   "say": [
+    "\"Here. For the vending machine. Don't argue.\"",
+    "\"Take it. Pay me back in melon bread someday.\"",
+    "\"For the train fare. Go home, it's getting dark.\""
+   ]
   },
   "buy_meal": {
    "text": "Buy them a snack",
@@ -86,7 +106,12 @@
      "hp": 5,
      "react": "grateful"
     }
-   }
+   },
+   "say": [
+    "\"Let me buy you a yakisoba bread. I insist.\"",
+    "\"Konbini onigiri? My treat. Tuna mayo or salmon?\"",
+    "\"There's a ramen stand by the station. I'm paying.\""
+   ]
   },
   "threaten": {
    "text": "Threaten them",
@@ -127,7 +152,12 @@
      "npc": "angry",
      "react": "grudge"
     }
-   }
+   },
+   "say": [
+    "\"Back off. Now.\"",
+    "\"Say that again and see what happens.\"",
+    "\"I know where the 1000th step is. Want to go there?\""
+   ]
   },
   "pickpocket": {
    "text": "Pick their pocket",
@@ -168,7 +198,12 @@
      "npc": "angry",
      "react": "grudge"
     }
-   }
+   },
+   "say": [
+    "(Bump into them. \"Ah - sorry!\")",
+    "(Ask the time while your hand moves.)",
+    "(Point at a cat on the roof. \"Look!\")"
+   ]
   },
   "insult": {
    "text": "Make fun of them",
@@ -205,7 +240,12 @@
     "effects": {
      "attitude": -15
     }
-   }
+   },
+   "say": [
+    "\"Wow. Did you get dressed in the dark?\"",
+    "\"Your bike bell is the most annoying sound in Suzunari.\"",
+    "\"You talk like the station announcement. Slow and wrong.\""
+   ]
   },
   "recruit_informant": {
    "text": "Pay them to be your eyes here ({cost} cr)",
@@ -407,7 +447,13 @@
     "effects": {
      "attitude": -5
     }
-   }
+   },
+   "say": [
+    "\"Heard anything weird around town lately?\"",
+    "\"What's the story with the shrine on the hill?\"",
+    "\"Is it true about the 1000th step?\"",
+    "\"Who's the girl in the red kimono near my aunt's shop?\""
+   ]
   },
   "blend_in": {
    "text": "Melt into the crowd",
@@ -958,7 +1004,12 @@
      },
      "react": "grateful"
     }
-   }
+   },
+   "say": [
+    "\"Want half my bento? My aunt packs too much.\"",
+    "\"Itadakimasu - here, try the tamagoyaki.\"",
+    "\"I've got two rice balls and one stomach.\""
+   ]
   },
   "double_or_nothing": {
    "text": "Double or nothing? ({cost} cr)",
@@ -1092,7 +1143,11 @@
      "rumor": true,
      "react": "grateful"
     }
-   }
+   },
+   "say": [
+    "\"I've got a note for you. From... a friend.\"",
+    "\"Someone asked me to give you this. Don't ask who.\""
+   ]
   },
   "interface": {
    "text": "Interface with their implants",
@@ -1251,7 +1306,13 @@
     "effects": {
      "attitude": -5
     }
-   }
+   },
+   "say": [
+    "\"That hairpin suits you. Seriously.\"",
+    "\"You've got a great laugh, you know that?\"",
+    "\"I'd remember a face like yours. ...I'm bad with faces. But I'd remember.\"",
+    "\"Your handwriting on the notice board is the nicest one.\""
+   ]
   },
   "extort": {
    "text": "Make them an offer they can't refuse",
@@ -1327,7 +1388,12 @@
     "effects": {
      "attitude": -10
     }
-   }
+   },
+   "say": [
+    "\"Can I tell you something? I'm scared of this town.\"",
+    "\"I have dreams about a man in 1868. Every night.\"",
+    "\"I think something's following me. Something small. With ears.\""
+   ]
   },
   "plead": {
    "text": "Beg them not to hurt you",
@@ -1467,7 +1533,12 @@
      "\"Change? The last guy who said that got repossessed. By his own shoes.\""
     ],
     "effects": {}
-   }
+   },
+   "say": [
+    "\"You can do it. Seriously - I've seen you try.\"",
+    "\"Don't give up on it. Things in this town have waited longer.\"",
+    "\"If you want to leave and become a manga artist - go. Write about us.\""
+   ]
   },
   "joke": {
    "text": "Tell a joke",
@@ -1504,7 +1575,13 @@
     "effects": {
      "attitude": -5
     }
-   }
+   },
+   "say": [
+    "\"Why did the kappa fail his exam? He kept losing his head-water.\"",
+    "\"I asked the maneki-neko for luck. It waved goodbye.\"",
+    "\"My aunt says I'm sweet. Occupational hazard.\"",
+    "\"Knock knock. - Who's there? - Hanako. - ...Oh no.\""
+   ]
   },
   "lie": {
    "text": "Tell a white lie",
@@ -1540,7 +1617,13 @@
      "attitude": -15,
      "react": "grudge"
     }
-   }
+   },
+   "say": [
+    "\"I'm actually a transfer student from Tokyo. Big shot. Very cool.\"",
+    "\"I'm allergic to cats. Very allergic. Tell the cats.\"",
+    "\"Me? I've never been to this town before in my life.\"",
+    "\"The teacher said there's no homework this week.\""
+   ]
   },
   "ask_sibling": {
    "text": "Show them your sibling's photo",
@@ -1606,7 +1689,12 @@
      "\"Everyone's lost someone. Here they bill you for the grief.\""
     ],
     "effects": {}
-   }
+   },
+   "say": [
+    "\"Is there someone you like? You can tell me.\"",
+    "\"How do you know when someone likes you? Asking for a... cat.\"",
+    "\"Tanabata's coming. Got someone to wish for?\""
+   ]
   },
   "ai_whisper": {
    "text": "Let the ghost in your head do the talking",
@@ -1784,7 +1872,12 @@
     "effects": {
      "discount": -0.1
     }
-   }
+   },
+   "say": [
+    "\"Come on, a little discount for a local?\"",
+    "\"My aunt runs Asagiri-do. Neighbours' price?\"",
+    "\"Two for the price of one? It's raining.\""
+   ]
   },
   "shoplift": {
    "text": "Pocket something from the stall",
@@ -1947,7 +2040,12 @@
      "\"I'll keep that one to myself, if it's all the same.\""
     ],
     "effects": {}
-   }
+   },
+   "say": [
+    "\"Tell people the Asagiri sweet shop has a new mochi.\"",
+    "\"If anyone asks - I'm just a normal guy. Spread that around.\"",
+    "\"Could you put in a good word for me? With... everyone?\""
+   ]
   },
   "teach_moves": {
    "text": "Teach them that move",
@@ -2027,7 +2125,12 @@
     "effects": {
      "street_rep": true
     }
-   }
+   },
+   "say": [
+    "\"What do people say about me? Be honest.\"",
+    "\"Am I the guy from the Ura board? Don't answer that. ...Am I?\"",
+    "\"Do people think I'm weird? Scale of one to Kuroe-senpai.\""
+   ]
   },
   "apologise": {
    "text": "Apologise",
@@ -2077,7 +2180,12 @@
     "effects": {
      "attitude": -3
     }
-   }
+   },
+   "say": [
+    "\"Sorry about earlier. That was out of line.\"",
+    "\"I'm really sorry. I'll make it up to you, promise. ...Wait, not promise.\"",
+    "\"Gomen. I mean it.\""
+   ]
   },
   "dance_with_them": {
    "text": "Dance with them",
@@ -2113,7 +2221,11 @@
      "They step back. \"I'll watch. Watching is free.\""
     ],
     "effects": {}
-   }
+   },
+   "say": [
+    "\"Bon-odori practice? Teach me the steps.\"",
+    "\"Dance with me. Nobody's watching. ...The cats are watching.\""
+   ]
   },
   "ask_patch_up": {
    "text": "Ask them to help patch you up",
@@ -2328,7 +2440,12 @@
      "attitude": 12,
      "rumor": true
     }
-   }
+   },
+   "say": [
+    "\"Rough day? Yeah. Me too.\"",
+    "\"Exams, rain, and cats. This town, huh.\"",
+    "\"It'll be okay. ...I don't know that. But it might.\""
+   ]
   },
   "what_year": {
    "text": "Ask what year it is (again)",

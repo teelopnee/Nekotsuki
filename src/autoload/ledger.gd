@@ -18,7 +18,10 @@ func snapshot() -> Dictionary:
 	for id in Cats.st():
 		cats[id] = {"name": Cats.st()[id]["name"], "attitude": Cats.st()[id]["attitude"]}
 	return {"version": 1, "episode": 0, "player": Game.player_name, "day": Clock.day(), "date": Clock.date_text(),
-		"rival": Amane.rival(), "stage": int(a["plan"]["stage"]), "characters": chars, "cats": cats}
+		"rival": Amane.rival(), "stage": int(a["plan"]["stage"]), "characters": chars, "cats": cats,
+		"promises": (a["promises"] as Array).duplicate(), "lore": (a["lore"] as Dictionary).keys(),
+		"town": {"zukan": Town.st()["zukan"].duplicate(), "eggs": Town.st()["eggs"].duplicate(), "luck": Town.luck(),
+			"met": Town.st()["picked"].keys()}}
 
 
 func write() -> bool:

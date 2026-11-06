@@ -1109,6 +1109,8 @@ func _build_cells() -> void:
 				result.spawns[SPAWN_CHARS[c]] = p
 			elif ACTOR_CHARS.has(c):
 				result.entities.append({"char": c, "pos": p})
+			if theme == "suzunari" and _jp_cell(c, p, x, z):
+				continue
 			match c:
 				"D":
 					dock_tiles.append(p)
@@ -1486,6 +1488,9 @@ func _build_cliffs() -> void:
 			var body := static_body(pos, LAYER_WORLD | LAYER_OCCLUDER)
 			body.name = "Cliff"
 			add_box_collider(body, Vector3(length, maxf(h, WALL_H), TILE), Vector3(0, maxf(h, WALL_H) * 0.5, 0))
+			if theme == "suzunari":
+				_jp_hill(body, start, x, z, length)
+				continue
 			var mat := _textured("rock_cliff", pcolor("wall", "#4a2a20").lightened(rng.randf_range(-0.08, 0.12)), 0.5, 0.95, 0.0, 1.8)
 			mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
 			add_mesh(body, box(Vector3(length + 0.2, h, TILE + 0.1)), mat, Vector3(rng.randf_range(-0.1, 0.1), h * 0.5, 0))
@@ -2164,3 +2169,219 @@ func _build_puddles() -> void:
 		var c := cylinder(rng.randf_range(0.6, 1.6), 0.02, 14)
 		var mi := add_mesh(root, c, m, center(x, z) + Vector3(rng.randf_range(-0.5, 0.5), 0.012, rng.randf_range(-0.5, 0.5)), 0.0, false)
 		mi.scale = Vector3(1.0, 1.0, rng.randf_range(0.5, 0.9))
+
+
+# --- Suzunari: Japanese landmarks (palette theme "suzunari") ------------------------------------
+# A torii  Y shrine hall  T offering box + bell rope  C cat guardian (dog east of x=40)  h stone lantern
+# o jizo (six at the crossroads, also save points)  m ema board  X purification basin  q bicycle
+# n utility pole  c bamboo  u hydrangea  l stone step. Examining them shows lore (Town autoload).
+var _jizo_count := 0
+
+
+func _jp_mat(key: String, c: Color) -> StandardMaterial3D:
+	if not _mats.has("jp_" + key):
+		_mats["jp_" + key] = _flat(c)
+	return _mats["jp_" + key]
+
+
+func _jp_examine(body: Node3D, prompt: String, kind: String, idx: int = 0, at: Vector3 = Vector3(0, 0.8, 0.9)) -> void:
+	var it := Interactable.new()
+	it.prompt = prompt
+	it.radius = 1.5
+	it.position = at
+	body.add_child(it)
+	it.interacted.connect(func(_p): Town.examine(kind, idx))
+
+
+## Suzunari '^' = the wooded hill (chinju no mori, the shrine's forest): a low mossy bank with a dry-stone
+## wall where it meets a path, cedars and round camphor crowns. Fades like the cliffs when in the way.
+func _jp_hill(body: Node3D, x0: int, x1: int, z: int, length: float) -> void:
+	var hh := rng.randf_range(0.7, 1.3)
+	var moss := _flat(Color(0.27, 0.38, 0.24).lightened(rng.randf_range(-0.06, 0.06)))
+	var top := _flat(Color(0.33, 0.47, 0.27).lightened(rng.randf_range(-0.05, 0.05)))
+	var stone := _flat(Color(0.56, 0.55, 0.52))
+	var bark := _flat(Color(0.33, 0.23, 0.17))
+	var cedar := _flat(Color(0.16, 0.3, 0.2))
+	var camphor := _flat(Color(0.25, 0.42, 0.22))
+	var mats := [moss, top, stone, bark, cedar, camphor]
+	for m in mats:
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
+	add_mesh(body, box(Vector3(length + 0.2, hh, TILE + 0.1)), moss, Vector3(0, hh * 0.5, 0))
+	add_mesh(body, box(Vector3(length + 0.3, 0.2, TILE + 0.2)), top, Vector3(0, hh, 0))
+	var x_left := x0 * TILE + length * 0.5
+	if walkable(x0, z + 1) or walkable(x1 - 1, z + 1):
+		add_mesh(body, box(Vector3(length + 0.2, hh + 0.15, 0.25)), stone, Vector3(0, (hh + 0.15) * 0.5, TILE * 0.5), 0.0, false)
+	for xi in range(x0, x1):
+		if rng.randf() > 0.5 or not _near_walkable(xi, z, 3):
+			continue  # deep forest is never in frame: keep the tablet's draw calls for the edges
+		var lp := Vector3(xi * TILE + TILE * 0.5 - x_left + rng.randf_range(-0.5, 0.5), hh, rng.randf_range(-0.5, 0.5))
+		var th := rng.randf_range(1.2, 2.0)
+		add_mesh(body, cylinder(0.16, th, 6), bark, lp + Vector3(0, th * 0.5, 0), 0.0, false)
+		if rng.randf() < 0.6:
+			var cone := CylinderMesh.new()
+			cone.top_radius = 0.0
+			cone.bottom_radius = rng.randf_range(0.8, 1.1)
+			cone.height = rng.randf_range(2.6, 3.6)
+			cone.radial_segments = 7
+			cone.rings = 1
+			add_mesh(body, cone, cedar, lp + Vector3(0, th + cone.height * 0.5 - 0.3, 0), 0.0, false)
+		else:
+			var crown := SphereMesh.new()
+			crown.radius = rng.randf_range(1.0, 1.4)
+			crown.height = crown.radius * 1.6
+			crown.radial_segments = 8
+			crown.rings = 4
+			add_mesh(body, crown, camphor, lp + Vector3(0, th + crown.radius * 0.55, 0), 0.0, false)
+	body.set_meta("fade_mats", mats)
+	body.set_meta("fade_hide", [])
+
+
+func _near_walkable(x: int, z: int, r: int) -> bool:
+	for dz in range(-r, r + 1):
+		for dx in range(-r, r + 1):
+			if walkable(x + dx, z + dz):
+				return true
+	return false
+
+
+func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
+	match c:
+		"A":
+			var b := static_body(p)
+			var red := _jp_mat("vermilion", Color(0.85, 0.24, 0.15))
+			for sx in [-1.3, 1.3]:
+				add_mesh(b, cylinder(0.15, 3.3, 8), red, Vector3(sx, 1.65, 0))
+				add_box_collider(b, Vector3(0.3, 3.3, 0.3), Vector3(sx, 1.65, 0))
+			add_mesh(b, box(Vector3(3.6, 0.22, 0.4)), _jp_mat("torii_top", Color(0.1, 0.08, 0.08)), Vector3(0, 3.35, 0))
+			add_mesh(b, box(Vector3(3.3, 0.2, 0.32)), red, Vector3(0, 3.15, 0))
+			add_mesh(b, box(Vector3(3.0, 0.15, 0.22)), red, Vector3(0, 2.6, 0))
+			_jp_examine(b, "Look at the torii", "torii_dog" if x >= 40 else ("torii_steps" if x < 8 else "torii"), 0, Vector3(0, 0.8, 0.6))
+			return true
+		"Y":
+			var b := static_body(p)
+			var wood := _jp_mat("wood", Color(0.42, 0.26, 0.16))
+			add_mesh(b, box(Vector3(4.0, 0.5, 3.4)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.25, -0.4))
+			add_mesh(b, box(Vector3(3.4, 2.2, 2.8)), wood, Vector3(0, 1.6, -0.4))
+			add_mesh(b, box(Vector3(1.4, 1.6, 0.05)), _jp_mat("paper", Color(0.93, 0.9, 0.8)), Vector3(0, 1.4, 1.02), 0.0, false)
+			for sd in [-1.0, 1.0]:
+				var roof := add_mesh(b, box(Vector3(4.8, 0.2, 2.6)), _jp_mat("kawara_dark", Color(0.2, 0.22, 0.28)), Vector3(0, 3.15, -0.4 + sd * 1.0))
+				roof.rotation.x = sd * 0.55
+			add_box_collider(b, Vector3(4.0, 3.0, 3.4), Vector3(0, 1.5, -0.4))
+			_jp_examine(b, "Look at the hall", "hall_dog" if x >= 40 else "hall", 0, Vector3(0, 0.8, 1.6))
+			return true
+		"T":
+			var b := static_body(p)
+			add_mesh(b, box(Vector3(1.2, 0.6, 0.6)), _jp_mat("wood", Color(0.42, 0.26, 0.16)), Vector3(0, 0.3, 0))
+			add_mesh(b, cylinder(0.05, 1.8, 6), _jp_mat("rope", Color(0.85, 0.2, 0.2)), Vector3(0, 1.5, 0.35), 0.0, false)
+			add_mesh(b, cylinder(0.16, 0.22, 8), emissive(Color(1.0, 0.8, 0.3), 0.8), Vector3(0, 2.45, 0.35), 0.0, false)
+			add_box_collider(b, Vector3(1.2, 0.6, 0.6), Vector3(0, 0.3, 0))
+			_jp_examine(b, "Ring the bell", "offering_dog" if x >= 40 else "offering")
+			return true
+		"C":
+			var b := static_body(p)
+			var stone := _jp_mat("statue", Color(0.6, 0.6, 0.62))
+			add_mesh(b, box(Vector3(0.8, 0.7, 0.8)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.35, 0))
+			var dog := x >= 40
+			add_mesh(b, box(Vector3(0.55, 0.6, 0.7)), stone, Vector3(0, 1.0, 0))
+			add_mesh(b, box(Vector3(0.5 if not dog else 0.62, 0.45, 0.45)), stone, Vector3(0, 1.45, 0.15))
+			for sd in [-0.16, 0.16]:
+				var ear := add_mesh(b, box(Vector3(0.12, 0.22, 0.08) if not dog else Vector3(0.16, 0.12, 0.16)), stone, Vector3(sd * (1.0 if not dog else 1.4), 1.75, 0.15), 0.0, false)
+				ear.rotation.z = 0.3 * signf(sd)
+			add_box_collider(b, Vector3(0.8, 1.9, 0.8), Vector3(0, 0.95, 0))
+			_jp_examine(b, "Look at the guardian", "komainu" if dog else "komaneko")
+			return true
+		"h":
+			var b := static_body(p)
+			var stone := _jp_mat("lantern_stone", Color(0.62, 0.62, 0.6))
+			add_mesh(b, box(Vector3(0.6, 0.25, 0.6)), stone, Vector3(0, 0.12, 0))
+			add_mesh(b, cylinder(0.12, 0.9, 6), stone, Vector3(0, 0.7, 0))
+			add_mesh(b, box(Vector3(0.5, 0.45, 0.5)), emissive(Color(1.0, 0.7, 0.35), 1.6), Vector3(0, 1.38, 0), 0.0, false)
+			add_mesh(b, box(Vector3(0.75, 0.15, 0.75)), stone, Vector3(0, 1.68, 0))
+			add_box_collider(b, Vector3(0.6, 1.8, 0.6), Vector3(0, 0.9, 0))
+			if rng.randf() < 0.5:
+				add_light(p + Vector3(0, 1.4, 0.3), Color(1.0, 0.7, 0.4), 1.0, 3.5)
+			return true
+		"o":
+			var b := static_body(p)
+			var stone := _jp_mat("jizo", Color(0.58, 0.58, 0.56))
+			add_mesh(b, box(Vector3(0.6, 0.3, 0.5)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.15, 0))
+			add_mesh(b, cylinder(0.22, 0.7, 8), stone, Vector3(0, 0.65, 0))
+			add_mesh(b, cylinder(0.17, 0.3, 8), stone, Vector3(0, 1.15, 0))
+			add_mesh(b, box(Vector3(0.36, 0.26, 0.05)), _jp_mat("bib", Color(0.82, 0.15, 0.15)), Vector3(0, 0.82, 0.22), 0.0, false)
+			add_box_collider(b, Vector3(0.6, 1.3, 0.5), Vector3(0, 0.65, 0))
+			_jp_examine(b, "Pray to the Jizo (save)", "jizo", _jizo_count % 6)
+			_jizo_count += 1
+			return true
+		"m":
+			var b := static_body(p)
+			var wood := _jp_mat("wood_light", Color(0.62, 0.44, 0.26))
+			for sx in [-0.8, 0.8]:
+				add_mesh(b, box(Vector3(0.1, 1.6, 0.1)), wood, Vector3(sx, 0.8, 0))
+			add_mesh(b, box(Vector3(1.9, 0.08, 0.12)), wood, Vector3(0, 1.3, 0))
+			for i in 7:
+				add_mesh(b, box(Vector3(0.2, 0.14, 0.02)), _jp_mat("ema", Color(0.86, 0.72, 0.5)), Vector3(-0.66 + i * 0.22, 1.17 - (i % 2) * 0.05, 0.07), 0.0, false)
+			add_box_collider(b, Vector3(1.9, 1.6, 0.2), Vector3(0, 0.8, 0))
+			_jp_examine(b, "Read the wooden wishes", "ema")
+			return true
+		"X":
+			var b := static_body(p)
+			add_mesh(b, box(Vector3(1.4, 0.6, 0.8)), _jp_mat("stone", Color(0.55, 0.55, 0.58)), Vector3(0, 0.3, 0))
+			add_mesh(b, box(Vector3(1.2, 0.04, 0.6)), emissive(Color(0.3, 0.55, 0.8), 0.6), Vector3(0, 0.61, 0), 0.0, false)
+			for sx in [-0.8, 0.8]:
+				add_mesh(b, box(Vector3(0.1, 2.0, 0.1)), _jp_mat("wood", Color(0.42, 0.26, 0.16)), Vector3(sx, 1.0, 0))
+			add_mesh(b, box(Vector3(2.0, 0.12, 1.2)), _jp_mat("kawara_dark", Color(0.2, 0.22, 0.28)), Vector3(0, 2.05, 0))
+			add_box_collider(b, Vector3(1.4, 0.6, 0.8), Vector3(0, 0.3, 0))
+			_jp_examine(b, "Purify your hands", "chozuya")
+			return true
+		"q":
+			var b := static_body(p)
+			var metal := _jp_mat("bike", Color([0.7, 0.2, 0.25, 0.2, 0.25, 0.6][rng.randi() % 6], 0.3, 0.35))
+			for sz in [-0.5, 0.5]:
+				var wheel := add_mesh(b, cylinder(0.32, 0.05, 12), _jp_mat("tyre", Color(0.08, 0.08, 0.1)), Vector3(0, 0.33, sz), 0.0, false)
+				wheel.rotation.z = PI * 0.5
+			add_mesh(b, box(Vector3(0.05, 0.05, 0.9)), metal, Vector3(0, 0.6, 0), 0.0, false)
+			add_mesh(b, box(Vector3(0.05, 0.5, 0.05)), metal, Vector3(0, 0.55, -0.3), 0.0, false)
+			add_mesh(b, box(Vector3(0.45, 0.04, 0.04)), metal, Vector3(0, 0.85, 0.42), 0.0, false)
+			b.rotation.y = rng.randf_range(-0.4, 0.4)
+			return true
+		"n":
+			var b := static_body(p)
+			var grey := _jp_mat("pole", Color(0.6, 0.6, 0.58))
+			add_mesh(b, cylinder(0.14, 7.0, 8), grey, Vector3(0, 3.5, 0))
+			add_mesh(b, box(Vector3(1.4, 0.1, 0.1)), grey, Vector3(0, 5.6, 0), 0.0, false)
+			add_mesh(b, cylinder(0.25, 0.6, 8), _jp_mat("transformer", Color(0.45, 0.47, 0.5)), Vector3(0.35, 4.6, 0), 0.0, false)
+			add_box_collider(b, Vector3(0.3, 3.0, 0.3), Vector3(0, 1.5, 0))
+			return true
+		"c":
+			var b := static_body(p)
+			var green := _jp_mat("bamboo", Color(0.35, 0.6, 0.3))
+			var leaf := _jp_mat("bamboo_leaf", Color(0.42, 0.62, 0.3))
+			var spray := SphereMesh.new()
+			spray.radius = 0.42
+			spray.height = 0.22
+			spray.radial_segments = 6
+			spray.rings = 2
+			for i in 6:
+				var h := rng.randf_range(2.6, 4.4)
+				var at := Vector3(rng.randf_range(-0.7, 0.7), 0.0, rng.randf_range(-0.7, 0.7))
+				var culm := add_mesh(b, cylinder(0.055, h, 6), green, at + Vector3(0, h * 0.5, 0))
+				culm.rotation = Vector3(rng.randf_range(-0.06, 0.06), 0.0, rng.randf_range(-0.06, 0.06))
+				for k in 2:
+					var sp := add_mesh(b, spray, leaf, at + Vector3(rng.randf_range(-0.3, 0.3), h - 0.2 - k * 0.55, rng.randf_range(-0.3, 0.3)), rng.randf() * TAU, false)
+					sp.rotation.z = rng.randf_range(-0.4, 0.4)
+			add_box_collider(b, Vector3(1.4, 2.0, 1.4), Vector3(0, 1.0, 0))
+			return true
+		"u":
+			var b := static_body(p)
+			add_mesh(b, box(Vector3(1.2, 0.7, 1.0)), _jp_mat("bush", Color(0.25, 0.45, 0.28)), Vector3(0, 0.35, 0))
+			for i in 6:
+				add_mesh(b, box(Vector3(0.28, 0.24, 0.28)), _jp_mat("hydrangea%d" % (i % 3), [Color(0.45, 0.55, 0.95), Color(0.7, 0.5, 0.9), Color(0.95, 0.6, 0.8)][i % 3]),
+					Vector3(rng.randf_range(-0.45, 0.45), 0.72, rng.randf_range(-0.35, 0.35)), 0.0, false)
+			add_box_collider(b, Vector3(1.2, 0.7, 1.0), Vector3(0, 0.35, 0))
+			return true
+		"l":
+			var b := static_body(p)
+			add_mesh(b, box(Vector3(2.0, 0.14, 0.3)), _jp_mat("step_edge", Color(0.42, 0.42, 0.44)), Vector3(0, 0.07, 0.85), 0.0, false)
+			add_mesh(b, box(Vector3(2.0, 0.14, 0.3)), _jp_mat("step_edge", Color(0.42, 0.42, 0.44)), Vector3(0, 0.07, -0.15), 0.0, false)
+			return true
+	return false

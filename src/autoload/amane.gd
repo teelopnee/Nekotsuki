@@ -11,7 +11,8 @@ const DEFAULTS := {"met": false, "route": "none", "bond_now": 0.0, "bond_past": 
 	"trust": 10.0, "self": 10.0, "jealousy": {}, "rival": "", "blocked": false, "muted": false,
 	"unread": 0, "messages": [], "talks": 0, "rain": 0.0, "pending": "", "last_msg": 0,
 	"closeness": {}, "plan": {"target": "", "stage": 0, "guarded": false, "warned": false}, "fates": {}, "news": [],
-	"ura": [], "cat_reports": 0, "ikiryo_named": false, "woke_crying": false}
+	"ura": [], "cat_reports": 0, "ikiryo_named": false, "woke_crying": false, "lore": {}, "promises": [],
+	"topics_today": []}
 const FRIEND := "Inukai Hayate"  ## the week-2 rival unless you got closer to someone else
 const TEAR_NAMES := ["calm", "pouting", "teary", "crying", "wailing", "storm"]
 const FORECAST := ["Clear", "Clear", "Clouds", "Drizzle", "Rain", "Storm"]
@@ -19,7 +20,13 @@ const RAIN := [0.0, 0.0, 0.18, 0.45, 0.78, 1.0]
 const ROUTE_NAMES := {"none": "-", "friend": "Friend", "romance": "Romance", "ignore": "Ignore", "boundary": "Boundaries"}
 
 var data: Dictionary = {}
+var talk: Dictionary = {}  ## data/amane_talk.json - topics and exact replies
 var _rng := RandomNumberGenerator.new()
+## What each tone of reply does unless the reply overrides it (fx).
+const TONE_FX := {"kind": {"bond_now": 3.0, "tears": -0.6, "trust": 1.0}, "flirt": {"bond_now": 6.0, "tears": -1.0},
+	"tease": {"bond_now": 2.0, "tears": 0.3}, "curious": {"trust": 2.0}, "honest": {"trust": 3.0, "bond_now": 1.0},
+	"boundary": {"self": 5.0, "tears": 0.4}, "cold": {"bond_now": -3.0, "tears": 1.0, "trust": -2.0},
+	"lie": {"trust": -2.0, "bond_now": 1.0}}
 
 
 func _ready() -> void:
@@ -29,6 +36,10 @@ func _ready() -> void:
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
 		if parsed is Dictionary:
 			data = parsed
+	if FileAccess.file_exists("res://data/amane_talk.json"):
+		var t = JSON.parse_string(FileAccess.get_file_as_string("res://data/amane_talk.json"))
+		if t is Dictionary:
+			talk = t
 	Clock.minute_passed.connect(_tick)
 	Clock.day_started.connect(_new_day)
 	EventBus.interaction_done.connect(_on_interaction)
@@ -170,6 +181,7 @@ func impact(before: Dictionary) -> String:
 
 
 ## Full conversation with the actor in the world. `hud` is the level HUD (await-able say()).
+## Opener -> pick a topic -> his line -> pick your exact words -> his answer. Up to 3 topics per talk.
 func converse(actor: Node3D, hud: Node) -> void:
 	var s := st()
 	if hud == null:
@@ -181,10 +193,150 @@ func converse(actor: Node3D, hud: Node) -> void:
 		set_tears(2.2)
 		Emotion.express(actor, "cry", 3.0)
 		return
-	var picked: String = await hud.say("Amane", opener(), choices())
-	var r := choose(picked)
-	await hud.say("Amane", str(r.text))
-	Emotion.express(actor, str(r.feeling), 3.2)
+	var text := opener()
+	var feel := ""
+	for round in 3:
+		var menu := topic_choices()
+		if menu.is_empty():
+			break
+		menu.append({"id": "bye", "text": _pick(talk.get("bye", ["\"Bye.\""]))})
+		var topic: String = await hud.say("Amane", text, menu)
+		if topic == "bye" or topic == "" or not talk.get("topics", {}).has(topic):
+			break
+		(s["topics_today"] as Array).append(topic)
+		var t: Dictionary = talk["topics"][topic]
+		var reply: String = await hud.say("Amane", fill(_pick(t.get("a", ["..."]))), reply_choices(topic))
+		var r := answer(topic, int(reply) if reply.is_valid_int() else 0)
+		text = str(r.text)
+		feel = str(r.feel)
+	var fw: Dictionary = talk.get("farewell", {})
+	var lv := tears_level()
+	await hud.say("Amane", text + "\n\n" + _pick(fw.get("4" if lv >= 4 else ("2" if lv >= 2 else "0"), ["..."])))
+	if feel != "":
+		Emotion.express(actor, feel, 3.2)
+
+
+## Requirement check for topics and replies (see data/amane_talk.json _doc).
+func ok(when: Dictionary) -> bool:
+	var s := st()
+	for k in when:
+		var v = when[k]
+		if k == "min_bond" and float(s["bond_now"]) < float(v):
+			return false
+		elif k == "min_trust" and float(s["trust"]) < float(v):
+			return false
+		elif k == "min_self" and float(s["self"]) < float(v):
+			return false
+		elif k == "min_day" and Clock.day() < int(v):
+			return false
+		elif k == "min_tears" and tears_level() < int(v):
+			return false
+		elif k == "max_tears" and tears_level() > int(v):
+			return false
+		elif k == "route" and route() != str(v):
+			return false
+		elif k == "not_route" and route() == str(v):
+			return false
+		elif k == "rival" and (str(s["rival"]) != "") != bool(v):
+			return false
+		elif k == "stage_min" and int(s["plan"]["stage"]) < int(v):
+			return false
+		elif k == "lore" and not s["lore"].has(str(v)):
+			return false
+		elif k == "no_lore" and s["lore"].has(str(v)):
+			return false
+		elif k == "period" and not (v as Array).has(Clock.period()):
+			return false
+		elif k == "dusk" and Clock.is_dusk() != bool(v):
+			return false
+	return true
+
+
+## Up to 4 topics for today: urgent ones first (jealousy, the black cat, rain), then a shuffle of the rest.
+func topic_choices() -> Array:
+	var s := st()
+	var urgent := []
+	var rest := []
+	for id in talk.get("topics", {}):
+		if (s["topics_today"] as Array).has(id):
+			continue
+		var t: Dictionary = talk["topics"][id]
+		if not ok(t.get("when", {})):
+			continue
+		var c := {"id": id, "text": fill(str(t.get("menu", id)))}
+		if id in ["rival", "blackcat", "rain", "promise", "dreams"]:
+			urgent.append(c)
+		else:
+			rest.append(c)
+	rest.shuffle()
+	var out := urgent + rest
+	return out.slice(0, 4)
+
+
+## The exact words you can say. Cold lines shrink and fade as he cries; kind ones grow.
+func reply_choices(topic: String) -> Array:
+	var out := []
+	var lv := tears_level()
+	var replies: Array = talk.get("topics", {}).get(topic, {}).get("replies", [])
+	for i in replies.size():
+		var r: Dictionary = replies[i]
+		if not ok(r.get("when", {})):
+			continue
+		var c := {"id": str(i), "text": fill(str(r.get("t", "...")))}
+		match str(r.get("tone", "")):
+			"cold":
+				c["scale"] = 1.0 - 0.12 * lv
+			"kind", "flirt":
+				c["scale"] = 1.0 + 0.05 * lv
+		out.append(c)
+	return out
+
+
+## His answer to reply #idx of a topic: effects, route, lore, promises -> {"text", "feel"}.
+func answer(topic: String, idx: int) -> Dictionary:
+	var s := st()
+	var replies: Array = talk.get("topics", {}).get(topic, {}).get("replies", [])
+	if idx < 0 or idx >= replies.size():
+		return {"text": "...", "feel": ""}
+	var r: Dictionary = replies[idx]
+	var tone := str(r.get("tone", "kind"))
+	var before := {"tears": tears_level(), "bond": int(s["bond_now"]), "route": route()}
+	var fx: Dictionary = (TONE_FX.get(tone, {}) as Dictionary).duplicate()
+	fx.merge(r.get("fx", {}), true)
+	for k in fx:
+		if k == "jealousy":
+			var j: Dictionary = s["jealousy"]
+			var who := str(s["rival"])
+			if who != "":
+				j[who] = maxi(0, int(j.get(who, 0)) + int(fx[k]))
+		elif k == "hp":
+			Game.hp = minf(Game.max_hp(), Game.hp + float(fx[k]))
+		elif s.has(k):
+			add(k, float(fx[k]))
+	match tone:
+		"flirt":
+			s["route"] = "romance"
+		"kind":
+			if route() in ["none", "ignore"]:
+				s["route"] = "friend"
+		"boundary":
+			if route() in ["none", "ignore", "friend"]:
+				s["route"] = "boundary"
+		"cold":
+			s["route"] = "ignore"
+	var extra := ""
+	if r.has("lore") and not s["lore"].has(str(r.lore)):
+		s["lore"][str(r.lore)] = true
+		extra = "\n> Remembered: %s" % Town.lore_title(str(r.lore))
+	if r.has("promise") and not (s["promises"] as Array).has(str(r.promise)):
+		(s["promises"] as Array).append(str(r.promise))
+		extra += "\n> A promise was made. Enma's Ledger wrote it down."
+	var says: Array = r.get("say", ["..."])
+	if tone == "cold" and tears_level() >= 3 and r.has("say_crying"):
+		says = r["say_crying"]
+	s["talks"] = int(s["talks"]) + 1
+	changed.emit()
+	return {"text": fill(_pick(says)) + "\n" + impact(before) + extra, "feel": str(r.get("feel", ""))}
 
 
 # --- Phone (Rinrin) ----------------------------------------------------------------------
@@ -256,6 +408,7 @@ func _new_day(_d: int) -> void:
 	set_tears(float(s["tears"]) * 0.5 + (1.0 if s["muted"] and int(s["unread"]) > 2 else 0.0))
 	s["rain"] = rain_target()
 	s["talks"] = 0
+	s["topics_today"] = []
 	s["jealousy"] = {}
 	s["rival"] = ""
 	if s["blocked"]:

@@ -4,8 +4,11 @@ extends SceneTree
 ##   godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <out_dir>
 ## Shots: home morning, shopping street (Amane crying, rain), school gate, school corridor at dusk.
 
-const SHOTS := [["home_morning", Vector2i(21, 29), 470, 0.0, ""], ["street_rain", Vector2i(20, 20), 720, 4.2, "wail"],
-	["school_gate", Vector2i(21, 12), 800, 0.0, "fluster"], ["corridor_dusk", Vector2i(20, 8), 1085, 2.4, "peek"]]
+## [name, tile, minute, tears, Amane emote ("talk" = open a topic talk and show the exact-words menu)]
+const SHOTS := [["shrine_morning", Vector2i(27, 5), 480, 0.0, ""], ["steps_dusk", Vector2i(5, 14), 1085, 2.4, "peek"],
+	["school_gate", Vector2i(22, 30), 800, 0.0, "fluster"], ["river_rain", Vector2i(17, 43), 720, 4.2, "wail"],
+	["jizo_crossroads", Vector2i(47, 33), 1095, 0.0, ""], ["station_night", Vector2i(9, 38), 1200, 1.0, ""],
+	["talk_words", Vector2i(27, 40), 900, 1.6, "talk"]]
 var _step := 0
 var _wait := 0
 var _shot := 0
@@ -32,8 +35,12 @@ func _process(_d: float) -> bool:
 			_wait = 60
 		1:
 			var hud = current_scene.get("hud")
-			if hud and hud.get("_dialogue_open"):
-				hud._on_choice("")
+			for _i in 6:
+				if hud and hud.get("_dialogue_open"):
+					hud._on_choice("")
+			var only := OS.get_cmdline_user_args()[1].split(",") if OS.get_cmdline_user_args().size() > 1 else PackedStringArray()
+			while _shot < SHOTS.size() and not only.is_empty() and not only.has(str(SHOTS[_shot][0])):
+				_shot += 1
 			if _shot >= SHOTS.size():
 				quit(0)
 				return true
@@ -56,7 +63,14 @@ func _process(_d: float) -> bool:
 			for i in mini(2, cs.size()):
 				cs[i].global_position = p.global_position + Vector3(0.8 + i * 1.6, 0.05, 2.6)
 				cs[i].home = cs[i].global_position
-			if str(s[4]) != "":
+			if str(s[4]) == "talk":
+				amane.st()["topics_today"] = []
+				amane.converse(a, hud)
+				for b in hud._dialogue_choices.get_children():
+					if not b.is_queued_for_deletion():
+						b.pressed.emit()
+						break
+			elif str(s[4]) != "":
 				load("res://src/core/emotion.gd").express(a, str(s[4]), 30.0)
 			current_scene.camera_rig.snap_to_target()
 			_wait = 90

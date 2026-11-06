@@ -188,5 +188,152 @@
    "gloves": "#2a2236",
    "flash": "#fff3c4"
   }
+ },
+ "kappa": {
+  "variant": "y_kappa",
+  "colors": {
+   "gear": "#4a6a3a",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#7ab86a",
+   "hair": "#2f5a3a",
+   "top": "#5a8a4a",
+   "pants": "#3d6a3a",
+   "boots": "#7ab86a",
+   "accent": "#c8d870",
+   "coat": "#5a8a4a",
+   "glow": "#9ad8f0",
+   "iris": "#e8c040",
+   "scarf": "#3d6a3a",
+   "cap": "#e8e0c8"
+  }
+ },
+ "noppera": {
+  "variant": "y_noppera",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#f0e4d8",
+   "hair": "#1c1a20",
+   "top": "#f2f0ec",
+   "pants": "#2a2c36",
+   "boots": "#18181c",
+   "accent": "#5a2a2a",
+   "coat": "#2a2c36",
+   "glow": "#ffffff",
+   "iris": "#f0e4d8",
+   "scarf": "#5a2a2a",
+   "cap": "#1c1a20"
+  }
+ },
+ "kuchisake": {
+  "variant": "y_kuchisake",
+  "colors": {
+   "gear": "#f4f4f0",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#efe0d6",
+   "hair": "#0e0c12",
+   "top": "#d8cfc0",
+   "pants": "#6a5a48",
+   "boots": "#2a2024",
+   "accent": "#a02030",
+   "coat": "#c8b89a",
+   "glow": "#ffffff",
+   "iris": "#2a0a10",
+   "scarf": "#a02030",
+   "cap": "#0e0c12"
+  }
+ },
+ "tanuki": {
+  "variant": "y_tanuki",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#e0b890",
+   "hair": "#6a4a30",
+   "top": "#e8dcc0",
+   "pants": "#5a4a3a",
+   "boots": "#3a2a20",
+   "accent": "#a07040",
+   "coat": "#8a6a40",
+   "glow": "#ffd23e",
+   "iris": "#2a1a10",
+   "scarf": "#a07040",
+   "cap": "#6a4a30"
+  }
+ },
+ "rokuro": {
+  "variant": "y_rokuro",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#f2dccb",
+   "hair": "#2a1e26",
+   "top": "#f4f2ee",
+   "pants": "#3a4a6a",
+   "boots": "#2a2a30",
+   "accent": "#2f7ad0",
+   "coat": "#2f7ad0",
+   "glow": "#9ad8f0",
+   "iris": "#3a2a24",
+   "scarf": "#2f7ad0",
+   "cap": "#2a1e26"
+  }
+ },
+ "kiku": {
+  "variant": "y_kiku",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#ffe0e8",
+   "skin": "#f6e0d0",
+   "hair": "#141016",
+   "top": "#c8283a",
+   "pants": "#c8283a",
+   "boots": "#f4f2ee",
+   "accent": "#ffd060",
+   "coat": "#c8283a",
+   "glow": "#ffd23e",
+   "iris": "#141016",
+   "scarf": "#ffd060",
+   "cap": "#141016"
+  }
+ },
+ "hanako": {
+  "variant": "s05",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#f2e2d8",
+   "hair": "#141016",
+   "top": "#f4f4f0",
+   "pants": "#b8202a",
+   "boots": "#f4f2ee",
+   "accent": "#b8202a",
+   "coat": "#f4f4f0",
+   "glow": "#c8e0ff",
+   "iris": "#141016",
+   "scarf": "#b8202a",
+   "cap": "#141016"
+  }
  }
 }

@@ -41,3 +41,19 @@
   Enma's Ledger v1 written every night. Tests: m3_test (19 checks) + all others pass.
 - Open: the night watch is a dialogue, not yet a playable cat-spirit level (M5); rumours come from Amane's events,
   not yet from every witnessed act; spirited-away rivals cannot be rescued yet (Dusk Side, M5); music still synthwave.
+
+## M4 first pass (2026-11-06): words and world
+- Amane talks by topic with exact words: 17 topics x 5 replies (85 lines you can say), each with its own answer, a
+  crying variant for cold words, lore and promises; up to 3 topics per talk, urgent topics first (rival, black cat,
+  rain, promise, dreams). The HUD still shrinks cold words as he cries.
+- New 56x56 Suzunari with a shrine plaza, the 999 steps, the dog shrine, six Jizo (save points), temple ruins, station,
+  sealed tunnel, harbour memorial and beach. Every Japanese landmark can be examined (lore + choices: five-yen prayers,
+  ema wishes, purification, guardian cats). 18 lore signs.
+- 11 people and yokai with hours and exact-choice scenes (43 choices): Chiyo, Makabe-sensei, Mio, Hina, Hanako-san,
+  the kappa Gataro, the tanuki antique dealer, a rokurokubi konbini clerk, a nopperabo at the last bus, the
+  kuchisake-onna at the station, Kiku the zashiki-warashi. New yokai sprites (faceless nopperabo, kappa dish).
+- Phone Notes tab: remembered lore, promises, people, Hyakki Zukan, places, Easter eggs (13). Ledger stores them.
+- Tests: talk_test (60+ checks: every reply and choice plays, no sci-fi leaks, ids defined) + all earlier suites.
+- Open: Hayate still has the old 4-choice menu; townsfolk small talk is still the generic Copy grammar; CAST.md says
+  Chiyo is Amane's grandmother but calls Sayo her granddaughter (check); interiors (3rd-floor toilet, old building)
+  are not walkable yet so Hanako and Mio stand outside; kuchisake chase minigame not built; music still synthwave.

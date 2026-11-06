@@ -21,10 +21,10 @@
   "4": "Uh... sorry, have we talked before? You look familiar. Weird."
  },
  "choices": {
-  "hang": "Hang out with him.",
-  "warn": "\"Be careful around cats this week.\"",
-  "shrine": "Ask about the dog shrine.",
-  "bye": "See you."
+  "hang": "\"Yakisoba bread on the roof? My treat. ...Your treat.\"",
+  "warn": "\"Hayate. Stay away from cats this week. I'm serious.\"",
+  "shrine": "\"Tell me about the dog shrine again. The night-road thing.\"",
+  "bye": "\"Later, dog boy.\""
  },
  "hang": [
   "You run three laps for no reason and eat melon bread on the bleachers. It's nice. Somewhere behind the bleachers, a bell jingles.",

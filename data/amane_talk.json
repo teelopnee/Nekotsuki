@@ -1,0 +1,198 @@
+{
+ "_doc": "Amane conversation tree (GDD 4.3, CAST.md). A talk = opener -> pick a TOPIC (menu) -> Amane's line (a) -> pick one of the REPLIES (exact words) -> his answer (say) + feeling + effects. Up to 3 topics per talk, each once per day. tone defaults (amane.gd TONE_FX): kind, flirt, tease, curious, honest, boundary, cold, lie; fx overrides; lore = sets a past-life / town lore flag (Notes tab). when = requirements: min_bond, min_trust, min_self, min_day, min_tears, max_tears, route, not_route, rival, stage_min, lore, no_lore, period, dusk. {player} {rival} work everywhere.",
+ "bye": ["\"See you, Amane.\"", "\"I have to go.\"", "\"Later.\"", "\"Go to class, Amane.\""],
+ "farewell": {
+  "0": ["Okay! I'll be... around. Not following. Around.", "See you, Senpai. (He doesn't move until you're out of sight.)"],
+  "2": ["Okay... *sniff* See you.", "You're leaving already? ...Okay."],
+  "4": ["Don't go-- I mean. Go. It's fine. *it is not fine*"]
+ },
+ "topics": {
+  "rain": {
+   "menu": "\"It's raining again, huh.\"", "when": {"min_tears": 1},
+   "a": ["It always rains when I... It's just the season, Senpai.", "Grandma says when a cat washes its face, it rains. I don't wash my face that much."],
+   "replies": [
+    {"t": "\"I like the rain. Everything goes quiet.\"", "tone": "kind", "say": ["...Really? Then I'll stop feeling bad about it. A little.", "Quiet is nice. You can hear people breathing. I mean-- the rain. You can hear the rain."], "feel": "happy"},
+    {"t": "\"Is the rain because of you?\"", "tone": "curious", "say": ["*His ears pop out.* W-what? No! That's-- who told you that? Was it a cat?", "...If I said yes, would you think I'm weird? Weirder?"], "feel": "shock", "lore": "rain_tears"},
+    {"t": "\"Share my umbrella? It's big enough for two.\"", "tone": "flirt", "say": ["*He stands so close your shoulders touch. The rain stops. Just over the two of you.*", "Big enough for two. You said two. You said it."], "feel": "love", "fx": {"tears": -2.0}},
+    {"t": "\"Could you stand a bit further away?\"", "tone": "boundary", "say": ["...Further. Okay. Is here good? ...Here? I'll learn the right distance, Senpai."], "feel": "sulk"},
+    {"t": "\"The rain's annoying. Like you.\"", "tone": "cold", "say": ["...Oh. I'll go be annoying somewhere else."], "say_crying": ["*The rain gets louder. He doesn't say anything at all.*"], "feel": "cry"}
+   ]
+  },
+  "bento": {
+   "menu": "\"What's in the box?\"", "when": {"period": ["Morning", "Homeroom", "Class", "Lunch"]},
+   "a": ["Rice. And tamagoyaki. And grilled mackerel. Too much mackerel. I always make too much fish.", "I made it for me. There's just extra. Exactly one Senpai-sized extra."],
+   "replies": [
+    {"t": "\"Thanks, Amane. I'll eat it all.\"", "tone": "kind", "say": ["*He watches every bite like it's the last scene of a movie.*", "You ate the fish first. You always ate the fish first."], "feel": "content", "fx": {"bond_now": 5, "hp": 20}},
+    {"t": "\"Did you get up at five to make this?\"", "tone": "tease", "say": ["Four-thirty. I mean-- no. Normal time. Normal person time."], "feel": "fluster"},
+    {"t": "\"Let's eat on the roof. Together.\"", "tone": "flirt", "say": ["T-together?! I'll get a mat! I have a mat. I always carry a mat. In case."], "feel": "love"},
+    {"t": "\"You can't make me lunch every day.\"", "tone": "boundary", "say": ["...Every other day?", "Okay. Mondays and Thursdays. Final offer."], "feel": "pout"},
+    {"t": "\"I don't eat food from strangers.\"", "tone": "cold", "say": ["Strangers... Right. We're strangers. *He closes the lid very carefully.*"], "feel": "sad"}
+   ]
+  },
+  "hoodie": {
+   "menu": "\"Aren't you hot in that hoodie?\"",
+   "a": ["It's not against the rules. Not exactly. Makabe-sensei gave up.", "It has a hood. For when I need to not be looked at. Which is always, except by you."],
+   "replies": [
+    {"t": "\"It suits you.\"", "tone": "kind", "say": ["*He pulls the strings until only his nose shows.* ...Thank you."], "feel": "fluster"},
+    {"t": "\"What are you hiding under the hood?\"", "tone": "curious", "say": ["N-nothing! Hair. Normal hair. Normal amount of ears. Two. Human ones. Bye."], "feel": "shock", "lore": "cat_ears"},
+    {"t": "\"Can I borrow it when it's cold?\"", "tone": "flirt", "say": ["*You have never seen anyone take off a hoodie that fast.*", "Keep it. Forever. I have four more."], "feel": "love"},
+    {"t": "\"You don't need to hide from everyone.\"", "tone": "honest", "say": ["...People look at me like I'm a ghost. You look at me like I'm a person. That's the only kind of looking I can stand."], "feel": "sad", "fx": {"self": 4}},
+    {"t": "\"It makes you look creepy.\"", "tone": "cold", "say": ["...I know. I know I'm creepy. You don't have to say it."], "feel": "cry"}
+   ]
+  },
+  "bell": {
+   "menu": "\"Why do you wear a bell?\"", "when": {"min_bond": 8},
+   "a": ["Grandma tied it on me when I was a baby. I've never taken it off. Not even in the bath.", "It's old. Older than the shrine stairs, Grandma says. It used to belong to... someone."],
+   "replies": [
+    {"t": "\"So you can always be found?\"", "tone": "kind", "say": ["...So I can always find my way back. That's what Grandma said."], "feel": "content", "lore": "bell_old"},
+    {"t": "\"Who did it belong to before you?\"", "tone": "curious", "when": {"min_trust": 15}, "say": ["To a cat. A long time ago. The shrine's cat. ...The town prayed to it, after. And then it was mine. Don't laugh."], "feel": "think", "lore": "bell_goshintai"},
+    {"t": "\"I like the sound. I always know you're near.\"", "tone": "flirt", "say": ["*He jingles it. Twice. Very quietly.* ...That one meant hello."], "feel": "love"},
+    {"t": "\"Doesn't it get annoying?\"", "tone": "tease", "say": ["It only rings when I want it to. Mostly. Except when I'm upset. Then it doesn't ring at all."], "feel": "pout", "lore": "bell_silent"},
+    {"t": "\"Take it off. It's childish.\"", "tone": "cold", "say": ["*He covers it with both hands like you tried to grab it.* No. Anything else. Not this."], "feel": "shock", "fx": {"trust": -5}}
+   ]
+  },
+  "cats": {
+   "menu": "\"Why do cats follow you around?\"",
+   "a": ["They're not following me. We just go to the same places. Every place.", "Cats are good listeners. They hear everything. Then they tell... nobody. Cats don't talk, Senpai."],
+   "replies": [
+    {"t": "\"They like you. Cats have good taste.\"", "tone": "kind", "say": ["...You're the only person who ever said that like it was a good thing."], "feel": "happy"},
+    {"t": "\"Do the cats tell you about me?\"", "tone": "curious", "say": ["*Long pause.* ...What a strange question. Ha. Ha ha. Don't pet the grey one by the vending machine. He's a gossip."], "feel": "sweat", "lore": "cats_spies"},
+    {"t": "\"I'd follow you around too, if I were a cat.\"", "tone": "flirt", "say": ["S-Senpai would be a terrible cat. Too loud. Too warm. I'd let you sit on me anyway."], "feel": "love"},
+    {"t": "\"Tell your cats to give me some privacy.\"", "tone": "boundary", "say": ["...I'll ask them. They don't listen to me either."], "feel": "pout", "fx": {"self": 3}},
+    {"t": "\"Cats are vermin.\"", "tone": "cold", "say": ["*Every cat on the street turns its head toward you at the same time.*"], "feel": "yandere", "fx": {"trust": -6}}
+   ]
+  },
+  "class": {
+   "menu": "\"How's class 1-A?\"",
+   "a": ["Fine. Quiet. Nobody sits next to me. It's very spacious.", "They call me 'the rain boy'. It's not a mean name. It's just a true name."],
+   "replies": [
+    {"t": "\"Want me to walk you to class tomorrow?\"", "tone": "kind", "say": ["Yes. I mean-- if it's on your way. It isn't. I'll pretend it is."], "feel": "happy"},
+    {"t": "\"You should join a club. The library committee needs people.\"", "tone": "boundary", "say": ["A club... with people in it. ...If Senpai thinks I can. I'll try. Once."], "feel": "think", "fx": {"self": 7}},
+    {"t": "\"Nobody sits with you? Their loss.\"", "tone": "flirt", "say": ["*He looks at you like you hung the moon.* ...You'd sit with me?"], "feel": "love"},
+    {"t": "\"Have you tried talking to them?\"", "tone": "honest", "say": ["When I was little I told them about things I remembered. Old things. Nobody wanted to sit near me after that."], "feel": "sad", "lore": "remembers_child"},
+    {"t": "\"Maybe they've got a point.\"", "tone": "cold", "say": ["...Maybe they do."], "feel": "sulk"}
+   ]
+  },
+  "grandma": {
+   "menu": "\"You live with your grandmother?\"", "when": {"min_bond": 5},
+   "a": ["Grandma Chiyo. She runs the shrine. She feeds every cat in Suzunari and scolds every human.", "She's strict. She says I have to be careful who I love. Who says that to a kid?"],
+   "replies": [
+    {"t": "\"She sounds like she loves you a lot.\"", "tone": "kind", "say": ["...She does. She just says it like a rule."], "feel": "content"},
+    {"t": "\"Why does she say to be careful who you love?\"", "tone": "curious", "when": {"min_trust": 12}, "say": ["Because in our family, it's only ever once. That's the rule of the shrine. ...Forget I said that."], "feel": "shock", "lore": "nekomori_once"},
+    {"t": "\"Think she'd approve of me?\"", "tone": "flirt", "say": ["She'd hit you with her cane. Then make you tea. That's approval."], "feel": "laugh"},
+    {"t": "\"I should meet her. Properly.\"", "tone": "honest", "say": ["She already knows who you are. She knew the day your train came in. ...I don't know how either."], "feel": "think", "lore": "chiyo_knows"},
+    {"t": "\"Your family sounds weird.\"", "tone": "cold", "say": ["...Yeah. It is. You don't have to stick around for it."], "feel": "sad"}
+   ]
+  },
+  "mother": {
+   "menu": "\"What about your parents?\"", "when": {"min_trust": 20, "min_bond": 15},
+   "a": ["Dad left when I was three. Mom... went up the shrine steps on Tanabata when I was one. She didn't come down.", "People say she ran away. Grandma says she went to ask someone for something. For me."],
+   "replies": [
+    {"t": "\"I'm sorry, Amane.\"", "tone": "kind", "say": ["*He nods, very small.* ...You're the first person who said sorry instead of 'how weird'."], "feel": "cry", "fx": {"tears": 0.5, "trust": 4}},
+    {"t": "\"Went to ask who? For what?\"", "tone": "curious", "say": ["Grandma says there are courts. Past the steps. Where they decide what you have to pay for. Mom went to pay for me. ...It sounds crazy out loud."], "feel": "think", "lore": "sayo_court"},
+    {"t": "\"Then I'll stay. I won't go up those steps without you.\"", "tone": "flirt", "say": ["*He grabs your sleeve and doesn't let go for a long time.*"], "feel": "clingy", "fx": {"bond_now": 8}},
+    {"t": "\"Do you think she's still alive?\"", "tone": "honest", "say": ["...On Tanabata nights I hear a woman humming on the stairs. Nobody else hears it. I think she's waiting. Like I did."], "feel": "sad", "lore": "sayo_waiting"},
+    {"t": "\"Maybe she just didn't want you.\"", "tone": "cold", "say": ["*The bell on his collar goes completely silent.*"], "feel": "yandere", "fx": {"trust": -12, "tears": 2.0}}
+   ]
+  },
+  "steps": {
+   "menu": "\"Why shouldn't I count the shrine steps?\"", "when": {"min_day": 2},
+   "a": ["There are nine hundred and ninety-nine. If you count at dusk and get a thousand... don't keep walking. Please.", "The steps were built after a tsunami. People ran up them and counted them so they'd stay brave. Some of them never stopped counting."],
+   "replies": [
+    {"t": "\"Okay. I won't. Promise.\"", "tone": "kind", "say": ["*He holds out his pinky. Then pulls it back.* No. No pinky promises. I'll just... trust you."], "feel": "content", "lore": "steps_1703"},
+    {"t": "\"What's on the thousandth step?\"", "tone": "curious", "when": {"min_trust": 18}, "say": ["Dusk. Forever. A festival that never ends. People who are still waiting for someone. ...You were there once. You don't remember."], "feel": "shock", "lore": "thousandth_step"},
+    {"t": "\"Walk them with me at sunset. I'll count, you hold my hand.\"", "tone": "flirt", "say": ["...If you're holding my hand, I won't let you get to a thousand. I'll pull you back. I'm stronger than I look."], "feel": "love"},
+    {"t": "\"Have you counted them?\"", "tone": "honest", "say": ["Every summer since I was five. I always get nine hundred and ninety-nine. I'm waiting for the year I get a thousand."], "feel": "sad", "lore": "waited_nine"},
+    {"t": "\"That's a dumb ghost story.\"", "tone": "cold", "say": ["...Then count them. Go on. See if I come after you this time."], "feel": "pout"}
+   ]
+  },
+  "promise": {
+   "menu": "\"You keep saying I promised something.\"", "when": {"min_bond": 18, "min_day": 3},
+   "a": ["Nine summers ago. You were seven. You got lost on the steps. I walked you down. You said 'next summer'. Then you never came back.", "You hooked your pinky around mine. You said if you lied you'd swallow a thousand needles."],
+   "replies": [
+    {"t": "\"I'm sorry. I don't remember. But I'm here now.\"", "tone": "kind", "say": ["*He laughs and cries at the same time. Somewhere, the sun comes out while it's still raining.*", "You're here now. ...Say it again. Slowly."], "feel": "cry", "fx": {"bond_now": 6, "tears": -1.0}, "lore": "promise_2016"},
+    {"t": "\"Why did a seven-year-old get lost on shrine steps?\"", "tone": "curious", "say": ["You weren't lost. You were walking up like someone called you. You counted to a thousand. You were gone a whole night. I'm the one who went in after you."], "feel": "think", "lore": "kamikakushi_2016"},
+    {"t": "\"Then this time I'll keep it.\"", "tone": "flirt", "say": ["*His pinky finds yours. The bell rings once, loud, like a door opening.*"], "feel": "promise", "fx": {"bond_now": 10, "trust": 6}, "promise": "keep_2016"},
+    {"t": "\"A kid's promise doesn't count.\"", "tone": "honest", "say": ["It counts. Words count, Senpai. In this town, words count more than anything."], "feel": "pout", "lore": "kotodama"},
+    {"t": "\"You've been waiting nine years for that? That's creepy.\"", "tone": "cold", "say": ["Nine years is nothing. ...I've waited longer. Much longer. You wouldn't believe me."], "feel": "yandere", "fx": {"tears": 1.5}}
+   ]
+  },
+  "dreams": {
+   "menu": "\"Do you ever dream about the past?\"", "when": {"min_trust": 25, "lore": "promise_2016"},
+   "a": ["I dream I'm small and furry and sitting on a cold stone step. Every night. For years.", "Sometimes I dream of a hill. Mud and rain and a man saying 'I'll be late'. I wake up so angry. Then so sad."],
+   "replies": [
+    {"t": "\"I dream of that hill too. The rain. The mud.\"", "tone": "honest", "say": ["*He stares at you for a very long time.* ...Then you were really there. Then it was really you."], "feel": "shock", "lore": "tabaruzaka", "fx": {"trust": 8}},
+    {"t": "\"The man on the hill... who was he?\"", "tone": "curious", "say": ["Someone who left in eighteen sixty-eight and said he'd come back by next Tanabata. He came back twenty-two years late. I'd already--. ...Forget it."], "feel": "sad", "lore": "soichiro"},
+    {"t": "\"Then dream about me instead.\"", "tone": "flirt", "say": ["I do. That's the problem. ...Was that out loud?"], "feel": "fluster"},
+    {"t": "\"Dreams are just dreams, Amane.\"", "tone": "kind", "say": ["...Okay. Tonight I'll dream about something normal. Like fish."], "feel": "content", "fx": {"self": 4}},
+    {"t": "\"You're living in a fantasy.\"", "tone": "cold", "say": ["Maybe. It's warmer than here."], "feel": "sulk"}
+   ]
+  },
+  "senpai": {
+   "menu": "\"Want to know anything about me?\"",
+   "a": ["Everything. No. Something. Why did you come to Suzunari, Senpai? The real reason.", "Do you like it here? Be honest. If you don't like it I'll fix it. I'll fix the whole town."],
+   "replies": [
+    {"t": "\"My grandfather's will. I have to live here until I'm eighteen.\"", "tone": "honest", "say": ["Until eighteen... That's next Tanabata. Your grandpa knew. He always knew."], "feel": "think", "lore": "will_2027"},
+    {"t": "\"I wanted somewhere nobody knows me.\"", "tone": "honest", "say": ["Then I'll pretend I don't know you. ...I can't. Sorry. I'll be quiet about it."], "feel": "sad"},
+    {"t": "\"I think I came here for you.\"", "tone": "flirt", "say": ["*All the strength goes out of his knees. He sits down on the pavement.* ...Give me a minute."], "feel": "faint", "fx": {"bond_now": 8}},
+    {"t": "\"I like the cats. And the sweets. And the quiet.\"", "tone": "kind", "say": ["Cats, sweets, quiet. I'm writing it down. *He is actually writing it down.*"], "feel": "happy"},
+    {"t": "\"None of your business.\"", "tone": "cold", "say": ["...Right. Sorry. I'll find out from the cats."], "feel": "pout", "fx": {"trust": -3}}
+   ]
+  },
+  "rival": {
+   "menu": "\"Something on your mind?\"", "when": {"rival": true},
+   "a": ["Who's {rival} to you, Senpai? I'm just asking. Everyone's allowed to ask.", "You laughed with {rival} at lunch. Thirty-one seconds. I wasn't counting."],
+   "replies": [
+    {"t": "\"{rival}'s my friend. You can be friends with him too.\"", "tone": "kind", "say": ["Friends with {rival}... *He tries to imagine it. His face does something complicated.* ...I'll try to say hello."], "feel": "think", "fx": {"self": 5, "jealousy": -10}},
+    {"t": "\"Are you jealous?\"", "tone": "tease", "say": ["N-no! Jealousy is for people who-- *the bell goes quiet* --who aren't sure. I'm very sure."], "feel": "pout", "fx": {"jealousy": 5}},
+    {"t": "\"You're the only one I wait for after school.\"", "tone": "flirt", "say": ["*The tension drains out of him like rain off a roof.* ...Okay. Okay. Then nothing needs to happen to anyone."], "feel": "love", "fx": {"jealousy": -20}},
+    {"t": "\"Leave {rival} alone, Amane. I mean it.\"", "tone": "boundary", "say": ["...I'm not doing anything to {rival}. I'm asleep at night. I'm always asleep. *He doesn't look at you.*"], "feel": "sweat", "fx": {"self": 6, "jealousy": -8}},
+    {"t": "\"Who I hang out with isn't your business.\"", "tone": "cold", "say": ["You're right. It isn't. ...It's the cats' business."], "feel": "yandere", "fx": {"jealousy": 15}}
+   ]
+  },
+  "blackcat": {
+   "menu": "\"Have you seen a black cat with two tails?\"", "when": {"stage_min": 1},
+   "a": ["Two tails? Cats only have one. Everybody knows that. Why are you asking me?", "I sleep very deeply, Senpai. I don't know anything about the nights. I dream, that's all."],
+   "replies": [
+    {"t": "\"I think it's you, Amane. And I think you don't know.\"", "tone": "honest", "when": {"min_trust": 20}, "say": ["*He goes white.* ...Every morning my feet are dirty. Every morning there's fur on my pillow. I thought I was going crazy."], "feel": "shock", "lore": "ikiryo", "fx": {"self": 8}},
+    {"t": "\"Whatever happens at night, I'm not angry with you.\"", "tone": "kind", "say": ["...If I hurt someone in my sleep, would you still say that?", "Then tonight I'll try to dream about something kind."], "feel": "cry", "fx": {"jealousy": -10}},
+    {"t": "\"Stay at my place tonight. I'll keep watch.\"", "tone": "flirt", "when": {"route": "romance"}, "say": ["*He turns the colour of a red lantern.* S-Senpai's aunt would-- I'll bring a futon. A separate futon. Very separate."], "feel": "fluster", "fx": {"jealousy": -25}},
+    {"t": "\"If anything happens to {rival}, I'll know it was you.\"", "tone": "boundary", "say": ["...Then nothing will happen. I'll hold on. I promise I'll hold on."], "feel": "sad", "fx": {"self": 10, "tears": 1.0}},
+    {"t": "\"Stay away from me, monster.\"", "tone": "cold", "say": ["*He doesn't cry. That's the scariest part. He just nods, and walks away, and every cat on the street follows him.*"], "feel": "yandere", "fx": {"trust": -15, "jealousy": 20}}
+   ]
+  },
+  "festival": {
+   "menu": "\"Are you going to the Tanabata festival?\"", "when": {"min_day": 4},
+   "a": ["I go every year. I sit on the shrine steps and watch the lanterns. Alone. It's tradition.", "You write a wish on a paper strip and hang it on the bamboo. I've written the same wish nine times."],
+   "replies": [
+    {"t": "\"This year, go with me.\"", "tone": "flirt", "say": ["*He nods so hard his bell jingles.* I'll wear a yukata. Grandma's going to cry. I'm going to cry. You're going to see a lot of crying."], "feel": "love", "fx": {"bond_now": 8}, "promise": "festival_date"},
+    {"t": "\"What do you always wish for?\"", "tone": "curious", "say": ["For someone to come home. ...It's a boring wish. Don't laugh."], "feel": "sad", "lore": "tanabata_wish"},
+    {"t": "\"Let's go as a group. Hayate, Hina, you, me.\"", "tone": "kind", "say": ["A group. With... people. ...If you're there, I can stand people."], "feel": "think", "fx": {"self": 6}},
+    {"t": "\"Write a wish for yourself this year. Not for anyone else.\"", "tone": "boundary", "say": ["For myself? ...I don't know what I want, except-- No. I'll think about it. Properly."], "feel": "think", "fx": {"self": 8}},
+    {"t": "\"Festivals are for kids.\"", "tone": "cold", "say": ["...Then I'll sit on the steps alone. Like always. It's fine. I'm good at alone."], "feel": "sulk"}
+   ]
+  },
+  "food": {
+   "menu": "\"What's your favourite food?\"",
+   "a": ["Fish. Any fish. Raw fish. Grilled fish. Fish someone dropped. I'm joking. Mostly.", "Taiyaki. It's a fish, but it's a cake. It's perfect. It's the perfect object."],
+   "replies": [
+    {"t": "\"Let's get taiyaki after school. My treat.\"", "tone": "kind", "say": ["After school. Taiyaki. Your treat. I'm going to remember this sentence for a hundred years."], "feel": "happy", "fx": {"bond_now": 4}},
+    {"t": "\"You eat like a cat.\"", "tone": "tease", "say": ["*Very long silence.* ...I don't know what you mean. *He is holding a fish-shaped cracker.*"], "feel": "sweat", "lore": "cat_habits"},
+    {"t": "\"I'll learn to grill mackerel. For you.\"", "tone": "flirt", "say": ["For me. Mackerel. *He has to hold onto a lamppost.*"], "feel": "love"},
+    {"t": "\"You should eat more vegetables.\"", "tone": "honest", "say": ["...Vegetables. For you I'll eat one carrot. One. Witness it."], "feel": "pout"},
+    {"t": "\"Fish smells disgusting.\"", "tone": "cold", "say": ["...Oh. I'll stop eating fish near you. I'll stop eating fish."], "feel": "sad", "fx": {"tears": 0.8}}
+   ]
+  },
+  "hayate": {
+   "menu": "\"What do you think of Hayate?\"", "when": {"min_day": 2},
+   "a": ["He's loud. He smells like a dog. He walks you home every day like it's his job.", "The dog shrine boy. Our families don't talk. Grandma says the dogs walk the dead home and the cats just... wait."],
+   "replies": [
+    {"t": "\"He's a good guy. You'd like him.\"", "tone": "kind", "say": ["...He gave me half his melon bread once. I threw it at him. I regret it a little."], "feel": "think", "fx": {"self": 3}},
+    {"t": "\"Dogs walk the dead home? What does that mean?\"", "tone": "curious", "say": ["Okuri-inu. Night-walking dogs. If you fall, they eat you. If you pretend you're resting, they walk you home. ...One walked someone home for thirteen years once."], "feel": "think", "lore": "okuri_inu"},
+    {"t": "\"Don't worry. I like cats more than dogs.\"", "tone": "flirt", "say": ["*He looks like he just won the lottery and the war at the same time.*"], "feel": "happy", "fx": {"jealousy": -10}},
+    {"t": "\"Be nice to him, Amane.\"", "tone": "boundary", "say": ["I'm always nice. I'm nice to everyone. ...I'll be nicer. On purpose."], "feel": "pout", "fx": {"self": 5}},
+    {"t": "\"At least Hayate isn't weird.\"", "tone": "cold", "say": ["...Then go walk home with Hayate. He's good at it."], "feel": "yandere", "fx": {"jealousy": 15}}
+   ]
+  }
+ }
+}

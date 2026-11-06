@@ -1061,11 +1061,12 @@ def build_human(cfg, facing, anim, t):
         eyes = "closed" if p["blink"] and not p["eyes"] else (p["eyes"] or cfg.get("eyes", "eye"))
         face = {"style": eyes, "brow": p["brows"] or cfg.get("brows", "normal"), "tears": p["tears"],
                 "tf": p["tf"], "glasses": "glasses" in acc}
-        for sd in (-1, 1):
+        for sd in ((-1, 1) if cfg.get("eyes") != "none" else ()):  # nopperabo: no face at all
             ln = norm(fwd_t * 0.86 + right_t * sd * 0.40 - up * 0.04)
             DECALS.append(("eye", head_c + ln * head_r * 0.985, ln, dict(face, side=sd, cyber="cybereye" in acc and sd == 1)))
         mn = norm(fwd_t * 0.9 - up * 0.42)
-        DECALS.append(("mouth", head_c + mn * head_r * 0.92, mn, {"small": "mustache" in acc, "style": p["mouth"] or cfg.get("mouth", "line")}))
+        if cfg.get("mouth") != "none":
+            DECALS.append(("mouth", head_c + mn * head_r * 0.92, mn, {"small": "mustache" in acc, "style": p["mouth"] or cfg.get("mouth", "line")}))
         cheek = p["cheek"] or cfg.get("cheek")
         if cheek:
             for sd in (-1, 1):
@@ -1172,6 +1173,9 @@ def build_human(cfg, facing, anim, t):
         if "mask" in acc:
             prims.append(P_ell(head_c + fwd_t * head_r * 0.55 - up * head_r * 0.42, [head_r * 0.82, head_r * 0.42, head_r * 0.55], hb, "gear"))
             DECALS.append(("dot", head_c + fwd_t * head_r * 1.02 - up * head_r * 0.42, fwd_t, {"slot": "glow", "band": 4}))
+        if "dish" in acc:  # kappa: the water dish on the crown
+            prims.append(P_ell(head_c + up * head_r * 1.06, [head_r * 0.6, head_r * 0.14, head_r * 0.58], hb, "cap"))
+            DECALS.append(("dot", head_c + up * head_r * 1.2, up, {"slot": "glow", "band": 3}))
         if "beard" in acc:
             prims.append(P_ell(head_c - up * head_r * 0.6 + fwd_t * head_r * 0.42, [head_r * 0.64, head_r * 0.42, head_r * 0.42], hb, hc))
         if "mustache" in acc:
@@ -1368,6 +1372,17 @@ STUDENTS = [
 ]
 
 
+# Suzunari's spirits and yokai (no emote sheets; looks/colours in data/cast_looks.json).
+YOKAI = {
+    "y_kappa": {"body": "short", "outfit": "tank", "hair": "bob", "acc": ["dish", "backpack"], "mouth": "smile"},
+    "y_noppera": {"body": "normal", "outfit": "suit", "hair": "short", "acc": [], "eyes": "none", "mouth": "none", "brows": "none"},
+    "y_kuchisake": {"body": "slim", "outfit": "coat", "hair": "long", "acc": ["mask"]},
+    "y_tanuki": {"body": "broad", "outfit": "vest", "hair": "short", "acc": ["catears", "glasses", "mustache"], "eyes": "sleepy"},
+    "y_rokuro": {"body": "slim", "outfit": "apron", "hair": "bun", "acc": [], "skirt": "long", "mouth": "smile"},
+    "y_kiku": {"body": "short", "outfit": "miko", "hair": "bob", "acc": [], "skirt": "long", "mouth": "smile"},
+}
+
+
 def variant_list():
     """Curated + seeded-random geometry variants. Tags drive the runtime randomiser."""
     vs = {}
@@ -1415,6 +1430,8 @@ def variant_list():
         vs[name] = ("human", dict(cfg, school=True), ["cast"])
     for name, cfg, tags in STUDENTS:
         vs[name] = ("human", dict(cfg, school=True), tags)
+    for name, cfg in YOKAI.items():
+        vs[name] = ("human", cfg, ["yokai"])
     vs["cat_a"] = ("cat", {"tail": "long"}, ["cat"])
     vs["cat_b"] = ("cat", {"tail": "bob"}, ["cat"])
     vs["cat_c"] = ("cat", {"tail": "long", "chonk": True}, ["cat"])
