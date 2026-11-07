@@ -100,3 +100,11 @@
   night; 4096 shadow map; less ground mist; exposure 0.98.
 - Open: the shopping street is in building shade most of the day (sunlit only at alley gaps) - intended, but check that
   it does not feel too dark on the tablet.
+
+## Texture pass (2026-11-07): one weathered town, not primitives
+- Owner: buildings and shrines looked like plain 3D placed on the ground. Cause: dozens of flat-coloured props
+  (torii, pillars, lanterns, statues, poles, awnings, noren, rails) next to photo-textured ground.
+- 7 more Poly Haven CC0 textures pixelized (weathered red paint for vermilion, copper patina, chipped paint, granite,
+  indigo cloth, sheet metal, dark lacquer); every prop key maps to one; flat colours become tinted chipped paint; one shared
+  grime layer (soft dirt + rain streaks) on walls, roofs and props; fascia, gutters and downpipes on roofs; leafy cedars.
+- Open: shrine gravel still reads a little flat in strong morning light.

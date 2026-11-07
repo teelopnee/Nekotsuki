@@ -35,6 +35,58 @@ func _init(builder) -> void:
 
 # --- Materials & ground -------------------------------------------------------------------------
 
+## Ground textures: photo detail already, no grime layer on top (it read as polka dots on the gravel).
+const FLOOR_TEX := ["jp_gravel", "jp_sando", "jp_stonepath", "jp_paving", "jp_asphalt", "jp_grass", "jp_schoolyard",
+	"jp_beach", "jp_woodfloor", "jp_forest", "jp_moss"]
+var _grime: Texture2D
+var _props := {}
+## Texture per LevelBuilder._jp_mat key: [texture, tint multiplier (null = use the key's colour x1.5), scale].
+const PROP_TEX := {"vermilion": ["jp_lacquer", Color(1, 1, 1), 0.5], "torii_top": ["jp_darkwood", Color(0.55, 0.5, 0.5), 0.5],
+	"wood": ["jp_darkwood", Color(1, 1, 1), 0.5], "wood_light": ["jp_hinoki", Color(1, 1, 1), 0.5],
+	"ema": ["jp_hinoki", Color(1.05, 1.0, 0.95), 0.5], "stone": ["jp_granite", Color(1, 1, 1), 0.5],
+	"step_edge": ["jp_granite", Color(0.85, 0.85, 0.85), 0.5], "lantern_stone": ["jp_granite", Color(1.05, 1.05, 1.0), 0.5],
+	"jizo": ["jp_granite", Color(1.0, 1.0, 0.98), 0.5], "statue": ["jp_granite", Color(1, 1, 1), 0.5],
+	"kawara_dark": ["jp_kawara", Color(0.7, 0.75, 0.85), 0.25], "bib": ["jp_indigo", Color(2.4, 0.5, 0.45), 0.5],
+	"pole": ["jp_paint", Color(1.0, 1.0, 0.97), 0.5], "lamp_pole": ["jp_paint", Color(0.9, 0.92, 0.95), 0.5],
+	"transformer": ["jp_sheet", Color(0.8, 0.82, 0.86), 0.5], "rope": ["jp_paint", Color(1.4, 1.2, 0.8), 0.5],
+	"straw": ["jp_paint", Color(1.45, 1.25, 0.8), 0.5], "shide": ["jp_paint", Color(1.6, 1.6, 1.58), 0.5],
+	"gilt": ["jp_paint", Color(1.5, 1.15, 0.5), 0.5], "bike": ["jp_paint", Color(1.3, 0.5, 0.45), 0.5],
+	"tyre": ["jp_sheet", Color(0.25, 0.25, 0.27), 0.5]}
+
+
+## Shared weathering on every Suzunari surface: one grime layer (dirt patches, rain streaks) multiplied on top,
+## so roofs, walls, poles and statues read as one weathered place instead of clean primitives.
+func weather(m: StandardMaterial3D) -> StandardMaterial3D:
+	if _grime == null:
+		_grime = b._tex("jp_f_grime")
+	if _grime:
+		m.detail_enabled = true
+		m.detail_blend_mode = BaseMaterial3D.BLEND_MODE_MUL
+		m.detail_albedo = _grime
+		m.detail_uv_layer = BaseMaterial3D.DETAIL_UV_1
+	return m
+
+
+## A flat colour turned into a painted, weathered surface (chipped paint texture tinted by the colour).
+func painted(c: Color, tex: String = "jp_paint", scale: float = 0.5) -> StandardMaterial3D:
+	var m: StandardMaterial3D = b._textured(tex, Color(c.r * 1.5, c.g * 1.5, c.b * 1.5, c.a), scale, 0.85, 0.0, 0.6)
+	return m
+
+
+## Cached material for a LevelBuilder._jp_mat key.
+func prop_mat(key: String, c: Color) -> StandardMaterial3D:
+	if _props.has(key):
+		return _props[key]
+	var base := key.trim_suffix("0").trim_suffix("1").trim_suffix("2")
+	var m: StandardMaterial3D
+	if PROP_TEX.has(base):
+		var e: Array = PROP_TEX[base]
+		m = b._textured(str(e[0]), e[1], float(e[2]), 0.85, 0.0, 0.8)
+	else:
+		m = painted(c)
+	_props[key] = m
+	return m
+
 func materials() -> void:
 	for k in [["gravel", 0.95, 0.8], ["sando", 0.9, 1.2], ["stonepath", 0.9, 1.4], ["paving", 0.85, 1.0],
 			["asphalt", 0.75, 0.8], ["grass", 0.95, 0.6], ["schoolyard", 0.95, 0.6], ["beach", 0.95, 0.5],
@@ -47,6 +99,10 @@ func materials() -> void:
 	b._mats["wall"] = b._textured("jp_plaster", Color(0.97, 0.95, 0.9), 0.25, 0.9, 0.0, 0.5)
 	b._mats["rock"] = b._textured("jp_ishigaki", Color(0.92, 0.92, 0.9), 0.25, 0.95, 0.0, 1.2)
 	b._mats["concrete"] = b._textured("jp_concrete", Color(0.95, 0.95, 0.94), 0.25, 0.9, 0.0, 0.6)
+	b._mats["metal"] = b._textured("jp_sheet", Color(0.95, 0.96, 0.98), 0.5, 0.6, 0.2, 0.8)
+	b._mats["dark"] = b._textured("jp_darkwood", Color(0.8, 0.78, 0.76), 0.5, 0.8, 0.0, 0.8)
+	b._mats["crate"] = b._textured("jp_cedar", Color(0.8, 0.72, 0.62), 0.5, 0.85, 0.0, 0.8)
+	b._mats["pipe"] = b._textured("jp_paint", Color(1.1, 1.12, 1.15), 0.5, 0.6, 0.1, 0.6)
 
 
 func zone(x: int, z: int) -> String:
@@ -163,7 +219,7 @@ func _wall_mat(tex: String, tint: Color) -> StandardMaterial3D:
 
 
 ## Gable roof, ridge along x, overhanging eaves; the south slope faces the camera.
-func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D, wall: StandardMaterial3D, pitch: float = 0.5) -> float:
+func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D, wall: StandardMaterial3D, pitch: float = 0.5, gutter: bool = true) -> float:
 	var hd := d * 0.5
 	var over := 0.55
 	var rise := hd * tan(pitch)
@@ -182,6 +238,15 @@ func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D,
 	b.add_mesh(body, b.box(Vector3(w + 1.1, 0.26, 0.36)), ridge, Vector3(0, h + rise + 0.08, 0))
 	for sx in [-1.0, 1.0]:
 		b.add_mesh(body, b.box(Vector3(0.3, 0.5, 0.42)), ridge, Vector3(sx * (w * 0.5 + 0.55), h + rise + 0.2, 0), 0.0, false)
+	# Fascia board under the eave, a rain gutter and a downpipe: the little lines that make a roof sit on a house.
+	var eave_y := h - over * tan(pitch)
+	b.add_mesh(body, b.box(Vector3(w + 1.0, 0.18, 0.06)), b._mats["dark"], Vector3(0, eave_y - 0.12, run + 0.02), 0.0, false)
+	if gutter:
+		var gutter_mat: StandardMaterial3D = painted(Color(0.55, 0.5, 0.45))
+		var g: MeshInstance3D = b.add_mesh(body, b.cylinder(0.07, w + 0.9, 6), gutter_mat, Vector3(0, eave_y - 0.2, run + 0.1), 0.0, false)
+		g.rotation.z = PI * 0.5
+		var px := (w * 0.5 + 0.25) * (1.0 if rng.randf() < 0.5 else -1.0)
+		b.add_mesh(body, b.cylinder(0.05, eave_y, 6), gutter_mat, Vector3(px, eave_y * 0.5 - 0.2, d * 0.5 + 0.12), 0.0, false)
 	return h + rise
 
 
@@ -386,7 +451,7 @@ func _shop_sign(body: Node3D, w: float, front: float, deco: Array[Node], asagiri
 	# Noren curtain over the doorway + a red paper lantern.
 	var noren_col: Color = [Color(0.16, 0.22, 0.42), Color(0.62, 0.14, 0.14), Color(0.2, 0.36, 0.26)][rng.randi() % 3]
 	for k in 3:
-		deco.append(b.add_mesh(body, b.box(Vector3(0.42, 0.75, 0.02)), b._flat(noren_col), Vector3(-0.45 + k * 0.45, 2.15, front + 0.35), 0.0, false))
+		deco.append(b.add_mesh(body, b.box(Vector3(0.42, 0.75, 0.02)), painted(noren_col * 0.9, "jp_indigo", 1.0), Vector3(-0.45 + k * 0.45, 2.15, front + 0.35), 0.0, false))
 	var lan := SphereMesh.new()
 	lan.radius = 0.24
 	lan.height = 0.6

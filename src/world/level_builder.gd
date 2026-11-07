@@ -156,6 +156,8 @@ func _textured(tex_name: String, color: Color, scale: float = 0.5, rough: float 
 	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 	m.roughness = rough
 	m.metallic = metal
+	if jp and tex_name.begins_with("jp_") and not tex_name in JPKit.FLOOR_TEX:
+		jp.weather(m)
 	return m
 
 
@@ -1012,6 +1014,8 @@ func _japanese_front(body: Node3D, w: float, front: float, shop_x: float, shop_w
 
 
 func _flat(c: Color) -> StandardMaterial3D:
+	if jp:
+		return jp.painted(c)  # Suzunari: no clean flat colours, everything is painted and weathered
 	var m := StandardMaterial3D.new()
 	m.albedo_color = c
 	m.roughness = 0.85
@@ -2199,6 +2203,8 @@ var jp: JPKit  ## Suzunari look (src/world/jp_kit.gd); null for every other them
 
 
 func _jp_mat(key: String, c: Color) -> StandardMaterial3D:
+	if jp:
+		return jp.prop_mat(key, c)  # textured + weathered (JPKit.PROP_TEX)
 	if not _mats.has("jp_" + key):
 		_mats["jp_" + key] = _flat(c)
 	return _mats["jp_" + key]
@@ -2221,11 +2227,11 @@ func _jp_hill(body: Node3D, x0: int, x1: int, z: int, length: float) -> void:
 	var top := _textured("jp_forest", Color(0.95, 1.0, 0.9), 0.25, 0.95, 0.0, 0.8)
 	var stone := _textured("jp_ishigaki", Color(0.95, 0.95, 0.92), 0.25, 0.95, 0.0, 1.2)
 	var bark := _flat(Color(0.33, 0.23, 0.17))
-	var cedar := _flat(Color(0.16, 0.3, 0.2))
+	var cedar := _leafy("", Color(0.42, 0.58, 0.46))
 	var camphor := _leafy("", Color(0.75, 0.9, 0.7))
 	var mats := [moss, top, stone, bark, cedar, camphor]
 	for m in mats:
-		if m != camphor:
+		if m != camphor and m != cedar:
 			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
 	add_mesh(body, box(Vector3(length + 0.2, hh, TILE + 0.1)), moss, Vector3(0, hh * 0.5, 0))
 	add_mesh(body, box(Vector3(length + 0.3, 0.2, TILE + 0.2)), top, Vector3(0, hh, 0))
@@ -2283,8 +2289,8 @@ func _jp_hall(p: Vector3, dog: bool) -> void:
 	dm.albedo_color = Color(1.0, 0.9, 0.75)
 	add_mesh(hall, doors, dm, Vector3(0, 2.0, 1.62), 0.0, false)
 	add_mesh(hall, box(Vector3(7.2, 0.3, 0.3)), red, Vector3(0, 3.45, 2.4))  # front beam
-	var roof := _textured("jp_kawara" if dog else "jp_kawara_old", Color(0.62, 0.66, 0.74) if dog else Color(0.55, 0.85, 0.72), 0.25, 0.6, 0.15, 1.0)
-	var top := jp.gable(hall, 7.0, 5.6, 3.55, roof, hinoki, 0.62)
+	var roof := _textured("jp_kawara" if dog else "jp_patina", Color(0.62, 0.66, 0.74) if dog else Color(1.0, 1.0, 1.0), 0.25, 0.6, 0.15, 1.0)
+	var top := jp.gable(hall, 7.0, 5.6, 3.55, roof, hinoki, 0.62, false)
 	# chigi (crossed boards) at both ridge ends, katsuogi logs along the ridge
 	var gold := _jp_mat("gilt", Color(0.85, 0.68, 0.3))
 	for sx in [-1.0, 1.0]:
@@ -2318,7 +2324,7 @@ func _jp_hall(p: Vector3, dog: bool) -> void:
 ## Komaneko / komainu: a sitting stone animal on a pedestal. Cats wear a red bib; the open-mouthed one is "a".
 func _jp_guardian(p: Vector3, dog: bool, x: int) -> void:
 	var b := static_body(p)
-	var stone := _textured("jp_concrete", Color(0.72, 0.72, 0.7), 0.5, 0.95, 0.0, 1.0)
+	var stone := _textured("jp_granite", Color(0.92, 0.92, 0.9), 0.5, 0.95, 0.0, 1.0)
 	add_mesh(b, box(Vector3(0.95, 0.75, 0.95)), _textured("jp_ishigaki", Color(0.92, 0.92, 0.9), 0.5, 0.95, 0.0, 1.0), Vector3(0, 0.37, 0))
 	var face_x := 1.0 if x < (27 if not dog else 47) else -1.0  # they face the path between them
 	var g := Node3D.new()

@@ -35,6 +35,14 @@ TEX = {
     "bark":       ("japanese_cedar_bark", 64, 0.9, 1.1, (1.0, 0.95, 0.9), 16),
     "moss":       ("mossy_rock", 128, 1.25, 1.0, (0.95, 1.05, 0.9), 24),
     "forest":     ("forest_leaves_02", 128, 1.1, 0.9, (0.95, 1.03, 0.9), 24),
+    # props: every flat-coloured thing in town gets one of these (LevelBuilder._jp_mat / _flat -> JPKit)
+    "lacquer":    ("rusty_painted_metal", 128, 1.0, 1.05, (1.18, 0.78, 0.58), 24),   # weathered vermilion paint
+    "patina":     ("green_metal_rust", 128, 0.9, 1.05, (0.85, 1.0, 1.0), 20),         # copper roof
+    "paint":      ("distressed_painted_planks", 128, 0.45, 1.2, (1.0, 1.0, 1.0), 24), # chipped paint, tinted per object
+    "granite":    ("old_sandstone_02", 128, 0.12, 1.05, (1.0, 1.0, 1.02), 20),        # carved stone
+    "indigo":     ("denim_fabric", 128, 0.9, 0.8, (0.9, 0.95, 1.0), 20),               # noren cloth
+    "sheet":      ("corrugated_iron_02", 128, 0.6, 1.1, (1.0, 1.0, 1.02), 16),         # metal sheet, AC units
+    "darkwood":   ("lacquered_cherry_wood", 128, 0.9, 1.35, (1.0, 0.95, 0.9), 20),     # dark lacquer, benches
 }
 
 

@@ -224,7 +224,37 @@ def clouds(rnd):
     return im, Image.new("RGB", (n, n), (0, 0, 0))
 
 
-GEN = {"blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
+def grime(rnd):
+    """Shared weathering (detail multiply on walls, roofs and props, not floors): soft tileable dirt + rain streaks."""
+    n = 128
+    grid = [[rnd.random() for _ in range(16)] for _ in range(16)]
+    def val(x, y, f):
+        gx, gy = x * f / n, y * f / n
+        x0, y0 = int(gx), int(gy)
+        tx, ty = gx - x0, gy - y0
+        tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+        g = lambda i, j: grid[i % f][j % f]
+        a = g(x0, y0) * (1 - tx) + g(x0 + 1, y0) * tx
+        c = g(x0, y0 + 1) * (1 - tx) + g(x0 + 1, y0 + 1) * tx
+        return a * (1 - ty) + c * ty
+    im = Image.new("RGB", (n, n))
+    px = im.load()
+    for y in range(n):
+        for x in range(n):
+            v = val(x, y, 4) * 0.6 + val(x, y, 16) * 0.4
+            k = 1.0 - max(0.0, v - 0.45) * 0.22  # 0.88 .. 1.0, soft
+            c = int(255 * k)
+            px[x, y] = (c, c, max(0, c - 3))
+    for k in range(34):  # rain streaks running down from edges
+        x, y, ln = rnd.randrange(n), rnd.randrange(n), rnd.randint(8, 34)
+        for i in range(ln):
+            r, g, bb = px[x, (y + i) % n]
+            f = 0.93 + 0.05 * i / ln
+            px[x, (y + i) % n] = (int(r * f), int(g * f), int(bb * f))
+    return im, Image.new("RGB", (n, n), (0, 0, 0))
+
+
+GEN = {"grime": grime, "blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
        "win": lambda r: window(r, "win"), "shoji": lambda r: window(r, "shoji"), "alu": lambda r: window(r, "alu")}
 
 
