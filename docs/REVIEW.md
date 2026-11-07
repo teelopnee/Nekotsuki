@@ -181,3 +181,30 @@ the latest screenshots in docs/preview.
   (3) shuffle replies, hide tone, once-only topic beats, "you asked yesterday" lines; (4) talk close-up camera, Toru's
   face, fade foreground sakura; (5) three music tracks (morning / Omagatoki / rainy night), a Suzunari HUD, a content
   warning; (6) purge sci-fi data and check every line; (7) time the first 10 minutes on the tablet and note where it drags.
+
+## Fix pass for the hard review (2026-11-07)
+Worked through the priority list in order; no new world systems or visual passes on the sets.
+- (1) Week 1 can be played to an end: `Week` autoload + `data/week1.json` - an objective and authored beats every day
+  (Haruka's table, the pillow-turner, Amane's bento, Chiyo's "don't leave that child", Saturday at the dog shrine, Sunday
+  at Omagatoki "What am I to you?" = the first route choice (finds you anyway if you miss it), Makabe's staff room, the
+  day-7 midnight message), then a week-close summary (school, Amane, closest people, mornings, promises, lore) and the
+  week-2 hook (the two-tailed cat on the rival's roof, the first Ura thread).
+- (2) Time has a cost: a lesson block is one event (attend / doze / window / pass Hayate a note) and the clock jumps to
+  lunch or 15:20; after 8:30 you're late; in town 15 minutes into a block you're absent (Makabe, the Ura board and Amane
+  notice); three lates / two absences reach Haruka at night. Talks cost time (Town 10 min, Amane 5 per topic, Hayate 10).
+- (3) Dialogue no longer gives itself away: reply order is shuffled per day, only cold words shrink and only while he
+  cries; nine story topics are asked once per life, everyday ones rest 3 days and he notices ("You asked me that
+  yesterday").
+- (4) Readable characters: talk close-up (lens moves in on the pair, lower pitch, name tags hidden), Toru turns to the
+  person he talks to and never shows his back in a conversation; foreground sakura/pines between the lens and the hero
+  fade; townsfolk names only within reach, no <FRIENDLY> tags on strangers. Content notice before NEW GAME.
+- (5) Three original tracks (`tools/gen_music_suzunari.py`: morning yo-scale koto, Omagatoki miyako-bushi shakuhachi +
+  temple bell, rainy-night piano lullaby) chosen by time of day and by Amane's tears; title music too. UI theme
+  `washi_theme.tres` (indigo + gold, sans font) replaces the cyan/magenta terminal look; no HP / OVERCLOCK / ROLL /
+  MELEE / FIRE in town; ticker is a dark-wood notice board; hints without "dodge".
+- (6) Sci-fi purge: theme script drops whole ODD-SPACE bark families (taunts, planets, crew, station) and rewrites the
+  last 57 leaks; `python3 tools/leak_check.py` checks EVERY line of 19 data files (0 leaks).
+- Tests: week_test (28 checks) + all suites pass.
+- Open: (7) time the first 10 minutes on the tablet (owner); weeks 2-13 are not authored yet; townsfolk are still grammar
+  filler with pickpocket/threaten verbs; Toru still walks with his back to the lens (that's the camera, by design);
+  engine debt unchanged. Score now (my estimate): 5/10 as a playable game - week 1 has a start, a middle and an end.

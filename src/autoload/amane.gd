@@ -12,7 +12,7 @@ const DEFAULTS := {"met": false, "route": "none", "bond_now": 0.0, "bond_past": 
 	"unread": 0, "messages": [], "talks": 0, "rain": 0.0, "pending": "", "last_msg": 0,
 	"closeness": {}, "plan": {"target": "", "stage": 0, "guarded": false, "warned": false}, "fates": {}, "news": [],
 	"ura": [], "cat_reports": 0, "ikiryo_named": false, "woke_crying": false, "lore": {}, "promises": [],
-	"topics_today": []}
+	"topics_today": [], "topics_seen": {}}
 const FRIEND := "Inukai Hayate"  ## the week-2 rival unless you got closer to someone else
 const TEAR_NAMES := ["calm", "pouting", "teary", "crying", "wailing", "storm"]
 const FORECAST := ["Clear", "Clear", "Clouds", "Drizzle", "Rain", "Storm"]
@@ -117,7 +117,7 @@ func choices() -> Array:
 	var c: Dictionary = data.get("choices", {})
 	var rej: Array = c.get("reject", ["Leave me alone."])
 	return [
-		{"id": "kind", "text": str(c.get("kind", "Be nice.")), "scale": 1.0 + 0.07 * lv},
+		{"id": "kind", "text": str(c.get("kind", "Be nice."))},
 		{"id": "flirt", "text": str(c.get("flirt", "Flirt."))},
 		{"id": "boundary", "text": str(c.get("boundary" if lv <= 1 else "boundary_locked", "Set a boundary.")), "disabled": lv > 1},
 		{"id": "reject", "text": str(rej[mini(lv, rej.size() - 1)]), "scale": 1.0 - 0.12 * lv},
@@ -205,8 +205,11 @@ func converse(actor: Node3D, hud: Node) -> void:
 			break
 		(s["topics_today"] as Array).append(topic)
 		var t: Dictionary = talk["topics"][topic]
-		var reply: String = await hud.say("Amane", fill(_pick(t.get("a", ["..."]))), reply_choices(topic))
+		var again := asked_before(topic)
+		s["topics_seen"][topic] = Clock.day()
+		var reply: String = await hud.say("Amane", (again + "\n" if again != "" else "") + fill(_pick(t.get("a", ["..."]))), reply_choices(topic))
 		var r := answer(topic, int(reply) if reply.is_valid_int() else 0)
+		Clock.spend(5)
 		text = str(r.text)
 		feel = str(r.feel)
 	var fw: Dictionary = talk.get("farewell", {})
@@ -253,13 +256,26 @@ func ok(when: Dictionary) -> bool:
 
 
 ## Up to 4 topics for today: urgent ones first (jealousy, the black cat, rain), then a shuffle of the rest.
+## Topics he can be asked now. Story beats are asked once per life (ONCE); everyday topics come back after
+## COOLDOWN days (and he notices: "you asked me that yesterday"); situational ones (rain, rival...) every day.
+const ONCE := ["mother", "promise", "dreams", "steps", "festival", "bell", "grandma", "hoodie", "senpai"]
+const DAILY := ["rain", "rival", "blackcat", "bento"]
+const COOLDOWN := 3
+
+
 func topic_choices() -> Array:
 	var s := st()
+	var seen: Dictionary = s["topics_seen"]
 	var urgent := []
 	var rest := []
 	for id in talk.get("topics", {}):
 		if (s["topics_today"] as Array).has(id):
 			continue
+		if seen.has(id):
+			if id in ONCE:
+				continue
+			if not id in DAILY and Clock.day() - int(seen[id]) < COOLDOWN:
+				continue
 		var t: Dictionary = talk["topics"][id]
 		if not ok(t.get("when", {})):
 			continue
@@ -273,7 +289,18 @@ func topic_choices() -> Array:
 	return out.slice(0, 4)
 
 
-## The exact words you can say. Cold lines shrink and fade as he cries; kind ones grow.
+## Asked before (cooldown topics): his "you asked me that ..." line, "" the first time.
+func asked_before(topic: String) -> String:
+	var seen: Dictionary = st()["topics_seen"]
+	if not seen.has(topic) or topic in DAILY:
+		return ""
+	var ago := Clock.day() - int(seen[topic])
+	var when := "yesterday" if ago <= 1 else ("the other day" if ago <= 4 else "last week")
+	return _pick(talk.get("again", [])).replace("{when}", when)
+
+
+## The exact words you can say, in an order that changes every day (so the slot gives nothing away).
+## While he cries, cold words shrink and fade - the only size difference.
 func reply_choices(topic: String) -> Array:
 	var out := []
 	var lv := tears_level()
@@ -283,12 +310,16 @@ func reply_choices(topic: String) -> Array:
 		if not ok(r.get("when", {})):
 			continue
 		var c := {"id": str(i), "text": fill(str(r.get("t", "...")))}
-		match str(r.get("tone", "")):
-			"cold":
-				c["scale"] = 1.0 - 0.12 * lv
-			"kind", "flirt":
-				c["scale"] = 1.0 + 0.05 * lv
+		if str(r.get("tone", "")) == "cold" and lv >= 2:
+			c["scale"] = 1.0 - 0.14 * (lv - 1)
 		out.append(c)
+	var order := RandomNumberGenerator.new()
+	order.seed = hash("%s:%d:%d" % [topic, Clock.day(), int(st()["talks"])])
+	for i in range(out.size() - 1, 0, -1):
+		var j := order.randi_range(0, i)
+		var tmp = out[i]
+		out[i] = out[j]
+		out[j] = tmp
 	return out
 
 
@@ -464,6 +495,12 @@ func notice_rival(who: String, actor: Node3D = null) -> void:
 
 ## Objective line for the HUD while in Suzunari.
 func objective_text() -> String:
+	var w := Week.objective()
+	var base := _objective_base()
+	return base if w == "" else w + "\n" + base
+
+
+func _objective_base() -> String:
 	var s := st()
 	if not s["met"]:
 		return "Go to school. (Someone is waiting at the gate.)"

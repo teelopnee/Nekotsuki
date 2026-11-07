@@ -1366,8 +1366,7 @@
    },
    {
     "ask": [
-     "\"I don't deal with people from your... bracket.\"",
-     "\"Credit check failed. Sorry. Not sorry.\""
+     "\"I don't deal with people from your... bracket.\""
     ],
     "choices": [
      {
@@ -1480,7 +1479,7 @@
      {
       "text": "\"I'm from the Odd Duck.\"",
       "reply": [
-       "\"The ship? THE ship? Oh, that explains everything.\""
+       "\"The shrine? THE shrine? Oh, that explains everything.\""
       ],
       "effects": {
        "attitude": 4,

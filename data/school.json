@@ -175,7 +175,7 @@
       {"t": "Read the label.", "say": "Donated 1963. Name: 'Jinta-kun'. Below, a list of science club members who 'lost the race'."}]}
    ]},
   {"id": "specimens", "floor": "3f", "tile": [15, 12], "prompt": "Look at the specimen shelf", "name": "Science lab shelf",
-   "open": "Rock samples, a jar of sea water from 1945 labelled HARBOUR, a model of the solar system missing a planet, and a dish labelled KAPPA'S DISH (REPLICA).",
+   "open": "Rock samples, a jar of sea water from 1945 labelled HARBOUR, a model of the solar system with one ball missing, and a dish labelled KAPPA'S DISH (REPLICA).",
    "choices": [
     {"t": "Look at the harbour water.", "say": "It is completely clear. The label says the water has never gone cloudy, not once in eighty years.", "fx": {"lore": "shimura"}},
     {"t": "Look at the kappa's dish.", "say": "It is not a replica. It is still slightly wet.", "fx": {"zukan": "kappa"}}]},

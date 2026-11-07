@@ -148,6 +148,19 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `People.menu_items(id)` + `run_item` add "p:" choices to Town.meet / HayateNPC (ask schedule, walk home, buy, trade, sorry).
   Closeness = Amane `closeness` (Amane: bond_now), so pick-ups feed the weekly rival. Test: `tools/people_test.gd`;
   shots: `tools/shot_suzunari.gd -- <dir> house_inukai,house_shirasagi,house_kuroe,house_hayase,house_nekomori,pickup_hina`.
+- School days & week 1 (`Week` autoload, `data/week1.json`, `data/lessons.json`, state `Game.flags["week"]`): lesson
+  blocks AM 510-750 / PM 800-920 are ONE event when you're in the school (4 choices, clock jumps to the block end);
+  late = > 2 min into a block; absent = in town 15+ min into a block (toast, Makabe -3, Ura post "truant", Amane tears);
+  `before_day_end(hud)` (Suzunari/School `end_day`, awaited): Haruka hears about 3 lates / 2 absences, day 7 closes week 1
+  (`close_week`: summary + hook). Daily beats: `days.<n>.beats` {where, after, before, near [x,z,r], needs, fallback,
+  speaker, text, choices} played via `Town.scene` (fx incl. `amane_choose`); `objective()` prefixes the HUD line,
+  `morning_note()` at wake-up. `Clock.spend(m)` = time cost of a talk (never past 21:30). `Week.music_now()` picks
+  `suzunari_morning` / `suzunari_dusk` / `suzunari_rain_night` (`tools/gen_music_suzunari.py`, OGG). Amane talk: topics in
+  `Amane.ONCE` once per life, others rest `COOLDOWN` days (`topics_seen`, `talk.again` lines), replies shuffled per day.
+  CameraRig talk close-up (`_talk`, `_talk_partner`, `_face_each_other`, `_talk_labels`) and foreground fade of group
+  `foliage_fg`. UI theme `assets/ui/washi_theme.tres` (project default). `python3 tools/leak_check.py` = every themed
+  line checked for sci-fi words (exit code = leaks). Content notice before NEW GAME (`title_screen._content_notice`).
+  Test: `tools/week_test.gd`.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

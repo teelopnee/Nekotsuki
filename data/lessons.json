@@ -1,0 +1,58 @@
+{
+ "_doc": "Lessons are one event, not a wait (Week autoload): when a class block starts and you're in the school, pick how you spend it and the clock jumps to the end of the block (morning: homeroom -> 12:30 lunch, afternoon: 13:20 -> 15:20). Late = arrived after 8:30. Truancy = in town 15+ minutes into a block. subjects.<weekday> = [morning, afternoon]. results.<choice> = lines ({subject}).",
+ "subjects": {"Mon": ["Japanese Literature (Makabe-sensei)", "Maths"], "Tue": ["English", "PE"], "Wed": ["History", "Science"],
+  "Thu": ["Maths", "Japanese Literature (Makabe-sensei)"], "Fri": ["Art", "Home Economics"]},
+ "open": [
+  "{block}: {subject}. The windows are fogged with rain. Hayate is already drawing a dog in the margin.",
+  "{block}: {subject}. The class rep, Sato Yui, hands out worksheets with a perfect smile.",
+  "{block}: {subject}. Chalk dust drifts in a stripe of thin sunlight. Somewhere below, a bell rings by itself.",
+  "{block}: {subject}. Through the door's little window, a black hood passes. Then passes again."
+ ],
+ "late": [
+  "You slide the door open {late} minutes late. Makabe-sensei looks at the clock, then at you, then writes something down. \"Sit, Asagiri.\"",
+  "Late. Thirty heads turn. Hayate gives you a thumbs-up. Makabe-sensei gives you a long sigh and a tick in his book.",
+  "You creep in {late} minutes late. Nobody says anything. The silence says it for them."
+ ],
+ "choices": [
+  {"id": "attend", "t": "Pay attention."},
+  {"id": "doze", "t": "Doze off."},
+  {"id": "window", "t": "Look out of the window."},
+  {"id": "note", "t": "Pass Hayate a note."}
+ ],
+ "results": {
+  "attend": [
+   "You actually follow {subject} for once. Your notes are almost readable.",
+   "Makabe-sensei reads a love letter from the Heian period aloud and his voice cracks on the last line. Nobody laughs.",
+   "You answer a question correctly. Hayate looks at you as if you'd betrayed him.",
+   "You learn something. You forget it by lunch. It still counts.",
+   "The lesson is slow, but for a while the rain is only rain."
+  ],
+  "doze": [
+   "You dream of a summer you don't remember: sunflowers, a girl with a camera, a bell. You wake up with ink on your cheek.",
+   "You sleep through {subject}. A piece of chalk bounces off your head. Makabe-sensei has excellent aim.",
+   "You doze off and dream you are much smaller, waiting on a very long staircase. Someone shakes you awake. It's the bell.",
+   "Hayate covers for you by asking a very long question about nothing. Good friend."
+  ],
+  "window": [
+   "Down in the courtyard, 1-A has PE. One small figure in a black hood is not running. He is looking up at your window.",
+   "A black cat sits on the wall by the gate for the whole lesson, staring at the school. It doesn't blink once.",
+   "The shrine on the hill is lost in cloud. For a second you think you hear its bell, all the way down here.",
+   "Rain runs down the glass in lines. One of them, for a moment, looks like a cat's paw print.",
+   "A white heron lands on the school fence, looks at you, and leaves. You don't know why that feels like a warning."
+  ],
+  "note": [
+   "You pass Hayate a note. He writes back: \"MELON BREAD AFTER?\" with a drawing of a dog eating a melon bread.",
+   "Hayate's reply comes back folded into a tiny dog. It just says \"you ok?\". You didn't know you looked otherwise.",
+   "The note gets caught. Makabe-sensei reads it aloud: \"is the hood kid outside again\". He folds it neatly and keeps it. He keeps everything."
+  ]
+ },
+ "truant": [
+  "{block} started without you. Somewhere, Makabe-sensei writes 'absent' in very small, very sad handwriting.",
+  "You're not in class. Your phone buzzes: Hayate - \"bro where are you\". Then Amane - \"Senpai isn't in his seat.\"",
+  "The school bell rings across the river. You're on the wrong side of it."
+ ],
+ "consequence": {
+  "late_3": "Aunt Haruka is waiting at the counter with a letter from the school. \"Three times late in one week, Toru.\" She doesn't shout. She just gives you a mochi with no filling, which is worse.",
+  "truant_2": "Makabe-sensei phoned the shop. Aunt Haruka says nothing at dinner, which she has never done before. Later, through the wall, you hear her on the phone to Tokyo."
+ }
+}

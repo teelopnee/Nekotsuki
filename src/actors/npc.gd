@@ -835,6 +835,8 @@ func refresh_label() -> void:
 	var rel := relation_label()
 	if rel == "YOUR INFORMANT":
 		return
+	if DataDB.theme == "suzunari" and rel == "FRIENDLY":
+		rel = ""  # strangers being nice is not news; only real relationships get a tag
 	name_label.text = base + ("\n<%s>" % rel if rel != "" else "")
 	name_label.modulate = REL_COLORS.get(rel, Color.WHITE)
 
@@ -1310,7 +1312,12 @@ func _life(delta: float) -> void:
 		var d2 := global_position.distance_squared_to(_player.global_position)
 		var important: bool = story_id != "" or persona_id != "" or role in ["merchant", "recruit"] or state == "reporting" \
 			or (name_label.text.contains("<") and role != "keeper")
-		name_label.visible = important or d2 < (70.0 if role == "keeper" else 30.0)
+		if DataDB.theme == "suzunari":
+			# Crowds stay readable: townsfolk names only within arm's reach, tags only when it matters.
+			important = state == "reporting" or loyal
+			name_label.visible = important or d2 < (16.0 if role == "keeper" else 9.0)
+		else:
+			name_label.visible = important or d2 < (70.0 if role == "keeper" else 30.0)
 	if not _waved and _player != null and state == "idle" and attitude >= 20 and activity in ["", "phone"] \
 			and global_position.distance_to(_player.global_position) < 5.0:
 		_waved = true

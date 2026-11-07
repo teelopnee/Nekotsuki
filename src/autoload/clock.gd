@@ -98,6 +98,17 @@ func advance(m: int) -> void:
 		period_changed.emit(p)
 
 
+## Something worth doing costs time (a talk, a scene). Only while the clock runs, and never far enough to end the
+## day by itself.
+func spend(m: int) -> int:
+	if not running:
+		return 0
+	var n := mini(m, maxi(0, END_MIN - 30 - minute()))
+	if n > 0:
+		advance(n)
+	return n
+
+
 func next_day() -> void:
 	var s := st()
 	s["day"] = day() + 1

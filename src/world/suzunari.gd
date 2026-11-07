@@ -11,6 +11,7 @@ const GIVEN := ["Haruto", "Sota", "Yuto", "Ren", "Riku", "Kaito", "Yui", "Hina",
 	"Koharu", "Mio", "Yuna", "Taiga", "Shun", "Nanami", "Akari", "Kenta"]
 
 var amane: AmaneNPC
+var _ending := false
 var home: HomeVisits  ## the five houses: doors, morning pick-ups, walking people home
 var overlay: Node
 var _rain: Array[CPUParticles3D] = []
@@ -34,7 +35,7 @@ func _setup() -> void:
 	camera_pitch = 30.0
 	camera_distance = 16.0
 	camera_fov = 32.0
-	music = "crystal_lull"
+	music = Week.music_now()
 	spawn_key = "default"
 	CharacterLook.theme = "suzunari"
 	Copy.theme = "suzunari"
@@ -174,8 +175,12 @@ func _morning() -> void:
 		Emotion.express(amane, "cry", 3.0)
 	elif Clock.day() == 1 and Clock.minute() <= Clock.START_MIN + 1 and hud:
 		await hud.say("", "Suzunari. Day one of the spring term. It has rained every single day since you arrived.\nThe school is up the hill, across the river and through the shopping street.")
+	var wn := Week.morning_note()
+	if wn != "" and hud:
+		await hud.say("", wn)
 	if home:
 		await home.resume()
+	Week.level_ready()
 
 
 ## Rain the town's mood: two particle systems from Level's weather builder, scaled by Amane's tears.
@@ -224,6 +229,7 @@ func _process(delta: float) -> void:
 
 func _on_minute(m: int) -> void:
 	_apply_light()
+	Audio.play_music(Week.music_now(), 2.5)
 	if m >= Clock.END_MIN and is_inside_tree():
 		end_day()
 
@@ -295,7 +301,11 @@ func nearest_walkable(p: Vector3) -> Vector3:
 
 ## Night: save, wake up at home the next morning.
 func end_day() -> void:
+	if _ending:
+		return
+	_ending = true
 	Clock.running = false
+	await Week.before_day_end(hud)  # Haruka hears about lates/absences; day 7 closes week 1
 	Clock.next_day()
 	Game.save_game()
 	Ledger.write()

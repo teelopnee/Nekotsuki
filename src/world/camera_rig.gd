@@ -39,6 +39,12 @@ var _combat_zoom := 0.0
 var _ahead := Vector3.ZERO
 var _faded: Dictionary = {}
 var _occ_shape: BoxShape3D
+## Talk close-up (Suzunari / school): while a dialogue is open the lens moves in on the two people talking,
+## lowers a little and turns Toru toward whoever he is talking to (never his back to the camera), so faces and
+## emotes read at play distance (docs/REVIEW.md hard review #4).
+var _talk := 0.0
+var _talk_mid := Vector3.ZERO
+var _hidden_labels: Array = []
 
 
 func _ready() -> void:
@@ -90,7 +96,7 @@ func configure(p_pitch: float, p_distance: float, p_fov: float) -> void:
 
 
 func _apply_pose(extra_zoom: float) -> void:
-	var pitch := deg_to_rad(pitch_degrees)
+	var pitch := deg_to_rad(pitch_degrees - 7.0 * _talk)
 	var dist := distance * (1.0 + extra_zoom)
 	camera.position = Vector3(0, sin(pitch) * dist, cos(pitch) * dist)
 	camera.rotation = Vector3(-pitch, 0, 0)
@@ -142,6 +148,17 @@ func _process(delta: float) -> void:
 			vel = (target as CharacterBody3D).velocity * Vector3(1, 0, 1)
 		_ahead = _ahead.lerp(vel.limit_length(6.0) / 6.0 * look_ahead, 1.0 - exp(-3.0 * rdelta))
 		var goal := target.global_position + Vector3(0, 0.9, 0) + _ahead
+		var partner := _talk_partner()
+		var talking := partner != null or _dialogue_open()
+		_talk = lerpf(_talk, 1.0 if talking else 0.0, 1.0 - exp(-5.0 * rdelta))
+		if partner:
+			_talk_mid = (target.global_position + partner.global_position) * 0.5 + Vector3(0, 0.9, 0)
+			_face_each_other(partner)
+		elif talking:
+			_talk_mid = target.global_position + Vector3(0, 0.9, 0)
+		if _talk > 0.01:
+			goal = goal.lerp(_talk_mid, _talk)
+		_talk_labels(talking)
 		global_position = global_position.lerp(goal, 1.0 - exp(-follow_speed * rdelta))
 		# Combat framing: pull back a little when hostiles are around.
 		var near := 0
@@ -154,14 +171,14 @@ func _process(delta: float) -> void:
 	if _punch_time > 0.0:
 		_punch_time -= rdelta
 		punch_amt = -_punch * clampf(_punch_time / 0.25, 0.0, 1.0)
-	_apply_pose(_combat_zoom + punch_amt)
+	_apply_pose(_combat_zoom + punch_amt - 0.4 * _talk)
 	if _shake > 0.0:
 		camera.h_offset = randf_range(-1.0, 1.0) * _shake * 0.32
 		camera.v_offset = randf_range(-1.0, 1.0) * _shake * 0.32
 		_shake = maxf(0.0, _shake - rdelta * 2.6)
 	else:
 		camera.h_offset = 0.0
-		camera.v_offset = 0.0
+		camera.v_offset = -0.9 * _talk  # lift the pair above the dialogue box
 	if dof_enabled:
 		var focus := camera.global_position.distance_to(global_position)
 		attributes.dof_blur_far_distance = focus + dof_far_margin
@@ -169,6 +186,64 @@ func _process(delta: float) -> void:
 		attributes.dof_blur_near_distance = maxf(0.5, focus - dof_near_margin)
 		attributes.dof_blur_near_transition = 4.0
 	_update_occluders()
+
+
+## Close up, everyone's 3D name tag would fill the frame: hide them while talking (the box names the speaker).
+func _talk_labels(talking: bool) -> void:
+	if talking and _hidden_labels.is_empty():
+		for n in get_tree().get_nodes_in_group("npc"):
+			var l = n.get("name_label")
+			if l is Label3D and l.visible:
+				l.visible = false
+				_hidden_labels.append(l)
+	elif not talking and not _hidden_labels.is_empty():
+		for l in _hidden_labels:
+			if is_instance_valid(l):
+				l.visible = true
+		_hidden_labels.clear()
+
+
+func _dialogue_open() -> bool:
+	if DataDB.theme != "suzunari":
+		return false
+	var lvl := get_tree().get_first_node_in_group("level")
+	var hud = lvl.get("hud") if lvl else null
+	return hud != null and bool(hud.get("_dialogue_open"))
+
+
+## While a dialogue is open: the nearest person (or cat) within 4.5 m of the hero is who you're talking to.
+func _talk_partner() -> Node3D:
+	if target == null or not _dialogue_open():
+		return null
+	var best: Node3D = null
+	var best_d := 4.5
+	for n in get_tree().get_nodes_in_group("npc"):
+		var n3 := n as Node3D
+		if n3 == null or not n3.visible or n3 == target:
+			continue
+		var d := n3.global_position.distance_to(target.global_position)
+		if d < best_d:
+			best_d = d
+			best = n3
+	return best
+
+
+## Toru turns to the person he talks to; if they stand behind him (north, away from the lens) he turns
+## side-on instead, so his face is in the shot. They turn to him.
+func _face_each_other(partner: Node3D) -> void:
+	var to := partner.global_position - target.global_position
+	to.y = 0.0
+	if to.length() < 0.05:
+		return
+	var face := to.normalized()
+	if face.z < 0.2:
+		face = Vector3(1.0 if to.x >= 0.0 else -1.0, 0.0, 0.35).normalized()
+	var ts = target.get("sprite")
+	if ts and ts.has_method("set_facing"):
+		ts.set_facing(face)
+	var ps = partner.get("sprite")
+	if ps and ps.has_method("set_facing"):
+		ps.set_facing(-to)
 
 
 func _update_occluders() -> void:
@@ -193,6 +268,13 @@ func _update_occluders() -> void:
 		q.transform = Transform3D(basis, from + dir * 0.5 - dir.normalized() * 0.6)
 		for r in space.intersect_shape(q, 24):
 			hits[r.collider] = true
+	# Foreground trees: crowns between the lens and the hero (south of him, inside the frame) fade too -
+	# they used to cover a third of the town shot.
+	var tp := target.global_position
+	for t in get_tree().get_nodes_in_group("foliage_fg"):
+		var t3 := t as Node3D
+		if t3 and t3.global_position.z > tp.z + 2.2 and t3.global_position.z < from.z and absf(t3.global_position.x - tp.x) < 10.0:
+			hits[t3] = true
 	for body in hits:
 		if not _faded.has(body):
 			_set_faded(body, true)

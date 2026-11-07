@@ -19,8 +19,8 @@
   "TATTOO": "tattoo",
   "TAPES": "tapes",
   "AIR 2GO": "air",
-  "REPAIR": "implants",
-  "IMPLANTS": "implants",
+  "REPAIR": "phones",
+  "IMPLANTS": "phones",
   "FORTUNES": "fortune",
   "OPEN 25/8": "corp_store"
  },
@@ -195,7 +195,7 @@
       ]
      },
      "success": {
-      "text": "Chairs, glasses, a synth-keytar. When the dust settles you're standing and somebody's paying for the damages. Not you.",
+      "text": "Chairs, glasses, a old keyboard. When the dust settles you're standing and somebody's paying for the damages. Not you.",
       "effects": {
        "hp": -15,
        "credits": 25
@@ -206,13 +206,13 @@
     },
     {
      "id": "recruit",
-     "text": "Look for someone to join your crew (8,000 yen)",
+     "text": "Look for someone to hang out with you (8,000 yen)",
      "cost": 80,
      "requires": {
       "not_crew_full": true
      },
      "success": {
-      "text": "A quiet figure at the end of the bar nods. \"Heard you have a ship. I've got nothing. Sounds like a match.\"",
+      "text": "A quiet figure at the end of the bar nods. \"Heard you're new in town. I've got nothing to do either. Sounds like a match.\"",
       "effects": {
        "recruit": "random"
       }
@@ -578,7 +578,7 @@
      "id": "browse",
      "text": "Browse the shelves",
      "success": {
-      "text": "Lockpicks, fake IDs, a cyberdeck with someone's initials on it.",
+      "text": "Lockpicks, fake IDs, an old laptop with someone's initials on it.",
       "shop": [
        "lockpick",
        "fake_id",
@@ -822,7 +822,7 @@
    "options": [
     {
      "id": "koi",
-     "text": "Neon koi down your arm (4,000 yen) - +5% speed",
+     "text": "Lantern koi down your arm (4,000 yen) - +5% speed",
      "cost": 40,
      "once": true,
      "success": {
@@ -908,7 +908,7 @@
      "text": "Buy a random mixtape (1,000 yen)",
      "cost": 10,
      "success": {
-      "text": "You slot it into the ship's deck. Something old and beautiful fills the air.",
+      "text": "You slot it into the cassette deck. Something old and beautiful fills the air.",
       "music": true,
       "effects": {
        "hp": 5
@@ -929,7 +929,7 @@
     },
     {
      "id": "sell_keytar",
-     "text": "Sell your old keytar (1,200 yen)",
+     "text": "Sell your old keyboard (1,200 yen)",
      "requires": {
       "item": "synth_keytar"
      },
@@ -993,7 +993,7 @@
       }
      },
      "fail": {
-      "text": "\"SAMPLE FEE: 3 CREDITS,\" says the tank.",
+      "text": "\"SAMPLE FEE: 3 YEN,\" says the tank.",
       "effects": {
        "credits": -3
       }
@@ -1002,7 +1002,7 @@
    ]
   },
   "implants": {
-   "name": "Implant Workshop",
+   "name": "Phone & Watch Repair",
    "greet": [
     "\"Upgrades, repairs, regrets. Pick two.\""
    ],

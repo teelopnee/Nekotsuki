@@ -40,11 +40,28 @@ REPLACE = [
     (r"\bholo-?ads?\b", "TV ads"), (r"\bholograms?\b", "billboard"), (r"\bholo\b", "TV"),
     (r"\bneon\b", "lantern"), (r"\brepo[- ]drones?\b", "debt collectors"), (r"\bdrones\b", "crows"), (r"\bdrone\b", "crow"),
     (r"\bwristpads?\b", "phone"), (r"\bstarship\b", "train"), (r"\bspacers?\b", "outsiders"), (r"\bbounty\b", "trouble"),
+    (r"\bPARAGON\b", "THE POLICE"), (r"\bCONSORTIUM\b", "TOWN COUNCIL"), (r"\bCREDITS?\b", "YEN"), (r"\bNEON\b", "LANTERN"),
+    (r"\bNeon\b", "Lantern"), (r"(?i)\bsynth[- ]?keytar\b", "old keyboard"), (r"\bRepo Stun Baton\b", "Stun Baton"),
+    (r"\bRepo Hammer\b", "Sledgehammer"), (r"\bRepo\b", "Debt"), (r"\brepo\b", "debt"),
+    (r"\bCorporate\b", "Company"), (r"\bcorporate\b", "company"), (r"\bCOLLATERAL\b", "IN DEBT"),
+    (r"\b[Cc]ollateral\b", "in hock"), (r"\bthe ship's deck\b", "the cassette deck"), (r"\bship's deck\b", "cassette deck"),
+    (r"The ship\? THE ship\?", "The shrine? THE shrine?"), (r"seen kids debt a whole freighter", "seen kids talk their way out of worse"),
+    (r"\bCredit, contacts\b", "Photos, contacts"), (r"voice of a dying robot", "voice of a dying TV announcer"),
+    (r"\bDrones\b", "Crows"), (r"Everyone in it is someone's in hock\.", "Everyone in it owes somebody something."),
+    (r"when the ship is quiet", "when the house is quiet"), (r"join your crew", "hang out with you"),
+    (r"Heard you have a ship\. I've got nothing\.", "Heard you're new in town. I've got nothing to do either."),
+    (r"\bkeytar\b", "keyboard"), (r"Implant Workshop", "Phone & Watch Repair"), (r"\bHolo-Ink\b", "Glow-Ink"),
+    (r"old synth record", "old enka record"), (r"smiling cyborg: UPGRADE OR BE UPGRADED", "smiling mascot: NEW YEAR, NEW YOU"),
+    (r"\bREPO\b", "DEBT"), (r"Interface with their implants", "Look at their phone"), (r"\bimplants\b", "phones"),
+    (r"\ba cyberdeck\b", "an old laptop"), (r"\bCyberdeck\b", "Old Laptop"), (r"\bPlanet-sized\b", "Town-sized"), (r"\bPlanet\b", "Town"),
     (r"\bthe the\b", "the"), (r"\bThe the\b", "The"),
 ]
+## Whole bark families that only make sense in ODD-SPACE (enemy taunts, planets, crew recruiting, the station).
+DROP_BARK_KEYS = ("taunt", "hurt", "yield", "standdown", "biome", "recruit", "station")
 BAD = re.compile(r"implant|android|robot|cyber|laser|blaster|hover|warp|orbit|chrome|\bvat\b|cryo|quack|q\.u\.a\.c\.k|"
                  r"\bair\b(?! of)|\bO2\b|oxygen|breath|lungs|asteroid|space|synth-|alien|mutant|\bgrub|subsystem|jetpack|"
-                 r"hull|airlock|terraform|clone|ad-bomb|odd duck|compliance|megacorp|sprawl", re.I)
+                 r"hull|airlock|terraform|clone|ad-bomb|odd duck|compliance|megacorp|sprawl|ad network|gravity|scanning|freighter|"
+                 r"\bship\b|\bcrew\b|sub-asset|section \d|barcode|\btank\b|in hock|\bcorp\b|credit check|uploading", re.I)
 
 
 def conv(s):
@@ -92,6 +109,8 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     for f in FILES:
         base = json.load(open(os.path.join(DATA, f)))
+        if f == "barks.json":
+            base = {k: v for k, v in base.items() if k.split(":")[0] not in DROP_BARK_KEYS}
         themed = walk(base)
         man = os.path.join(OUT, "_manual", f)
         if os.path.exists(man):

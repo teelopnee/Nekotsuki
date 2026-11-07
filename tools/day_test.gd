@@ -52,7 +52,7 @@ func _process(_d: float) -> bool:
 			_check(amane.tears_level() >= 4, "rejecting makes him wail (tears %d)" % amane.tears_level())
 			_check(amane.route() == "ignore", "route = ignore")
 			var ch: Array = amane.choices()
-			_check(float(ch[3].scale) < float(ch[0].scale) and ch[2].get("disabled", false), "'no' shrinks, boundary locked while crying")
+			_check(float(ch[3].scale) < float(ch[0].get("scale", 1.0)) and ch[2].get("disabled", false), "'no' shrinks, boundary locked while crying")
 			_check(amane.rain_target() >= 0.7, "storm clouds over Suzunari")
 			var r: Dictionary = amane.choose("flirt")
 			_check(amane.route() == "romance" and str(r.text).contains("> Tears"), "flirting -> romance + impact block")

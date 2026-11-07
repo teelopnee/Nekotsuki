@@ -136,4 +136,5 @@ func _on_talk(_player: Node) -> void:
 		_:
 			reply = _pick(lines.get("bye", []))
 	await hud.say("Hayate", reply)
+	Clock.spend(10)
 	_talking_now = false

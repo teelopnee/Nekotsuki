@@ -1,0 +1,373 @@
+{
+ "_doc": "Week 1 (8-14 April): one authored beat or two per day so the first week has a direction and an end (docs/GDD.md section 5). days.<n>: objective (HUD line until the day's beats are done), morning (note at wake-up), beats [{id, where: suzunari|school|any, after/before (minutes), near [x, z, radius] (town tiles), needs (Amane.ok keys), fallback (play anywhere once `before` has passed), speaker, text, choices [{t, say, fx}]}]. fx = Town.apply_fx keys + amane_choose (kind|flirt|boundary|reject). close = the week-close summary + hook (Week.close_week).",
+ "days": {
+  "1": {
+   "objective": "Go to school. Someone is waiting at the gate. After school, go home: Aunt Haruka wants to hear about it.",
+   "beats": [
+    {
+     "id": "d1_aunt",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "needs": {
+      "min_day": 1
+     },
+     "fallback": false,
+     "speaker": "Asagiri Haruka",
+     "text": "Aunt Haruka is wiping flour off the counter of Asagiri-do with more flour. \"There he is! First day! Sit, sit, eat this.\" A cat-shaped mochi is already in your mouth. \"So? How was it? Tell me everything. Leave out the boring parts.\"",
+     "choices": [
+      {
+       "t": "\"A first-year burst into tears the moment he saw me.\"",
+       "say": "Haruka laughs - then stops when you say the name Nekomori. \"Chiyo-san's grandson? From the cat shrine?\" She dusts her hands slowly. \"That poor boy has had nobody since he was small. Be gentle with him, Toru. Gentle isn't the same as soft.\"",
+       "fx": {
+        "flag": "told_haruka_amane"
+       }
+      },
+      {
+       "t": "\"School was fine. The rain wasn't.\"",
+       "say": "\"It's rained every day since your train came in.\" She peers at the window. \"The old folk say the town is crying about something. Nonsense. It's the sea air.\" She doesn't sound sure.",
+       "fx": {
+        "luck": 1
+       }
+      },
+      {
+       "t": "\"Why did Dad never bring me back here?\"",
+       "say": "Haruka goes very still for a moment, then smiles too brightly. \"Your father left this town on a rainy night too. Ask him yourself one day. Not tonight. Tonight you eat.\"",
+       "fx": {
+        "flag": "asked_about_makoto"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Find out why the first-year cried. (Talk to Amane - he'll find you at lunch.)",
+   "beats": [
+    {
+     "id": "d2_pillow",
+     "where": "suzunari",
+     "before": 500,
+     "near": [
+      27,
+      47,
+      8
+     ],
+     "speaker": "",
+     "text": "You wake up with your head where your feet were. The pillow is at the far end of the futon, neatly placed, as if someone turned you round in your sleep. The window is shut. Downstairs, Aunt Haruka is singing a lullaby you somehow know the words to.",
+     "choices": [
+      {
+       "t": "Put the pillow back and say nothing.",
+       "say": "You put it back. It feels warm, as if somebody small had just been sitting on it. [Makura-gaeshi: the pillow-turner, a spirit of old houses. Real folklore.]",
+       "fx": {
+        "zukan": "makuragaeshi"
+       }
+      },
+      {
+       "t": "Ask Aunt Haruka about it.",
+       "say": "\"You sleep like a windmill, that's all.\" She doesn't believe in ghosts. Not even slightly. She does, however, put a sweet on the stairs for 'the mice'. There are no mice.",
+       "fx": {
+        "zukan": "makuragaeshi",
+        "luck": 1
+       }
+      },
+      {
+       "t": "Leave a sweet beside the pillow tonight.",
+       "say": "You leave a cat-shaped mochi by the futon. The next morning it is gone, and your shoes are lined up perfectly at the door. [Makura-gaeshi]",
+       "fx": {
+        "zukan": "makuragaeshi",
+        "egg": "makura_mochi",
+        "luck": 1
+       }
+      }
+     ]
+    },
+    {
+     "id": "d2_bento",
+     "where": "school",
+     "after": 750,
+     "before": 800,
+     "needs": {
+      "min_day": 2
+     },
+     "fallback": false,
+     "speaker": "Amane",
+     "text": "At the start of lunch the door of 2-B slides open a crack. A black hood. Two hands holding out a bento wrapped in a cloth with cats on it. \"S-Senpai. I made... too much. By accident. For you. By accident.\" Half your class turns to look. He is shaking.",
+     "choices": [
+      {
+       "t": "\"Thank you. Let's eat together.\"",
+       "say": "He sits on the very edge of the chair next to yours, watching you eat the burnt tamagoyaki as if it were an exam. When you say it's good, the rain on the windows stops for the length of a breath.",
+       "fx": {
+        "bond": 4,
+        "tears": -1.0
+       }
+      },
+      {
+       "t": "\"I'm eating with Hayate. Come and join us?\"",
+       "say": "Amane looks at Hayate. Hayate looks at Amane. Something old passes between them, a dog and a cat on the same wall. \"...Okay,\" Amane says, and eats in total silence, very close to you.",
+       "fx": {
+        "bond": 1,
+        "tears": 0.4,
+        "closeness": 3,
+        "who": "Inukai Hayate"
+       }
+      },
+      {
+       "t": "\"You don't have to cook for me, Amane.\"",
+       "say": "\"I know.\" He holds the bento tighter. \"I want to. Is that... not allowed?\" He leaves it on your desk anyway and walks away very fast. It's the best tamagoyaki you've ever had. It's also burnt.",
+       "fx": {
+        "amane_self": 4,
+        "tears": 0.6
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "After school, climb the shrine steps. Someone up there wants a word.",
+   "beats": [
+    {
+     "id": "d3_chiyo",
+     "where": "suzunari",
+     "after": 920,
+     "near": [
+      28,
+      6,
+      9
+     ],
+     "speaker": "Nekomori Chiyo",
+     "text": "The old shrine keeper is feeding three cats from a dented tin. She doesn't look up. \"Asagiri. Come here.\" Her cane taps the stone, and the little bell on it rings. \"My grandson came home yesterday and didn't cry. First time in nine years. So I'm going to ask you once, and you will answer once. Don't leave that child.\"",
+     "choices": [
+      {
+       "t": "\"I promise.\"",
+       "say": "Chiyo finally looks at you. For a second she looks much older, and much younger. \"Words said on shrine ground are kept by the shrine, boy. Even when you forget them.\" She goes back to her cats. \"Good.\"",
+       "fx": {
+        "promise": "chiyo_dont_leave",
+        "bond": 2,
+        "lore": "kotodama"
+       }
+      },
+      {
+       "t": "\"I can't promise that. I only just met him.\"",
+       "say": "\"Hm.\" A long silence. \"Honest. That's better than a promise you'll break.\" She taps her cane. \"Then don't promise. Just don't lie to him. He can smell lies. Like a cat.\"",
+       "fx": {
+        "amane_self": 3
+       }
+      },
+      {
+       "t": "\"Why me?\"",
+       "say": "\"Because every Tanabata for nine years he sat on these steps until the lanterns went out, waiting for someone he couldn't name.\" She closes the tin. \"He stopped waiting the day your train came in.\"",
+       "fx": {
+        "lore": "waited_nine"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday. No school. Your phone buzzes: \"DOG SHRINE. 10:00. BRING NOTHING. - Hayate\" (A second message: \"bring melon bread\")",
+   "objective": "Day off. Hayate is waiting at the dog shrine (east of the school).",
+   "beats": [
+    {
+     "id": "d4_dogs",
+     "where": "suzunari",
+     "after": 540,
+     "near": [
+      47,
+      25,
+      9
+     ],
+     "speaker": "Hayate",
+     "text": "Hayate is sitting on the dog-shrine steps with five shrine dogs piled on him. \"You came! Guys, this is Toru. Toru, this is everyone.\" The dogs approve of you. One of them sits on your foot. \"Okay, real talk. That first-year. Nekomori. He was outside 2-B four times yesterday. What's the deal?\"",
+     "choices": [
+      {
+       "t": "\"He's lonely. I think he just wants a friend.\"",
+       "say": "\"Lonely I get.\" He rubs his ankle without noticing. \"When I got hurt, nobody came round for a month. ...Okay. If he's your friend, he's mine too. Unless he hisses. If he hisses, all bets are off.\"",
+       "fx": {
+        "closeness": 6,
+        "who": "Inukai Hayate",
+        "amane_self": 1
+       }
+      },
+      {
+       "t": "\"Your dad doesn't like the Nekomori family, does he.\"",
+       "say": "\"How'd you - yeah. Some feud from forever ago. Dad says the cat shrine 'keeps what it shouldn't'.\" He sniffs the air. \"The kid smells like rain and smoke. That's not normal, right? That's not a normal smell.\"",
+       "fx": {
+        "closeness": 4,
+        "who": "Inukai Hayate",
+        "lore": "okuri_inu"
+       }
+      },
+      {
+       "t": "\"Show me your ankle.\"",
+       "say": "He freezes, then laughs too loud. \"It's fine! It's - \" He stops. \"It's not fine. I can't race anymore. I just walk people home now. That's the job. Don't tell anyone I said that.\" The dogs press closer to him.",
+       "fx": {
+        "closeness": 8,
+        "who": "Inukai Hayate"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "Sunday. At Omagatoki (18:00) go to the bottom of the shrine steps. You have a feeling you should.",
+   "beats": [
+    {
+     "id": "d5_question",
+     "where": "suzunari",
+     "after": 1075,
+     "before": 1140,
+     "near": [
+      4,
+      18,
+      9
+     ],
+     "needs": {
+      "min_day": 1
+     },
+     "fallback": true,
+     "speaker": "Amane",
+     "text": "The lanterns on the 999 steps are coming on one by one. Amane is sitting on the lowest step with his knees pulled up, exactly where Chiyo said he waited all those years. He doesn't look at you. \"Senpai.\" The bell on his collar rings once. \"I need to ask you something, and I need you to answer the real answer.\" A breath. \"What am I to you?\"",
+     "choices": [
+      {
+       "t": "\"A friend. A real one.\"",
+       "say": "",
+       "fx": {
+        "amane_choose": "kind"
+       }
+      },
+      {
+       "t": "\"Someone I want to get to know. Properly.\"",
+       "say": "",
+       "fx": {
+        "amane_choose": "flirt"
+       }
+      },
+      {
+       "t": "\"A kouhai I care about - and I need you to stop following me everywhere.\"",
+       "say": "",
+       "fx": {
+        "amane_choose": "boundary"
+       }
+      },
+      {
+       "t": "\"Nobody, Amane. I'm sorry.\"",
+       "say": "",
+       "fx": {
+        "amane_choose": "reject"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "morning": "Monday. Amane spent the weekend deciding something. All through homeroom you can feel him watching, two floors down, through the floor.",
+   "objective": "Something has changed. After classes, Makabe-sensei wants to see you in the staff room (1F).",
+   "beats": [
+    {
+     "id": "d6_makabe",
+     "where": "school",
+     "after": 915,
+     "before": 1080,
+     "fallback": false,
+     "speaker": "Makabe-sensei",
+     "text": "Makabe-sensei is pretending to read a book that is upside down. \"Asagiri. Sit.\" He pushes up his glasses. \"The Nekomori boy has been standing outside 2-B between every lesson for a week. His homeroom teacher asked me why. I said I'd ask you. So.\" A long sigh. \"Why?\"",
+     "choices": [
+      {
+       "t": "\"He's my friend. He's just... intense.\"",
+       "say": "\"Intense.\" He writes the word down, then crosses it out. \"I had a friend like that once. Two, actually.\" He looks out of the window toward the shrine. \"Look after each other better than we did.\"",
+       "fx": {
+        "closeness": 4,
+        "who": "Makabe-sensei"
+       }
+      },
+      {
+       "t": "\"I'll talk to him about it.\"",
+       "say": "\"Good. Talk, not tell. There's a difference, and that boy will hear it.\" He closes the upside-down book. \"You're a lot like your father, you know. He also thought talking would fix everything.\"",
+       "fx": {
+        "closeness": 3,
+        "who": "Makabe-sensei",
+        "amane_self": 2
+       }
+      },
+      {
+       "t": "\"Why do you care so much, sensei?\"",
+       "say": "For a moment he doesn't answer. \"Because a long time ago, on a rainy night, I didn't say something I should have.\" He smiles the sad smile. \"Go home, Asagiri. It's going to rain.\" It does.",
+       "fx": {
+        "closeness": 2,
+        "who": "Makabe-sensei",
+        "flag": "makabe_rainy_night"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "The last day of your first week. Live it however you like. End it with the phone when you're ready.",
+   "beats": [
+    {
+     "id": "d7_awake",
+     "where": "any",
+     "after": 1250,
+     "needs": {
+      "min_day": 1
+     },
+     "fallback": true,
+     "speaker": "Amane (Rinrin)",
+     "text": "Your phone lights up in the dark. \"Senpai, are you awake?\" Three dots appear. Disappear. Appear. \"It's been a week. Since the gate. I counted.\" Dots. \"Is it okay that I'm still here?\"",
+     "choices": [
+      {
+       "t": "\"Of course it's okay. Goodnight, Amane.\"",
+       "say": "\"Goodnight, Senpai.\" Then, a minute later: \"[cat sticker]\" Then: \"[cat sticker]\" Then: \"sorry I'm going to sleep now\". Outside, the rain stops.",
+       "fx": {
+        "bond": 3,
+        "tears": -1.5
+       }
+      },
+      {
+       "t": "\"It's okay. But go to sleep - it's late.\"",
+       "say": "\"Okay.\" A pause. \"You're right. Grandma says I don't sleep enough. I'll try.\" No more dots. For once, he actually does.",
+       "fx": {
+        "amane_self": 3,
+        "tears": -0.5
+       }
+      },
+      {
+       "t": "Leave it on read.",
+       "say": "The message sits there, marked READ. The dots appear once more and then never come back. The rain doesn't stop all night.",
+       "fx": {
+        "tears": 1.5,
+        "amane_self": 1
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 1 - 8 to 14 April",
+  "route": {
+   "none": "You never quite told him what he is to you. He noticed.",
+   "friend": "You chose to be his friend. He is learning what that word weighs.",
+   "romance": "You let him hope. He hasn't stopped smiling - or watching.",
+   "boundary": "You drew a line and stayed kind. He is trying to stand on his own side of it.",
+   "ignore": "You turned away. The town has been very wet."
+  },
+  "hook": [
+   "That night, on the roof of {rival_house}, a black cat with two tails sits in the rain and counts the windows. Nobody has ever seen it before.",
+   "Amane sleeps badly. In his dream he is running across wet roof tiles, very fast, toward a house that isn't his.",
+   "In the morning, the Ura board has its first thread about you. It has forty replies by homeroom."
+  ],
+  "next": "WEEK 2 - the first rival, the first thread, the first night walk of the cat. (Episode 0 continues.)"
+ }
+}

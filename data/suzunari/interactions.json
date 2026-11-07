@@ -501,8 +501,7 @@
    },
    "success": {
     "lines": [
-     "They scan you. \"Oh - you're PROPERTY. Property can't commit crimes, legally. My mistake.\"",
-     "\"Collateral, huh.\" Their face softens. \"Me too. Section 4, sub-asset 12. Go on.\""
+     "They scan you. \"Oh - you're PROPERTY. Property can't commit crimes, legally. My mistake.\""
     ],
     "effects": {
      "npc": "silenced",
@@ -572,7 +571,7 @@
    },
    "fail": {
     "lines": [
-     "\"Don't 'mister' me, I've seen kids repo a whole freighter.\""
+     "\"Don't 'mister' me, I've seen kids talk their way out of worse.\""
     ],
     "effects": {
      "attitude": -5
@@ -761,7 +760,7 @@
    "success": {
     "lines": [
      "Ten seconds of glowing glyphs. Their the police call drops, their balance drops, and their wallpaper is now you.",
-     "You slip into their phone. Credit, contacts, and a very embarrassing search history."
+     "You slip into their phone. Photos, contacts, and a very embarrassing search history."
     ],
     "effects": {
      "credits": 35,
@@ -1028,7 +1027,7 @@
    },
    "success": {
     "lines": [
-     "The dice land. You win. They pay, swearing in three corporate dialects.",
+     "The dice land. You win. They pay, swearing in three company dialects.",
      "\"Again?\" they ask. You never say no to again."
     ],
     "effects": {
@@ -1091,7 +1090,7 @@
     "civilian"
    ],
    "requires": {
-    "flag": "repo"
+    "flag": "debt"
    },
    "chance": 0.65,
    "verb": "theft",
@@ -1102,6 +1101,7 @@
    },
    "success": {
     "lines": [
+     "Old habits. You scan their phones for missed payments and find one. They hand over a gadget, shaking.",
      "\"the bank said it was mine for life!\" the bank defines 'life' as 'until Tuesday'."
     ],
     "effects": {
@@ -1150,7 +1150,7 @@
    ]
   },
   "interface": {
-   "text": "Interface with their implants",
+   "text": "Look at their phone",
    "roles": [
     "civilian",
     "witness"
@@ -1334,7 +1334,7 @@
    "success": {
     "lines": [
      "You explain, calmly, what happens to people who don't pay protection. They pay protection.",
-     "\"Every week?\" Every week. They nod like someone signing their own repo papers."
+     "\"Every week?\" Every week. They nod like someone signing their own debt papers."
     ],
     "effects": {
      "credits": 40,
@@ -1481,8 +1481,7 @@
    },
    "success": {
     "lines": [
-     "You both read the billboard aloud in the voice of a dying robot. It's the best five minutes they've had all year.",
-     "\"'Breathe Responsibly'? I breathe IRRESPONSIBLY.\" They're crying laughing."
+     "You both read the billboard aloud in the voice of a dying TV announcer. It's the best five minutes they've had all year."
     ],
     "effects": {
      "attitude": 25,
@@ -2290,7 +2289,7 @@
    "success": {
     "lines": [
      "\"You think THAT was something? Let me tell you about the instant noodles riot of '#small_num#.\"",
-     "They roll up a sleeve: a scar shaped like a #brand# logo. \"Repo crow. Long story.\"",
+     "They roll up a sleeve: a scar shaped like a #brand# logo. \"Debt crow. Long story.\"",
      "\"Respect. My grandad took down a #faction# convoy with a shopping trolley.\""
     ],
     "effects": {
@@ -2831,9 +2830,7 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Freighters leave from the east docks at #time#. Stowaways ride free. Mostly.\"",
-     "\"Everybody wants out. Nobody gets out.\" But they tell you about a smuggler with a soft heart.",
-     "They point at the sky. \"That light? That's the way out. Follow the debt freighters.\""
+     "\"Everybody wants out. Nobody gets out.\" But they tell you about a smuggler with a soft heart."
     ],
     "effects": {
      "rumor": true
@@ -3168,8 +3165,7 @@
     "Explosives. Legally, glitter",
     "A broadcast slot the TV news doesn't control",
     "My cell-mate out of a the police colony",
-    "Proof the town council lies. More proof",
-    "A ship that doesn't phone home"
+    "Proof the town council lies. More proof"
    ],
    "weird": [
     "The sky to stop humming at me",
@@ -3260,7 +3256,7 @@
    ],
    "tips": [
     "\"The merchant here marks everything up when the police's watching. Come back after a crime. Kidding. Mostly.\"",
-    "\"police officers can be bribed. the bank crows can't. Drones don't have pockets.\"",
+    "\"police officers can be bribed. the bank crows can't. Crows don't have pockets.\"",
     "\"Kill a witness before they finish the call and the news never spreads. Not that I'd know.\""
    ]
   }

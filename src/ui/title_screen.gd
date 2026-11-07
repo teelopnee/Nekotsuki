@@ -54,7 +54,7 @@ func _ready() -> void:
 		plate.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		plate.add_child(info)
 		v.add_child(plate)
-	v.add_child(_button("NEW GAME", func(): Router.new_suzunari()))
+	v.add_child(_button("NEW GAME", _content_notice))
 	v.add_child(_button("CREDITS & LICENSES", _show_credits))
 	if not OS.has_feature("mobile") and not OS.has_feature("web"):
 		v.add_child(_button("QUIT", func(): get_tree().quit()))
@@ -66,7 +66,7 @@ func _ready() -> void:
 	var ver := HUD.make_label("v%s  //  Godot %s" % [ProjectSettings.get_setting("application/config/version", "0"), Engine.get_version_info().string], 12, Color(1, 1, 1, 0.4))
 	ver.position = Vector2(10, 8)
 	add_child(ver)
-	Audio.play_music("odd_duck_theme")
+	Audio.play_music("suzunari_dusk")
 	for c in v.get_children():
 		if c is Button:
 			_safe_focus.call_deferred(c)
@@ -170,3 +170,35 @@ static func credits_text() -> String:
 	for k in lic:
 		t += "\n[b]%s[/b]\n%s\n" % [str(k), str(lic[k])]
 	return t
+
+
+## Content notice before a new game (docs/REVIEW.md hard review #4): the game is about an obsessive, jealous
+## love that the player can encourage, set boundaries for, or turn down - say so before it starts.
+const NOTICE := "CONTENT NOTICE\n\nNEKOTSUKI is a gentle-looking game about an unhealthy kind of love.\n\n" + \
+	"A character becomes attached to you to the point of following you, watching who you talk to, crying when you " + \
+	"are with others, and making it hard to say no (some answers shrink while he cries). The story shows jealousy, " + \
+	"possessiveness and emotional pressure, abandonment, grief, and supernatural harm coming to people around you.\n\n" + \
+	"It does not show sexual content, self-harm or gore. Saying no, and setting boundaries, are real choices with " + \
+	"their own good ending.\n\nIf something in your own life looks like this, it is not romantic - talk to someone you trust."
+
+
+func _content_notice() -> void:
+	var layer := ColorRect.new()
+	layer.color = Color(0.03, 0.02, 0.06, 0.94)
+	layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(layer)
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	box.custom_minimum_size = Vector2(760, 0)
+	box.position -= Vector2(380, 230)
+	box.add_theme_constant_override("separation", 18)
+	layer.add_child(box)
+	var t := HUD.make_label(NOTICE, 19, Color(1.0, 0.94, 0.86))
+	t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	t.custom_minimum_size = Vector2(760, 0)
+	box.add_child(t)
+	var go := _button("I UNDERSTAND - START", func(): Router.new_suzunari())
+	var back := _button("BACK", func(): layer.queue_free())
+	box.add_child(go)
+	box.add_child(back)
+	go.grab_focus()

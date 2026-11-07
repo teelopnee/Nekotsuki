@@ -12,7 +12,10 @@ signal codex_changed
 const DEFAULTS := {"seen": {}, "zukan": {}, "eggs": {}, "picked": {}, "today": [], "luck": 0}
 const ZUKAN := {"kappa": "Kappa", "tanuki": "Bake-danuki", "tsukumogami": "Tsukumogami", "rokurokubi": "Rokurokubi",
 	"nopperabo": "Nopperabo", "kuchisake": "Kuchisake-onna", "zashiki_warashi": "Zashiki-warashi",
-	"hanako": "Hanako-san", "okuri_inu": "Okuri-inu", "ikiryo": "Ikiryo", "nekomata": "Nekomata"}
+	"hanako": "Hanako-san", "okuri_inu": "Okuri-inu", "ikiryo": "Ikiryo", "nekomata": "Nekomata",
+	"makuragaeshi": "Makura-gaeshi"}
+
+const TALK_MINUTES := 10
 
 var data := {}
 var _picks := {}
@@ -182,6 +185,7 @@ func meet(id: String, actor: Node = null) -> void:
 	if actor and actor.has_method("face_player"):
 		actor.face_player()
 	await scene(str(sp.name), Amane.fill(_pick(sp.get("open", ["..."]))), sp.get("choices", []), met_key, extras)
+	Clock.spend(TALK_MINUTES)  # time has a cost: a real conversation takes a while
 
 
 ## A one-choice scene: shows `text` with `choices` [{t, say, fx}], answers and applies effects.
@@ -269,6 +273,9 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 				lines.append("> %d minutes pass" % int(v))
 			"tears":
 				Amane.add("tears", float(v))
+			"amane_choose":
+				if not again:
+					lines.append(str(Amane.choose(str(v)).text))
 			"bond":
 				if not again:
 					Amane.add("bond_now", float(v))

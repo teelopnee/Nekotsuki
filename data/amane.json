@@ -170,6 +170,7 @@
   "let_go": "You watch it go. It doesn't look back."
  },
  "ura": {
+ "truant": ["Transfer student spotted at the river during 2nd period. Must be nice.", "{player} skipped class AGAIN?? (a first-year in a hoodie also left 1-A at the same time. coincidence.)", "Who sits in the empty seat in 2-B? Asking for a crybaby."],
   "wail": [
    "A first-year was bawling in the {place} again. Who did it?? (We all know. Second-year B. Rhymes with Toru.)",
    "Is it me or does it rain every time that hoodie kid cries",

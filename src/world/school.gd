@@ -19,6 +19,8 @@ var _room_lights: Array[OmniLight3D] = []
 var _students: Array = []  ## [{npc, room}] - who is where, so the bell can move them
 
 
+var _ending := false
+
 func _setup() -> void:
 	if FileAccess.file_exists("res://data/school.json"):
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string("res://data/school.json"))
@@ -38,7 +40,7 @@ func _setup() -> void:
 	camera_pitch = 27.0  # lower than outside: the back walls (windows, posters, the board) are part of the room
 	camera_distance = 13.5
 	camera_fov = 32.0
-	music = "crystal_lull"
+	music = Week.music_now()
 	spawn_key = "default"
 	CharacterLook.theme = "suzunari"
 	Copy.theme = "suzunari"
@@ -76,6 +78,7 @@ func spawn_npc(role: String, pos: Vector3, recruit_id: String = "") -> NPC:
 func _post_build() -> void:
 	Game.set_deferred("air_billing_active", false)
 	Clock.running = true
+	Week.level_ready.call_deferred()
 	_place_player()
 	_wire_links()
 	_rooms()
@@ -516,6 +519,7 @@ func _build_motes() -> void:
 # --- Light & time -----------------------------------------------------------------------------
 
 func _on_minute(m: int) -> void:
+	Audio.play_music(Week.music_now(), 2.5)
 	_apply_light()
 	if m >= Clock.END_MIN and is_inside_tree():
 		end_day()
@@ -564,7 +568,11 @@ func nearest_walkable(p: Vector3) -> Vector3:
 
 ## Night inside the school: you fall asleep at your desk and wake up at home.
 func end_day() -> void:
+	if _ending:
+		return
+	_ending = true
 	Clock.running = false
+	await Week.before_day_end(hud)
 	Clock.next_day()
 	Game.location_id = "suzunari"
 	Game.save_game()

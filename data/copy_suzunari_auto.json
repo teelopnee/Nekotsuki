@@ -127,7 +127,7 @@
    "SMILE: YOU'RE BILLED",
    "DEBT IS FREEDOM",
    "TRUST THE NOODLES",
-   "THE CONSORTIUM LOVES YOU (BACK)",
+   "THE TOWN COUNCIL LOVES YOU (BACK)",
    "#product.upper#: #price#",
    "WHY THINK WHEN YOU CAN SUBSCRIBE?",
    "LUMEN: WATCH. MORE.",
@@ -147,7 +147,7 @@
    "Vapor",
    "Glitch",
    "Tin",
-   "Neon",
+   "Lantern",
    "Patch",
    "Lucky",
    "instant noodles",
@@ -155,7 +155,6 @@
   ],
   "suzunari_pet_name": [
    "Biscuit",
-   "Collateral",
    "Mister Whiskers",
    "Sergeant Wiggles",
    "Debt",
@@ -178,6 +177,26 @@
    "#pet_kind#, very fat, very loved",
    "#pet_kind#, wears a tiny the police badge (fake)",
    "#pet_kind#, may be glowing"
+  ],
+  "suzunari_adj_shop": [
+   "Lucky",
+   "Golden",
+   "Lantern",
+   "Happy",
+   "Midnight",
+   "Little",
+   "Electric",
+   "Lonely",
+   "Honest",
+   "Last",
+   "Crooked",
+   "Hungry",
+   "Velvet",
+   "Rusty",
+   "Jade",
+   "Broken",
+   "Infinite",
+   "Eternal"
   ],
   "suzunari_noun_shop": [
    "Lung",
@@ -233,6 +252,13 @@
    "Easy Money",
    "Payday Plus"
   ],
+  "suzunari_tattoo_name": [
+   "Ink & Iron",
+   "#adj_shop# Needle",
+   "Skin Deep",
+   "Tattoo You",
+   "Glow-Ink"
+  ],
   "suzunari_fortune_name": [
    "Omikuji Corner",
    "Uranai Tsukimi",
@@ -253,7 +279,7 @@
   "suzunari_faction_short": [
    "HALCYON",
    "GRISTLE",
-   "PARAGON",
+   "THE POLICE",
    "LUMEN"
   ],
   "suzunari_absurd_event": [
@@ -357,8 +383,8 @@
   ],
   "suzunari_protest": [
    "CANCEL ALL DEBT",
-   "OUR KIDS ARE NOT COLLATERAL",
-   "PARAGON OFF OUR STREETS"
+   "OUR KIDS ARE NOT IN DEBT",
+   "THE POLICE OFF OUR STREETS"
   ],
   "suzunari_flyer": [
    "LOST CAT: answers to Mochi",
@@ -553,7 +579,7 @@
    "The medic looks at you, then at your wallet. \"Where does it hurt? Be specific, it's itemised.\"",
    "\"No insurance? Good. Insurance just makes it slower.\"",
    "\"I can fix most things. I can't fix the price.\"",
-   "A nurse-crow chirps: \"WELCOME. YOUR WAIT TIME IS #small_num# HOURS. OR #small_num# CREDITS.\""
+   "A nurse-crow chirps: \"WELCOME. YOUR WAIT TIME IS #small_num# HOURS. OR #small_num# YEN.\""
   ],
   "suzunari_motel_keeper": [
    "The clerk doesn't look up from #media_product#. \"Pod or premium pod? Premium has a window. It's painted on.\"",
@@ -571,6 +597,15 @@
    "\"Rates as low as #pct#%! Per hour!\"",
    "The broker's smile doesn't move. \"Let's talk about your potential.\""
   ],
+  "suzunari_tattoo_scene": [
+   "Needles buzz like angry bees. Flash sheets cover every wall.",
+   "A customer winces in the chair, getting a #brand# logo. Sponsored ink pays the rent.",
+   "Lantern light, antiseptic and an old enka record crackling."
+  ],
+  "suzunari_tattoo_keeper": [
+   "\"What'll it be? No company logos. Unless you're paying company prices.\"",
+   "\"First tattoo? Don't faint. Fainting's extra.\""
+  ],
   "suzunari_air_scene": [
    "Canisters stacked like ammunition, every one labelled MOUNTAIN FRESH.",
    "A banner: #oxy_brand.upper# - TASTE THE ALTITUDE.",
@@ -583,7 +618,7 @@
   "suzunari_implants_scene": [
    "Sparks rain off a workbench where someone is getting a new knee.",
    "The diagnostics screen flickers: WARRANTY VOID.",
-   "A poster of a smiling cyborg: UPGRADE OR BE UPGRADED."
+   "A poster of a smiling mascot: NEW YEAR, NEW YOU."
   ],
   "suzunari_fortune_scene": [
    "Incense, a cracked crystal ball and a card reader.",
@@ -611,7 +646,7 @@
   "suzunari_cabinet": [
    "DEBT INVADERS II",
    "NOODLES-MAN DELUXE",
-   "SUPER REPO BROS",
+   "SUPER DEBT BROS",
    "STREET COLLECTOR",
    "MORTAL MORTGAGE",
    "SHAREHOLDER SMASH"
@@ -634,7 +669,7 @@
    "Don't touch that dial. It's leased."
   ],
   "suzunari_traffic": [
-   "sky-lane 4 is jammed by a repo convoy",
+   "sky-lane 4 is jammed by a debt convoy",
    "smooth, if you can afford the toll",
    "#pct#% slower than yesterday and #pct#% pricier",
    "a billboard fell over on the main drag - mind the dancing"
@@ -777,17 +812,13 @@
    "Got a collector following you? Third crow on the left."
   ],
   "suzunari_pc_class_collateral": [
-   "That's a barcode on your neck. Who owns you?",
-   "Collateral, huh? My sister was collateral. Then she was a factory.",
    "Somebody's paying interest on YOU. Must feel strange.",
    "Owned and still walking around. Respect.",
    "Does your owner know you're on {town}?",
-   "Do they let you keep the barcode when you pay it off?",
    "Owned? Me too, kind of. My landlord thinks so."
   ],
   "suzunari_pc_class_off_grid": [
    "You don't show up on the scanners. How?",
-   "No phone, no barcode, no record. You're a ghost.",
    "The crows look right through you. Teach me.",
    "Off-grid on {town}? That's practically a superpower.",
    "I can't even find you on the TV news. Nobody's not on the TV news.",
@@ -812,7 +843,6 @@
   ],
   "suzunari_pc_age_middle": [
    "Middle-aged and still out here. Respect.",
-   "Your back hurts too, doesn't it? It's the gravity tax.",
    "Kids? Debts? Both? Both.",
    "Mid-life crisis? Buy a sky-bike. Everyone does.",
    "{years}, huh? The knees go next."
@@ -848,8 +878,13 @@
   ],
   "suzunari_pc_bg_corp_lawyer": [
    "Lawyer. I can tell. You're reading the small print on my face.",
-   "Corporate lawyer on {town}? Who are you suing?",
+   "Company lawyer on {town}? Who are you suing?",
    "Is talking to you billable? Am I being billed right now?"
+  ],
+  "suzunari_pc_bg_repo_agent": [
+   "You've got debt eyes. Pricing everything you look at.",
+   "Ex-debt? You took my neighbour's door once. Just the door.",
+   "Please don't repossess my shoes. They're all I have."
   ],
   "suzunari_pc_bg_paste_worker": [
    "You smell like the vats. instant noodles worker?",
@@ -928,7 +963,7 @@
    "Paying something off, aren't you? I know the walk."
   ],
   "suzunari_pc_goal_buy_a_planet": [
-   "You've got big plans. Planet-sized plans.",
+   "You've got big plans. Town-sized plans.",
    "Someone said you want to buy a whole town. Can I rent a room?"
   ],
   "suzunari_pc_goal_protect_family": [
@@ -984,11 +1019,6 @@
   ],
   "suzunari_pc_debt": [
    "I can hear your debt growing from here."
-  ],
-  "suzunari_pc_crew": [
-   "You travel with {crew}, right? Good people. Weird, but good.",
-   "Heard {crew} is on your ship. Tell them hi.",
-   "Your crew looks out for you. Hold on to that."
   ],
   "suzunari_pc_upgraded": [
    "You've had work done. Good work. Expensive work.",
@@ -1171,7 +1201,7 @@
    "put {target} down. A cop. In the street"
   ],
   "suzunari_act_kill_repo": [
-   "scrapped a the bank repo unit",
+   "scrapped a the bank debt unit",
    "turned a debt collectors into spare parts",
    "took apart {target}",
    "put a debt collector out of business"
@@ -1276,7 +1306,6 @@
   "suzunari_merchant_ask": [
    "Buying, selling, or wasting my billable time?",
    "Everything's for sale. Including advice.",
-   "Cash, money or collateral?",
    "Take a look. Touching is extra.",
    "Prices are fair. Fair-ish.",
    "Today only: prices. Tomorrow: higher prices.",
@@ -1301,7 +1330,7 @@
   "suzunari_robbed_notice": [
    "Wait. Where's my... MY WALLET!",
    "Huh? My pockets - they're EMPTY!",
-   "Someone took my money! SOMEONE TOOK MY CREDITS!",
+   "Someone took my money! SOMEONE TOOK MY YEN!",
    "No no no - my ration card! Gone!",
    "I've been robbed! On #day#! Who robs on #day#?",
    "My pocket's lighter. Why is my pocket lighter?"
@@ -1326,7 +1355,6 @@
    "Can you teach me that?",
    "What's your secret?",
    "How old are you, really?",
-   "Do you have a ship? You have a ship, don't you?",
    "What's it like out there? Off-world?",
    "Why {town}? Nobody comes to {town}."
   ],

@@ -673,6 +673,7 @@ func tree(p: Vector3, x: int, z: int) -> void:
 	b.add_box_collider(body, Vector3(0.5, 2.0, 0.5), Vector3(0, 1.0, 0))
 	body.set_meta("fade_mats", mats)
 	body.set_meta("fade_hide", [])
+	body.add_to_group("foliage_fg")  # CameraRig fades crowns between the camera and the hero
 	for k in 40:  # petal carpet under the crown
 		var a2 := rng.randf() * TAU
 		var r2 := sqrt(rng.randf()) * 2.6
@@ -698,6 +699,7 @@ func _pine(p: Vector3) -> void:
 	b.add_box_collider(body, Vector3(0.5, 2.0, 0.5), Vector3(0, 1.0, 0))
 	body.set_meta("fade_mats", [bark, needles])
 	body.set_meta("fade_hide", [])
+	body.add_to_group("foliage_fg")
 
 
 ## Called once the whole grid is built: riverside sakura rows, grass, petals, wires, road paint.

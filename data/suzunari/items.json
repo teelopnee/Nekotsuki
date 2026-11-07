@@ -29,7 +29,7 @@
   "sell": true
  },
  "synth_keytar": {
-  "name": "Synth Keytar",
+  "name": "old keyboard",
   "desc": "Your old instrument. Emotionally priceless. Financially 1,200 yen.",
   "price": 12
  },
@@ -83,18 +83,18 @@
   "sell": true
  },
  "cyberdeck": {
-  "name": "Cyberdeck",
+  "name": "Old Laptop",
   "desc": "Lets you hack terminals and phone. Warranty void since 3011.",
   "price": 120
  },
  "family_crest": {
   "name": "Family Crest",
-  "desc": "Opens doors, closes mouths. Corporate security salutes it.",
+  "desc": "Opens doors, closes mouths. Company security salutes it.",
   "price": 0
  },
  "family_photo": {
   "name": "Family Photo",
-  "desc": "Everyone in it is someone's collateral. You'll fix that.",
+  "desc": "Everyone in it owes somebody something. You'll fix that.",
   "price": 0
  },
  "heirloom_watch": {
@@ -184,7 +184,7 @@
   }
  },
  "stun_baton": {
-  "name": "Repo Stun Baton",
+  "name": "Stun Baton",
   "desc": "Property of the bank. Like everything.",
   "price": 40
  },
@@ -200,7 +200,7 @@
  },
  "wedding_ring": {
   "name": "Wedding Ring",
-  "desc": "Engraved with a name you whisper when the ship is quiet.",
+  "desc": "Engraved with a name you whisper when the house is quiet.",
   "price": 0
  },
  "weapon_baton": {
@@ -222,7 +222,7 @@
   "weapon": "katana"
  },
  "weapon_hammer": {
-  "name": "Repo Hammer",
+  "name": "Sledgehammer",
   "desc": "Slow. Enormous. The last hit sends out a shockwave. (Weapon: equips into your BLADE slot.)",
   "price": 220,
   "weapon": "hammer"
@@ -240,7 +240,7 @@
   "weapon": "arc"
  },
  "weapon_harpoon": {
-  "name": "Repo Harpoon",
+  "name": "Debt Harpoon",
   "desc": "Drags the target to you. Rips riot shields aside. (Weapon: equips into your GUN slot.)",
   "price": 200,
   "weapon": "harpoon"

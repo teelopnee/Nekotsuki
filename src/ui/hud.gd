@@ -166,15 +166,19 @@ func _update_calm(fighting: bool) -> void:
 		return
 	_tucked = tucked
 	for c in [_weapon_label, _air_label, _oc_bar]:
-		c.visible = not tucked
+		c.visible = not tucked and (DataDB.theme != "suzunari" or c != _oc_bar)
 	var tw := create_tween()
 	tw.tween_property(_status_panel, "self_modulate:a", 0.35 if tucked else 1.0, 0.4)
 
 
 func _update_context_buttons(fighting: bool = _in_combat()) -> void:
 	var p := get_tree().get_first_node_in_group("player") as Node3D
+	var town := DataDB.theme == "suzunari" and not fighting
 	for b in _touch_buttons:
 		var vis := true
+		if town and b.text != "MENU":
+			b.visible = false  # no fights in Suzunari's streets: no ROLL / MELEE / FIRE / MED clutter
+			continue
 		match b.action:
 			"target_cycle", "subsystem_next", "parry":
 				vis = fighting
@@ -271,6 +275,8 @@ func bind_player(p: Player, rig: CameraRig) -> void:
 static func make_label(text: String, font_size: int = 18, color: Color = Color(0.85, 0.97, 1.0)) -> Label:
 	var l := Label.new()
 	l.text = text
+	if color == Color(0.85, 0.97, 1.0) and DataDB.theme == "suzunari":
+		color = Color(1.0, 0.95, 0.86)  # Suzunari: cream ink, not the ODD-SPACE cyan
 	l.add_theme_font_size_override("font_size", font_size)
 	l.add_theme_color_override("font_color", color)
 	return l
@@ -328,6 +334,17 @@ func _build_status() -> void:
 		_oc_bar.add_child(pip)
 		_oc_pips.append(pip)
 	_oc_label = make_label("OVERCLOCK", 12, Color(1.0, 0.4, 0.9))
+	if DataDB.theme == "suzunari":
+		# Suzunari: an indigo cloth plate with a thin gold edge, no HP or OVERCLOCK (nobody fights in town).
+		hp_row.visible = false
+		_oc_bar.visible = false
+		var cloth := StyleBoxFlat.new()
+		cloth.bg_color = Color(0.1, 0.12, 0.22, 0.8)
+		cloth.border_color = Color(0.86, 0.7, 0.42, 0.9)
+		cloth.set_border_width_all(1)
+		cloth.set_corner_radius_all(6)
+		cloth.set_content_margin_all(10)
+		panel.add_theme_stylebox_override("panel", cloth)
 	_oc_bar.add_child(_oc_label)
 	_credits_label = make_label("", 17, Color(1.0, 0.85, 0.3))
 	v.add_child(_credits_label)
@@ -385,6 +402,9 @@ func _build_ticker() -> void:
 	sb.bg_color = Color(0.25, 0.02, 0.2, 0.75)
 	sb.border_width_top = 2
 	sb.border_color = Color(1.0, 0.24, 0.78)
+	if DataDB.theme == "suzunari":  # town notice board: dark wood and gold, not magenta neon
+		sb.bg_color = Color(0.14, 0.1, 0.08, 0.72)
+		sb.border_color = Color(0.86, 0.7, 0.42, 0.8)
 	bar.add_theme_stylebox_override("panel", sb)
 	root.add_child(bar)
 	_ticker_clip = Control.new()
@@ -392,7 +412,7 @@ func _build_ticker() -> void:
 	_ticker_clip.custom_minimum_size = Vector2(0, 26)
 	_ticker_clip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bar.add_child(_ticker_clip)
-	_ticker_label = make_label("", 16, Color(1.0, 0.9, 0.95))
+	_ticker_label = make_label("", 16, Color(1.0, 0.94, 0.84) if DataDB.theme == "suzunari" else Color(1.0, 0.9, 0.95))
 	_ticker_clip.add_child(_ticker_label)
 	_ticker_items.assign(DataDB.ads.get("ticker", []))
 	_ticker_items.shuffle()
@@ -519,8 +539,8 @@ func _update_hint() -> void:
 	if DataDB.theme == "suzunari":
 		# No fights in town: just how to talk, walk and check the phone.
 		_hint_label.text = {"touch": "Walk with the stick  |  middle button: talk / use  |  PHONE (top right): Amane's messages",
-			"gamepad": "Left stick walk  |  Y talk / use  |  A dodge  |  PHONE in the top right"}.get(dev,
-			"WASD walk  |  F talk / use  |  SPACE dodge  |  PHONE in the top right  |  F11 fullscreen")
+			"gamepad": "Left stick walk  |  Y talk / use  |  PHONE in the top right"}.get(dev,
+			"WASD walk  |  F talk / use  |  PHONE in the top right  |  F11 fullscreen")
 		return
 	if dev == "touch":
 		_hint_label.text = "MELEE near a foe = DASH STRIKE  |  hold FIRE = charge  |  GUN / BLADE swap weapons  |  tap enemy parts to target"

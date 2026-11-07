@@ -39,6 +39,7 @@ Cats="*res://src/autoload/cats.gd"
 Ledger="*res://src/autoload/ledger.gd"
 Town="*res://src/autoload/town.gd"
 People="*res://src/autoload/people.gd"
+Week="*res://src/autoload/week.gd"
 ShipAI="*res://src/autoload/ship_ai.gd"
 Audio="*res://src/autoload/audio_manager.gd"
 Router="*res://src/autoload/scene_router.gd"
@@ -53,7 +54,7 @@ window/handheld/orientation=4
 
 [gui]
 
-theme/custom="res://assets/ui/holo_theme.tres"
+theme/custom="res://assets/ui/washi_theme.tres"
 
 [importer_defaults]
 
