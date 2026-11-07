@@ -155,7 +155,8 @@ static func credits_text() -> String:
 	t += "  playground_sand, coast_sand_01, wood_floor_worn, grey_roof_tiles(_02), japanese_cedar_planks, hinoki_planks,\n"
 	t += "  weathered_plank_siding, white_plaster_02, japanese_stone_wall, concrete_wall_005, japanese_cedar_bark,\n"
 	t += "  mossy_rock, forest_leaves_02, rusty_painted_metal, green_metal_rust, distressed_painted_planks,\n"
-	t += "  old_sandstone_02, denim_fabric, corrugated_iron_02, lacquered_cherry_wood. Thank you, Poly Haven.\n\n"
+	t += "  old_sandstone_02, denim_fabric, corrugated_iron_02, lacquered_cherry_wood, linoleum_brown, terrazzo_tiles,\n"
+	t += "  floor_tiles_06, long_white_tiles, tatami_mat, plank_flooring_02. Thank you, Poly Haven.\n\n"
 	t += "[b][color=#3ee6ff]Made with Godot Engine[/color][/b]\n%s\n\n" % Engine.get_license_text()
 	t += "[b][color=#3ee6ff]Third-party components bundled with Godot[/color][/b]\n"
 	for c in Engine.get_copyright_info():
