@@ -145,3 +145,39 @@
 - Hayate no longer trails you after school by default: he walks over and asks (closeness >= 20), as his nature says.
 - Tests: people_test 77 checks; all suites pass. Open: companions steer straight (they pop behind you if stuck); the
   houses are not enterable inside yet (doorstep scenes only); no weekend visits beyond the parents' lines.
+
+## Hard review (2026-11-07, at fc015f8): "is it a game yet?"
+Owner asked for a harsh review against interviews and reviews of similar games (Persona, Majora's Mask, Shenmue,
+Yandere Simulator, Octopath Traveler / HD-2D, Boyfriend Dungeon, DDLC, Spirittea). Checked: GDD, this log, code and data
+samples, 6 test suites (check_project 75 scripts 0 failures, day/people/talk/m3/school tests pass, no SCRIPT ERROR) and
+the latest screenshots in docs/preview.
+- Score (playable game today): **4/10**. Potential of the idea: ~8.
+  Concept/world 8.5 · Amane's writing 7 · daily-life systems 5 · visuals 6 · UI 3 · sound 2 · can be finished 0-1.
+- 1. No game to finish: M5-M7 not started (13-week story, endings, cat-spirit night, Ura-Suzunari); `saga.gd` and the
+  smoke test are still the sci-fi flow. 20+ systems in 17 commits over two days while the GDD already plans episode 8.
+  Same trap as Yandere Simulator (Vice: a "debug sandbox"); Majora's Mask cut 7 days to 3 to ship in a year.
+- 2. Time has no cost: 1 real s = 1 game min (a day is ~14.5 real min), a lesson is 50 s with nothing to do, you can
+  wander mid-class with no consequence (no lateness/truancy logic). Persona's calendar is built to create pressure.
+- 3. Dialogue gives itself away by position: the cold reply is last in 17/17 topics, flirt is 3rd in 15/17, and button
+  size follows the tone, so players pick by slot, not words. Topics reset daily (`topics_today`): 17 topics with 1-2
+  answers each repeat from day 3 of a 91-day game.
+- 4. The shrinking reject button / locked boundary while he cries is the strongest mechanic, but there is no content
+  warning anywhere in src/ or data/ (Boyfriend Dungeon had to apologise and rewrite its stalking warning).
+- 5. Five visual passes in a row on backgrounds while characters stay unreadable: tiny in frame, Toru always seen from
+  behind, the 25 emote faces (M1 pillar) invisible at play distance, foreground sakura still covers ~1/3 of the town shot,
+  name labels overlap ("Tanaka Mei Suzuki Mei <FRIENDLY><FRIENDLY>"). HD-2D's hard part is the sprites, not the sets.
+- 6. UI and sound are still ODD-SPACE: terminal font, magenta ticker, HP 120/120, "SPACE dodge"/ROLL in a town with no
+  enemies, <FRIENDLY> tags on strangers; Suzunari music is `crystal_lull` (synthwave), flagged 4 times above, never fixed.
+- 7. Sci-fi leaks in `data/suzunari/barks.json` ("Uploading your face to the ad network", "Low gravity, high rent",
+  "SCANNING... COLLATERAL DETECTED"; the `combat` key is still read by `npc.gd`); the leak check samples only 40 lines.
+  Townsfolk are grammar filler (+ pickpocket/threaten/insult verbs) next to five people with real schedules.
+- 8. Engine debt: 24k lines of GDScript, the biggest files inherited (level_builder, npc, saga); no pass in this log had
+  a score until now; Open items pile up.
+- Best parts: rain = tears (weather as a character's feelings, seen by the whole town); learned schedules where people
+  come out of their door on their minute (Majora's notebook / Shenmue DNA); the boundary route with its own good ending;
+  Amane's voice.
+- Priority: (1) no new systems or visual passes until week 1 can be played to an end (7 days + week close + hook);
+  (2) give time a cost (skip lessons with one event, limited after-school slots, lateness/truancy consequences);
+  (3) shuffle replies, hide tone, once-only topic beats, "you asked yesterday" lines; (4) talk close-up camera, Toru's
+  face, fade foreground sakura; (5) three music tracks (morning / Omagatoki / rainy night), a Suzunari HUD, a content
+  warning; (6) purge sci-fi data and check every line; (7) time the first 10 minutes on the tablet and note where it drags.
