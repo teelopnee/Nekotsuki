@@ -131,3 +131,6 @@
   class motto, clock, timetable, paper cranes, bags and books on desks; window sun beams with dust; waxed floors; a lower
   indoor camera so the back wall is part of the picture. Open: some light-haired sprites bloom under room lights; the
   roof at lunch could use more groups; students still don't change rooms on their own between periods.
+- Fixes: light-haired sprites no longer bloom indoors (glow threshold); the roof at lunch is full (picnic sheets, seats
+  filled near you); the bell moves students between rooms along door/corridor routes and brings new ones up the stairs.
+  Open: students walk straight between waypoints and can brush through each other; a stuck walker is nudged after 3 s.

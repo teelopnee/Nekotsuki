@@ -16,6 +16,7 @@ var amane: AmaneNPC
 var overlay: Node
 var _key: DirectionalLight3D
 var _room_lights: Array[OmniLight3D] = []
+var _students: Array = []  ## [{npc, room}] - who is where, so the bell can move them
 
 
 func _setup() -> void:
@@ -82,6 +83,10 @@ func _post_build() -> void:
 	_people()
 	_crowd()
 	_build_motes()
+	Clock.period_changed.connect(_bell)
+	# only lamps and window light bloom, not light hair under the tubes (or in the sun on the roof)
+	environment.glow_hdr_threshold = 1.35 if floor_id != "roof" else 1.8
+	environment.glow_intensity = 0.6
 	environment.adjustment_saturation = 1.12
 	environment.adjustment_contrast = 1.06
 	environment.tonemap_exposure = 1.3
@@ -277,17 +282,16 @@ func _people() -> void:
 		n.call("set_home", n.global_position)
 
 
-## Students where a school day puts them: classrooms full during lessons, groups in the corridor and the store at
-## lunch, club rooms after school. They pick desk / table seats (life spots) by themselves once they're in.
-func _crowd() -> void:
-	var period := Clock.period()
+## How many students each room wants in a period (classrooms full in lessons, the store and entrance at lunch and in
+## the morning, club rooms after school, the roof at lunch; "_corridor" = people between rooms).
+func targets(period: String) -> Dictionary:
+	var t := {}
 	for r in data.get("rooms", []):
 		if str(r.get("floor", "")) != floor_id:
 			continue
 		var name := str(r.get("name", ""))
 		var n := 0
-		var classroom := name.length() == 3 and name[1] == "-"
-		if classroom:
+		if name.length() == 3 and name[1] == "-":
 			n = 9 if period in ["Homeroom", "Class"] else (4 if period == "Lunch" else 2)
 		elif name in ["LIBRARY", "ART ROOM", "MUSIC ROOM", "SCIENCE LAB", "NEWSPAPER CLUB"]:
 			n = 4 if period in ["Clubs", "Lunch"] else 1
@@ -295,21 +299,173 @@ func _crowd() -> void:
 			n = 5 if period in ["Lunch", "Morning", "Homeroom", "Evening"] else 1
 		elif name == "STAFF ROOM":
 			n = 3
-		var rect: Array = r.get("rect", [])
-		if rect.size() != 4:
-			continue
-		for i in n:
-			var spot := _free_tile(rect)
-			if spot != Vector2i(-1, -1):
-				spawn_npc("civilian", builder.center(spot.x, spot.y), "")
-	# the corridor is never empty between lessons
-	var corridor := 6 if period in ["Morning", "Homeroom", "Lunch", "Clubs", "Evening"] else 2
+		if n > 0:
+			t[name] = n
+	t["_corridor"] = 6 if period in ["Morning", "Homeroom", "Lunch", "Clubs", "Evening"] else 2
 	if floor_id == "roof":
-		corridor = 9 if period == "Lunch" else 2  # lunch on the roof is a school tradition
-	for i in corridor:
-		var t := _free_tile([1, 9, builder.width - 2, 10] if floor_id != "roof" else [6, 6, 34, 14])
-		if t != Vector2i(-1, -1):
-			spawn_npc("civilian", builder.center(t.x, t.y), "")
+		t = {"_roof": 18 if period == "Lunch" else 3}
+	return t
+
+
+var _room_hint := Vector3.INF  ## disambiguates rooms with the same name (two STAIRS, two WC)
+
+
+func room(name: String) -> Dictionary:
+	var best := {}
+	var best_d := INF
+	for r in data.get("rooms", []):
+		if str(r.get("floor", "")) == floor_id and str(r.get("name", "")) == name:
+			if _room_hint == Vector3.INF:
+				return r
+			var rect: Array = r.get("rect", [0, 0, 0, 0])
+			var c: Vector3 = (builder.center(int(rect[0]), int(rect[1])) + builder.center(int(rect[2]), int(rect[3]))) * 0.5
+			if c.distance_to(_room_hint) < best_d:
+				best = r
+				best_d = c.distance_to(_room_hint)
+	return best
+
+
+## Students where a school day puts them. They pick desk / table seats (life spots) inside their room by themselves.
+func _crowd() -> void:
+	var t := targets(Clock.period())
+	# Roof seats fill from where you are outward, so the lunch crowd is around you, not 30 m away.
+	var seats := get_tree().get_nodes_in_group("life_spot")
+	var here: Vector3 = player.global_position if player else Vector3.ZERO
+	seats.sort_custom(func(a, b2): return (a as Node3D).global_position.distance_to(here) > (b2 as Node3D).global_position.distance_to(here))
+	for name in t:
+		for i in int(t[name]):
+			# On the roof people come to sit and eat: start them right by a picnic sheet or a bench.
+			if str(name) == "_roof" and not seats.is_empty():
+				var seat: Node3D = seats.pop_back()
+				var n := _add_student(seat.global_position + Vector3(randf_range(-0.3, 0.3), 0, 0.35), "_roof")
+				n.set("_act_check", randf_range(0.2, 1.5))
+				continue
+			var tile := _room_tile(str(name))
+			if tile != Vector2i(-1, -1):
+				_add_student(builder.center(tile.x, tile.y), str(name))
+
+
+func _add_student(at: Vector3, room_name: String) -> NPC:
+	var n := spawn_npc("civilian", at, "")
+	_set_room(n, room_name)
+	_students.append({"npc": n, "room": room_name})
+	return n
+
+
+func _set_room(n: NPC, room_name: String) -> void:
+	var rect := _room_rect(room_name)
+	if rect.size() == 4:
+		var a: Vector3 = builder.center(int(rect[0]), int(rect[1]))
+		var c: Vector3 = builder.center(int(rect[2]), int(rect[3]))
+		n.set_meta("area", Rect2(Vector2(a.x - 1.0, a.z - 1.0), Vector2(c.x - a.x + 2.0, c.z - a.z + 2.0)))
+
+
+func _room_rect(room_name: String) -> Array:
+	if room_name == "_corridor":
+		return [1, 9, builder.width - 2, 10]
+	if room_name == "_roof":
+		return [5, 5, 34, 15]
+	return room(room_name).get("rect", [])
+
+
+func _room_tile(room_name: String) -> Vector2i:
+	var rect := _room_rect(room_name)
+	return _free_tile(rect) if rect.size() == 4 else Vector2i(-1, -1)
+
+
+## Ding-dong: the bell between periods. Surplus students walk out by their door, along the corridor and into a room
+## that wants people (or down the stairs and away); rooms still short get students coming up the stairs.
+func _bell(period: String) -> void:
+	Audio.play_sfx("chime", 0.0, -4.0)
+	if hud:
+		EventBus.toast.emit("~ ding dong ding dong ~  %s" % period, Color(1.0, 0.95, 0.8))
+	_students = _students.filter(func(e): return is_instance_valid(e.npc))
+	var want := targets(period)
+	var have := {}
+	for e in _students:
+		have[e.room] = int(have.get(e.room, 0)) + 1
+	var movers: Array = []
+	for e in _students:
+		var r: String = e.room
+		if int(have.get(r, 0)) > int(want.get(r, 0)):
+			have[r] = int(have[r]) - 1
+			movers.append(e)
+	var short: Array = []
+	for r in want:
+		for i in maxi(0, int(want[r]) - int(have.get(r, 0))):
+			short.append(r)
+	short.shuffle()
+	for e in movers:
+		if short.is_empty():
+			var exit := _exit_point()
+			if exit != Vector3.INF:
+				_room_hint = exit
+				var out_pts: Array[Vector3] = route(e.room, _room_at(exit))
+				_room_hint = Vector3.INF
+				out_pts.append(exit)
+				e.npc.walk_path(out_pts, "free")
+			_students.erase(e)
+			continue
+		var to: String = short.pop_back()
+		var target := _room_tile(to)
+		if target == Vector2i(-1, -1):
+			continue
+		var pts: Array[Vector3] = route(e.room, to)
+		pts.append(builder.center(target.x, target.y))
+		e.npc.walk_path(pts)
+		e.room = to
+		_set_room(e.npc, to)
+	# whoever is still missing arrives by the stairs
+	for r in short:
+		var start := _exit_point()
+		var target := _room_tile(r)
+		if start == Vector3.INF or target == Vector2i(-1, -1):
+			continue
+		var n := _add_student(start, r)
+		_room_hint = start
+		var pts: Array[Vector3] = route(_room_at(start), r)
+		_room_hint = Vector3.INF
+		pts.append(builder.center(target.x, target.y))
+		n.walk_path(pts)
+
+
+## Waypoints from one room to another through their doors and the corridor (rooms are walled; NPCs steer straight).
+func route(from: String, to: String) -> Array[Vector3]:
+	var pts: Array[Vector3] = []
+	for pair in [[from, true], [to, false]]:
+		var r := room(str(pair[0]))
+		var d: Array = r.get("door", [])
+		if d.size() != 2:
+			continue
+		var door: Vector3 = builder.center(int(d[0]), int(d[1]))
+		var corridor_z := 9 if int(d[1]) <= 8 else 10
+		var outside: Vector3 = builder.center(int(d[0]), corridor_z)
+		var inside: Vector3 = door + Vector3(0, 0, -LevelBuilder.TILE if int(d[1]) <= 8 else LevelBuilder.TILE)
+		if pair[1]:
+			pts.append_array([inside, door, outside])
+		else:
+			pts.append_array([outside, door, inside])
+	return pts
+
+
+## The stairs (or the roof door, or the entrance): where students come from and leave to.
+func _exit_point() -> Vector3:
+	var ls := _links().filter(func(l): return l.char in ["S", "D", "X", "K"])
+	if ls.is_empty():
+		return Vector3.INF
+	var l = ls[randi() % ls.size()]
+	return l.pos + Vector3(0, 0, -LevelBuilder.TILE if l.char == "X" else LevelBuilder.TILE)
+
+
+## Name of the room whose rect holds a world position ("" = corridor / nowhere).
+func _room_at(p: Vector3) -> String:
+	var tx := int(p.x / LevelBuilder.TILE)
+	var tz := int(p.z / LevelBuilder.TILE)
+	for r in data.get("rooms", []):
+		var rect: Array = r.get("rect", [])
+		if str(r.get("floor", "")) == floor_id and rect.size() == 4 and tx >= int(rect[0]) and tx <= int(rect[2]) and tz >= int(rect[1]) and tz <= int(rect[3]):
+			return str(r.name)
+	return ""
 
 
 func _free_tile(rect: Array) -> Vector2i:

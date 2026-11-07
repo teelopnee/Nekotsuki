@@ -22,6 +22,13 @@ var attitude := 0      ## -100..100, how much they like the player (Interactions
 var discount := 0.0    ## merchant price discount earned through interactions
 var loyal := false     ## won't report you any more
 var activity := ""     ## sit | phone | queue | dance | wave | cheer ("" = wander)
+## Walk a route of waypoints (School between lessons: room -> door -> corridor -> door -> seat). When it ends the NPC
+## settles there; `path_done` = "free" removes it (left by the stairs). `area` meta (Rect2 in x/z) keeps seat picking
+## inside the room it is in.
+var path: Array[Vector3] = []
+var path_done := ""
+var _path_stuck := 0.0
+var _path_last := Vector3.ZERO
 var _act_target := Vector3.ZERO
 var _act_time := 0.0
 var _act_face := Vector3.ZERO
@@ -174,7 +181,9 @@ func _physics_process(delta: float) -> void:
 	var move := Vector3.ZERO
 	match state:
 		"idle":
-			if role == "keeper" and activity == "":
+			if not path.is_empty():
+				move = _follow_path(delta)
+			elif role == "keeper" and activity == "":
 				move = _to_post()
 			elif role != "merchant" or activity == "kneel":
 				move = _activity(delta) if activity != "" else _wander()
@@ -250,7 +259,10 @@ func _pick_activity() -> void:
 	var spots := get_tree().get_nodes_in_group("life_spot")
 	var best: Node3D = null
 	var best_d := 14.0
+	var area = get_meta("area") if has_meta("area") else null
 	for sp in spots:
+		if area is Rect2 and not (area as Rect2).has_point(Vector2((sp as Node3D).global_position.x, (sp as Node3D).global_position.z)):
+			continue
 		var d: float = (sp as Node3D).global_position.distance_to(global_position)
 		if d < best_d and not sp.get_meta("taken", false) and _rng.randf() < 0.7:
 			best = sp
@@ -268,6 +280,41 @@ func _pick_activity() -> void:
 		_act_target = global_position
 		_act_face = Vector3(_rng.randf_range(-1, 1), 0, 1).normalized()
 		_act_time = _rng.randf_range(6.0, 16.0)
+
+
+## Start a walk along waypoints (any activity ends first; a seat is given back).
+func walk_path(points: Array[Vector3], done: String = "") -> void:
+	if activity != "":
+		end_activity()
+	path = points
+	path_done = done
+	_path_stuck = 0.0
+	_path_last = global_position
+
+
+func _follow_path(delta: float) -> Vector3:
+	var to := path[0] - global_position
+	to.y = 0.0
+	if to.length() < 0.45:
+		path.remove_at(0)
+		_path_stuck = 0.0
+		if path.is_empty():
+			if path_done == "free":
+				queue_free()
+			else:
+				_home = global_position
+				_wander_target = _home
+				_act_check = _rng.randf_range(0.5, 2.0)
+			return Vector3.ZERO
+		return Vector3.ZERO
+	# Desks and people get in the way: if we have barely moved for a while, step past the obstacle.
+	_path_stuck += delta
+	if _path_stuck > 3.0:
+		if global_position.distance_to(_path_last) < 0.6:
+			global_position = Vector3(path[0].x, global_position.y, path[0].z)
+		_path_stuck = 0.0
+		_path_last = global_position
+	return to.normalized()
 
 
 func _activity(delta: float) -> Vector3:

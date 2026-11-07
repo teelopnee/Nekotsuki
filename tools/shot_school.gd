@@ -6,7 +6,7 @@ extends SceneTree
 const SHOTS := [["staff_room", "1f", Vector2i(12, 5), 520], ["entrance", "1f", Vector2i(15, 15), 470],
 	["infirmary", "1f", Vector2i(31, 6), 600], ["class_2b", "2f", Vector2i(20, 6), 620], ["library", "2f", Vector2i(30, 7), 935],
 	["art_room", "2f", Vector2i(5, 15), 960], ["music_room", "3f", Vector2i(6, 14), 960], ["science_lab", "3f", Vector2i(18, 14), 1010],
-	["roof_lunch", "roof", Vector2i(20, 10), 765]]
+	["roof_lunch", "roof", Vector2i(20, 10), 765], ["bell_corridor", "2f", Vector2i(18, 10), 750, "bell"]]
 var _i := 0
 var _step := 0
 var _wait := 0
@@ -52,7 +52,10 @@ func _process(_d: float) -> bool:
 				a.global_position = p.global_position + Vector3(2.0, 0.1, 1.0)
 				a.set("_approach_cd", 9999.0)
 			current_scene.camera_rig.snap_to_target()
-			_wait = 80
+			_wait = 80 if str(s[1]) != "roof" else 420  # let the lunch crowd sit down
+			if s.size() > 4 and str(s[4]) == "bell":
+				current_scene._bell(root.get_node("Clock").period())
+				_wait = 260  # mid-walk: students crossing the corridor
 		2:
 			root.get_texture().get_image().save_png("%s/%s.png" % [out, s[0]])
 			print("shot ", s[0])

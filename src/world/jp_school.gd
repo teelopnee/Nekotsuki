@@ -7,7 +7,7 @@ extends RefCounted
 ##   k blackboard (run)  n notice board  d desk+chair  t teacher's desk  a staff desk  l lockers  g shoe cubbies
 ##   s bookshelf  b infirmary bed  x anatomy model  v lab bench  p grand piano  e easel  m tall mirror  c counter
 ##   y drinks vending  f potted plant  o sofa  r trophy case  w toilet stall  u sinks  h cabinet  z table+chairs
-##   j sorted bins  i bench  q AC unit  Y water tank   S stairs up  D stairs down  K roof door  X exit to town
+##   j sorted bins  i bench  q AC unit  Y water tank  + picnic sheet (roof lunch)   S stairs up  D stairs down  K roof door  X exit to town
 ## (R and E are taken by LevelBuilder.ACTOR_CHARS.) Links (S/D/K/X) and room features are handled by the School level (src/world/school.gd) via `links`.
 
 const T := 2.0
@@ -327,6 +327,18 @@ func cell(c: String, p: Vector3, x: int, z: int) -> bool:
 				b.add_mesh(body, b.box(Vector3(0.38, 0.7, 0.38)), jp.painted([Color(0.25, 0.5, 0.85), Color(0.95, 0.75, 0.2), Color(0.85, 0.25, 0.2)][k], "jp_sheet", 1.0), Vector3(-0.45 + k * 0.45, 0.35, 0))
 		"i":
 			b._bench(p)
+		"+":
+			# Lunch on the roof: a blue leisure sheet, bentos in furoshiki, a thermos; four places to sit.
+			var sheet := QuadMesh.new()
+			sheet.size = Vector2(2.2, 1.8)
+			sheet.orientation = PlaneMesh.FACE_Y
+			b.add_mesh(b.root, sheet, jp.painted([Color(0.3, 0.55, 0.85), Color(0.9, 0.45, 0.5), Color(0.95, 0.8, 0.35)][rng.randi() % 3], "jp_indigo", 1.0), p + Vector3(0, 0.02, 0), rng.randf_range(-0.3, 0.3), false)
+			for k in rng.randi_range(2, 4):
+				var bento: MeshInstance3D = b.add_mesh(b.root, b.box(Vector3(0.22, 0.1, 0.16)), jp.painted(Color.from_hsv(rng.randf(), 0.5, 0.9), "jp_indigo", 1.0), p + Vector3(rng.randf_range(-0.5, 0.5), 0.07, rng.randf_range(-0.4, 0.4)), rng.randf() * TAU, false)
+				bento.rotation.y = rng.randf() * TAU
+			b.add_mesh(b.root, b.cylinder(0.05, 0.25, 8), b._mats["metal"], p + Vector3(0.6, 0.13, -0.5), 0.0, false)
+			for o in [Vector3(-0.85, 0, 0), Vector3(0.85, 0, 0), Vector3(0, 0, 0.75), Vector3(0, 0, -0.75)]:
+				b._life_spot(p + o, "sit", -o)
 		"q":
 			jp._ac_unit(p)
 		"Y":

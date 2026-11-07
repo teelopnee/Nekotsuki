@@ -124,6 +124,23 @@ func _floor_checks() -> void:
 			if n.get("role") == "civilian" and not n.is_in_group("amane") and not n.is_in_group("spirit"):
 				students += 1
 		_check(students >= 6, "%s: classrooms have students (%d)" % [fid, students])
+	if fid == "2f":
+		var before := get_nodes_in_group("npc").size()
+		s._bell("Lunch")
+		var walking := 0
+		for n in get_nodes_in_group("npc"):
+			if n.get("path") is Array and not (n.get("path") as Array).is_empty():
+				walking += 1
+		_check(walking >= 3, "2f: the bell sends students walking between rooms (%d)" % walking)
+		var routed: Array = s.route("2-A", "LIBRARY")
+		_check(routed.size() == 6, "2f: a route goes out of one door, along the corridor, in the other (%d points)" % routed.size())
+		_check(get_nodes_in_group("npc").size() >= before, "2f: nobody vanished on the spot")
+	if fid == "roof":
+		var sheets := 0
+		for m in get_nodes_in_group("life_spot"):
+			sheets += 1
+		_check(sheets >= 30, "roof: picnic sheets and benches to sit on (%d seats)" % sheets)
+		_check(s.targets("Lunch").get("_roof", 0) >= 12, "roof: lunch brings a crowd")
 	var meshes: int = s.find_children("*", "MeshInstance3D", true, false).size()
 	_check(meshes > 150, "%s: rooms are furnished (%d meshes)" % [fid, meshes])
 	_check(get_first_node_in_group("amane") != null, "%s: Amane followed you in" % fid)

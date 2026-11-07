@@ -122,6 +122,13 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   timetable), window sun beams + floor patches (`jp.shaft_mats`, driven by `set_sun`), glossy floors, desk clutter
   (bags, books, pencil cases - coloured MultiMeshes), senbazuru by the windows, dust motes. Indoor camera: pitch 27,
   distance 13.5 so the back wall is in frame.
+  Between periods (`Clock.period_changed` -> `School._bell`): the chime (`assets/audio/sfx/chime.wav`,
+  `tools/gen_chime.py`, Westminster Quarters), then surplus students walk to rooms that want people via `route()`
+  (room door -> corridor -> door -> seat; NPCs steer straight, so routes go through door tiles) or leave by the
+  stairs (`NPC.walk_path(points, "free")`); rooms still short get students arriving from the stairs. `NPC.path` /
+  `walk_path` / meta `area` (Rect2: seats are only picked inside the NPC's room). Roof at lunch: picnic sheets ('+',
+  4 seats each), students start by the seats nearest the player. Indoor glow threshold 1.35 (roof 1.8) so light hair
+  doesn't bloom.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).
