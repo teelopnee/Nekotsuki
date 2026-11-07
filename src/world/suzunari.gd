@@ -103,6 +103,9 @@ func _post_build() -> void:
 	a.set_script(load("res://src/actors/amane_npc.gd"))
 	amane = a
 	actors.add_child(amane)
+	var back = Router.params.get("spawn_tile")  # coming out of a building: stand at its door
+	if back is Array and back.size() == 2:
+		player.global_position = builder.center(int(back[0]), int(back[1])) + Vector3(1.0, 0.1, 0.9)
 	if Amane.st()["met"]:
 		amane.global_position = player.global_position + Vector3(0, 0.1, 4.0)
 	else:
@@ -120,7 +123,33 @@ func _post_build() -> void:
 		h.global_position = builder.center(16, 29) + Vector3(0, 0.1, 0)
 		h.spot = h.global_position
 	Town.spawn_in(self)
+	_school_doors()
 	_morning.call_deferred()
+
+
+## The two entrances of Suzunari Gakuen (data/school.json `doors`, one interactable per pair of tiles).
+func _school_doors() -> void:
+	var sd := {}
+	if FileAccess.file_exists("res://data/school.json"):
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string("res://data/school.json"))
+		if parsed is Dictionary:
+			sd = parsed
+	var doors: Array = sd.get("doors", [])
+	for i in range(0, doors.size(), 2):
+		var t: Array = doors[i]
+		var it := Interactable.new()
+		it.prompt = "Enter Suzunari Gakuen"
+		it.radius = 1.8
+		add_child(it)
+		it.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(LevelBuilder.TILE * 0.5, 0.9, -0.4)
+		it.interacted.connect(func(_p): enter_school(t))
+
+
+func enter_school(door: Array) -> void:
+	Game.flags["school_door"] = door
+	Game.flags["school_floor"] = "1f"
+	Game.location_id = "school"
+	Router.goto(Router.SCHOOL, {"floor": "1f"})
 
 
 func _exit_tree() -> void:

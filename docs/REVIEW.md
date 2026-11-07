@@ -117,3 +117,13 @@
   lanterns rows, omikuji rack, sake barrels, tamagaki, banners; tactile paving, drain grates, kerbs, asphalt patches,
   manholes; roof trims now hide with the house when it is cut away (they floated as a bar across the frame).
 - Open: morning light on the shrine gravel is still bright; consider per-time exposure.
+
+## Enter buildings: Suzunari Gakuen (2026-11-07)
+- Researched room types (Japanese school facility guides; Yandere Simulator only as a list of room kinds). The layout,
+  names and contents are our own and tied to our lore (seven mysteries, Makabe's letters, Tanabata, past lives).
+- Four floors, 24 rooms with name plates and fluorescent light pools, 24 room features (60+ exact-word choices), staff
+  and cast at work (Makabe, Fujimura-sensei, Tomi-san, Reiji, Hanako), students in classrooms, Amane follows you in.
+  New textures: linoleum, terrazzo, toilet tiles, wall tiles, tatami, planks (Poly Haven CC0) + pixel blackboard, cork,
+  lockers, shoe cubbies, bookshelves and window views.
+- Open: rooms are one floor per load (a short fade on stairs); no gym, pool or old-building interior yet; students do
+  not follow a timetable between rooms yet; the classroom seat does not run a real lesson minigame.

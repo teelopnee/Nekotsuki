@@ -335,5 +335,47 @@
    "scarf": "#b8202a",
    "cap": "#141016"
   }
+ },
+ "nurse": {
+  "variant": "c_makabe",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#f2d6c4",
+   "hair": "#5a3a3a",
+   "top": "#f4f4f0",
+   "pants": "#9aa4b4",
+   "boots": "#f4f4f0",
+   "accent": "#d07090",
+   "coat": "#f8f8f6",
+   "glow": "#ffd23e",
+   "iris": "#3a2a24",
+   "scarf": "#d07090",
+   "cap": "#5a3a3a"
+  }
+ },
+ "tomi": {
+  "variant": "c_haruka",
+  "colors": {
+   "gear": "#4a4a52",
+   "eyewhite": "#f4f4f0",
+   "dark": "#1a1030",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4",
+   "skin": "#e8c0a0",
+   "hair": "#b8b4bc",
+   "top": "#e88a5a",
+   "pants": "#4a5a7a",
+   "boots": "#3a3036",
+   "accent": "#f4f2ee",
+   "coat": "#f4f2ee",
+   "glow": "#ffd23e",
+   "iris": "#2a1a10",
+   "scarf": "#e88a5a",
+   "cap": "#b8b4bc"
+  }
  }
 }

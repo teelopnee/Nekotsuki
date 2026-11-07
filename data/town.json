@@ -442,6 +442,11 @@
    ],
    "again": [
     "\"Asagiri. The bell rang. Class.\""
+   ],
+   "indoor": "1f",
+   "itile": [
+    16,
+    5
    ]
   },
   {
@@ -554,7 +559,7 @@
     ]
    ],
    "open": [
-    "*Knock, knock, knock.* A small voice: \"Is that you, Sensei? You came back. I still haven't finished my arithmetic.\""
+    "*Knock, knock, knock.* From the third stall, a small voice: \"Is that you, Sensei? You came back. I still haven't finished my arithmetic.\""
    ],
    "choices": [
     {
@@ -579,6 +584,11 @@
    ],
    "again": [
     "*Knock, knock.* Silence. A tiny voice: \"Tomorrow, Sensei.\""
+   ],
+   "indoor": "3f",
+   "itile": [
+    27,
+    15
    ]
   },
   {
@@ -906,6 +916,165 @@
    "again": [
     "Giggling somewhere inside the rice chest."
    ]
+  },
+  {
+   "id": "reiji",
+   "name": "Shirasagi Reiji",
+   "label": "STUDENT COUNCIL",
+   "look": "reiji",
+   "tile": [
+    0,
+    0
+   ],
+   "indoor": "2f",
+   "itile": [
+    22,
+    13
+   ],
+   "hours": [
+    [
+     480,
+     1110
+    ]
+   ],
+   "open": [
+    "\"Asagiri. Transfer student, second year, late twice, rumours four times. Sit. No - stand. You won't be staying long.\""
+   ],
+   "choices": [
+    {
+     "t": "\"Why do you hate me? We just met.\"",
+     "say": "\"I don't hate you.\" He adjusts his scarf. \"I just have the feeling you break promises. I am rarely wrong about feelings. It's very inconvenient.\"",
+     "fx": {
+      "lore": "soichiro"
+     }
+    },
+    {
+     "t": "\"Can you help me with Amane?\"",
+     "say": "\"The first-year who cries in the stairwell. Yes. I have a file.\" It is three folders thick. \"Be kind to him or be clear with him. Do not be both.\""
+    },
+    {
+     "t": "\"Nice scarf. In April.\"",
+     "say": "\"I was left in the snow once. I don't remember when.\" He looks at you for a moment too long. \"Good day, Asagiri.\"",
+     "fx": {
+      "egg": "reiji_scarf"
+     }
+    },
+    {
+     "t": "\"I'll keep the rules, President.\"",
+     "say": "\"Rule one is keep your word. Remember you said that.\"",
+     "fx": {
+      "promise": "keep_rules"
+     }
+    }
+   ],
+   "again": [
+    "\"Asagiri. Still here.\" It is not a question."
+   ]
+  },
+  {
+   "id": "nurse",
+   "name": "Fujimura-sensei",
+   "label": "SCHOOL NURSE",
+   "look": "nurse",
+   "tile": [
+    0,
+    0
+   ],
+   "indoor": "1f",
+   "itile": [
+    32,
+    5
+   ],
+   "hours": [
+    [
+     480,
+     1050
+    ]
+   ],
+   "open": [
+    "\"Sit. Tongue. Hm. You're fine. You just haven't slept properly since you came to this town. Nobody does, the first month. I didn't.\""
+   ],
+   "choices": [
+    {
+     "t": "\"Can I lie down for a bit?\"",
+     "say": "\"Window bed's free. Thirty minutes. I'll wake you for class - or I won't, if you look worse.\"",
+     "fx": {
+      "hp": 30,
+      "minutes": 30
+     }
+    },
+    {
+     "t": "\"Does Amane come here a lot?\"",
+     "say": "\"Every day at lunch. He says it's a headache. It's a heartache. I give him tissues and a sweet and pretend I don't notice his ears.\"",
+     "fx": {
+      "lore": "cat_ears"
+     }
+    },
+    {
+     "t": "\"Why did you leave Tokyo?\"",
+     "say": "\"Twelve years of night shifts in an ER. I burned out. Here it's plasters and heartbreak.\" She taps a notebook. \"And a list of injuries that make no sense. Shoes soaked on a dry day. Scratches with no cat around.\"",
+     "fx": {
+      "lore": "ikiryo"
+     }
+    },
+    {
+     "t": "\"Thanks, Sensei.\"",
+     "say": "\"Drink water. Sleep. Be nice to the cats.\""
+    }
+   ],
+   "again": [
+    "\"Back already? Sit, I'll get the thermometer.\""
+   ]
+  },
+  {
+   "id": "store_lady",
+   "name": "Tomi-san",
+   "label": "SCHOOL STORE",
+   "look": "tomi",
+   "tile": [
+    0,
+    0
+   ],
+   "indoor": "1f",
+   "itile": [
+    4,
+    12
+   ],
+   "hours": [
+    [
+     450,
+     960
+    ]
+   ],
+   "open": [
+    "\"Asagiri-dō's boy! Your aunt's mochi are better than my bread, don't tell her I said so. What'll it be?\""
+   ],
+   "choices": [
+    {
+     "t": "\"What's good today?\"",
+     "say": "\"Yakisoba bread, if you're fast. After 12:31 - nothing. A hooded boy buys four every day, for someone.\"",
+     "fx": {
+      "bond": 1
+     }
+    },
+    {
+     "t": "\"How long have you run the store?\"",
+     "say": "\"Thirty-eight years. I remember every year of students. Your father, Makabe-kun and Sayo-chan sat at the same table every single lunch. Your father always bought one extra bread and left it on the shrine steps.\"",
+     "fx": {
+      "lore": "makabe_2001"
+     }
+    },
+    {
+     "t": "\"Can I pay you tomorrow?\"",
+     "say": "\"Ho ho. Paying tomorrow is a promise, boy, and promises are heavy in this town. Here. Free. Once.\"",
+     "fx": {
+      "hp": 15
+     }
+    }
+   ],
+   "again": [
+    "\"Back again? Growing boy.\""
+   ]
   }
  ],
  "lore_titles": {
@@ -949,7 +1118,8 @@
   "go_en": "Five yen, go-en, a bond",
   "suzu_grave": "Suzu's grave, 1859 - 1890",
   "jizo_sea": "Six Jizo under the sea",
-  "obon_lanterns": "Lanterns sent down the river"
+  "obon_lanterns": "Lanterns sent down the river",
+  "makabe_letters": "Letters to Sayo in a locked drawer"
  },
  "ema_wishes": [
   "Pass the entrance exam. PLEASE.",
@@ -989,6 +1159,7 @@
   "sardine": "Never take the cat god's sardine.",
   "odd_space": "A dusty arcade cabinet in the antique shop: ODD-SPACE. Insert coin. The screen says: 'Not in this life.'",
   "toryanse_sign": "You hummed along to Toryanse. 'Going in is easy, coming back is frightening.'",
-  "nekoneko_ticket": "A Nekoneko Land ferris wheel ticket, stamped ONE WAY. The park closed in 2010."
+  "nekoneko_ticket": "A Nekoneko Land ferris wheel ticket, stamped ONE WAY. The park closed in 2010.",
+  "reiji_scarf": "Reiji wears a scarf in spring. He was left in the snow, once, in another life."
  }
 }

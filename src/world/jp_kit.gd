@@ -268,6 +268,8 @@ func building(x0: int, z0: int, x1: int, z1: int) -> void:
 	var zn := zone(x0, z0)
 	if z0 <= 9:
 		zn = "keeper"
+	elif z0 >= 20 and z1 <= 31 and x0 >= 6:
+		zn = "school_main"
 	elif z0 >= 20 and z1 <= 31:
 		zn = "oldschool"
 	elif x0 <= 7 and z0 >= 34 and z1 <= 38:
@@ -373,6 +375,39 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			_timber(body, w, h, front, [3.1, h - 0.12], deco)
 			roof.albedo_texture = b._tex("jp_kawara_old")
 			gable(body, w, d, h, roof, wall, 0.5, true, deco)
+		"school_main":
+			# Suzunari Gakuen: three white storeys, ribbon windows, a clock, two glass entrances (see school.json doors).
+			wall = _wall_mat("jp_concrete", Color(1.0, 1.0, 0.98))
+			h = 11.2
+			b.add_mesh(body, b.box(Vector3(w, h, d)), wall, Vector3(0, h * 0.5, 0))
+			for fy in [1.95, 5.6, 9.2]:
+				_panel(body, "alu", Vector2(w - 1.2, 1.7), Vector3(0, fy, front + 0.04), deco, roundf(w / 2.2))
+			for sy in [3.55, 7.2]:
+				deco.append(b.add_mesh(body, b.box(Vector3(w + 0.1, 0.22, 0.3)), b._mats["concrete"], Vector3(0, sy, front + 0.12)))
+			deco.append(b.add_mesh(body, b.box(Vector3(w + 0.2, 0.5, d + 0.2)), b._mats["concrete"], Vector3(0, h + 0.25, 0)))
+			for wx in [24.0, 64.0]:  # entrances (between door tiles 11/12 and 31/32)
+				var lx: float = float(wx) - pos.x
+				_panel(body, "shop", Vector2(3.6, 2.6), Vector3(lx, 1.3, front + 0.05), deco)
+				var can: MeshInstance3D = b.add_mesh(body, b.box(Vector3(4.6, 0.2, 2.2)), b._mats["concrete"], Vector3(lx, 3.0, front + 1.1))
+				deco.append(can)
+				for sx in [-2.1, 2.1]:
+					deco.append(b.add_mesh(body, b.box(Vector3(0.18, 3.0, 0.18)), b._mats["concrete"], Vector3(lx + sx, 1.5, front + 2.05)))
+			var clock: MeshInstance3D = b.add_mesh(body, b.cylinder(0.9, 0.1, 20), painted(Color(0.97, 0.96, 0.92)), Vector3(0, h - 1.4, front + 0.08), 0.0, false)
+			clock.rotation.x = PI * 0.5
+			deco.append(clock)
+			for hand in [[0.06, 0.65, 0.0], [0.05, 0.85, 1.9]]:
+				var hm: MeshInstance3D = b.add_mesh(body, b.box(Vector3(float(hand[0]), float(hand[1]), 0.02)), painted(Color(0.1, 0.1, 0.12)), Vector3(0, h - 1.4, front + 0.15), 0.0, false)
+				hm.rotation.z = float(hand[2])
+				deco.append(hm)
+			var sign := Label3D.new()
+			sign.text = "SUZUNARI  GAKUEN"
+			sign.font_size = 96
+			sign.pixel_size = 0.012
+			sign.modulate = Color(0.2, 0.25, 0.3)
+			sign.outline_size = 0
+			sign.position = Vector3(0, 3.95, front + 0.3)
+			body.add_child(sign)
+			deco.append(sign)
 		"station":
 			wall = _wall_mat("jp_plaster", Color(0.96, 0.96, 0.94))
 			h = 3.8

@@ -104,6 +104,18 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   manholes). Anything added to a house that is not drawn with its wall/roof materials must go into `deco` (fade_hide),
   or it floats in mid-air when the camera cuts the house away (gable() takes `deco` for ridge/fascia/gutter/downpipe).
   Depth lens is gentle on the background now (`far_range` 11 m, `max_radius` 4.5) so facades stay readable.
+- Enter buildings - Suzunari Gakuen (`src/world/school.gd`, `scenes/world/school.tscn`, `Router.SCHOOL`,
+  `Game.location_id = "school"`): one floor per load (`Router.params {floor, at}`, `Game.flags.school_floor`), maps
+  `data/maps/school_{1f,2f,3f,roof}.txt` built by `JPSchool` (`src/world/jp_school.gd`; legend in its header: floors
+  `. _ , : ; =`, furniture `k n d t a l g s b x v p e m c y f o r w u h z j i q Y`, links `S` up / `D` down / `K` roof /
+  `X` exit - R and E are LevelBuilder.ACTOR_CHARS). Stairs: `S`/`K` on floor n and `D` on floor n+1 share a tile;
+  you arrive one tile south. `data/school.json`: `rooms` (name plate at `door`, fluorescent light over `rect`),
+  `features` (interactable at `tile`, Town.scene with `choices` or `variants` picked by `when`: Amane.ok keys +
+  `after`/`before` minutes + `chance`), `doors` (exterior tiles; Suzunari `_school_doors` -> `enter_school`,
+  `Game.flags.school_door`, `Router.params.spawn_tile` on the way out), `eggs` (merged into Town). Staff and cast
+  indoors = Town spirits with `indoor` + `itile` (Makabe, Fujimura-sensei, Tomi-san, Reiji, Hanako). Town fx also
+  take `minutes`, `tears`, `bond`. Exterior: the school block is one 'b' building, JPKit style `school_main`.
+  Test: `tools/school_test.gd`; shots: `tools/shot_school.gd -- <dir> [names]`.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

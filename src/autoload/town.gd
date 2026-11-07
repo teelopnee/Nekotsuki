@@ -34,6 +34,12 @@ func _ready() -> void:
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string(path))
 		if parsed is Dictionary:
 			data = parsed
+	# School eggs live with the school's data but count in the same codex.
+	var sp := "res://data/school.json"
+	if FileAccess.file_exists(sp):
+		var sd = JSON.parse_string(FileAccess.get_file_as_string(sp))
+		if sd is Dictionary and data.has("eggs"):
+			data["eggs"].merge(sd.get("eggs", {}))
 	Clock.day_started.connect(func(_d): st()["today"] = [])
 
 
@@ -244,6 +250,15 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 			"closeness":
 				if not again:
 					Amane.add_closeness(str(fx.get("who", "Hina")), int(v))
+			"minutes":
+				Clock.advance(int(v))
+				lines.append("> %d minutes pass" % int(v))
+			"tears":
+				Amane.add("tears", float(v))
+			"bond":
+				if not again:
+					Amane.add("bond_now", float(v))
+					lines.append("> Amane %s" % ("is happy" if float(v) > 0 else "is hurt"))
 	return "\n".join(lines)
 
 
@@ -270,6 +285,8 @@ func spawn_in(lvl: Node) -> Array:
 		var p: Vector3 = b.center(int(lp.tile[0]), int(lp.tile[1]))
 		out.append(_sign(lvl, p, str(lp.id), str(lp.name)))
 	for sp in data.get("spirits", []):
+		if sp.has("indoor"):
+			continue  # placed by the School level
 		var n = load("res://scenes/actors/npc.tscn").instantiate()
 		n.set_script(load("res://src/actors/spirit_npc.gd"))
 		n.set("spirit_id", str(sp.id))

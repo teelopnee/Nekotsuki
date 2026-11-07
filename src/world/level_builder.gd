@@ -82,6 +82,8 @@ func build(layout: Array) -> Dictionary:
 	theme = str(palette.get("theme", "scifi"))
 	if theme == "suzunari":
 		jp = JPKit.new(self)
+		if not outdoor:
+			school = JPSchool.new(self, jp)
 	_make_materials()
 	_walls_body = StaticBody3D.new()
 	_walls_body.name = "Walls"
@@ -102,7 +104,11 @@ func build(layout: Array) -> Dictionary:
 		_build_reflections()
 		_build_biome_extras()
 		_build_margin()
-	if jp:
+	if school:
+		school.finish()
+		result["school"] = school
+		result["jp"] = jp
+	elif jp:
 		jp.finish()
 		result["jp"] = jp
 	return result
@@ -227,6 +233,8 @@ func _make_materials() -> void:
 	_mats["glass"] = glass
 	if jp:
 		jp.materials()
+	if school:
+		school.materials()
 
 
 # --- Primitive helpers ---------------------------------------------------------------------
@@ -291,6 +299,8 @@ func add_light(pos: Vector3, color: Color, energy: float = 2.0, light_range: flo
 # --- Floor ----------------------------------------------------------------------------------
 
 func _floor_kind(x: int, z: int) -> String:
+	if school:
+		return school.floor_kind(x, z)
 	if jp:
 		return jp.floor_kind(x, z)
 	var c := cell(x, z)
@@ -352,6 +362,8 @@ func _build_floor() -> void:
 						# Alpha = open water (1) vs shoreline (0.25): the shader puts foam on the banks.
 						var shore := cell(x + 1, z) != "~" or cell(x - 1, z) != "~" or cell(x, z + 1) != "~" or cell(x, z - 1) != "~"
 						groups[kind][1].append(Color(1, 1, 1, 0.25 if shore else 1.0))
+					elif school:
+						groups[kind][1].append(school.floor_color(x, z))
 					elif jp:
 						groups[kind][1].append(jp.floor_color(kind, x, z))
 					else:
@@ -419,6 +431,9 @@ func _wall_run(x0: int, x1: int, z: int, low: bool) -> void:
 		_mats["cliff_cap"] = _textured(str(palette.get("ground_tex", "ground_rock")), pcolor("ground_alt", "#556070").lightened(0.15), 0.5, 0.9, 0.0, 1.4)
 	# Collision is always full height so low walls still block movement.
 	add_box_collider(_walls_body, Vector3(length, WALL_H, TILE), Vector3(cx, WALL_H * 0.5, cz))
+	if school:
+		school.wall(x0, x1, z, low, length, cx, cz)
+		return
 	if outdoor and low:
 		_street_edge(x0, x1, z, length, cx, cz)
 		return
@@ -2200,6 +2215,7 @@ func _build_puddles() -> void:
 # n utility pole  c bamboo  u hydrangea  l stone step. Examining them shows lore (Town autoload).
 var _jizo_count := 0
 var jp: JPKit  ## Suzunari look (src/world/jp_kit.gd); null for every other theme
+var school: JPSchool  ## Suzunari interiors (src/world/jp_school.gd): indoor levels with the suzunari theme
 
 
 func _jp_mat(key: String, c: Color) -> StandardMaterial3D:
@@ -2395,6 +2411,8 @@ func _near_walkable(x: int, z: int, r: int) -> bool:
 func _jp_cell(c: String, p: Vector3, x: int, _z: int) -> bool:
 	if jp == null:
 		return false
+	if school:
+		return school.cell(c, p, x, _z)
 	match c:
 		"g":
 			jp.tree(p, x, _z)

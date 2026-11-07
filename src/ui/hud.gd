@@ -712,7 +712,7 @@ func toast(text: String, color: Color = Color(0.85, 0.97, 1.0)) -> void:
 func _refresh_objective() -> void:
 	if _objective_label == null:
 		return
-	if Game.location_id == "suzunari":
+	if Game.location_id in ["suzunari", "school"]:
 		_objective_label.text = "> " + Amane.objective_text()
 		return
 	var lines: Array[String] = []
@@ -903,10 +903,10 @@ func _next_ticker() -> void:
 	_ticker_index = (_ticker_index + 1) % _ticker_items.size()
 	var item: String = _ticker_items[_ticker_index]
 	# Two out of three items are freshly written news from the copywriter (data/copy.json).
-	if randf() < 0.66 or Game.location_id == "suzunari":
+	if randf() < 0.66 or Game.location_id in ["suzunari", "school"]:
 		item = Copy.make("news", null, {"planet": Game.location_name.to_upper() if Game.location_name != "" else "THE SPRAWL"})
 	var desk: String = ["LUMEN NEWS", "LUMEN NEWS", "BREAKING", "MARKETS", "LUMEN SPORT", "WEATHER", "LOCAL"][randi() % 7]
-	if Game.location_id == "suzunari":
+	if Game.location_id in ["suzunari", "school"]:
 		desk = ["SUZUNARI FM", "TOWN NEWS", "WEATHER", "SCHOOL BOARD"][randi() % 4]
 	_ticker_label.text = desk + " //  " + item + "  //  "
 	_ticker_label.reset_size()

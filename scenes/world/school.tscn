@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/school.gd" id="1_level"]
+
+[node name="School" type="Node3D"]
+script = ExtResource("1_level")

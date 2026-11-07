@@ -254,7 +254,137 @@ def grime(rnd):
     return im, Image.new("RGB", (n, n), (0, 0, 0))
 
 
-GEN = {"grime": grime, "blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
+# --- School interior panels (32 px per metre) ---
+
+def blackboard(rnd):
+    """4 x 1.5 m green board: chalk scribbles, a date column, the duty names, an eraser on the ledge."""
+    im, d, em, e = new(128, 48, (*WOOD[0], 255))
+    d.rectangle((3, 3, 124, 42), fill=(46, 82, 62))
+    for k in range(260):  # chalk dust haze
+        x, y = rnd.randint(4, 123), rnd.randint(4, 41)
+        d.point((x, y), fill=(58, 96, 74))
+    for line in range(5):
+        y = 8 + line * 7
+        x = rnd.randint(14, 30)
+        while x < rnd.randint(70, 110):
+            ln = rnd.randint(2, 6)
+            d.line([(x, y), (x + ln, y + rnd.choice([-1, 0, 0, 1]))], fill=(222, 228, 214))
+            x += ln + rnd.randint(1, 3)
+    d.line([(112, 6), (112, 38)], fill=(200, 206, 196))  # date column
+    for y in range(8, 36, 5):
+        d.line([(115, y), (121, y)], fill=(222, 228, 214))
+    d.rectangle((0, 43, 127, 47), fill=WOOD[1])  # chalk ledge
+    d.rectangle((40, 42, 48, 45), fill=(60, 70, 120))  # eraser
+    for x, c in ((60, (240, 240, 230)), (63, (250, 200, 80)), (66, (240, 120, 140))):
+        d.line([(x, 44), (x + 2, 44)], fill=c)
+    return im, em
+
+
+def corkboard(rnd):
+    """2 x 1.5 m notice board: cork, pinned papers, a club poster, a lost cat flyer."""
+    im, d, em, e = new(64, 48, (*WOOD[0], 255))
+    d.rectangle((2, 2, 61, 45), fill=(176, 132, 84))
+    for k in range(120):
+        d.point((rnd.randint(2, 61), rnd.randint(2, 45)), fill=(150, 108, 66))
+    for k in range(7):
+        w, h = rnd.randint(8, 14), rnd.randint(9, 16)
+        x, y = rnd.randint(3, 60 - w), rnd.randint(3, 44 - h)
+        col = rnd.choice([(244, 240, 228), (250, 236, 170), (230, 240, 250), (250, 210, 220)])
+        d.rectangle((x, y, x + w, y + h), fill=col)
+        for yy in range(y + 3, y + h - 1, 2):
+            d.line([(x + 2, yy), (x + w - 2 - rnd.randint(0, 4), yy)], fill=(110, 110, 120))
+        d.point((x + w // 2, y + 1), fill=rnd.choice([(220, 40, 40), (40, 90, 220), (240, 200, 40)]))
+    return im, em
+
+
+def lockers(rnd):
+    """2 x 2 m grey steel locker bank: four doors, vents, name tags, one with a sticker."""
+    im, d, em, e = new(64, 64, (120, 126, 132, 255))
+    for i in range(4):
+        x = 1 + i * 16
+        d.rectangle((x, 1, x + 14, 62), fill=(150, 156, 162))
+        d.rectangle((x, 1, x + 14, 2), fill=(176, 182, 188))
+        for y in range(6, 14, 2):
+            d.line([(x + 3, y), (x + 11, y)], fill=(96, 100, 108))
+        d.rectangle((x + 4, 18, x + 10, 21), fill=(236, 236, 228))
+        d.rectangle((x + 11, 30, x + 12, 36), fill=(70, 72, 78))
+    d.ellipse((38, 44, 44, 50), fill=(250, 180, 200))
+    return im, em
+
+
+def getabako(rnd):
+    """2 x 2 m shoe cubbies: rows of wooden boxes, white indoor shoes, street shoes, little name cards."""
+    im, d, em, e = new(64, 64, (*WOOD[0], 255))
+    for row in range(5):
+        for col in range(4):
+            x, y = 2 + col * 15, 2 + row * 12
+            d.rectangle((x, y, x + 13, y + 10), fill=(58, 40, 28))
+            d.rectangle((x + 1, y + 9, x + 12, y + 10), fill=WOOD[2])
+            if rnd.random() < 0.8:
+                shoe = (238, 238, 232) if rnd.random() < 0.6 else rnd.choice([(40, 36, 40), (90, 60, 40), (60, 70, 120)])
+                d.rectangle((x + 2, y + 5, x + 6, y + 8), fill=shoe)
+                d.rectangle((x + 7, y + 5, x + 11, y + 8), fill=shoe)
+            d.rectangle((x + 4, y + 1, x + 9, y + 2), fill=(240, 236, 220))
+    return im, em
+
+
+def books(rnd):
+    """2 x 2 m bookshelf: four shelves of coloured spines, a few leaning, one gap."""
+    im, d, em, e = new(64, 64, (*WOOD[0], 255))
+    for row in range(4):
+        y0 = 2 + row * 16
+        d.rectangle((2, y0, 61, y0 + 13), fill=(40, 28, 22))
+        x = 3
+        while x < 60:
+            w = rnd.randint(2, 4)
+            h = rnd.randint(9, 13)
+            if rnd.random() < 0.06:
+                x += w + 2
+                continue
+            col = rnd.choice([(150, 40, 40), (40, 70, 130), (60, 110, 60), (200, 170, 90), (120, 70, 40), (230, 225, 210), (90, 50, 110)])
+            d.rectangle((x, y0 + 13 - h, x + w - 1, y0 + 13), fill=col)
+            d.point((x, y0 + 15 - h), fill=(240, 220, 150))
+            x += w
+        d.rectangle((2, y0 + 14, 61, y0 + 15), fill=WOOD[2])
+    return im, em
+
+
+def window_out(rnd):
+    """2 x 2 m classroom window looking out: spring sky, clouds, a sakura crown, the hills; frame and a curtain."""
+    im, d, em, e = new(64, 64, (0, 0, 0, 0))
+    for y in range(4, 60):
+        t = (y - 4) / 56.0
+        col = (int(150 + 70 * t), int(196 + 30 * t), int(240 - 10 * t))
+        d.line([(4, y), (59, y)], fill=col)
+        e.line([(4, y), (59, y)], fill=(int(col[0] * 0.55), int(col[1] * 0.55), int(col[2] * 0.55)))
+    for k in range(3):
+        cx, cy = rnd.randint(10, 50), rnd.randint(8, 22)
+        d.ellipse((cx - 8, cy - 3, cx + 8, cy + 3), fill=(250, 250, 255))
+    d.polygon([(4, 50), (20, 40), (34, 46), (48, 38), (59, 44), (59, 59), (4, 59)], fill=(90, 130, 110))
+    for k in range(40):  # sakura crown in the corner
+        x, y = rnd.randint(36, 59), rnd.randint(30, 52)
+        d.point((x, y), fill=rnd.choice([(250, 200, 214), (246, 170, 196), (255, 228, 236)]))
+    d.rectangle((0, 0, 63, 3), fill=(200, 204, 208))
+    d.rectangle((0, 60, 63, 63), fill=(200, 204, 208))
+    d.rectangle((0, 0, 3, 63), fill=(200, 204, 208))
+    d.rectangle((60, 0, 63, 63), fill=(200, 204, 208))
+    d.rectangle((30, 0, 33, 63), fill=(200, 204, 208))
+    d.rectangle((4, 4, 12, 59), fill=(236, 230, 210))  # gathered curtain
+    for y in range(4, 60, 3):
+        d.point((8, y), fill=(210, 204, 186))
+    return im, em
+
+
+def stairs_sign(rnd):
+    im, d, em, e = new(32, 16, (40, 120, 70, 255))
+    d.polygon([(4, 12), (10, 4), (16, 12)], fill=(240, 250, 240))
+    d.rectangle((19, 5, 28, 11), fill=(240, 250, 240))
+    e.rectangle((0, 0, 31, 15), fill=(60, 180, 100))
+    return im, em
+
+
+GEN = {"blackboard": blackboard, "cork": corkboard, "lockers": lockers, "getabako": getabako, "books": books,
+       "window_out": window_out, "exit": stairs_sign, "grime": grime, "blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
        "win": lambda r: window(r, "win"), "shoji": lambda r: window(r, "shoji"), "alu": lambda r: window(r, "alu")}
 
 

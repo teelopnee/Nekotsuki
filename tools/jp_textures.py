@@ -43,6 +43,13 @@ TEX = {
     "indigo":     ("denim_fabric", 128, 0.9, 0.8, (0.9, 0.95, 1.0), 20),               # noren cloth
     "sheet":      ("corrugated_iron_02", 128, 0.6, 1.1, (1.0, 1.0, 1.02), 16),         # metal sheet, AC units
     "darkwood":   ("lacquered_cherry_wood", 128, 0.9, 1.35, (1.0, 0.95, 0.9), 20),     # dark lacquer, benches
+    # school interiors
+    "lino":       ("linoleum_brown", 128, 0.35, 1.1, (0.84, 0.95, 0.9), 16),       # green-grey corridor linoleum
+    "terrazzo":   ("terrazzo_tiles", 128, 0.5, 1.15, (0.98, 0.98, 1.0), 20),       # entrance hall, infirmary
+    "wctile":     ("floor_tiles_06", 128, 0.6, 1.1, (0.95, 1.0, 1.05), 16),        # toilets, science lab
+    "walltile":   ("long_white_tiles", 128, 0.6, 1.05, (1.0, 1.0, 1.0), 16),      # toilet walls
+    "tatami":     ("tatami_mat", 128, 1.0, 1.05, (1.0, 1.02, 0.92), 20),           # club rooms
+    "gymfloor":   ("plank_flooring_02", 128, 0.75, 1.05, (1.0, 0.95, 0.85), 20),   # music room, roof hut
 }
 
 

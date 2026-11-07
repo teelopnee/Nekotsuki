@@ -1,0 +1,216 @@
+{
+ "_doc": "Suzunari Gakuen inside (src/world/school.gd). floors: map files data/maps/school_<id>.txt. rooms: name plate at `door` (a wall tile), lights over `rect` [x0,z0,x1,z1]. features: interactables at `tile` with a scene (Town.scene: `name`, `open`, `choices` [{t, say, fx}]) or `variants` (first whose `when` matches; when = Amane.ok keys + `after`/`before` minutes + `chance`). fx adds `minutes` (time passes), `tears` (Amane), `bond`. people: Town spirits placed indoors (`indoor` floor + `itile` in data/town.json). doors: exterior tiles in Suzunari that lead in.",
+ "floors": {"1f": "Ground floor", "2f": "Second floor", "3f": "Third floor", "roof": "Roof"},
+ "doors": [[11, 28], [12, 28], [31, 28], [32, 28]],
+ "rooms": [
+  {"floor": "1f", "name": "STAIRS", "door": [2, 8], "rect": [1, 1, 4, 7]},
+  {"floor": "1f", "name": "STAFF ROOM", "door": [8, 8], "rect": [6, 1, 19, 7]},
+  {"floor": "1f", "name": "PRINCIPAL", "door": [23, 8], "rect": [21, 1, 26, 7]},
+  {"floor": "1f", "name": "INFIRMARY", "door": [30, 8], "rect": [28, 1, 34, 7]},
+  {"floor": "1f", "name": "STAIRS", "door": [37, 8], "rect": [36, 1, 38, 7]},
+  {"floor": "1f", "name": "SCHOOL STORE", "door": [4, 11], "rect": [1, 12, 8, 16]},
+  {"floor": "1f", "name": "ENTRANCE", "door": [12, 11], "rect": [10, 12, 21, 16]},
+  {"floor": "1f", "name": "COUNSELOR", "door": [25, 11], "rect": [23, 12, 28, 16]},
+  {"floor": "1f", "name": "WC", "door": [33, 11], "rect": [30, 12, 38, 16]},
+  {"floor": "2f", "name": "2-A", "door": [7, 8], "rect": [6, 1, 14, 7]},
+  {"floor": "2f", "name": "2-B", "door": [17, 8], "rect": [16, 1, 24, 7]},
+  {"floor": "2f", "name": "LIBRARY", "door": [28, 8], "rect": [26, 1, 34, 7]},
+  {"floor": "2f", "name": "ART ROOM", "door": [5, 11], "rect": [1, 12, 10, 16]},
+  {"floor": "2f", "name": "NEWSPAPER CLUB", "door": [13, 11], "rect": [12, 12, 16, 16]},
+  {"floor": "2f", "name": "STUDENT COUNCIL", "door": [21, 11], "rect": [18, 12, 24, 16]},
+  {"floor": "2f", "name": "WC", "door": [28, 11], "rect": [26, 12, 31, 16]},
+  {"floor": "2f", "name": "STORAGE", "door": [35, 11], "rect": [33, 12, 38, 16]},
+  {"floor": "3f", "name": "1-A", "door": [7, 8], "rect": [6, 1, 14, 7]},
+  {"floor": "3f", "name": "1-B", "door": [17, 8], "rect": [16, 1, 24, 7]},
+  {"floor": "3f", "name": "3-A", "door": [27, 8], "rect": [26, 1, 34, 7]},
+  {"floor": "3f", "name": "MUSIC ROOM", "door": [5, 11], "rect": [1, 12, 12, 16]},
+  {"floor": "3f", "name": "SCIENCE LAB", "door": [18, 11], "rect": [14, 12, 22, 16]},
+  {"floor": "3f", "name": "WC (GIRLS)", "door": [27, 11], "rect": [24, 12, 30, 16]},
+  {"floor": "3f", "name": "STORAGE", "door": [34, 11], "rect": [32, 12, 38, 16]}
+ ],
+ "features": [
+  {"id": "shoe_locker", "floor": "1f", "tile": [12, 13], "prompt": "Open your shoe locker", "name": "Shoe locker 2-B-14",
+   "variants": [
+    {"when": {"route": "romance"}, "open": "Inside your indoor shoes: an envelope sealed with a sticker of a cat paw. The handwriting on it is very, very careful.",
+     "choices": [
+      {"t": "Read it here.", "say": "'Senpai. I counted. You smiled four times yesterday. Three were at me. (I think.) Please have a good day. - A.' There is a pressed sakura petal inside.", "fx": {"bond": 3, "tears": -0.5}},
+      {"t": "Put it in your bag for later.", "say": "You tuck it away. Somewhere behind the cubbies, someone exhales very quietly.", "fx": {"bond": 1}},
+      {"t": "Leave it in the locker.", "say": "You close the locker on it. Behind you, a sniffle, then quick footsteps going upstairs.", "fx": {"tears": 0.8}}]},
+    {"when": {"chance": 0.5}, "open": "Your indoor shoes. And, on top of them, a folded note in handwriting you don't know: 'THE 13TH STEP. DUSK. DON'T COUNT OUT LOUD.'",
+     "choices": [
+      {"t": "Keep the note.", "say": "You keep it. On the back, in pencil: a little drawing of a ghost with a camera. Kuroe-senpai's style.", "fx": {"lore": "seven_mysteries"}},
+      {"t": "Throw it away.", "say": "You drop it in the bin by the door. The bin is labelled BURNABLE. It looks like it agrees with you."}]},
+    {"open": "Your indoor shoes, a little damp. A cat hair on the left one. White.",
+     "choices": [
+      {"t": "Change into your indoor shoes.", "say": "Street shoes in, uwabaki on. The squeak of the floor says: you are a student here now.", "fx": {"flag": "uwabaki"}},
+      {"t": "Pick off the cat hair.", "say": "It is very long and very white, and it smells faintly of rain.", "fx": {"lore": "cat_habits"}}]}
+   ]},
+  {"id": "trophy_case", "floor": "1f", "tile": [21, 12], "prompt": "Look at the trophy case", "name": "Trophy case",
+   "open": "Cups for track, kendo and a 1987 calligraphy prize. At the back, a faded class photo: Tanabata 2001, three students on the shrine steps.",
+   "choices": [
+    {"t": "Look closer at the photo.", "say": "A boy with Makabe-sensei's glasses. A laughing girl with a bell on her phone strap. And a boy who looks exactly like your father, already looking away from the camera.", "fx": {"lore": "makabe_2001"}},
+    {"t": "Read the calligraphy prize.", "say": "One character, brushed huge: 約 - 'promise'. The winner's name has been scratched off the plaque."}]},
+  {"id": "entrance_board", "floor": "1f", "tile": [10, 12], "prompt": "Read the notice board", "name": "Entrance notice board",
+   "open": "Club recruitment week! OCCULT RESEARCH: one member, seeking two. NEWSPAPER CLUB: we know what you did. GARDENING: please water the roof pots. LOST: a black umbrella. It is back on the stand every morning anyway.",
+   "choices": [
+    {"t": "Take a newspaper club flyer.", "say": "'THE SUZUNARI SHIMBUN - Truth, rumours, and whichever sells.' Hayase Hina's phone number is printed in a heart.", "fx": {"flag": "flyer_news"}},
+    {"t": "Take an occult club flyer.", "say": "Hand-drawn. A torii, a cat, a staircase going up into nothing. 'Club room: the old building. Bring salt.'", "fx": {"flag": "flyer_occult"}},
+    {"t": "Leave it.", "say": "You leave the board alone. A first-year pins up a flyer: HAS ANYONE SEEN THE SHRINE BELL?"}]},
+  {"id": "makabe_drawer", "floor": "1f", "tile": [15, 3], "prompt": "Look at Makabe-sensei's desk", "name": "Makabe-sensei's desk",
+   "open": "Neat stacks of essays, a red pen, a dead pot plant he refuses to throw away. The bottom drawer is locked. There is a key-shaped dust mark next to the pencil cup.",
+   "choices": [
+    {"t": "Try the drawer.", "say": "Locked. Through the gap you can see envelopes, dozens, tied with string. Each one addressed in the same hand: 'Sayo'.", "fx": {"lore": "makabe_letters"}},
+    {"t": "Straighten his essay pile.", "say": "The top essay is yours. In the margin, in red: 'You write like someone who has said goodbye before. Good. Not too often.'"},
+    {"t": "Leave his desk alone.", "say": "Staff rooms have rules. You keep them. Somewhere, a teacher nods without knowing why."}]},
+  {"id": "attendance", "floor": "1f", "tile": [9, 3], "prompt": "Peek at the attendance book", "name": "Attendance book, class 1-A",
+   "open": "Nekomori Amane. Present, present, present. Every year, the same absence: July 7th. In the remarks column, in three different teachers' handwriting: 'Tanabata.'",
+   "choices": [
+    {"t": "Close it.", "say": "You close it. Some absences are not truancy. They are appointments.", "fx": {"lore": "tanabata_wish"}},
+    {"t": "Check your own name.", "say": "Asagiri Toru, transferred this spring. Someone has drawn a tiny cat ear on the A in Asagiri. In pencil. Lightly."}]},
+  {"id": "infirmary_bed", "floor": "1f", "tile": [29, 2], "prompt": "Lie down on the bed", "name": "Infirmary bed",
+   "open": "Clean sheets, a curtain on a rail, the smell of disinfectant and dried lavender. The bed by the window is the one everyone fights over.",
+   "choices": [
+    {"t": "Rest for half an hour.", "say": "You sleep. You dream of a long road at night and a dog walking beside you. You wake up feeling better, and someone has put a cold towel on your forehead.", "fx": {"hp": 40, "minutes": 30}},
+    {"t": "Just sit for a moment.", "say": "You sit. Through the curtain, the clock ticks. Nobody asks you anything. It is the quietest place in town.", "fx": {"hp": 10, "minutes": 5}},
+    {"t": "Look at the height chart.", "say": "Pencil marks on the wall, years of them. One set has two little triangles drawn on top of each line. Ears.", "fx": {"lore": "cat_ears"}}]},
+  {"id": "medicine", "floor": "1f", "tile": [34, 6], "prompt": "Look at the medicine cabinet", "name": "Medicine cabinet",
+   "open": "Plasters, antiseptic, eye drops, a jar labelled CATNIP (CONFISCATED), and a box of tissues that is always, somehow, almost empty.",
+   "choices": [
+    {"t": "Take a plaster.", "say": "A plaster with little rabbits on it. It helps more than it should.", "fx": {"hp": 8}},
+    {"t": "Ask who uses all the tissues.", "say": "From her desk, without looking up, Fujimura-sensei says: 'A first-year. Every day. Be nicer to him.'", "fx": {"tears": -0.3}}]},
+  {"id": "store", "floor": "1f", "tile": [4, 13], "prompt": "Buy something at the school store", "name": "The school store",
+   "variants": [
+    {"when": {"after": 751}, "open": "A hand-written sign: YAKISOBA BREAD - SOLD OUT. (12:31. Every day. It is not a conspiracy.) There is still melon bread and milk.",
+     "choices": [
+      {"t": "Melon bread, please.", "say": "Crunchy on top, fluffy inside. The store lady slips you a sugar packet 'for the cat'.", "fx": {"money": -1, "hp": 15}},
+      {"t": "Strawberry milk, please.", "say": "Too sweet. Perfect.", "fx": {"money": -1, "hp": 8}},
+      {"t": "Ask why it always sells out at 12:31.", "say": "'Because at 12:30 a boy with a hood buys four, and runs. Every day. For somebody, I suppose.'", "fx": {"bond": 1}}]},
+    {"open": "Steam from the bread warmer, a queue of first-years, the store lady counting change faster than a till. Yakisoba bread: 150 yen. Melon bread: 130 yen.",
+     "choices": [
+      {"t": "Yakisoba bread, please.", "say": "The legendary yakisoba bread. Still warm. Three students behind you sigh as one.", "fx": {"money": -2, "hp": 20, "egg": "yakisoba"}},
+      {"t": "Melon bread, please.", "say": "Crunchy on top, fluffy inside.", "fx": {"money": -1, "hp": 15}},
+      {"t": "Buy one for Amane too.", "say": "You buy two. When you turn around, he is already there, holding out both hands like a cat that heard a can open.", "fx": {"money": -2, "bond": 4, "tears": -0.5}}]}
+   ]},
+  {"id": "counselor", "floor": "1f", "tile": [24, 15], "prompt": "Sit in the counselor's room", "name": "Counselor's room",
+   "open": "Two soft sofas, a box of tissues, a sign: 'You can talk about anything here.' Nobody is in. A notebook on the table invites you to write anonymously.",
+   "choices": [
+    {"t": "Write: \"Someone follows me everywhere.\"", "say": "You write it. Under it, the next morning, in the counselor's tidy hand: 'Is it a person, or a cat? Both are allowed.'"},
+    {"t": "Write: \"I keep dreaming about 1868.\"", "say": "You write it. Under it, in someone else's hand, small and shaky: 'me too.'", "fx": {"lore": "soichiro"}},
+    {"t": "Just sit for a while.", "say": "You sit. It is nice that a room like this exists.", "fx": {"minutes": 10, "hp": 5}}]},
+  {"id": "classroom_2b", "floor": "2f", "tile": [23, 6], "prompt": "Sit at your desk (window seat)", "name": "Class 2-B, your desk",
+   "open": "The back row by the window: the protagonist seat. Through the glass: the courtyard, the sakura, the long road down to the sea. Your desk has old carvings under the varnish.",
+   "choices": [
+    {"t": "Attend the lesson.", "say": "Makabe-sensei reads a love poem from the Manyoshu and then pretends he didn't. Time passes the way it only does in class.", "fx": {"minutes": 50, "flag": "attended"}},
+    {"t": "Look out of the window.", "say": "Down in the courtyard a hooded first-year is sitting under the sakura, staring straight up at your window. He waves, panics, and hides behind the tree.", "fx": {"bond": 2}},
+    {"t": "Read the carvings.", "say": "Under the varnish, initials from long ago: 'M.A. + S.N. 2001' and, much older, almost gone: a little cat and the words 'I will come back'.", "fx": {"lore": "promise_2016"}}]},
+  {"id": "classroom_2a", "floor": "2f", "tile": [8, 3], "prompt": "Look at the desk with dog stickers", "name": "Class 2-A, Hayate's desk",
+   "open": "Every inch covered in dog stickers. A half-eaten bento with your name on the lid. Of course.",
+   "choices": [
+    {"t": "Take your bento back.", "say": "You take it. A note inside the lid: 'payment for walking you home. -H'", "fx": {"hp": 10}},
+    {"t": "Leave him a note.", "say": "You write 'Thief.' He will frame it.", "fx": {"closeness": 4, "who": "Inukai Hayate"}}]},
+  {"id": "library_shelf", "floor": "2f", "tile": [30, 1], "prompt": "Browse the shelves", "name": "Library: local history",
+   "open": "Rows of town history, yokai encyclopedias, cookbooks and a whole shelf of shoujo manga someone donated in 1998. The local history shelf is suspiciously well-worn.",
+   "choices": [
+    {"t": "\"Suzunari: A Town of Promises\" (1952)", "say": "The 1703 tsunami, the 999 steps, the 1868 riots, the cat shrine. A chapter on the six Jizo thrown into the sea. A photo caption: 'the steps at dusk - please do not count them.'", "fx": {"lore": "steps_1703"}},
+    {"t": "\"Yokai of the Coast\" (illustrated)", "say": "Kappa, nopperabo, the okuri-inu, the nekomata. In the margin of the nekomata page, a child has written: 'not all of them are scary. some just wait.'", "fx": {"lore": "okuri_inu"}},
+    {"t": "\"The Six Realms\" - a children's guide", "say": "Hell, hungry ghosts, animals, fighting spirits, humans, heavens. 'A soul that waits faithfully can climb from one realm to the next.' Someone has underlined 'waits'.", "fx": {"lore": "nekomori_once"}},
+    {"t": "Check the borrowing card at the back.", "say": "One name, once a year, every July, from 1961 to 2023: 'Asagiri G.' Your grandfather read this book every Tanabata for sixty years.", "fx": {"lore": "will_2027"}}]},
+  {"id": "art_mirror", "floor": "2f", "tile": [1, 12], "prompt": "Look into the tall mirror", "name": "The art room mirror",
+   "variants": [
+    {"when": {"after": 1004, "before": 1006}, "open": "16:44. The light goes strange. In the mirror, you are standing on the shrine steps in a dark kimono, holding a bell out to a white cat. Then a man in an old uniform in a school corridor. Then a teacher at a harbour, arms around children.",
+     "choices": [
+      {"t": "Reach out to the reflection.", "say": "Your fingers touch cold glass. Every one of them looks back at you with the same apology.", "fx": {"lore": "soichiro", "egg": "mirror_444", "tears": -0.5}},
+      {"t": "Look away.", "say": "You look away. When you look back it is just you, and a girl at the easels asking if you're okay."}]},
+    {"open": "A tall old mirror, its frame carved with waves. The art club says not to look into it at 4:44. The art club says a lot of things.",
+     "choices": [
+      {"t": "Fix your hair.", "say": "You look fine. Normal. Transparent. Exactly what you wanted. It feels worse than you expected."},
+      {"t": "Ask the art club about it.", "say": "'It's made from pieces of an old mirror from the temple. At 4:44 you see who you used to be. Or so they say. Fufu.' Even the art club does the fufu now."}]}
+   ]},
+  {"id": "easel", "floor": "2f", "tile": [4, 14], "prompt": "Look at the paintings", "name": "Art club easels",
+   "open": "Watercolours of the town: the river, the station, the steps. One canvas is just rain, very carefully painted, in eleven shades of grey.",
+   "choices": [
+    {"t": "Ask who painted the rain.", "say": "'A first-year from 1-A. He paints it every day. He says it's a self-portrait.'", "fx": {"lore": "rain_tears"}},
+    {"t": "Add a brushstroke of blue.", "say": "One stroke of sky in all that grey. Tomorrow someone has painted a tiny sun next to it.", "fx": {"tears": -0.4}}]},
+  {"id": "news_board", "floor": "2f", "tile": [12, 12], "prompt": "Read the newspaper club wall", "name": "The Suzunari Shimbun",
+   "open": "Front pages pinned in rows: 'CAT COUNT EXCEEDS STUDENT COUNT', 'FISHERMEN REPORT LIGHTS AT SEA', 'WHO RINGS THE BELL AT MIDNIGHT?' A corner is plastered with printouts of the Ura board.",
+   "choices": [
+    {"t": "Read the Ura board printouts.", "say": "Anonymous posts, circled in red: 'the transfer student made a first-year cry AGAIN' and 'he looks like the photo in the trophy case'.", "fx": {"flag": "read_ura_print"}},
+    {"t": "Read the 2016 back issue.", "say": "'CHILD FOUND SAFE ON SHRINE STEPS AFTER THREE DAYS.' The child's name is withheld. The photo shows a small boy holding a bell that isn't his.", "fx": {"lore": "kamikakushi_2016"}}]},
+  {"id": "council", "floor": "2f", "tile": [21, 14], "prompt": "Look at the council table", "name": "Student council room",
+   "open": "A long table, a gavel nobody uses, a whiteboard of rules. Rule 1: Keep your word. Rule 2: See rule 1. A silk scarf is folded on the president's chair. It is April.",
+   "choices": [
+    {"t": "Read the complaints box.", "say": "'The cats are taking over the courtyard.' 'Please stop the first-year crying in the stairwell.' 'The transfer student is suspicious.' That last one is in very elegant handwriting."},
+    {"t": "Touch the scarf.", "say": "It is cold, like it was left in snow. You put it back before you know why.", "fx": {"lore": "soichiro"}}]},
+  {"id": "storage_2f", "floor": "2f", "tile": [35, 14], "prompt": "Search the storage room", "name": "Storage room",
+   "open": "Festival lanterns, a broken taiko drum, sports-day flags, a box marked TANABATA 2016 - DO NOT OPEN.",
+   "choices": [
+    {"t": "Open the Tanabata box.", "say": "Paper decorations, a child's yukata belt, and a wish strip in crayon: 'I want to go home with him. - Suzu'. Not 'Amane'. Suzu.", "fx": {"lore": "tanabata_wish", "tears": 0.3}},
+    {"t": "Bang the taiko once.", "say": "BOOM. Somewhere downstairs Makabe-sensei drops his coffee.", "fx": {"egg": "taiko"}}]},
+  {"id": "amane_desk", "floor": "3f", "tile": [11, 4], "prompt": "Look at Amane's desk", "name": "Class 1-A, Nekomori Amane's desk",
+   "open": "Tidy. Too tidy. A pencil case shaped like a fish. In the desk, a notebook with a cat on the cover, and on top of everything, a carefully cut-out photo of the school roof.",
+   "choices": [
+    {"t": "Open the notebook.", "say": "Pages of you. Your timetable. Your favourite bread. 'Senpai smiled 4x.' And on the last page, in older, rounder handwriting: 'Soichiro-sama, I am still waiting.'", "fx": {"lore": "remembers_child", "bond": -2}},
+    {"t": "Leave something on his desk.", "say": "You leave a melon bread on the desk. In the afternoon the rain over the school stops for exactly one hour.", "fx": {"bond": 3, "tears": -1.0}},
+    {"t": "Leave it alone.", "say": "You don't touch anything. It feels like the right kind of respect."}]},
+  {"id": "class_3a", "floor": "3f", "tile": [33, 3], "prompt": "Look at the desk covered in charms", "name": "Class 3-A, Kuroe Mio's desk",
+   "open": "Omamori charms tied to every hook, a pile of salt in the pencil tray, and a video camera with tape still in it.",
+   "choices": [
+    {"t": "Play the tape.", "say": "Grainy footage of the 2F corridor at dusk. It goes on and on. It shouldn't be that long. At the end, a bell rings and the tape stops.", "fx": {"lore": "dusk_side"}},
+    {"t": "Take a pinch of salt.", "say": "You pocket some salt. You feel like it might be useful later.", "fx": {"flag": "salt"}}]},
+  {"id": "piano", "floor": "3f", "tile": [3, 13], "prompt": "Sit at the grand piano", "name": "Music room piano",
+   "open": "An old grand piano, lid up. Sheet music on the stand: a lullaby with no title, copied by hand. The keys are warm, as if someone just stopped playing.",
+   "choices": [
+    {"t": "Play the lullaby.", "say": "Your hands know it. You don't. Halfway through, somewhere in the building, someone starts humming along - a woman's voice, old, gentle. Your aunt sings this song.", "fx": {"lore": "kotodama", "egg": "lullaby", "tears": -0.6}},
+    {"t": "Play something cheerful.", "say": "Chopsticks, badly. A cat on the windowsill outside looks personally offended."},
+    {"t": "Close the lid.", "say": "You close it. The room feels like it's waiting for midnight."}]},
+  {"id": "anatomy", "floor": "3f", "tile": [22, 12], "prompt": "Look at the anatomy model", "name": "Anatomy model",
+   "variants": [
+    {"when": {"after": 1110}, "open": "The anatomy model is not in its corner. There are footprints on the dusty floor, leading to the corridor, and a sound: running.",
+     "choices": [
+      {"t": "Race it.", "say": "You run. It runs. It is surprisingly fast for a man made of plastic. You win by a lung. It bows, and walks back to its stand.", "fx": {"egg": "anatomy_race", "hp": -5}},
+      {"t": "Let it run.", "say": "Everyone needs exercise."}]},
+    {"open": "Half skin, half organs, all plastic, with a sticker on its stand: PLEASE DO NOT TAKE ME RUNNING.",
+     "choices": [
+      {"t": "Shake its hand.", "say": "Its hand is warm. You decide not to think about it."},
+      {"t": "Read the label.", "say": "Donated 1963. Name: 'Jinta-kun'. Below, a list of science club members who 'lost the race'."}]}
+   ]},
+  {"id": "specimens", "floor": "3f", "tile": [15, 12], "prompt": "Look at the specimen shelf", "name": "Science lab shelf",
+   "open": "Rock samples, a jar of sea water from 1945 labelled HARBOUR, a model of the solar system missing a planet, and a dish labelled KAPPA'S DISH (REPLICA).",
+   "choices": [
+    {"t": "Look at the harbour water.", "say": "It is completely clear. The label says the water has never gone cloudy, not once in eighty years.", "fx": {"lore": "shimura"}},
+    {"t": "Look at the kappa's dish.", "say": "It is not a replica. It is still slightly wet.", "fx": {"zukan": "kappa"}}]},
+  {"id": "roof_view", "floor": "roof", "tile": [20, 14], "prompt": "Look out over the town", "name": "The school roof",
+   "variants": [
+    {"when": {"after": 720, "before": 790, "not_route": "ignore"}, "open": "Lunch time. Amane is already here, sitting on the bench with two bentos, pretending he didn't know you'd come.",
+     "choices": [
+      {"t": "\"Can I sit with you?\"", "say": "He moves over so fast he nearly falls off the bench. The rain over the town thins to a mist.", "fx": {"bond": 4, "tears": -1.0, "minutes": 30}},
+      {"t": "\"Did you make two bentos again?\"", "say": "'...One is for the cat.' There is no cat. The second bento has your name on it in seaweed.", "fx": {"bond": 2, "hp": 20, "minutes": 30}},
+      {"t": "\"I'll eat alone today.\"", "say": "He nods too many times. 'Okay! Okay.' He leaves both bentos on the bench when he goes.", "fx": {"tears": 1.0}}]},
+    {"open": "The whole of Suzunari below: the shrine on the hill, the station, the river, the sea. From up here the town looks like a model someone made very carefully.",
+     "choices": [
+      {"t": "Shout something into the wind.", "say": "You shout. The wind takes it toward the shrine. A bell rings back, once. It isn't time for bells.", "fx": {"egg": "roof_shout"}},
+      {"t": "Count the cats on the roofs.", "say": "Eleven. Twelve. All of them facing the school. All of them facing you.", "fx": {"lore": "cats_spies"}},
+      {"t": "Just breathe.", "say": "Sea wind, cherry blossom, chalk dust. For a moment you are not anybody's anything.", "fx": {"hp": 10, "minutes": 10}}]}
+   ]},
+  {"id": "stairs_13", "floor": "2f", "tile": [3, 6], "prompt": "Count the steps", "name": "The west stairs",
+   "variants": [
+    {"when": {"dusk": true}, "open": "Omagatoki. You count the steps going up. Ten, eleven, twelve... thirteen. There are only twelve steps. On the thirteenth, a bell rings, very close.",
+     "choices": [
+      {"t": "Keep climbing.", "say": "You keep climbing and climbing, and then the stairwell is just the stairwell again. Your phone says three minutes have passed. It felt like an hour.", "fx": {"egg": "thirteenth_step", "lore": "thousandth_step", "minutes": 3}},
+      {"t": "Step back down.", "say": "You step back. Twelve steps. Behind you, someone sighs with relief - or disappointment."}]},
+    {"open": "Twelve steps, scuffed in the middle by eighty years of uwabaki. A sign: NO RUNNING. Someone has added: NO COUNTING AFTER SIX.",
+     "choices": [
+      {"t": "Count them anyway.", "say": "Twelve. Of course twelve."},
+      {"t": "Don't.", "say": "Wise. Some things in this school are better left uncounted."}]}
+   ]}
+ ],
+ "eggs": {
+  "yakisoba": "You got the legendary yakisoba bread before 12:31.",
+  "mirror_444": "At 4:44 the art room mirror showed every life you have lived.",
+  "taiko": "BOOM.",
+  "lullaby": "The piano remembered a lullaby your family has sung since 1868.",
+  "anatomy_race": "You outran the anatomy model. Jinta-kun will want a rematch.",
+  "roof_shout": "The shrine bell answered you from the hill.",
+  "thirteenth_step": "You stood on the thirteenth of twelve steps."
+ }
+}

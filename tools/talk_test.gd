@@ -174,7 +174,8 @@ func _world_checks(town) -> void:
 	_check(int(prompts.get("Pray to the Jizo (save)", 0)) == 6, "six Jizo at the crossroads")
 	for p in ["Look at the torii", "Look at the hall", "Ring the bell", "Look at the guardian", "Read the wooden wishes", "Purify your hands"]:
 		_check(prompts.has(p), "landmark: " + p)
-	_check(get_nodes_in_group("spirit").size() == town.data.spirits.size(), "spirits & yokai placed (%d)" % get_nodes_in_group("spirit").size())
+	var outdoor: int = town.data.spirits.filter(func(sp): return not sp.has("indoor")).size()
+	_check(get_nodes_in_group("spirit").size() == outdoor, "spirits & yokai placed outdoors (%d / %d)" % [get_nodes_in_group("spirit").size(), outdoor])
 
 
 func _amane_answers(amane) -> void:

@@ -9,6 +9,7 @@ const STATION := "res://scenes/world/station_prologue.tscn"
 const PLANET := "res://scenes/world/planet_surface.tscn"
 const STAR_MAP := "res://scenes/ui/star_map.tscn"
 const SUZUNARI := "res://scenes/world/suzunari.tscn"
+const SCHOOL := "res://scenes/world/school.tscn"
 
 var params: Dictionary = {}
 var busy := false
@@ -100,6 +101,8 @@ func new_suzunari(player_name: String = "Toru") -> void:
 func continue_run() -> void:
 	if Game.location_id == "suzunari":
 		goto(SUZUNARI)
+	elif Game.location_id == "school":
+		goto(SCHOOL, {"floor": str(Game.flags.get("school_floor", "1f"))})
 	elif not Game.current_planet.is_empty():
 		goto(PLANET, {"planet_id": Game.current_planet.get("id", "")})
 	elif Game.location_id == "station_lot47":
