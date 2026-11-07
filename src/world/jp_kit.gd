@@ -26,6 +26,7 @@ var _flowers: Array[Vector3] = []
 var _wire_xf: Array[Transform3D] = []
 var _poles: Array[Vector3] = []
 var shaft_mats: Array[StandardMaterial3D] = []  ## god rays (alpha scaled by set_sun)
+var _grates: Array[Transform3D] = []
 
 
 func _init(builder) -> void:
@@ -172,7 +173,7 @@ func floor_color(kind: String, x: int, z: int) -> Color:
 		"jp_grass", "jp_forest":
 			return Color(0.92 + n * 0.12, 1.0 + n * 0.08, 0.86 + n * 0.1)
 		"jp_gravel":
-			return Color(0.7, 0.7, 0.74) * (0.97 + n * 0.08)
+			return Color(0.47, 0.48, 0.53) * (0.96 + n * 0.1)
 	return Color.WHITE * (0.95 + n * 0.06 + rng.randf_range(-0.02, 0.02))
 
 
@@ -219,7 +220,9 @@ func _wall_mat(tex: String, tint: Color) -> StandardMaterial3D:
 
 
 ## Gable roof, ridge along x, overhanging eaves; the south slope faces the camera.
-func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D, wall: StandardMaterial3D, pitch: float = 0.5, gutter: bool = true) -> float:
+## `deco`: every piece that is not drawn with `roof`/`wall` (ridge, fascia, gutter, downpipe) is added here so it hides
+## with the house when the camera cuts the house away.
+func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D, wall: StandardMaterial3D, pitch: float = 0.5, gutter: bool = true, deco: Array[Node] = []) -> float:
 	var hd := d * 0.5
 	var over := 0.55
 	var rise := hd * tan(pitch)
@@ -235,18 +238,19 @@ func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D,
 	gm.rotation.y = PI * 0.5
 	var ridge := roof.duplicate() as StandardMaterial3D
 	ridge.albedo_color = roof.albedo_color.darkened(0.25)
-	b.add_mesh(body, b.box(Vector3(w + 1.1, 0.26, 0.36)), ridge, Vector3(0, h + rise + 0.08, 0))
+	deco.append(b.add_mesh(body, b.box(Vector3(w + 1.1, 0.26, 0.36)), ridge, Vector3(0, h + rise + 0.08, 0)))
 	for sx in [-1.0, 1.0]:
-		b.add_mesh(body, b.box(Vector3(0.3, 0.5, 0.42)), ridge, Vector3(sx * (w * 0.5 + 0.55), h + rise + 0.2, 0), 0.0, false)
+		deco.append(b.add_mesh(body, b.box(Vector3(0.3, 0.5, 0.42)), ridge, Vector3(sx * (w * 0.5 + 0.55), h + rise + 0.2, 0), 0.0, false))
 	# Fascia board under the eave, a rain gutter and a downpipe: the little lines that make a roof sit on a house.
 	var eave_y := h - over * tan(pitch)
-	b.add_mesh(body, b.box(Vector3(w + 1.0, 0.18, 0.06)), b._mats["dark"], Vector3(0, eave_y - 0.12, run + 0.02), 0.0, false)
+	deco.append(b.add_mesh(body, b.box(Vector3(w + 1.0, 0.18, 0.06)), b._mats["dark"], Vector3(0, eave_y - 0.12, run + 0.02), 0.0, false))
 	if gutter:
 		var gutter_mat: StandardMaterial3D = painted(Color(0.55, 0.5, 0.45))
 		var g: MeshInstance3D = b.add_mesh(body, b.cylinder(0.07, w + 0.9, 6), gutter_mat, Vector3(0, eave_y - 0.2, run + 0.1), 0.0, false)
 		g.rotation.z = PI * 0.5
+		deco.append(g)
 		var px := (w * 0.5 + 0.25) * (1.0 if rng.randf() < 0.5 else -1.0)
-		b.add_mesh(body, b.cylinder(0.05, eave_y, 6), gutter_mat, Vector3(px, eave_y * 0.5 - 0.2, d * 0.5 + 0.12), 0.0, false)
+		deco.append(b.add_mesh(body, b.cylinder(0.05, eave_y, 6), gutter_mat, Vector3(px, eave_y * 0.5 - 0.2, d * 0.5 + 0.12), 0.0, false))
 	return h + rise
 
 
@@ -316,7 +320,8 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			_panel(body, face, Vector2(w - 0.3, 2.9), Vector3(0, 1.45, front + 0.04), deco, maxf(1.0, roundf(w / 4.0)))
 			hisashi(body, w, front, 3.1, roof, deco)
 			_upper_windows(body, w, front, 4.35, ["win", "shoji", "shoji"], deco)
-			gable(body, w, d, h, roof, wall)
+			_timber(body, w, h, front, [3.0, h - 0.12], deco)
+			gable(body, w, d, h, roof, wall, 0.5, true, deco)
 		"modern", "modern2":
 			h = 8.6 if style == "modern" else 5.8
 			wall = _wall_mat("jp_concrete" if rng.randf() < 0.6 else "jp_plaster", WALL_TINTS[rng.randi() % WALL_TINTS.size()].darkened(0.04))
@@ -331,6 +336,7 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 				if rng.randf() < 0.6:
 					_balcony(body, w, front, fy - 0.85, deco)
 				fy += 2.8
+			_storeys(body, w, h, front, deco)
 			b.add_mesh(body, b.box(Vector3(w + 0.1, 0.3, d + 0.1)), roof if style == "modern2" else wall, Vector3(0, h + 0.15, 0))
 			if rng.randf() < 0.5:
 				b.add_mesh(body, b.cylinder(0.5, 1.0, 8), b._mats["metal"], Vector3(w * 0.25, h + 0.8, -d * 0.2), 0.0, false)
@@ -346,7 +352,8 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			if rng.randf() < 0.7:
 				_balcony(body, w, front, 3.2, deco)
 			_pots(body, w, front, dx, deco)
-			gable(body, w, d, h, roof, wall, 0.45)
+			_storeys(body, w, h, front, deco)
+			gable(body, w, d, h, roof, wall, 0.45, true, deco)
 		"keeper":
 			wall = _wall_mat("jp_hinoki", Color(0.92, 0.86, 0.78))
 			h = 3.4
@@ -355,15 +362,17 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			var deck: MeshInstance3D = b.add_mesh(body, b.box(Vector3(w, 0.12, 0.9)), b._mats["jp_hinoki"], Vector3(0, 0.45, front + 0.45))
 			deco.append(deck)
 			roof.albedo_texture = b._tex("jp_kawara_old")
-			gable(body, w, d, h, roof, wall, 0.55)
+			_timber(body, w, h, front, [h - 0.12], deco)
+			gable(body, w, d, h, roof, wall, 0.55, true, deco)
 		"oldschool":
 			wall = _wall_mat("jp_yakisugi", Color(0.95, 0.92, 0.9))
 			h = 6.2
 			b.add_mesh(body, b.box(Vector3(w, h, d)), wall, Vector3(0, h * 0.5, 0))
 			_panel(body, "school", Vector2(w - 0.4, 2.8), Vector3(0, 1.7, front + 0.04), deco, maxf(1.0, roundf(w / 4.0)))
 			_panel(body, "school", Vector2(w - 0.4, 2.8), Vector3(0, 4.6, front + 0.04), deco, maxf(1.0, roundf(w / 4.0)))
+			_timber(body, w, h, front, [3.1, h - 0.12], deco)
 			roof.albedo_texture = b._tex("jp_kawara_old")
-			gable(body, w, d, h, roof, wall)
+			gable(body, w, d, h, roof, wall, 0.5, true, deco)
 		"station":
 			wall = _wall_mat("jp_plaster", Color(0.96, 0.96, 0.94))
 			h = 3.8
@@ -380,7 +389,7 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			sl.position = Vector3(0, 3.35, front + 0.18)
 			body.add_child(sl)
 			deco.append(sl)
-			gable(body, w, d, h, roof, wall, 0.3)
+			gable(body, w, d, h, roof, wall, 0.3, true, deco)
 	fade.append_array([wall, roof])
 	b.add_box_collider(body, Vector3(w, h, d), Vector3(0, h * 0.5, 0))
 	if venue:
@@ -388,6 +397,8 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 	body.set_meta("fade_mats", fade)
 	body.set_meta("fade_hide", deco)
 	b._roofs.append([pos + Vector3(0, h, 0), Vector2(w, d) * 0.5])
+	if style in ["machiya", "modern", "modern2", "house", "station"]:
+		_clutter(pos, w, front, style, venue)
 	# Weeds and flowers creep along the foot of every wall.
 	for k in int(w / 1.2):
 		if rng.randf() < 0.5:
@@ -400,7 +411,36 @@ func _upper_windows(body: Node3D, w: float, front: float, y: float, kinds: Array
 	for i in n:
 		if rng.randf() < 0.15:
 			continue
-		_panel(body, str(kinds[rng.randi() % kinds.size()]), Vector2(1.7, 1.28), Vector3(-w * 0.5 + step * (i + 0.5), y, front + 0.04), deco)
+		var wx := -w * 0.5 + step * (i + 0.5)
+		_panel(body, str(kinds[rng.randi() % kinds.size()]), Vector2(1.7, 1.28), Vector3(wx, y, front + 0.04), deco)
+		_window_frame(body, wx, y, front, deco)
+
+
+## Real depth around every window: a stone sill that catches light, a lintel and two jambs that throw small shadows.
+func _window_frame(body: Node3D, x: float, y: float, front: float, deco: Array[Node]) -> void:
+	var trim: StandardMaterial3D = b._mats["dark"]
+	deco.append(b.add_mesh(body, b.box(Vector3(1.95, 0.09, 0.2)), b._mats["concrete"], Vector3(x, y - 0.69, front + 0.1)))
+	deco.append(b.add_mesh(body, b.box(Vector3(1.9, 0.12, 0.12)), trim, Vector3(x, y + 0.7, front + 0.07)))
+	for sx in [-1.0, 1.0]:
+		deco.append(b.add_mesh(body, b.box(Vector3(0.09, 1.4, 0.1)), trim, Vector3(x + sx * 0.9, y, front + 0.06), 0.0, false))
+
+
+## Exposed timber frame: corner posts and floor beams across the front (machiya, old school, keeper's house).
+func _timber(body: Node3D, w: float, h: float, front: float, beams: Array, deco: Array[Node]) -> void:
+	var timber: StandardMaterial3D = b._mats["dark"]
+	for sx in [-1.0, 1.0]:
+		deco.append(b.add_mesh(body, b.box(Vector3(0.22, h, 0.2)), timber, Vector3(sx * (w * 0.5 - 0.1), h * 0.5, front + 0.07)))
+	for by in beams:
+		deco.append(b.add_mesh(body, b.box(Vector3(w, 0.22, 0.18)), timber, Vector3(0, float(by), front + 0.07)))
+
+
+## A slab edge per floor on concrete buildings (and a plinth), so they read as storeys, not a box.
+func _storeys(body: Node3D, w: float, h: float, front: float, deco: Array[Node]) -> void:
+	var y := 3.05
+	while y < h - 0.5:
+		deco.append(b.add_mesh(body, b.box(Vector3(w + 0.1, 0.16, 0.22)), b._mats["concrete"], Vector3(0, y, front + 0.08)))
+		y += 2.8
+	deco.append(b.add_mesh(body, b.box(Vector3(w + 0.06, 0.3, 0.12)), b._mats["rock"], Vector3(0, 0.15, front + 0.05)))
 
 
 func _balcony(body: Node3D, w: float, front: float, y: float, deco: Array[Node]) -> void:
@@ -597,6 +637,8 @@ func finish() -> void:
 	_boats()
 	_planters()
 	_shafts()
+	_shrine_dressing()
+	_ground_details()
 
 
 func _plants(spots: Array[Vector3], colors: Array, cells: Array, nm: String, scale: float = 1.0) -> void:
@@ -971,3 +1013,210 @@ func set_sun(strength: float, warm: float) -> void:
 	for m in shaft_mats:
 		col.a = float(m.get_meta("base", 0.2)) * strength
 		m.albedo_color = col
+
+
+# --- Street-level clutter: what makes a Japanese street (and an HD-2D diorama) feel lived in ----------------
+
+## Things people leave in front of their house or shop. Positions are world space; most props have no collider
+## (they sit against the facade), the big ones (vending machines, stands) do.
+func _clutter(pos: Vector3, w: float, front: float, style: String, venue: bool) -> void:
+	var z := pos.z + front + 0.55
+	_grates.append(Transform3D(Basis().scaled(Vector3(w - 0.2, 1, 0.32)), Vector3(pos.x, 0.012, pos.z + front + 0.2)))
+	var slots: Array[float] = []
+	var x := -w * 0.5 + 0.6
+	while x < w * 0.5 - 0.5:
+		if not (venue and absf(x) < 1.0):
+			slots.append(x)
+		x += 0.9
+	slots.shuffle()
+	var picks := ["bikes", "crates", "pots", "umbrellas", "sign", "ac", "vending"] if style != "house" \
+		else ["bikes", "pots", "pots", "ac", "mailbox", "styro"]
+	if venue:
+		_display_stand(Vector3(pos.x + (w * 0.5 - 1.0) * (1 if rng.randf() < 0.5 else -1), 0, z + 0.1))
+		_a_sign(Vector3(pos.x + rng.randf_range(-0.6, 0.6), 0, z + 0.9))
+	for k in mini(slots.size(), rng.randi_range(2, 4)):
+		var p := Vector3(pos.x + slots[k], 0, z)
+		match str(picks[rng.randi() % picks.size()]):
+			"bikes":
+				for i in rng.randi_range(1, 2):
+					b._jp_cell("q", p + Vector3(i * 0.55, 0, 0.25), 0, 0)
+			"crates":
+				_crates(p)
+			"pots":
+				for i in rng.randi_range(2, 4):
+					_pot(p + Vector3(i * 0.32 - 0.4, 0, rng.randf_range(-0.1, 0.1)))
+			"umbrellas":
+				_umbrellas(p)
+			"sign":
+				_a_sign(p + Vector3(0, 0, 0.3))
+			"ac":
+				_ac_unit(p + Vector3(0, 0, -0.15))
+			"vending":
+				if rng.randf() < 0.5:
+					b._vending(p + Vector3(0, 0, 0.1))
+			"mailbox":
+				var mb: StaticBody3D = b.static_body(p)
+				b.add_mesh(mb, b.cylinder(0.04, 1.0, 5), b._mats["pipe"], Vector3(0, 0.5, 0), 0.0, false)
+				b.add_mesh(mb, b.box(Vector3(0.36, 0.3, 0.22)), painted(Color(0.85, 0.2, 0.18)), Vector3(0, 1.1, 0))
+			"styro":
+				var sb: StaticBody3D = b.static_body(p)
+				b.add_mesh(sb, b.box(Vector3(0.7, 0.3, 0.4)), painted(Color(0.95, 0.95, 0.93)), Vector3(0, 0.15, 0))
+				for i in 4:
+					_tufts.append(p + Vector3(-0.25 + i * 0.17, 0.3, 0))
+
+
+func _pot(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	var h := rng.randf_range(0.22, 0.4)
+	b.add_mesh(body, b.cylinder(0.14, h, 7, 0.17), painted([Color(0.65, 0.38, 0.25), Color(0.5, 0.52, 0.55), Color(0.85, 0.82, 0.75)][rng.randi() % 3]), Vector3(0, h * 0.5, 0), 0.0, false)
+	var leaf := SphereMesh.new()
+	leaf.radius = rng.randf_range(0.16, 0.28)
+	leaf.height = leaf.radius * 1.7
+	leaf.radial_segments = 7
+	leaf.rings = 4
+	b.add_mesh(body, leaf, b._leafy("pot_leaf", Color(0.8, 1.0, 0.8)), Vector3(0, h + leaf.radius * 0.6, 0), 0.0, true)
+	if rng.randf() < 0.4:
+		_flowers.append(p + Vector3(0, h + 0.1, 0.05))
+
+
+## Plastic beer / produce crates, stacked.
+func _crates(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	var col: Color = [Color(0.95, 0.75, 0.15), Color(0.2, 0.45, 0.8), Color(0.85, 0.25, 0.2), Color(0.25, 0.6, 0.35)][rng.randi() % 4]
+	var m := painted(col, "jp_sheet", 1.0)
+	for i in rng.randi_range(1, 3):
+		var c: MeshInstance3D = b.add_mesh(body, b.box(Vector3(0.5, 0.3, 0.38)), m, Vector3(rng.randf_range(-0.04, 0.04), 0.15 + i * 0.31 - 0.31, 0))
+		c.rotation.y = rng.randf_range(-0.15, 0.15)
+
+
+func _umbrellas(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	b.add_mesh(body, b.cylinder(0.16, 0.5, 8), b._mats["metal"], Vector3(0, 0.25, 0), 0.0, true)
+	for i in rng.randi_range(2, 4):
+		var u: MeshInstance3D = b.add_mesh(body, b.cylinder(0.04, 0.9, 5, 0.01), painted(Color.from_hsv(rng.randf(), 0.5, 0.8)), Vector3(rng.randf_range(-0.08, 0.08), 0.6, rng.randf_range(-0.08, 0.08)), 0.0, false)
+		u.rotation = Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))
+
+
+## Standing A-frame sign board (menu / sale), leaning boards on a stand.
+func _a_sign(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	var board := painted([Color(0.15, 0.25, 0.2), Color(0.9, 0.88, 0.8), Color(0.15, 0.15, 0.18)][rng.randi() % 3])
+	for sd in [-1.0, 1.0]:
+		var bd: MeshInstance3D = b.add_mesh(body, b.box(Vector3(0.5, 0.85, 0.03)), board, Vector3(0, 0.42, sd * 0.12))
+		bd.rotation.x = -sd * 0.22
+	b.add_mesh(body, b.box(Vector3(0.4, 0.08, 0.04)), painted([Color(0.9, 0.2, 0.15), Color(0.95, 0.75, 0.2)][rng.randi() % 2]), Vector3(0, 0.62, 0.21), 0.0, false)
+	for k in 3:
+		b.add_mesh(body, b.box(Vector3(0.3, 0.025, 0.02)), painted(Color(0.95, 0.95, 0.9)), Vector3(0, 0.48 - k * 0.1, 0.22 - k * 0.02), 0.0, false)
+
+
+## Outdoor air-conditioner unit with its fan grille and pipe.
+func _ac_unit(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	b.add_mesh(body, b.box(Vector3(0.75, 0.55, 0.3)), painted(Color(0.92, 0.92, 0.9), "jp_sheet", 1.0), Vector3(0, 0.3, 0))
+	var fan: MeshInstance3D = b.add_mesh(body, b.cylinder(0.2, 0.02, 12), painted(Color(0.3, 0.3, 0.32)), Vector3(-0.1, 0.32, 0.16), 0.0, false)
+	fan.rotation.x = PI * 0.5
+	b.add_mesh(body, b.cylinder(0.025, 0.6, 5), painted(Color(0.85, 0.83, 0.78)), Vector3(0.3, 0.6, -0.1), 0.0, false)
+
+
+## Tiered wooden stand of goods in front of a shop (fruit, sweets, souvenirs).
+func _display_stand(p: Vector3) -> void:
+	var body: StaticBody3D = b.static_body(p)
+	var wood: StandardMaterial3D = b._mats["crate"]
+	for t in 3:
+		b.add_mesh(body, b.box(Vector3(1.2, 0.08, 0.32)), wood, Vector3(0, 0.35 + t * 0.28, 0.25 - t * 0.2))
+		for k in 5:
+			var col := Color.from_hsv(rng.randf(), rng.randf_range(0.4, 0.8), rng.randf_range(0.7, 1.0))
+			b.add_mesh(body, b.box(Vector3(0.18, rng.randf_range(0.1, 0.2), 0.2)), painted(col), Vector3(-0.48 + k * 0.24, 0.47 + t * 0.28, 0.25 - t * 0.2), 0.0, false)
+	for sx in [-0.58, 0.58]:
+		b.add_mesh(body, b.box(Vector3(0.05, 0.95, 0.05)), wood, Vector3(sx, 0.47, 0.0), 0.0, false)
+	b.add_box_collider(body, Vector3(1.2, 1.0, 0.7), Vector3(0, 0.5, 0.05))
+
+
+## The shrine is more than a hall: stone lanterns line the approach, an omikuji rack full of tied fortunes,
+## a stack of sake barrels given by the town, a low sacred fence, a bamboo broom against the hall.
+func _shrine_dressing() -> void:
+	for z in [3, 5, 7]:
+		for x in [25, 29]:
+			if b.cell(x, z) == "_":
+				b._jp_cell("h", b.center(x, z) + Vector3(0.6 if x == 25 else -0.6, 0, 0), x, z)
+	# omikuji rack
+	var rp: Vector3 = b.center(33, 5)
+	var rack: StaticBody3D = b.static_body(rp)
+	var wood: StandardMaterial3D = b._mats["dark"]
+	for sx in [-1.0, 1.0]:
+		b.add_mesh(rack, b.box(Vector3(0.1, 1.5, 0.1)), wood, Vector3(sx * 1.1, 0.75, 0))
+	var knots: Array[Transform3D] = []
+	for row in 3:
+		b.add_mesh(rack, b.cylinder(0.015, 2.2, 4), painted(Color(0.3, 0.3, 0.3)), Vector3(0, 0.75 + row * 0.3, 0), 0.0, false).rotation.z = PI * 0.5
+		for k in 14:
+			var at := rp + Vector3(-1.0 + k * 0.15 + rng.randf_range(-0.03, 0.03), 0.72 + row * 0.3, rng.randf_range(-0.02, 0.02))
+			knots.append(Transform3D(Basis(Vector3.FORWARD, rng.randf_range(-0.4, 0.4)), at))
+	_mm(knots, b.box(Vector3(0.05, 0.11, 0.03)), painted(Color(1.0, 1.0, 0.98)), "OmikujiKnots")
+	b.add_box_collider(rack, Vector3(2.3, 1.5, 0.3), Vector3(0, 0.75, 0))
+	# sake barrels (kazaridaru), stacked in a pyramid beside the hall
+	var bp: Vector3 = b.center(22, 3)
+	var barrels: StaticBody3D = b.static_body(bp)
+	var labels := [Color(0.85, 0.2, 0.15), Color(0.15, 0.3, 0.6), Color(0.95, 0.95, 0.9), Color(0.2, 0.5, 0.3)]
+	for row in 3:
+		for k in 3 - row:
+			var at := Vector3(-0.55 * (2 - row) * 0.5 + k * 0.55, 0.27 + row * 0.5, 0)
+			b.add_mesh(barrels, b.cylinder(0.26, 0.5, 10), painted(labels[(row + k) % labels.size()]), at, 0.0, true)
+			b.add_mesh(barrels, b.cylinder(0.27, 0.06, 10), painted(Color(0.8, 0.7, 0.45)), at + Vector3(0, 0.18, 0), 0.0, false)
+	b.add_box_collider(barrels, Vector3(1.7, 1.5, 0.6), Vector3(0, 0.75, 0))
+	# tamagaki: low vermilion fence either side of the hall
+	var red: StandardMaterial3D = prop_mat("vermilion", Color.RED)
+	for side in [-1.0, 1.0]:
+		var f0: Vector3 = b.center(27, 4) + Vector3(side * 4.6, 0, -1.6)
+		for k in 6:
+			b.add_mesh(b.root, b.box(Vector3(0.1, 0.9, 0.1)), red, f0 + Vector3(side * k * 0.45, 0.45, 0), 0.0, true)
+		b.add_mesh(b.root, b.box(Vector3(2.5, 0.08, 0.08)), red, f0 + Vector3(side * 1.12, 0.8, 0), 0.0, false)
+		b.add_mesh(b.root, b.box(Vector3(2.5, 0.08, 0.08)), red, f0 + Vector3(side * 1.12, 0.4, 0), 0.0, false)
+	# shrine nobori: tall red banners with a white stripe lining the approach
+	for z in [2, 4, 6, 8]:
+		for x in [24, 30]:
+			if not b.walkable(x, z):
+				continue
+			var at: Vector3 = b.center(x, z) + Vector3(0.7 if x == 24 else -0.7, 0, 0.5)
+			b.add_mesh(b.root, b.cylinder(0.03, 3.0, 5), b._mats["dark"], at + Vector3(0, 1.5, 0), 0.0, true)
+			b.add_mesh(b.root, b.box(Vector3(0.45, 2.2, 0.02)), painted(Color(0.95, 0.22, 0.16)), at + Vector3(0.24, 1.7, 0), 0.0, true)
+			b.add_mesh(b.root, b.box(Vector3(0.1, 1.8, 0.025)), painted(Color(0.95, 0.93, 0.88)), at + Vector3(0.24, 1.7, 0.0), 0.0, false)
+	# bamboo broom against the hall
+	var broom: MeshInstance3D = b.add_mesh(b.root, b.cylinder(0.03, 1.6, 5), prop_mat("wood_light", Color.WHITE), b.center(30, 3) + Vector3(0, 0.8, 0.6), 0.0, true)
+	broom.rotation.z = 0.25
+
+
+## Ground-level detail everywhere: tactile paving to the station and along the road, drain grates under the shop
+## fronts, kerbs between road and pavement, patched asphalt, manhole covers.
+func _ground_details() -> void:
+	var tactile: Array[Transform3D] = []
+	var kerbs: Array[Transform3D] = []
+	var patches: Array[Transform3D] = []
+	var holes: Array[Transform3D] = []
+	for x in range(1, b.width - 1):
+		if b.walkable(x, 34) and b.cell(x, 34) != ",":
+			tactile.append(Transform3D(Basis().scaled(Vector3(2.0, 1, 0.3)), b.center(x, 34) + Vector3(0, 0.014, -0.55)))
+		for z in [31, 34, 42, 44]:
+			if b.cell(x, z) != "," and (b.cell(x, z - 1) == "," or b.cell(x, z + 1) == ","):
+				var side := -1.0 if b.cell(x, z - 1) == "," else 1.0
+				kerbs.append(Transform3D(Basis(), b.center(x, z) + Vector3(0, 0.06, side * 0.92)))
+	for z in range(36, 42):
+		if b.walkable(8, z):
+			tactile.append(Transform3D(Basis().scaled(Vector3(0.3, 1, 2.0)), b.center(8, z) + Vector3(0.6, 0.014, 0)))
+	for z in b.height:
+		for x in b.width:
+			if b.cell(x, z) == "," and rng.randf() < 0.08:
+				patches.append(Transform3D(Basis(Vector3.UP, rng.randf() * 0.4).scaled(Vector3(rng.randf_range(0.8, 2.2), 1, rng.randf_range(0.5, 1.4))), b.center(x, z) + Vector3(rng.randf_range(-0.5, 0.5), 0.011, rng.randf_range(-0.4, 0.4))))
+			elif b.cell(x, z) == "," and rng.randf() < 0.03:
+				holes.append(Transform3D(Basis(), b.center(x, z) + Vector3(rng.randf_range(-0.5, 0.5), 0.013, rng.randf_range(-0.4, 0.4))))
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(1, 1)
+	_mm(tactile, plane, painted(Color(0.95, 0.78, 0.15), "jp_sando", 1.0), "TactilePaving")
+	_mm(_grates, plane, painted(Color(0.35, 0.36, 0.38), "jp_sheet", 2.0), "DrainGrates")
+	_mm(kerbs, b.box(Vector3(2.0, 0.14, 0.18)), b._mats["rock"], "Kerbs")
+	_mm(patches, plane, b._textured("jp_asphalt", Color(0.72, 0.72, 0.75), 0.25, 0.8, 0.0, 0.5), "AsphaltPatches")
+	var disc := CylinderMesh.new()
+	disc.top_radius = 0.38
+	disc.bottom_radius = 0.38
+	disc.height = 0.02
+	disc.radial_segments = 14
+	_mm(holes, disc, painted(Color(0.45, 0.42, 0.4), "jp_sheet", 3.0), "Manholes")

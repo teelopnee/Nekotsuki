@@ -96,6 +96,14 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   (chipped-paint texture tinted by the colour). Every `jp_*` material except floors (`JPKit.FLOOR_TEX`) gets the shared
   grime detail layer (`jp_f_grime.png`, `JPKit.weather`). Gable roofs add fascia, gutter and downpipe; Suzune hall roof =
   copper patina. Add a prop texture: entry in `tools/jp_textures.py TEX` + key in `PROP_TEX`.
+  `jp_textures.py pixelize` bakes a top-left bevel light + cavity darkening from each normal map (crisp gaps between
+  stones/tiles/planks). Buildings: timber frames (`_timber`), storey slabs + plinth (`_storeys`), window sills/lintels/
+  jambs (`_window_frame`). Street-level clutter per unit (`_clutter`: bikes, crates, pots, umbrella stands, A-frame
+  signs, AC units, vending machines, mailboxes, display stands at shops), `_shrine_dressing` (lantern rows, omikuji
+  rack, sake barrels, tamagaki, shrine nobori), `_ground_details` (tactile paving, drain grates, kerbs, patches,
+  manholes). Anything added to a house that is not drawn with its wall/roof materials must go into `deco` (fade_hide),
+  or it floats in mid-air when the camera cuts the house away (gable() takes `deco` for ridge/fascia/gutter/downpipe).
+  Depth lens is gentle on the background now (`far_range` 11 m, `max_radius` 4.5) so facades stay readable.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

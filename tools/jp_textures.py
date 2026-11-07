@@ -61,17 +61,30 @@ def fetch(pid, cache):
     return files
 
 
-def pixelize(src, size, sat, bright, tint, colours):
-    im = Image.open(src).convert("RGB").resize((size, size), Image.BOX)
+def pixelize(src, size, sat, bright, tint, colours, nor=None):
+    """Photo -> pixel-art texture: local contrast, a baked top-left bevel light and cavity darkening from the
+    normal map (stones, tiles and planks get crisp dark gaps and lit edges, like hand-pixelled HD-2D art),
+    then a small palette with no dithering."""
+    import numpy as np
+    from PIL import ImageFilter
+    big = Image.open(src).convert("RGB").resize((size * 2, size * 2), Image.LANCZOS)
+    big = big.filter(ImageFilter.UnsharpMask(radius=2, percent=160, threshold=1))
+    im = big.resize((size, size), Image.BOX)
     im = ImageEnhance.Color(im).enhance(sat)
     im = ImageEnhance.Brightness(im).enhance(bright)
-    im = ImageEnhance.Contrast(im).enhance(1.08)
-    r, g, b = im.split()
-    r = r.point(lambda v: min(255, int(v * tint[0])))
-    g = g.point(lambda v: min(255, int(v * tint[1])))
-    b = b.point(lambda v: min(255, int(v * tint[2])))
-    im = Image.merge("RGB", (r, g, b))
-    # A small shared palette per texture = crisp pixel-art clusters, no dithering noise.
+    im = ImageEnhance.Contrast(im).enhance(1.18)
+    a = np.asarray(im).astype(np.float32) / 255.0
+    a *= np.array(tint, dtype=np.float32)
+    if nor is not None:
+        n = np.asarray(Image.open(nor).convert("RGB").resize((size, size), Image.BOX)).astype(np.float32) / 255.0
+        n = n * 2.0 - 1.0
+        n /= np.maximum(np.linalg.norm(n, axis=2, keepdims=True), 1e-4)
+        light = np.array([-0.45, 0.45, 0.77], dtype=np.float32)  # top-left, like pixel artists shade
+        shade = np.clip((n * light).sum(axis=2), 0.0, 1.0)
+        cavity = np.clip((n[:, :, 2] - 0.55) / 0.4, 0.0, 1.0)      # steep slopes = gaps and edges
+        k = (0.72 + 0.38 * shade) * (0.62 + 0.38 * cavity)
+        a *= k[:, :, None] * 1.12
+    im = Image.fromarray((np.clip(a, 0.0, 1.0) * 255).astype(np.uint8))
     return im.quantize(colors=colours, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert("RGB")
 
 
@@ -85,7 +98,7 @@ def main():
     os.makedirs(cache, exist_ok=True)
     for name, (pid, size, sat, bright, tint, colours) in TEX.items():
         f = fetch(pid, cache)
-        pixelize(f["Diffuse"], size, sat, bright, tint, colours).save(os.path.join(OUT, "jp_%s.png" % name))
+        pixelize(f["Diffuse"], size, sat, bright, tint, colours, f["nor_gl"]).save(os.path.join(OUT, "jp_%s.png" % name))
         normal(f["nor_gl"], size).save(os.path.join(OUT, "jp_%s_n.png" % name))
         print("jp_%s <- %s" % (name, pid))
 

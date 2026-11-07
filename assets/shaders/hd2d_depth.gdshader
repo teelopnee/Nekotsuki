@@ -10,11 +10,11 @@ uniform sampler2D screen_tex : hint_screen_texture, filter_linear, repeat_disabl
 uniform sampler2D depth_tex : hint_depth_texture, filter_nearest, repeat_disable;
 uniform float focus_dist = 16.0;    // camera -> hero (set every frame by CameraRig)
 uniform float focus_range = 2.2;    // half-width of the sharp band (m)
-uniform float near_blur = 4.0;      // metres in front of the band to full blur
-uniform float far_blur = 24.0;      // metres behind the band to full blur
-uniform float far_range = 4.5;      // the band reaches further behind the hero (shop fronts stay readable)
-uniform float max_radius = 7.5;     // blur radius in pixels at full blur (at 800 px tall)
-uniform float near_strength = 1.2;
+uniform float near_blur = 5.0;      // metres in front of the band to full blur
+uniform float far_blur = 34.0;      // metres behind the band to full blur
+uniform float far_range = 11.0;      // the band reaches further behind the hero (shop fronts stay readable)
+uniform float max_radius = 4.5;     // blur radius in pixels at full blur (at 800 px tall)
+uniform float near_strength = 1.0;
 uniform float ao_strength = 0.9;
 uniform float ao_radius = 0.9;      // metres
 uniform vec3 ao_tint : source_color = vec3(0.18, 0.14, 0.3);  // AO darkens toward a cool purple, not black

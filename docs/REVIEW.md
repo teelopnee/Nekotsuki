@@ -108,3 +108,12 @@
   indigo cloth, sheet metal, dark lacquer); every prop key maps to one; flat colours become tinted chipped paint; one shared
   grime layer (soft dirt + rain streaks) on walls, roofs and props; fascia, gutters and downpipes on roofs; leafy cedars.
 - Open: shrine gravel still reads a little flat in strong morning light.
+
+## Detail pass (2026-11-07): "it still looks the same"
+- Why the texture pass barely showed: the depth lens blurred everything above the shop fronts, the photo textures went
+  muddy when shrunk, and the streets were big empty floors with boxes on them.
+- Fixes: gentler background blur; textures re-baked as pixel art (bevel light + cavity outlines from normal maps);
+  timber frames, storey slabs, window frames; dense street-level clutter in front of every house and shop; shrine
+  lanterns rows, omikuji rack, sake barrels, tamagaki, banners; tactile paving, drain grates, kerbs, asphalt patches,
+  manholes; roof trims now hide with the house when it is cut away (they floated as a bar across the frame).
+- Open: morning light on the shrine gravel is still bright; consider per-time exposure.
