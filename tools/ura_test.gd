@@ -134,6 +134,20 @@ func _process(_d: float) -> bool:
 			_check(lvl.get("ura") == false and clock.minute() >= clock.NIGHT, "walked back down after Omagatoki")
 			week.remember_ending("okaeri")
 			_check(week.endings_seen().has("okaeri"), "endings are remembered for the title screen")
+			# Races: stand on the lantern -> win; stand still while the cat runs -> lose.
+			lvl.player.global_position = lvl.builder.center(38, 3) + Vector3(0.5, 0.1, 0.5)
+			week.race({"kind": "lantern", "to": [38, 3], "seconds": 1, "ok": {"say": "Made it in time.", "fx": {"flag": "race_won"}},
+				"fail": {"say": "Too late.", "fx": {"flag": "race_lost"}}})
+			_wait = 10
+		6:
+			_close_all(hud)
+			_check(bool(game.flags.get("race_won", false)), "reaching the lantern in time wins the race")
+			lvl.player.global_position = lvl.builder.center(27, 47)
+			week.race({"kind": "cat", "seconds": 0.5, "exact": true, "ok": {"say": "Caught it.", "fx": {"flag": "race_won2"}},
+				"fail": {"say": "It got away.", "fx": {"flag": "race_lost"}}})
+			_wait = 120
+		7:
+			_check(bool(game.flags.get("race_lost", false)) and not game.flags.has("race_won2"), "the cat gets away if you don't run")
 			print("ura_test: %d failure(s)" % fails)
 			quit(fails)
 	_step += 1
@@ -172,3 +186,4 @@ func _flow_checks(week, clock, game, lvl, hud) -> void:
 	_check(clock.minute() >= m0 + 200, "sleeping in costs the morning")
 	_close_all(hud)
 	clock.st()["day"] = 2
+

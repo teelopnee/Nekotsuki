@@ -160,7 +160,7 @@ func _beats(week, clock, amane, game, lvl, hud) -> void:
 				var choices: Array = bt.get("choices", [])
 				for i in choices.size():
 					var cfx: Dictionary = choices[i].get("fx", {})
-					if cfx.has("final") or cfx.has("enter_ura"):
+					if cfx.has("final") or cfx.has("enter_ura") or cfx.has("race"):
 						continue  # endings and Ura-Suzunari leave the level: ura_test / _endings check them
 					clock.st()["day"] = (int(wn) - 1) * 7 + int(d)
 					week.st()["done"].erase(str(bt.id))

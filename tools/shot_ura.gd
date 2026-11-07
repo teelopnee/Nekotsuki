@@ -1,7 +1,7 @@
 extends SceneTree
 ## Screenshots of Ura-Suzunari (GPU or lavapipe, not --headless):
 ## godot --path . --resolution 1280x800 --script res://tools/shot_ura.gd -- <out_dir>
-## Shots: arriving at the steps (echoes, kasha), the dry riverbed with Sayo.
+## Shots: arriving at the steps (echoes, kasha), the dry riverbed with Sayo, the festival street with a kasha.
 
 var _step := 0
 var _wait := 0
@@ -49,6 +49,15 @@ func _process(_d: float) -> bool:
 			_wait = 90
 		4:
 			root.get_texture().get_image().save_png("%s/ura_riverbed.png" % _out)
+			var p = lvl.player
+			p.global_position = lvl.builder.center(18, 40)
+			for e in get_nodes_in_group("enemy"):
+				e.global_position = p.global_position + Vector3(2.5, 0.1, 1.5)
+				break
+			lvl.camera_rig.snap_to_target()
+			_wait = 90
+		5:
+			root.get_texture().get_image().save_png("%s/ura_street.png" % _out)
 			quit(0)
 	_step += 1
 	return false

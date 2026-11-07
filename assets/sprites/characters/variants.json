@@ -976,6 +976,18 @@
    "chonk": true
   }
  },
+ "kasha": {
+  "kind": "cat",
+  "tags": [
+   "cat",
+   "yokai"
+  ],
+  "cfg": {
+   "tail": "two",
+   "chonk": true,
+   "kasha": true
+  }
+ },
  "drone": {
   "kind": "drone",
   "tags": [

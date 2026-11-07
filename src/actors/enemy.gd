@@ -976,6 +976,8 @@ func _refresh_shield() -> void:
 
 
 func _set_shield_visible(on: bool) -> void:
+	if DataDB.theme == "suzunari":
+		on = false  # Suzunari's yokai have no sci-fi shield pips or "??" weakness readouts
 	if _shield_label:
 		_shield_label.visible = on
 		_weak_label.visible = on

@@ -237,3 +237,15 @@ Worked through the priority list in order; no new world systems or visual passes
 - Tests: ura_test 28 checks, week_test still plays every choice.
 - Open: the relay and the hill on the 13th are still scenes; kasha use the cat sprite (no attack/hurt frames yet);
   Ura has no unique map of its own (it is Suzunari re-lit); no Ura-only music.
+
+## Finishing the open items (2026-11-07)
+- The relay (week 7) and the hill on the 13th (week 10) are now runs: catch the two-tailed cat before it reaches the
+  rival, reach the lantern on the hill before the third nail. Fail and the other outcome plays.
+- Kasha have their own sprite: a big two-tailed cat with flame-tipped tails, pounce / charge / hurt / down frames.
+- Ura-Suzunari looks like the other side: dry riverbed with children's stone towers, festival stalls, red lanterns in
+  the air, torii across the road, the station sign reads KISARAGI, and its own music (slow taiko, a slightly flat flute,
+  bells played backwards).
+- Enemy shield pips / "??" readouts hidden in Suzunari.
+- Tests: ura_test 30 checks (incl. both race outcomes).
+- Open: Ura still uses the Suzunari map underneath (lore says it IS the same town); the race cat is a sprite, not an
+  enemy you can hit; no gamepad rumble or sound cue for the countdown.

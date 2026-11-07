@@ -165,7 +165,15 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `bell_seconds` -> toast; x2 -> thrown out, `Clock.next_day()`, one lore entry forgotten. Story beats enter with fx
   `enter_ura: rin|riverbed`; after meeting Rin (flag `met_rin`) the "ThousandthStep" Interactable at the top of the 999
   (4,10) lets you go over on your own at Omagatoki (goal `free`). Weapons show Suzunari names (`weapons.json
-  suzunari_name`: Umbrella, Salt Throw...). Test: `tools/ura_test.gd`; shots: `tools/shot_ura.gd -- <dir>`.
+  suzunari_name`: Umbrella, Salt Throw...). `_ura_dressing`: the river runs dry (stone bed + MultiMesh of children's
+  stone towers), festival stalls on the shopping street, floating red lanterns over the roads, torii across the road
+  (x 8/26/46), the station sign reads KISARAGI. Music `ura_festival` (gen_music_suzunari.py). Kasha sprite = variant
+  `kasha` (`sprite_forge.py kasha`: two flame-tipped tails, `KASHA_ANIMS` pounce/charge/hurt/dead). Enemy shield pips
+  and "??" readouts are hidden in the Suzunari theme. Test: `tools/ura_test.gd`; shots: `tools/shot_ura.gd -- <dir>`.
+- Races (`Week.race(spec)`, fx `race`; `Suzunari.start_race`): a scene you have to run - kind `cat` (the two-tailed
+  cat runs off along open street, catch it within 2.4 m) or `lantern` (reach a lantern at `to`); `seconds` (at least
+  distance/4.5 + 6 unless `exact`), countdown on the objective line, then `ok` / `fail` {say, fx}. Used by the relay
+  (week 7) and the hill on the 13th (week 10).
 - Story flow: `Week.marker()` = place of the next pending beat (lantern `StoryMarker` + `marker_hint` "(NE 85 m)" on
   the objective line); missed beats carry over one day (`_candidates`, `"carry": false` to stop it); weekends and
   holidays open Aunt Haruka's menu at home before noon (`data/weekend.json`, `weekend_menu`: shop / fishing / study /

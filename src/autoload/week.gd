@@ -359,6 +359,8 @@ func play_beat(bt: Dictionary) -> void:
 			_busy = false
 			enter_ura(str(fx["enter_ura"]))
 			return
+		elif fx.has("race"):
+			await race(fx["race"])
 	_busy = false
 
 
@@ -603,3 +605,19 @@ func leave_ura(thrown_out: bool = false) -> void:
 		return
 	Clock.advance(maxi(0, Clock.NIGHT + 10 - Clock.minute()))
 	Router.goto(Router.SUZUNARI, {"spawn_tile": [4, 21]})
+
+
+# --- Races: a scene you have to run (the relay cat, the lantern on the hill) -------------------------------
+
+## fx race {kind: cat|lantern, seconds, to [x, z] (lantern), speed (cat), speaker, ok {say, fx}, fail {say, fx}}:
+## the level spawns the target, you have `seconds` to reach it, then the matching outcome plays.
+func race(spec: Dictionary) -> void:
+	var lvl := _level()
+	var hud := _hud()
+	var won := false
+	if lvl and lvl.has_method("start_race"):
+		won = await lvl.start_race(spec)
+	var res: Dictionary = spec.get("ok" if won else "fail", {})
+	var lines := Town.apply_fx(res.get("fx", {}))
+	if hud:
+		await hud.say(str(spec.get("speaker", "")), fill(str(res.get("say", ""))) + ("\n" + lines if lines != "" else ""))

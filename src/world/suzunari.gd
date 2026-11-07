@@ -55,7 +55,7 @@ func _setup() -> void:
 	else:
 		ura_goal = str(Router.params.get("goal", "free"))
 		Game.location_name = "Ura-Suzunari"
-		music = "suzunari_dusk"
+		music = "ura_festival"
 		palette["bg"] = "#4a0e1c"
 		palette["fog"] = "#8a2236"
 		palette["fog_density"] = 0.011
@@ -544,6 +544,7 @@ func _build_ura() -> void:
 			"hostile": true, "elite": true})
 	if Arsenal.owned("melee").is_empty():
 		Game.flags["weapons"] = {"melee": ["pipe"], "ranged": ["sidearm"]}
+	_ura_dressing()
 	# The way out: back down the thousandth step.
 	var ex: Array = u.get("exit", [4, 19])
 	var it := Interactable.new()
@@ -560,6 +561,102 @@ func _build_ura() -> void:
 	_apply_light()
 	if hud and hud.has_method("toast"):
 		hud.toast("Ura-Suzunari. Wild kasha hunt here: MELEE / FIRE to fight, ROLL to dodge.", Color(1.0, 0.6, 0.6))
+
+
+## What makes the other side look like the other side (LORE 1.6, 7.4): the river runs dry and children's stone
+## towers stand on its bed, festival stalls line the shopping street, red lanterns hang in the air over the roads,
+## torii stand where there were none, and the station's sign says Kisaragi.
+func _ura_dressing() -> void:
+	var jp = build.get("jp")
+	var root := Node3D.new()
+	root.name = "UraDressing"
+	add_child(root)
+	var T := LevelBuilder.TILE
+	var stone: Material = jp.prop_mat("stone", Color(0.46, 0.43, 0.42)) if jp else StandardMaterial3D.new()
+	var rng2 := RandomNumberGenerator.new()
+	rng2.seed = 1868
+	var bed_cells: Array[Vector2i] = []
+	for z in range(builder.height):
+		if z >= 50:
+			break  # the sea stays the sea
+		var x0 := -1
+		for x in range(builder.width + 1):
+			var water: bool = x < builder.width and builder.cell(x, z) == "~"
+			if water:
+				bed_cells.append(Vector2i(x, z))
+				if x0 < 0:
+					x0 = x
+			elif x0 >= 0:
+				var length := (x - x0) * T
+				builder.add_mesh(root, builder.box(Vector3(length, 0.24, T)), stone, Vector3(x0 * T + length * 0.5, 0.12, z * T + T * 0.5), 0.0, false)
+				x0 = -1
+	# Children's stone towers on the dry bed (sai no kawara).
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = builder.box(Vector3(0.34, 0.16, 0.28))
+	var xforms: Array[Transform3D] = []
+	for i in mini(150, bed_cells.size() * 3):
+		var c: Vector2i = bed_cells[rng2.randi() % bed_cells.size()]
+		var base := builder.center(c.x, c.y) + Vector3(rng2.randf_range(-0.8, 0.8), 0.32, rng2.randf_range(-0.8, 0.8))
+		var h := rng2.randi_range(2, 5)
+		for k in h:
+			var sc := 1.0 - 0.14 * k
+			xforms.append(Transform3D(Basis(Vector3.UP, rng2.randf() * TAU).scaled(Vector3(sc, 1.0, sc)), base + Vector3(0, 0.15 * k, 0)))
+	mm.instance_count = xforms.size()
+	for i in xforms.size():
+		mm.set_instance_transform(i, xforms[i])
+	var towers := MultiMeshInstance3D.new()
+	towers.multimesh = mm
+	towers.material_override = stone
+	root.add_child(towers)
+	# Festival stalls along the shopping street, lanterns in the air over the roads.
+	var wood: Material = jp.prop_mat("wood", Color(0.55, 0.36, 0.24)) if jp else StandardMaterial3D.new()
+	var cloth := StandardMaterial3D.new()
+	cloth.albedo_color = Color(0.85, 0.18, 0.2)
+	var glow := StandardMaterial3D.new()
+	glow.albedo_color = Color(1.0, 0.55, 0.3)
+	glow.emission_enabled = true
+	glow.emission = Color(1.0, 0.4, 0.2)
+	glow.emission_energy_multiplier = 2.4
+	for x in [4, 9, 17, 27, 33]:
+		var p := builder.center(x, 38) + Vector3(0, 0, -0.9)
+		builder.add_mesh(root, builder.box(Vector3(1.8, 0.9, 0.8)), wood, p + Vector3(0, 0.45, 0))
+		var roof := builder.add_mesh(root, builder.box(Vector3(2.1, 0.06, 1.3)), cloth, p + Vector3(0, 2.0, 0.2))
+		roof.rotation.x = 0.3
+		for sx in [-0.9, 0.9]:
+			builder.add_mesh(root, builder.box(Vector3(0.08, 2.0, 0.08)), wood, p + Vector3(sx, 1.0, 0.55), 0.0, false)
+			builder.add_mesh(root, builder.cylinder(0.16, 0.3, 8), glow, p + Vector3(sx * 0.7, 1.6, 0.75), 0.0, false)
+	var lm := MultiMesh.new()
+	lm.transform_format = MultiMesh.TRANSFORM_3D
+	lm.mesh = builder.cylinder(0.2, 0.36, 8)
+	var lx: Array[Transform3D] = []
+	for z in [32, 33, 43]:
+		var x := 0
+		while x < builder.width:
+			if builder.cell(x, z) == ",":
+				lx.append(Transform3D(Basis(), builder.center(x, z) + Vector3(0, 3.2 + 0.25 * sin(x), 0)))
+			x += 2
+	lm.instance_count = lx.size()
+	for i in lx.size():
+		lm.set_instance_transform(i, lx[i])
+	var lanterns := MultiMeshInstance3D.new()
+	lanterns.multimesh = lm
+	lanterns.material_override = glow
+	lanterns.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(lanterns)
+	# Torii across the road where the real town has none.
+	var red: Material = jp.prop_mat("vermilion", Color(0.85, 0.24, 0.15)) if jp else StandardMaterial3D.new()
+	for x in [8, 26, 46]:
+		var p := builder.center(x, 32) + Vector3(0, 0, T * 0.5)
+		for sz in [-1.9, 1.9]:
+			builder.add_mesh(root, builder.cylinder(0.15, 3.6, 8), red, p + Vector3(0, 1.8, sz))
+		var top := builder.add_mesh(root, builder.box(Vector3(0.42, 0.24, 4.6)), red, p + Vector3(0, 3.62, 0))
+		top.position.y = 3.62
+		builder.add_mesh(root, builder.box(Vector3(0.3, 0.18, 4.0)), red, p + Vector3(0, 3.0, 0), 0.0, false)
+	# The station that isn't there (Kisaragi, LORE 1.6).
+	for l in find_children("*", "Label3D", true, false):
+		if str(l.text).contains("SUZUNARI  STATION"):
+			l.text = "KISARAGI  STATION"
 
 
 func _spawn_echo(e: Dictionary, solid: bool) -> void:
@@ -735,3 +832,69 @@ func _make_marker() -> Node3D:
 	l.light_energy = 1.2
 	root.add_child(l)
 	return root
+
+
+# --- Races (Week.race) -------------------------------------------------------------------------------------
+
+## Spawn the race target and wait: true if the player reaches it in time. "cat" = the two-tailed cat running
+## away along the street; "lantern" = a lantern on the hill at `to`. The objective line counts down.
+func start_race(spec: Dictionary) -> bool:
+	if player == null:
+		return false
+	var kind := str(spec.get("kind", "lantern"))
+	var target := Node3D.new()
+	target.name = "RaceTarget"
+	add_child(target)
+	var spr := BillboardSprite.new()
+	var from := player.global_position
+	var dir := Vector3.ZERO
+	if kind == "cat":
+		spr.set_look(Week.ura.get("kasha", {}).get("look", {}))
+		target.add_child(spr)
+		# Start ~9 m away in whichever direction has open street, so it's always a chase.
+		var best := from
+		for k in 8:
+			var d8 := Vector3.FORWARD.rotated(Vector3.UP, k * PI / 4.0)
+			var w8 := nearest_walkable(from + d8 * 9.0)
+			if w8.distance_to(from) > best.distance_to(from):
+				best = w8
+				dir = d8
+		target.global_position = best + Vector3(0, 0.05, 0)
+		spr.play("run")
+	else:
+		var to: Array = spec.get("to", [36, 3])
+		target.global_position = builder.center(int(to[0]), int(to[1])) + Vector3(0, 0.1, 0)
+		var lantern := _make_marker()
+		lantern.reparent(target, false)
+		lantern.position = Vector3(0, 1.4, 0)
+	var dist := from.distance_to(target.global_position)
+	var seconds := float(spec.get("seconds", 20)) if bool(spec.get("exact", false)) else maxf(float(spec.get("seconds", 20)), dist / 4.5 + 6.0)
+	var speed := float(spec.get("speed", 3.4))
+	var t := 0.0
+	var won := false
+	if hud and hud.has_method("toast"):
+		hud.toast(str(spec.get("toast", "RUN!")), Color(1.0, 0.55, 0.4))
+	while t < seconds:
+		await get_tree().process_frame
+		if not is_inside_tree() or player == null:
+			break
+		var d := get_process_delta_time()
+		if hud and hud._dialogue_open:
+			continue
+		t += d
+		if kind == "cat":
+			var p2 := target.global_position + dir * speed * d
+			var w := nearest_walkable(p2)
+			if w.distance_to(p2) > 0.6:  # hit a wall: turn along it
+				dir = dir.rotated(Vector3.UP, PI * 0.5)
+			else:
+				target.global_position = Vector3(p2.x, target.global_position.y, p2.z)
+			spr.set_facing(dir)
+		Week.marker_hint = "  (RUN! %d s)" % int(ceil(seconds - t))
+		if player.global_position.distance_to(target.global_position) < 2.4:
+			won = true
+			break
+	Week.marker_hint = ""
+	if is_instance_valid(target):
+		target.queue_free()
+	return won

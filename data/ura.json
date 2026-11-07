@@ -3,7 +3,7 @@
  "bell_seconds": 150,
  "arrive": [4, 20],
  "exit": [4, 19],
- "kasha": {"count": 7, "look": {"variant": "cat_b", "colors": {"hair": "#160b12", "scarf": "#6a1220", "iris": "#ffb02e", "dark": "#080306"}}},
+ "kasha": {"count": 7, "look": {"variant": "kasha", "colors": {"hair": "#160b12", "scarf": "#6a1220", "iris": "#ffb02e", "dark": "#080306", "glow": "#ff8a2e"}}},
  "enter_text": "The thousandth step takes your weight. The world turns red. The rain falls upward, slowly, like it's being called home. Below, Suzunari is lit for a festival that never ends - and the people in it are shadows. Somewhere a bell is counting.",
  "first_bell": "Far away, a bell rings once. (Leave down the steps before it rings twice.)",
  "second_bell": "The bell rings twice. The red sky folds like paper. You wake up on the 999th step in grey morning rain, and a whole day has gone by without you. Something you knew is gone too.",

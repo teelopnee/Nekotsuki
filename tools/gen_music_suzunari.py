@@ -4,6 +4,8 @@ ODD-SPACE synthwave (docs/REVIEW.md hard review #5).
   suzunari_morning    - yo scale on D, koto plucks, wind chimes, soft pad (morning -> afternoon)
   suzunari_dusk       - miyako-bushi on E, breathy shakuhachi, low koto ostinato, temple bell (Omagatoki)
   suzunari_rain_night - A minor pentatonic lullaby on a soft piano, pad, rain bed (night, or when Amane cries)
+  ura_festival        - Ura-Suzunari: a festival that never ends - slow taiko, a shinobue flute a little out of tune,
+                        bells played backwards, a drone that never resolves
 Writes assets/audio/music/<name>.ogg (ffmpeg + libvorbis). python3 tools/gen_music_suzunari.py"""
 import os, subprocess, tempfile, wave
 import numpy as np
@@ -235,8 +237,43 @@ def rain_night():
     write_ogg("suzunari_rain_night", reverb(buf, 3.0, 0.38, 7) + rain + drops * 0.6)
 
 
+def taiko(dur, vel=1.0, rng=None):
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    f = 62.0 * np.exp(-t * 6.0) + 48.0
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 5.0)
+    hit = rng.standard_normal(n) * np.exp(-t * 60.0) * 0.3
+    return (body + hit) * vel * 0.7
+
+
+def ura_festival():
+    rng = np.random.default_rng(1868)
+    bpm, bars, bpb = 52, 12, 4
+    spb = 60.0 / bpm
+    buf = np.zeros(int(bars * bpb * spb * SR))
+    insen = [64, 65, 69, 71, 74, 76, 77, 81]  # E in-scale, the old festival mode
+    mel = melody(rng, insen, bars, bpb, 4, [[3, 1], [2, 2], [4], [1, 1, 2]], rest_p=0.25)
+    for beat, ln, i in mel:
+        # shinobue: a high bamboo flute, slightly flat, breathy
+        add(buf, shakuhachi(mtof(insen[i] + 12) * 0.992, ln * spb * 0.9, 0.55, rng), beat * spb)
+    for b in range(bars * bpb):
+        if b % 4 == 0:
+            add(buf, taiko(1.6, 1.0, rng), b * spb)
+        elif b % 4 == 2:
+            add(buf, taiko(1.2, 0.55, rng), b * spb)
+        elif rng.random() < 0.3:
+            add(buf, taiko(0.8, 0.3, rng), (b + 0.5) * spb)
+    for _ in range(14):  # bells played backwards: they swell instead of ringing out
+        c = chime(mtof(int(rng.choice([76, 81, 83, 88]))), 2.2, 0.7)[::-1]
+        add(buf, c, rng.uniform(0, len(buf) / SR))
+    for bar in range(bars):
+        add(buf, pad([mtof(40), mtof(47), mtof(53)], bpb * spb * 1.3, 1.2), bar * bpb * spb)  # E-B-F: never resolves
+    write_ogg("ura_festival", reverb(buf, 4.0, 0.5, 11))
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     morning()
     dusk()
     rain_night()
+    ura_festival()

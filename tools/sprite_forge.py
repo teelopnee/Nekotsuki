@@ -1281,6 +1281,9 @@ def build_grub(cfg, facing, anim, t):
 
 CAT_ANIMS = [("idle", 6, 6, True), ("walk", 6, 10, True), ("run", 6, 14, True), ("sit", 6, 5, True),
              ("wash", 6, 8, True), ("loaf", 4, 3, True)]
+# Kasha (Ura-Suzunari's wild cat-demons, LORE 7.4): the enemy set - pounce (= slash1/slash2/slash3/shoot), recoil, down.
+KASHA_ANIMS = [("slash1", 6, 14, False), ("slash2", 6, 14, False), ("slash3", 6, 14, False), ("shoot", 6, 12, False),
+               ("charge", 4, 8, True), ("hurt", 4, 10, False), ("dead", 4, 6, False)]
 
 
 def build_cat(cfg, facing, anim, t):
@@ -1294,12 +1297,24 @@ def build_cat(cfg, facing, anim, t):
     sit = anim in ("sit", "wash")
     loaf = anim == "loaf"
     lift = 0.6 * abs(math.sin(t * tau * 2)) if anim in ("walk", "run") else 0.0
-    pitch = -0.55 if sit else 0.0
+    pounce = anim in ("slash1", "slash2", "slash3", "shoot")
+    hurt = anim == "hurt"
+    dead = anim == "dead"
+    reach = 0.0
+    if pounce:
+        k = math.sin(math.pi * t)  # crouch -> leap -> land
+        lift = 2.4 * k
+        reach = 2.8 * k
+    if anim == "charge":
+        lift = -0.6
+    if dead:
+        loaf = True
+    pitch = -0.55 if sit else (0.35 if pounce and t < 0.5 else (-0.2 if hurt else 0.0))
     up = rot_axis(fr.U, fr.R, pitch)
     fw = rot_axis(fr.F, fr.R, pitch)
     basis = [fr.R, up, fw]
     by = (2.6 if loaf else (4.6 if sit else 4.2)) + lift
-    body = fr.w(0, by, -0.8 if sit else 0)
+    body = fr.w(0, by, (-0.8 if sit else 0) + reach - (1.0 if hurt else 0.0))
     prims.append(P_ell(body, [2.6 * s, 2.3 * s, 4.4], basis, "hair"))
     prims.append(P_ell(body - up * 0.7 + fw * 0.6, [1.9 * s, 1.5, 3.0], basis, "scarf"))
     head = (body + fw * 4.2 + up * 2.2) if not loaf else body + fw * 3.6 + up * 0.6
@@ -1310,7 +1325,7 @@ def build_cat(cfg, facing, anim, t):
     for sd in (-1, 1):
         eb = head + fr.R * sd * 1.4 + fr.U * 1.9
         prims.append(P_cone(eb, eb + fr.R * sd * 0.6 + fr.U * 2.2 + fr.F * 0.3, 1.1, 0.2, "hair"))
-        closed = loaf or (anim == "idle" and 0.7 <= t < 0.8) or anim == "wash"
+        closed = (loaf and not dead) or (anim == "idle" and 0.7 <= t < 0.8) or anim == "wash" or hurt
         DECALS.append(("dot", head + fr.F * 2.55 + fr.R * sd * 1.0 + fr.U * 0.35, fr.F,
                        {"slot": "dark" if closed else "iris", "band": 3 if closed else 4}))
     if not loaf:
@@ -1323,10 +1338,22 @@ def build_cat(cfg, facing, anim, t):
                 continue
             top = body + fr.R * sx * 1.4 + fw * sz * 2.6 - up * 1.2
             foot = fr.w(sx * 1.4, 0.5, (body - fr.w(0, 0, 0)).dot(fr.F) + sz * 2.6 + swing)
+            if pounce and sz > 0:  # front paws thrown forward, claws out
+                foot = top + fw * 2.6 + up * (0.4 + 1.2 * math.sin(math.pi * t))
             if anim == "wash" and i == 0:
                 foot = head + fr.F * 1.6 - fr.U * 0.6 + fr.R * 0.4 * math.sin(t * tau * 2)
             prims.append(P_cone(top, foot, 1.0, 0.8, "hair"))
     tb = body - fw * 4.0 + up * 0.8
+    if cfg.get("tail") == "two":
+        # Nekomata / kasha: two tails, each tipped with a small flame.
+        for sd in (-1, 1):
+            sway = 0.9 * g * sd
+            mid = tb - fr.F * 1.2 + fr.U * 3.4 + fr.R * (sd * 1.2 + sway)
+            tip = mid + fr.U * 2.8 + fr.R * (sd * 0.8 + sway * 1.4) - fr.F * 0.4
+            prims.append(P_cone(tb, mid, 0.9, 0.7, "hair"))
+            prims.append(P_cone(mid, tip, 0.7, 0.4, "hair"))
+            prims.append(P_sphere(tip + fr.U * 0.6, 0.9 + 0.25 * math.sin(t * tau * 3 + sd), "glow"))
+        return prims
     if cfg.get("tail") == "bob":
         prims.append(P_sphere(tb, 1.4, "hair"))
     else:
@@ -1435,6 +1462,7 @@ def variant_list():
     vs["cat_a"] = ("cat", {"tail": "long"}, ["cat"])
     vs["cat_b"] = ("cat", {"tail": "bob"}, ["cat"])
     vs["cat_c"] = ("cat", {"tail": "long", "chonk": True}, ["cat"])
+    vs["kasha"] = ("cat", {"tail": "two", "chonk": True, "kasha": True}, ["cat", "yokai"])
     vs["drone"] = ("drone", {}, ["drone"])
     vs["drone_quad"] = ("drone", {"quad": True}, ["drone"])
     vs["grub"] = ("grub", {}, ["bug"])
@@ -1446,7 +1474,8 @@ def forge(name, spec):
     rows = []
     meta = {"frame_w": FRAME_W, "frame_h": FRAME_H, "foot_row": FOOT_ROW, "indexed": True,
             "dirs": list(DIRS.keys()), "tags": tags, "cfg": cfg, "anims": {}}
-    anims = CAT_ANIMS if kind == "cat" else ANIMS + (EMOTE_ANIMS if cfg.get("school") else [])
+    anims = (CAT_ANIMS + (KASHA_ANIMS if cfg.get("kasha") else [])) if kind == "cat" \
+        else ANIMS + (EMOTE_ANIMS if cfg.get("school") else [])
     max_frames = max(a[1] for a in anims)
     for (aname, nframes, fps, loop) in anims:
         meta["anims"][aname] = {"fps": fps, "loop": loop, "frames": nframes, "rows": {}}

@@ -130,6 +130,34 @@
      "text": "Last leg. {rival_short} has the baton. Halfway down the straight the sky goes black in a single second and it pours, and on the finish line - in front of the whole school - sits a black cat the size of a dog, with two tails, staring at {rival_short} with gold, crying eyes. Nobody else seems to see it. {rival_short}'s foot slides on the wet track.",
      "choices": [
       {
+       "t": "Run for the cat before it reaches {rival_short}!",
+       "say": "You're already moving.",
+       "fx": {
+        "race": {
+         "kind": "cat",
+         "seconds": 14,
+         "speed": 3.6,
+         "toast": "CATCH THE CAT!",
+         "speaker": "",
+         "ok": {
+          "say": "You get a hand on it - smoke, wet fur, a heartbeat far too fast - and it twists round and looks at you with Amane's eyes. \"Senpai?\" it says, in his voice, confused, half asleep. Then it's gone. {rival_short} crosses the line on their feet. In the Red tent, a hooded first-year wakes with a gasp, holding his own wrist.",
+          "fx": {
+           "warn_rival": true,
+           "name_ikiryo": true,
+           "bond": 2
+          }
+         },
+         "fail": {
+          "say": "It's always just ahead of you, and then it isn't anywhere. Behind you, on the track, {rival_short} goes down hard in a puddle that wasn't there a second ago. The whole field goes quiet.",
+          "fx": {
+           "tears": 1.0,
+           "luck": -1
+          }
+         }
+        }
+       }
+      },
+      {
        "t": "Shout his name at the cat: \"AMANE!\"",
        "say": "The cat flinches as if you'd hit it. It looks at you - right at you - and for one second it is a crying boy in a hood. Then it isn't there. {rival_short} stumbles, catches themselves, and crosses the line. In the Red team's tent, Amane wakes up with a start from a nap he doesn't remember taking.",
        "fx": {
