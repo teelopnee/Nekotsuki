@@ -90,10 +90,13 @@ func goto(path: String, new_params: Dictionary = {}, fade: float = 0.35) -> void
 
 
 ## NEKOTSUKI episode 0: a new life as Asagiri Toru, first morning in Suzunari.
-func new_suzunari(player_name: String = "Toru") -> void:
+## NEW GAME: Toru's given name + the origin tags picked on the creator screen (empty = canon Toru).
+func new_suzunari(player_name: String = "Toru", origin: Dictionary = {}) -> void:
 	Game.new_game(player_name, {}, -1, CharacterLook.cast_look("toru"), "", 17)
 	Game.location_id = "suzunari"
 	Game.location_name = "Suzunari"
+	Ledger.clear_mirror()
+	Toru.apply_origin(origin)
 	goto(SUZUNARI)
 
 

@@ -162,6 +162,8 @@ func _ring(id: String) -> void:
 			parent_p *= 0.7
 		"high":
 			parent_p = 1.0 - float(ans.get("self_high", 0.7))
+	if Toru.quirk("promise_breaker"):
+		parent_p = minf(1.0, parent_p + 0.2)  # kotodama: they send a parent to the door instead
 	if randf() < parent_p:
 		var pl := People.parent_line(id, "ring_parent")
 		await hud.say(pl.who, pl.t)

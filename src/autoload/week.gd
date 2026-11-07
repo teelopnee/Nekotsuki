@@ -163,8 +163,12 @@ func _lesson(b: String, late: int) -> void:
 			s["study"] = int(s["study"]) + 1
 			Amane.add_closeness("Makabe-sensei", 1)
 			notes.append("> Studied (%d)" % int(s["study"]))
+			var sl := Toru.add("study", 2)
+			if sl != "":
+				notes.append(sl)
 		"doze":
 			Game.hp = minf(Game.hp + 15.0, Game.max_hp())
+			Toru.add("stamina", 3, false)
 			notes.append("> Rested")
 		"window":
 			if Amane.st()["met"] and res.contains("hood"):
@@ -194,14 +198,14 @@ func _exam(b: String, late_text: String, notes: Array[String]) -> void:
 	if late_text.contains("late") or late_text.contains("Late"):
 		text = late_text.split("\n\n")[0] + "\n\n" + text
 	var picked: String = await hud.say("", text, menu)
-	var score: int = int(s["study"]) + int({"careful": 2, "guess": 0, "help": -1, "clock": 1}.get(picked, 0))
+	var score: int = int(s["study"]) + int(Toru.stat("study") / 15) + int({"careful": 2, "guess": 0, "help": -1, "clock": 1}.get(picked, 0))
 	var grade := "A" if score >= 9 else ("B" if score >= 6 else ("C" if score >= 3 else "D"))
 	if picked == "help":
 		Amane.add_closeness(Amane.FRIEND, 6)
 		notes.append("> Hayate +6")
 	Game.flags["exam_w%d_%s" % [week_no(), b]] = grade
 	var res := str(ex.get("results", {}).get(picked, "")) + "\n" + str(ex.get("grades", {}).get(grade, ""))
-	notes.append("> Grade: %s (studied %d)" % [grade, int(s["study"])])
+	notes.append("> Grade: %s (studied %d · Study %d)" % [grade, int(s["study"]), Toru.stat("study")])
 	var end_at: int = AM[1] if b == "am" else PM[1]
 	Clock.advance(maxi(0, end_at - Clock.minute()))
 	await hud.say("", res + "\n" + "\n".join(notes))
@@ -211,6 +215,11 @@ func _exam(b: String, late_text: String, notes: Array[String]) -> void:
 func _truant(b: String) -> void:
 	var s := st()
 	today()["truant_" + b] = true
+	if Toru.quirk("see_through") and randf() < 0.5:
+		var h0 := _hud()
+		if h0 and h0.has_method("toast"):
+			h0.toast("Makabe-sensei reads the register and doesn't notice your name is missing. (See-through)", Color(0.8, 0.85, 1.0))
+		return
 	s["truant"] = int(s["truant"]) + 1
 	Amane.add_closeness("Makabe-sensei", -3)
 	Amane.post("truant")
@@ -392,6 +401,7 @@ func before_day_end(hud: Node) -> void:
 			await play_beat(bt)
 	if Game.flags.has("ending"):
 		return
+	await Toru.day_end(hud)  # club attendance, debt, Saki's Sunday call, new quirks
 	if week_no() >= 13 and day_in_week() == 7:
 		# Tanabata can't be slept through: if you end the night early, you go up the steps anyway.
 		for bt in day_data().get("beats", []):
@@ -495,14 +505,19 @@ func ending(choice: String) -> void:
 	var e: Dictionary = endings.get("endings", {}).get(id, {})
 	Game.flags["ending"] = id
 	Game.flags["ending_choice"] = choice
+	Ledger.capture(str(e.get("title", id)))
 	if hud:
 		for page in e.get("pages", []):
 			await hud.say("", fill(str(page)))
 		var epi := ""
 		if bool(Game.flags.get("makoto_apologised", false)) and not id in ["god_returned", "two_of_us", "hidden"]:
 			epi = "\n\n" + fill(str(endings.get("family_epilogue", "")))
+		var goal := Toru.goal_epilogue(id)  # Toru's own goal (NEW GAME), one line
+		if goal != "":
+			epi += "\n\n" + fill(goal)
 		await hud.say("", "%s\n\n%s%s\n\n%s" % [str(e.get("title", id)).to_upper(), "\n".join(summary()), epi,
 			str(endings.get("end_card", "EPISODE 0 - END"))])
+		await Ledger.show_page(_level() if _level() else hud)  # Domyo and Dosho write the page
 	remember_ending(id)
 	Ledger.write()
 	Game.save_game()
@@ -547,8 +562,11 @@ func weekend_menu() -> void:
 		if str(a.id) == "friend" and who == "":
 			continue
 		menu.append({"id": str(a.id), "text": str(a.t).replace("{who}", who.split(" ")[-1] if who != "" else "")})
+	menu.append_array(Toru.weekend_items())  # part-time shifts still to come today
 	menu.append({"id": "", "text": "\"I'll decide as I go.\""})
 	var picked: String = await hud.say("Asagiri Haruka", Amane.fill(_pick(weekend.get("ask", []))), menu)
+	if picked.begins_with("job:"):
+		await Toru.work(picked.substr(4), hud)
 	for a in weekend.get("activities", []):
 		if str(a.id) != picked or picked == "":
 			continue

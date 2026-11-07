@@ -83,6 +83,7 @@ func _post_build() -> void:
 	_wire_links()
 	_rooms()
 	_features()
+	_club_spots()
 	_people()
 	_crowd()
 	_build_motes()
@@ -241,6 +242,33 @@ func _features() -> void:
 		add_child(it)
 		it.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.9, 0.8)
 		it.interacted.connect(func(_p): use_feature(f))
+
+
+## Club rooms on this floor + the recruitment board at the 1F entrance (data/clubs.json, Toru autoload).
+func _club_spots() -> void:
+	var b: Dictionary = Toru.clubs.get("board", {})
+	if floor_id == str(b.get("floor", "1f")):
+		var bt: Array = b.get("tile", [15, 12])
+		var it := Interactable.new()
+		it.name = "ClubBoard"
+		it.prompt = str(b.get("prompt", "Club board"))
+		it.radius = 1.6
+		add_child(it)
+		it.global_position = builder.center(int(bt[0]), int(bt[1])) + Vector3(0, 0.9, 0.6)
+		it.interacted.connect(func(_p): Toru.use_board(hud))
+	var all: Dictionary = Toru.clubs.get("clubs", {})
+	for id in all:
+		var w: Dictionary = all[id].get("where", {})
+		if str(w.get("level", "")) != "school" or str(w.get("floor", "")) != floor_id:
+			continue
+		var t: Array = w.get("tile", [0, 0])
+		var it := Interactable.new()
+		it.name = "Club_" + str(id)
+		it.prompt = str(all[id].get("prompt", all[id].get("name", id)))
+		it.radius = 1.6
+		add_child(it)
+		it.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.9, 0.4)
+		it.interacted.connect(func(_p): Toru.use_club(id, hud))
 
 
 ## Pick the first variant whose `when` matches (Amane.ok grammar + after/before minutes + chance) and play it.
@@ -573,8 +601,13 @@ func end_day() -> void:
 	_ending = true
 	Clock.running = false
 	await Week.before_day_end(hud)
-	Clock.next_day()
 	Game.location_id = "suzunari"
+	if not Game.flags.has("ending") and Amane.cat_night_due():
+		Game.flags["cat_night"] = {"day": Clock.day(), "rival": Amane.rival()}
+		Game.save_game()
+		Router.goto(Router.SUZUNARI)  # tonight you are the cat
+		return
+	Clock.next_day()
 	Game.save_game()
 	Ledger.write()
 	Router.goto(Router.SUZUNARI)

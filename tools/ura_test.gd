@@ -95,7 +95,7 @@ func _process(_d: float) -> bool:
 			_buttons(hud)[0].pressed.emit()
 			_close_all(hud)
 			# Stay too long: the second bell throws you out, a day later.
-			lvl._ura_t = float(week.ura.bell_seconds) * 2.0 + 1.0
+			lvl._ura_t = lvl.bell_seconds() * 2.0 + 1.0
 			lvl._ura_bells = 1
 			lvl._ura_process(0.01)
 			_check(hud._dialogue_open and str(hud._dialogue_text.text).contains("twice"), "the bell rings twice")

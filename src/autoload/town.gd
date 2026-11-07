@@ -154,7 +154,8 @@ func present(sp: Dictionary, minute: int = -1) -> bool:
 	if People.hides(str(sp.get("id", "")), m):
 		return false  # at home, on the road, or walking with you (People autoload)
 	for w in sp.get("hours", []):
-		if m >= int(w[0]) and m < int(w[1]):
+		var early := Toru.ghosts_early() if int(w[0]) >= 1080 else 0  # night spirits show themselves early to some
+		if m >= int(w[0]) - early and m < int(w[1]):
 			if sp.has("needs") and not Amane.ok(sp["needs"]):
 				return false
 			return true
@@ -283,6 +284,12 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 				if not again:
 					Week.st()["study"] = int(Week.st()["study"]) + int(v)
 					lines.append("> Studied +%d" % int(v))
+					Toru.add("study", 2.0 * float(v))
+			"stats":
+				if not again:
+					var sl := Toru.add_stats(v)
+					if sl != "":
+						lines.append(sl)
 			"warn_rival":
 				if not again and Amane.rival() != "":
 					Amane.warn(Amane.rival())

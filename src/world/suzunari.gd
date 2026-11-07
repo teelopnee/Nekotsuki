@@ -15,6 +15,12 @@ var _ending := false
 ## Ura-Suzunari (data/ura.json, Week.enter_ura): the same map at an endless red dusk.
 var ura := false
 var ura_goal := ""
+var cat_night := false  ## playing Amane's two-tailed cat tonight (data/cat_night.json)
+var cat := {}
+var _cat_t := 0.0
+var _cat_done := false
+var _cat_warned := false
+var _cat_rival_pos := Vector3.ZERO
 var _ura_t := 0.0
 var _ura_bells := 0
 var _marker: Node3D
@@ -50,6 +56,17 @@ func _setup() -> void:
 	Game.location_id = "suzunari"
 	Game.location_name = "Suzunari"
 	ura = bool(Router.params.get("ura", false)) and bool(Game.flags.get("in_ura", false))
+	cat_night = not ura and Game.flags.has("cat_night")
+	if cat_night:
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string("res://data/cat_night.json"))
+		cat = parsed if parsed is Dictionary else {}
+		Game.location_name = "Suzunari, 23:40"
+		music = "suzunari_rain_night"
+		palette["bg"] = "#070a18"
+		palette["fog"] = "#151b36"
+		palette["fog_density"] = 0.007
+		palette["sun"] = "#8ea6ff"
+		palette["ambient"] = "#3a4678"
 	if not ura:
 		Game.flags.erase("in_ura")
 	else:
@@ -93,13 +110,15 @@ func spawn_npc(role: String, pos: Vector3, recruit_id: String = "") -> NPC:
 
 func _post_build() -> void:
 	Game.set_deferred("air_billing_active", false)
-	Clock.running = true
+	Clock.running = not cat_night
+	if cat_night:
+		Clock.st()["minute"] = Clock.END_MIN - 2  # 23:40 in the story; the clock stands still all night
 	_build_rain()
 	_build_petals()
 	_build_motes()
 	_build_clouds()
 	var jp = build.get("jp")
-	if jp and not ura:
+	if jp and not ura and not cat_night:
 		var life := TownLife.new()
 		life.name = "TownLife"
 		add_child(life)
@@ -108,7 +127,7 @@ func _post_build() -> void:
 	var w := builder.width
 	var lanes := [[builder.center(-3, 32), builder.center(w + 2, 32)], [builder.center(w + 2, 33), builder.center(-3, 33)],
 		[builder.center(-3, 43), builder.center(w + 2, 43)], [builder.center(w + 2, 43), builder.center(-3, 43)]]
-	for i in (0 if ura else 6):
+	for i in (0 if ura or cat_night else 6):
 		var car := Critter.new()
 		car.kind = "streetcar"
 		car.style = "kei"
@@ -138,7 +157,7 @@ func _post_build() -> void:
 	_apply_light()
 	if not ura:
 		Cats.spawn_in(self, 8)
-	if not ura and not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
+	if not ura and not cat_night and not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
 		var h = NPC_SCENE.instantiate()
 		h.set_script(load("res://src/actors/hayate_npc.gd"))
 		actors.add_child(h)
@@ -148,9 +167,13 @@ func _post_build() -> void:
 		_build_ura.call_deferred()
 		_morning.call_deferred()
 		return
+	if cat_night:
+		_build_cat_night.call_deferred()
+		return
 	Town.spawn_in(self)
 	_school_doors()
 	_thousandth_step()
+	_work_spots()
 	if str(Amane.st()["pending"]) == "doorstep":
 		People.today("amane")["out"] = true  # he's on Senpai's doorstep, not at home
 	home = HomeVisits.new()
@@ -176,6 +199,37 @@ func _school_doors() -> void:
 		add_child(it)
 		it.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(LevelBuilder.TILE * 0.5, 0.9, -0.4)
 		it.interacted.connect(func(_p): enter_school(t))
+
+
+## Club places and part-time jobs out in town (data/clubs.json `where.level` = suzunari, Toru autoload).
+func _work_spots() -> void:
+	for kind in ["clubs", "jobs"]:
+		var all: Dictionary = Toru.clubs.get(kind, {})
+		for id in all:
+			var w: Dictionary = all[id].get("where", {})
+			if str(w.get("level", "")) != "suzunari":
+				continue
+			var t: Array = w.get("tile", [0, 0])
+			var it := Interactable.new()
+			it.name = "Work_" + str(id)
+			it.prompt = str(all[id].get("prompt", all[id].get("name", id)))
+			it.radius = 1.7
+			add_child(it)
+			it.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.9, 0)
+			var tag := Label3D.new()
+			tag.text = str(all[id].get("name", id)) + ("\n(part-time)" if kind == "jobs" else "")
+			tag.font_size = 30
+			tag.pixel_size = 0.006
+			tag.outline_size = 8
+			tag.modulate = Color(1.0, 0.88, 0.7)
+			tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+			tag.visibility_range_end = 13.0
+			tag.position = Vector3(0, 1.5, 0)
+			it.add_child(tag)
+			if kind == "clubs":
+				it.interacted.connect(func(_p): Toru.use_club(id, hud))
+			else:
+				it.interacted.connect(func(_p): Toru.use_job(id, hud))
 
 
 func enter_school(door: Array) -> void:
@@ -207,6 +261,9 @@ func _morning() -> void:
 	var wn := Week.morning_note()
 	if wn != "" and hud:
 		await hud.say("", wn)
+	var tn := Toru.morning_note()  # a captain's complaint, a line from Toru's past
+	if tn != "" and hud:
+		await hud.say("", tn)
 	if home:
 		await home.resume()
 	Week.level_ready()
@@ -238,6 +295,8 @@ func _set_rain(r: float) -> void:
 func _process(delta: float) -> void:
 	if ura:
 		_ura_process(delta)
+	elif cat_night:
+		_cat_process(delta)
 	else:
 		_marker_process(delta)
 	var r := float(Amane.st()["rain"]) if not ura else 0.8
@@ -359,6 +418,11 @@ func end_day() -> void:
 	_ending = true
 	Clock.running = false
 	await Week.before_day_end(hud)  # Haruka hears about lates/absences; day 7 closes week 1
+	if not Game.flags.has("ending") and Amane.cat_night_due():
+		Game.flags["cat_night"] = {"day": Clock.day(), "rival": Amane.rival()}
+		Game.save_game()
+		Router.goto(Router.SUZUNARI)  # tonight you are the cat (cat mode)
+		return
 	Clock.next_day()
 	Game.save_game()
 	Ledger.write()
@@ -716,6 +780,8 @@ func _spawn_rin(goal: Dictionary) -> void:
 func _rin_talk(goal: Dictionary) -> void:
 	if hud == null or hud._dialogue_open:
 		return
+	if not Game.flags.has("met_rin"):
+		Ledger.capture("Rin, the bell that waited 314 years")
 	await Town.scene("Rin", str(goal.get("text", "")), goal.get("choices", []), "ura_goal_rin")
 	ura_scene_done("goal_rin")
 
@@ -728,12 +794,17 @@ func ura_scene_done(id: String) -> void:
 			hud.toast("Get back to the steps before the second bell.", Color(1.0, 0.8, 0.6))
 
 
+## Seconds before the first bell on the other side (the second rings at twice this). Courage buys time.
+func bell_seconds() -> float:
+	return float(Week.ura.get("bell_seconds", 150)) + Toru.bell_bonus()
+
+
 func _ura_process(delta: float) -> void:
 	_set_rain(0.8)
 	if hud and hud._dialogue_open:
 		return
 	_ura_t += delta
-	var bell_s := float(Week.ura.get("bell_seconds", 150))
+	var bell_s := bell_seconds()
 	if _ura_bells == 0 and _ura_t >= bell_s:
 		_ura_bells = 1
 		Audio.play_sfx("chime")
@@ -878,6 +949,8 @@ func start_race(spec: Dictionary) -> bool:
 	if hud and hud.has_method("toast"):
 		hud.toast(str(spec.get("toast", "RUN!")), Color(1.0, 0.55, 0.4))
 	FX.countdown("start")
+	Ledger.capture("Running for it" if kind != "cat" else "Chasing a cat with two tails")
+	player.set_meta("speed_mult", Toru.race_speed())  # agility
 	var last_sec := int(ceil(seconds))
 	while t < seconds:
 		await get_tree().process_frame
@@ -904,7 +977,238 @@ func start_race(spec: Dictionary) -> bool:
 			won = true
 			break
 	Week.marker_hint = ""
+	if is_instance_valid(player):
+		player.remove_meta("speed_mult")
 	FX.countdown("win" if won else "lose")
 	if is_instance_valid(target):
 		target.queue_free()
 	return won
+
+
+# --- Cat spirit night (docs/GDD.md 4.11, data/cat_night.json) ------------------------------------------
+## The town sleeps; you are Amane's living spirit, a black cat with two tails. The rival's window decides the
+## night (plan / resist), Senpai's window ends it gently, friends' windows hold secrets, some things fall over.
+
+func _build_cat_night() -> void:
+	Clock.running = false
+	for n in get_tree().get_nodes_in_group("npc"):
+		if n == amane or n.is_in_group("cat"):
+			continue
+		n.visible = false
+		n.process_mode = Node.PROCESS_MODE_DISABLED
+	for it in find_children("*", "Interactable", true, false):
+		it.enabled = false  # shops and doors are shut
+	if amane:
+		amane.visible = false
+		amane.process_mode = Node.PROCESS_MODE_DISABLED
+		amane.global_position = Vector3(0, -40, 0)
+	var home: Array = cat.get("home_tile", [34, 5])
+	player.global_position = builder.center(int(home[0]), int(home[1])) + Vector3(0.5, 0.1, 0.8)
+	player.sprite.pixel_size = float(cat.get("pixel_size", 0.06))
+	player.sprite.set_look(cat.get("look", {}))
+	player.set_meta("speed_mult", float(cat.get("speed", 1.45)))
+	player.set_meta("cat_mode", true)
+	var glow = player.get("glow")
+	if glow is OmniLight3D:
+		glow.light_color = Color(0.72, 0.5, 1.0)  # a faint violet halo, so a black cat still reads at night
+		glow.light_energy *= 2.2
+		glow.omni_range = maxf(glow.omni_range, 4.5)
+	_cat_spots()
+	_apply_light()
+	_cat_intro.call_deferred()
+
+
+func _cat_fill(t: String) -> String:
+	var who := Amane.rival()
+	return Week.fill(Amane.fill(t)).replace("{rival_short}", who.split(" ")[-1] if who != "" else "him").replace("{rival}", who)
+
+
+func _cat_spot(tile: Array, prompt: String, cb: Callable, r: float = 1.8) -> Interactable:
+	var it := Interactable.new()
+	it.prompt = _cat_fill(prompt)
+	it.radius = r
+	it.add_to_group("cat_spot")
+	add_child(it)
+	it.global_position = builder.center(int(tile[0]), int(tile[1])) + Vector3(0, 0.6, 0)
+	it.interacted.connect(func(_p): cb.call(it))
+	return it
+
+
+func _cat_spots() -> void:
+	var tw: Dictionary = cat.get("toru_window", {})
+	_cat_spot(tw.get("tile", [26, 47]), str(tw.get("prompt", "Senpai's window")), func(_it): _cat_toru_window())
+	var rival := Amane.rival()
+	var pid := People.id_of(rival)
+	var door: Array = People.profile(pid).get("door", []) if pid != "" else []
+	if door.size() != 2:
+		var homes: Array = cat.get("rival_homes", [[41, 47]])
+		door = homes[absi(hash(rival)) % homes.size()]
+	_cat_rival_pos = builder.center(int(door[0]), int(door[1]))
+	var rw := _cat_spot(door, str(cat.get("rival_window", {}).get("prompt", "{rival_short}'s window")), func(_it): _cat_rival_window())
+	rw.name = "RivalWindow"
+	for sc in cat.get("secrets", []):
+		if str(sc.get("who", "")) == rival:
+			continue  # his window is the rival's window tonight
+		_cat_spot(sc.tile, str(sc.prompt), func(it): _cat_secret(sc, it))
+	for k in cat.get("knocks", []):
+		_cat_spot(k.tile, "Knock it over: " + str(k.prompt).to_lower(), func(it): _cat_knock(k, it), 1.5)
+	for r in cat.get("roofs", []):
+		_cat_spot(r.from, str(r.prompt), func(_it): _cat_hop(r.to), 1.4)
+
+
+func _cat_intro() -> void:
+	if hud == null:
+		return
+	var menu := []
+	for c in cat.get("intro_choices", []):
+		menu.append({"id": str(c.id), "text": str(c.t)})
+	var pick: String = await hud.say("", _cat_fill(str(cat.get("intro", ""))), menu)
+	if pick == "skip":
+		await hud.say("", _cat_fill(str(cat.get("skip", ""))))
+		finish_cat_night("skip")
+		return
+	if hud.has_method("toast"):
+		hud.toast("The town's cats lower their heads as you pass. Find %s's window - or Senpai's." % Amane.rival().split(" ")[-1], Color(0.8, 0.85, 1.0))
+
+
+func cat_objective() -> String:
+	var to := _cat_rival_pos - (player.global_position if player else Vector3.ZERO)
+	to.y = 0.0
+	var dirs := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+	var i := int(round(atan2(to.x, -to.z) / (PI / 4.0))) % 8
+	if i < 0:
+		i += 8
+	var where := "here" if to.length() < 5.0 else "%s %d m" % [dirs[i], int(to.length())]
+	var mins := maxi(0, int(ceil((float(cat.get("dawn_seconds", 240)) - _cat_t) / 60.0)))
+	return _cat_fill(str(cat.get("objective", ""))).replace("{where}", where).replace("{mins}", str(mins))
+
+
+func _cat_process(delta: float) -> void:
+	if _cat_done or (hud and hud._dialogue_open):
+		return
+	_cat_t += delta
+	if hud and hud.has_method("_refresh_objective") and int(_cat_t * 2.0) != int((_cat_t - delta) * 2.0):
+		hud._refresh_objective()  # the clock is stopped, so nothing else refreshes the distance / dawn line
+	var dawn := float(cat.get("dawn_seconds", 240))
+	if not _cat_warned and _cat_t >= dawn - 60.0:
+		_cat_warned = true
+		if hud and hud.has_method("toast"):
+			hud.toast("The sky over the sea is turning grey. One minute to dawn.", Color(0.85, 0.85, 1.0))
+	if _cat_t >= dawn:
+		_cat_dawn()
+
+
+func _cat_dawn() -> void:
+	_cat_done = true  # nothing else can start now
+	if hud:
+		await hud.say("", _cat_fill(str(cat.get("dawn", ""))))
+	_cat_done = false
+	finish_cat_night("dawn")
+
+
+func _cat_menu(choices: Array) -> Array:
+	var menu := []
+	for c in choices:
+		menu.append({"id": str(c.id), "text": _cat_fill(str(c.t))})
+	return menu
+
+
+func _cat_toru_window() -> void:
+	if _cat_done or hud == null:
+		return
+	var w: Dictionary = cat.get("toru_window", {})
+	Ledger.capture("A black cat at Senpai's window")
+	var pick: String = await hud.say("", _cat_fill(str(w.get("text", ""))), _cat_menu(w.get("choices", [])))
+	for c in w.get("choices", []):
+		if str(c.id) != pick:
+			continue
+		var lines := Town.apply_fx(c.get("fx", {}))
+		await hud.say("", _cat_fill(str(c.get("say", ""))) + ("\n" + lines if lines != "" else ""))
+		if c.has("outcome"):
+			finish_cat_night(str(c.outcome))
+
+
+func _cat_rival_window() -> void:
+	if _cat_done or hud == null:
+		return
+	var w: Dictionary = cat.get("rival_window", {})
+	var stage := mini(6, int(Amane.st()["plan"]["stage"]) + 1)
+	var text := _cat_fill(str(w.get("text", ""))).replace("{stage}", str(cat.get("stage_preview", {}).get(str(stage), "...")))
+	var choices: Array = w.get("choices", [])
+	Ledger.capture(_cat_fill("A black cat at {rival_short}'s window"))
+	for _round in 3:
+		var pick: String = await hud.say("", text, _cat_menu(choices))
+		var c: Dictionary = {}
+		for x in choices:
+			if str(x.id) == pick:
+				c = x
+		if c.is_empty():
+			return
+		await hud.say("", _cat_fill(str(c.get("say", ""))))
+		if c.has("outcome"):
+			finish_cat_night(str(c.outcome))
+			return
+		var rest := []
+		for x in choices:
+			if x.has("outcome"):
+				rest.append(x)
+		choices = rest  # after watching him sleep, only the decision is left
+
+
+func _cat_secret(sc: Dictionary, it: Interactable) -> void:
+	if hud == null:
+		return
+	it.enabled = false
+	Ledger.deed("eavesdrop", str(sc.id))
+	var lines := Town.apply_fx(sc.get("fx", {}))
+	await hud.say("", _cat_fill(str(sc.get("text", ""))) + ("\n" + lines if lines != "" else ""))
+
+
+func _cat_knock(k: Dictionary, it: Interactable) -> void:
+	if hud == null:
+		return
+	it.enabled = false
+	FX.dust(self, it.global_position, 0.8)
+	Audio.play_sfx("break", 0.0, -4.0)
+	Ledger.deed("knock", str(k.id))
+	var lines := Town.apply_fx(k.get("fx", {}))
+	if str(k.get("post", "")) != "":
+		var u: Array = Amane.st()["ura"]
+		u.append({"day": Clock.date_text(), "time": "23:52", "text": str(k.post)})
+	await hud.say("", _cat_fill(str(k.get("text", ""))) + ("\n" + lines if lines != "" else ""))
+
+
+## Leap across the roofs in one arc (the camera follows the cat over the tiles).
+func _cat_hop(to: Array) -> void:
+	if player == null or player.has_meta("hopping"):
+		return
+	player.set_meta("hopping", true)
+	var a := player.global_position
+	var b := builder.center(int(to[0]), int(to[1])) + Vector3(0.0, 0.1, 0.0)
+	player.set_physics_process(false)
+	player.velocity = Vector3.ZERO
+	player.sprite.play("run", true)
+	player.sprite.set_facing((b - a).normalized())
+	Audio.play_sfx("roll", 0.0, -6.0)
+	var tw := create_tween()
+	tw.tween_method(func(k: float): player.global_position = a.lerp(b, k) + Vector3(0, sin(k * PI) * 7.0, 0), 0.0, 1.0, 1.2)
+	await tw.finished
+	player.set_physics_process(true)
+	player.remove_meta("hopping")
+	FX.dust(self, player.global_position, 0.5)
+	Audio.play_sfx("land", 0.0, -6.0)
+
+
+## The night is decided: tell Amane's mind, then wake up at home the next morning as Toru.
+func finish_cat_night(kind: String) -> void:
+	if _cat_done:
+		return
+	_cat_done = true
+	Amane.cat_outcome(kind, _cat_fill(str(cat.get("morning", {}).get("plan" if kind == "dawn" else kind, ""))))
+	Ledger.deed("cat_night", kind)
+	Game.flags.erase("cat_night")
+	Clock.next_day()
+	Game.location_id = "suzunari"
+	Game.save_game()
+	Ledger.write()
+	Router.goto(Router.SUZUNARI)

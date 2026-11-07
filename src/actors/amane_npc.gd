@@ -62,6 +62,10 @@ func _physics_process(delta: float) -> void:
 		if not _caught:
 			_caught = true
 			Emotion.express(self, "peek", 1.8)
+			if Toru.jumpy():
+				var pl := get_tree().get_first_node_in_group("player")
+				if pl:
+					Emotion.express(pl, "shock", 1.0)  # jumpy Toru yelps every time
 			if randf() < 0.35:
 				say(Amane.fill(str(Amane.data.get("peek_bark", ["!"]).pick_random())), 1.4)
 	else:

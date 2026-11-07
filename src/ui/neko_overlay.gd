@@ -113,6 +113,8 @@ func _build_panel() -> void:
 
 func _refresh() -> void:
 	_clock.text = "%s  %s  %s" % [Clock.date_text(), Clock.clock_text(), Clock.period()]
+	if Game.flags.has("cat_night"):
+		_clock.text = "%s  23:40  Night" % Clock.date_text()  # Amane's living spirit walks after 23:00
 	_forecast.text = "Forecast: %s" % Amane.FORECAST[Amane.tears_level()]
 	var unread := int(Amane.st()["unread"])
 	_phone_btn.text = "PHONE" + ("  (%d)" % unread if unread > 0 else "")

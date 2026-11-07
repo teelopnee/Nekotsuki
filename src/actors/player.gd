@@ -200,7 +200,7 @@ func _brake(delta: float, mult: float = 1.0) -> void:
 
 
 func _normal_state(delta: float, move_dir: Vector3, strength: float) -> void:
-	var run_speed := Game.stat("move_speed") * _oc_mult(1.15)
+	var run_speed := Game.stat("move_speed") * _oc_mult(1.15) * float(get_meta("speed_mult", 1.0))
 	var speed := run_speed if strength > 0.6 else run_speed * 0.5 * (strength / 0.6)
 	if _charge > 0.25:
 		speed *= 0.55  # slow down while charging
@@ -217,6 +217,10 @@ func _normal_state(delta: float, move_dir: Vector3, strength: float) -> void:
 		return
 	if input_grace > 0.0:
 		input_grace -= delta
+		return
+	if has_meta("cat_mode"):  # Amane's cat: no fighting, just paws
+		if Input.is_action_just_pressed("interact"):
+			interact()
 		return
 	if Input.is_action_just_pressed("dodge") and _roll_cd <= 0.0:
 		_start_roll(move_dir)

@@ -196,6 +196,36 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `foliage_fg`. UI theme `assets/ui/washi_theme.tres` (project default). `python3 tools/leak_check.py` = every themed
   line checked for sci-fi words (exit code = leaks). Content notice before NEW GAME (`title_screen._content_notice`).
   Test: `tools/week_test.gd`.
+- NEW GAME = title -> content notice -> `src/ui/toru_creator.gd` (given name + one tag in each of 5 categories of
+  `data/toru.json`: wound / personality / skill / secret / goal; every option shows what it does) ->
+  `Router.new_suzunari(name, tags)` -> `Toru.apply_origin`. `Toru` autoload (`src/autoload/toru.gd`, state
+  `Game.flags["toru"]`): six stats 0-100 (study, stamina, charm, courage, agility, transparency; `add()` goes through
+  origin `gain` multipliers), origin effects read by other systems (`tears_mult` -> Amane cold replies shrink sooner,
+  `tone_mult` -> Amane talk fx, `calm` -> tears fade, `jumpy`, `sneezes`/`cats_mult` -> Cats.pet, `ghosts_early` ->
+  Town.present, `bell_bonus` (courage) -> Ura bell, `close_mult` (charm) -> Amane.add_closeness, `race_speed`
+  (agility) -> player meta `speed_mult`), quirks earned every night (`check_quirks`: soft_heart, escapist, cat_servant,
+  see_through, third_eye, promise_breaker), `morning_note()` (origin `mornings` lines), `day_end()` (club skips, Sunday
+  debt + Saki's call), `goal_epilogue()` on the end card, `status_text()` = pause menu "Toru" page.
+  Clubs + jobs: `data/clubs.json` (8 clubs, 5 jobs, styles, job_styles, board). Places: `where.level` suzunari ->
+  `Suzunari._work_spots` (Interactables `Work_<id>` + floating name), school -> `School._club_spots` (+ recruitment board
+  1F). `Toru.use_club` (pitch/join, one session a day while it meets, every 4th = next `events` entry, clock jumps to
+  `close`), `use_board`, `use_job` (interview with `needs`, shifts, every 3rd = event, pay x hours x bonuses),
+  `weekend_items()` (Aunt Haruka's weekend menu offers today's shifts). Town fx `stats` / `study` also train stats.
+- Cat spirit night (`data/cat_night.json`, GDD 4.11): `Amane.cat_night_due()` (week 2+, a running plan, jealousy >= 20
+  or tears >= 3, self < 55, not guarded, once a week) is checked in Suzunari/School `end_day` after `before_day_end` ->
+  `Game.flags.cat_night` -> Suzunari in cat mode (`cat_night`, `_build_cat_night`): clock frozen at night, townsfolk
+  hidden, other Interactables off, player = black two-tailed cat (`kasha` sheet, meta `cat_mode` = no combat,
+  `speed_mult`), spots (group `cat_spot`): rival's window (People door or `rival_homes`; plan / resist / watch),
+  Senpai's window (ends the night gently), secrets (lore), knocks (`Ledger.deed`, Ura board), roof hops (`_cat_hop`),
+  dawn timer. `finish_cat_night(kind)` -> `Amane.cat_outcome` (sets `plan.cat_decided` so `_ikiryo_night` skips) ->
+  next day. Log `Game.flags.cat_night_log`.
+- Enma's Ledger page (GDD 4.14): `Week.ending` -> end card (+ goal epilogue) -> `Ledger.show_page()` ->
+  `src/ui/ledger_page.gd`: Dosho (left, slanted ink) and Domyo (right) brush in each `Ledger.entries()` entry
+  (`data/ledger_scribes.json`: route, fates, cat nights, deeds, promises, pickups, truancy, club, jobs, eggs, zukan,
+  goal, ending), argue, stamp GOOD / BAD / UNDECIDED; then the Johari mirror shows `Ledger.capture(caption)` frames
+  (`user://mirror/*.png`, taken at first meeting, races, Rin, club/job events, cat windows, the ending; headless keeps
+  captions only), then totals. Scribe sprites: `python3 tools/gen_scribes.py`. Test: `tools/life_test.gd` (creator,
+  origin effects, clubs, jobs, weekend, Sunday, cat night, ledger page).
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).
@@ -206,7 +236,8 @@ Rename and rewrite these notes as systems are replaced (GDD section 10). `docs/R
 
 ### Layout
 - `src/autoload/` singletons (order matters, see `project.godot`): `EventBus`, `DataDB`, `Game`,
-  `Factions`, `Causality`, `Origin`, `Crew`, `FlawPerk`, `Encounters`, `Saga`, `Stories`, `Interactions`, `ShipAI`, `Audio`, `Router`.
+  `Factions`, `Causality`, `Origin`, `Crew`, `FlawPerk`, `Encounters`, `Saga`, `Stories`, `Interactions`, `ShipAI`, `Audio`, `Router`
+  (NEKOTSUKI adds `Clock`, `Amane`, `Cats`, `Ledger`, `Town`, `People`, `Week`, `Toru` before `ShipAI`).
   `Origin` = 6 tag categories (class incl. 5 Consortium heirs .. beggar, age + exact years, background, personality,
   motivation, secret; `data/tags.json`). `Saga` = branching procedural main story (`data/saga.json`: approaches per beat,
   surrender choices, twist, 15+ finales, composed endings, early motivation endings). `Stories` = per-planet local arcs

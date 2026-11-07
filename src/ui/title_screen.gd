@@ -205,8 +205,17 @@ func _content_notice() -> void:
 	t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	t.custom_minimum_size = Vector2(760, 0)
 	box.add_child(t)
-	var go := _button("I UNDERSTAND - START", func(): Router.new_suzunari())
+	var go := _button("I UNDERSTAND - START", func(): _creator(layer))
 	var back := _button("BACK", func(): layer.queue_free())
 	box.add_child(go)
 	box.add_child(back)
 	go.grab_focus()
+
+
+## Who is Asagiri Toru? (src/ui/toru_creator.gd) -> NEW GAME with his name and origin tags.
+func _creator(notice: Node) -> void:
+	var c: Control = load("res://src/ui/toru_creator.gd").new()
+	add_child(c)
+	c.begin.connect(func(n: String, tags: Dictionary): Router.new_suzunari(n, tags))
+	c.cancelled.connect(notice.queue_free)
+	notice.visible = false

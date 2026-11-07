@@ -1,0 +1,60 @@
+{
+  "_doc": "Cat spirit night (docs/GDD.md 4.11, Suzunari level in cat mode, Amane.cat_night_due()). On a night of high jealousy (week 2+, a rival with a plan still running, Amane not yet secure, not warned or watched, once a week) you play Amane's living spirit: a black cat with two tails. The town sleeps. Go to the rival's window and choose (plan: the next stage happens, his jealousy and tears ease, his self falls; resist: no stage, his self grows, he wakes up crying), or sit at Senpai's window and watch yourself sleep (no stage, a gentler night). Eavesdrop at friends' windows (lore), knock things over (small harm, the Ledger notices), leap across roofs. Dawn comes after `dawn_seconds`: undecided = the plan goes on by itself. Text placeholders: {rival}, {rival_short}, {player}.",
+  "dawn_seconds": 240,
+  "intro": "23:40. Somewhere on the shrine hill, a boy is crying himself to sleep.\n\nAnd then he isn't in his body any more. He's small and black and very quiet, with two tails, and the whole town smells of {rival_short}.\n\nTonight you are Amane's jealousy. Walk where it wants to go - or don't.",
+  "intro_choices": [{"id": "go", "t": "Open your eyes. (Play the night as the cat.)"}, {"id": "skip", "t": "Stay asleep. (The cat goes on without you.)"}],
+  "skip": "You sleep. Something small and black leaves the shrine hill without you, and comes back before dawn with wet paws.",
+  "objective": "23:40 · You are Amane's two-tailed cat. {rival_short}'s window: {where}. Senpai's window: the Asagiri house. Dawn in {mins} min.",
+  "look": {"variant": "kasha", "colors": {"hair": "#0d0a12", "scarf": "#b3122a", "iris": "#ffd34a", "dark": "#040306", "glow": "#ff4a3a"}},
+  "pixel_size": 0.06,
+  "speed": 1.45,
+  "home_tile": [34, 5],
+  "toru_window": {"tile": [26, 47], "prompt": "Senpai's window",
+    "text": "Senpai's window is open a finger's width, the way it always is. He sleeps on his side with one hand off the futon, as if he's reaching for something in his dream.\n\nYou could watch him all night. You have, before.",
+    "choices": [
+      {"id": "stay", "t": "Curl up on the sill until dawn.", "say": "You curl up on the sill. His breathing is slow and even. Somewhere around three in the morning he says, very clearly, \"...not that one, the other one,\" and smiles in his sleep. You don't go anywhere else tonight.", "outcome": "window"},
+      {"id": "touch", "t": "Reach in and touch his hand with one paw.", "say": "His fingers close round your paw for a moment, warm. \"...Amane?\" he mumbles, and doesn't wake. Your two tails go completely still. You leave before you can cry, because cats don't cry, and you're a cat tonight.", "fx": {"bond": 2}, "outcome": "window"},
+      {"id": "leave", "t": "Go. There's somewhere else you need to be.", "say": "You drop off the sill. Behind you, Senpai turns over and the futon rustles. You don't look back."}
+    ]},
+  "rival_window": {"prompt": "{rival_short}'s window",
+    "text": "{rival_short}'s room. A light left on, a phone face down on the floor, a school bag thrown in a corner. He's asleep with his mouth open. He looks so ordinary. He looks like someone Senpai would choose.\n\nYour tails are burning. Tonight's step of the plan: {stage}",
+    "choices": [
+      {"id": "plan", "t": "Do it. (The plan goes on.)", "say": "You slip inside. It's so easy. When you leave, {rival_short} is still asleep, frowning, and the jealousy that was burning in your tails has gone quiet, the way a fire goes quiet when there's nothing left.", "outcome": "plan"},
+      {"id": "resist", "t": "Turn around. (Resist.)", "say": "You stand on the sill for a long time. Then you turn around. Every step back to the shrine hurts like walking on glass, and on the hill, a boy wakes up sobbing and doesn't know why. But {rival_short} sleeps through the night.", "outcome": "resist"},
+      {"id": "watch", "t": "Just watch him sleep a little longer.", "say": "You watch. He scratches his nose in his sleep. His alarm is set for 6:15. There's a photo of his family on the desk. You hate how much you understand him."}
+    ]},
+  "stage_preview": {
+    "1": "sit on his chest until he dreams of drowning in fur.",
+    "2": "carry his indoor shoes to the school pond.",
+    "3": "tell every cat in Suzunari to stop seeing him.",
+    "4": "find the red thread between him and Senpai, and bite it.",
+    "5": "be in front of his bicycle tomorrow, at the bottom of the hill.",
+    "6": "take him somewhere nobody will find him."
+  },
+  "rival_homes": [[41, 47], [47, 47], [11, 47], [5, 47]],
+  "secrets": [
+    {"id": "hina", "who": "Hayase Hina", "tile": [12, 38], "prompt": "A lit window above the florist", "text": "Hina's mother, on the phone in the kitchen, very quietly: \"...If the shop closes in August, we go back to Osaka. Don't tell Hina yet. She's finally got friends here.\"", "fx": {"flag": "hina_moving"}},
+    {"id": "mio", "who": "Kuroe Mio", "tile": [52, 38], "prompt": "The old house by the temple stones", "text": "Mio, sitting up in bed, talking to a photograph: \"Nine years, Nee-san. I'll find the place you went. I'll go up the steps on the night they open.\" The photo is from 2016. There is a cat in the corner of it, with two tails.", "fx": {"lore": "photo_2016"}},
+    {"id": "reiji", "who": "Shirasagi Reiji", "tile": [51, 50], "prompt": "The Shirasagi residence, one light on", "text": "Reiji's father, behind a paper screen: \"The shrine land is ours by the 1890 deed. The old woman can't stop it. Your job is to make sure the boy doesn't either.\" Reiji says nothing at all, for a very long time.", "fx": {"lore": "chiyo_two", "flag": "shrine_deed"}},
+    {"id": "hayate", "who": "Inukai Hayate", "tile": [53, 22], "prompt": "The Inukai house behind the dog shrine", "text": "Hayate's grandfather, on the porch, to the dark: \"A cat came for this house once before, in my mother's time. The dogs of the shrine sent it home. They're old now. Like me.\" The shrine dogs' stone eyes are open tonight.", "fx": {"lore": "okuri_inu"}}
+  ],
+  "knocks": [
+    {"id": "pot", "tile": [13, 39], "prompt": "A flower pot on the florist's step", "text": "One paw. It wobbles. It falls. CRASH. A light goes on upstairs. You were already gone, which is the best part.", "fx": {"luck": -1}, "post": "Somebody smashed the Hayase Florist's pots last night. Probably a cat. (It was definitely a cat.)"},
+    {"id": "offering", "tile": [46, 35], "prompt": "The jizo's offering of rice crackers", "text": "Six stone jizo in red bibs, six rice crackers. You eat one. The fourth jizo's face, you're almost sure, looks disappointed.", "fx": {"luck": -1}, "post": ""},
+    {"id": "bin", "tile": [36, 40], "prompt": "The Suzunari Mart bins", "text": "You knock the lid off. Inside: three expired onigiri, wrapped. Yamane-san's neck appears round the corner, three metres of it, sighs, and puts the lid back.", "fx": {}, "post": ""},
+    {"id": "chime", "tile": [28, 47], "prompt": "Asagiri-do's wind chime", "text": "Ting. Ting-ting. Upstairs, Aunt Haruka mutters, \"...the cat again,\" and goes back to sleep. Senpai doesn't wake. He sleeps like a stone, your Senpai.", "fx": {}, "post": ""}
+  ],
+  "roofs": [
+    {"from": [20, 38], "to": [20, 34], "prompt": "Leap up onto the roofs"},
+    {"from": [20, 34], "to": [20, 38], "prompt": "Leap across the roofs to the shopping street"},
+    {"from": [40, 39], "to": [51, 34], "prompt": "Run along the rooftops toward the Rokujizo"},
+    {"from": [51, 34], "to": [40, 39], "prompt": "Run back along the rooftops"}
+  ],
+  "dawn": "The sky over the sea is going grey. Your paws are already walking toward {rival_short}'s house on their own. You're out of time to decide.",
+  "morning": {
+    "plan": "Amane is waiting at the gate, rested for once, almost glowing. \"I slept so well, Senpai. I dreamed I was a cat.\" He smiles. It doesn't reach his eyes.",
+    "resist": "Amane is waiting at the gate, eyes swollen. \"I dreamed I was a cat, and I... I didn't. I came home. Why does it hurt so much to come home?\"",
+    "window": "Amane is at the gate, very sleepy and very pink. \"I dreamed about Senpai all night.\" He looks at your left hand for a strangely long time.",
+    "skip": ""
+  }
+}

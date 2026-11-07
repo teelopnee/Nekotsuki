@@ -51,9 +51,15 @@ func spawn_in(level: Node, count: int) -> Array:
 
 func pet(cat: Node) -> void:
 	var m := memory(str(cat.get("cat_id")))
-	m["attitude"] = mini(100, int(m["attitude"]) + 12)
+	m["attitude"] = mini(100, int(m["attitude"]) + roundi(12 * Toru.cats_mult()))
+	Toru.on_pet()
 	FX.emote(cat, "heart", 1.6)
 	var line := "%s purrs." % m["name"]
+	if Toru.sneezes():
+		var pl := get_tree().get_first_node_in_group("player")
+		if pl:
+			Emotion.express(pl, "sneeze", 1.2)
+		line = "Achoo! %s purrs anyway. (Cat allergy: it only half counts.)" % m["name"]
 	if str(cat.get("reporting")) != "":
 		cat.cancel_report()
 		line = "%s forgets what it was going to tell Amane. It purrs instead." % m["name"]
@@ -63,7 +69,7 @@ func pet(cat: Node) -> void:
 
 
 func _on_interaction(_verb: String, success: bool, npc: Node) -> void:
-	if not success or npc == null or npc.is_in_group("amane") or not Amane.st()["met"]:
+	if not success or npc == null or npc.is_in_group("amane") or not Amane.st()["met"] or Toru.quirk("cat_servant"):
 		return
 	var p := get_tree().get_first_node_in_group("player") as Node3D
 	if p == null:

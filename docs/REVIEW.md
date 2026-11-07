@@ -255,3 +255,22 @@ Worked through the priority list in order; no new world systems or visual passes
   second, a faster double clap with a stronger pulse in the last three, a temple bell (win) or a low drum (loss).
   Gamepads rumble with each tick; on the tablet with no pad the device itself buzzes. Ura's bells ring and rumble too.
 - New setting: Vibration on/off (old saves keep vibrating). ura_test 34 checks (cue order, sounds, setting).
+
+## Toru's life (2026-11-07): the four missing GDD systems
+- NEW GAME creator (GDD 4.1): given name + 28 tags in 5 categories (`data/toru.json`), each one says what it does and
+  really does it (money, debt, stats, Amane's tears/words, cats, ghosts, Saki's Sunday call, club/job bonuses, goal
+  epilogue on the end card). Gamepad/touch friendly, RANDOM button.
+- Stats + quirks + clubs + jobs (GDD 4.13): `Toru` autoload, 6 stats with real effects (exams, closeness speed, Ura
+  bell, race speed, fish-market interview, teachers forgetting you), 6 quirks earned at night, 8 clubs at their own
+  places (school rooms, schoolyard, budokan, gate) + recruitment board, 5 jobs with interviews, shifts, pay and events;
+  weekend menu offers shifts. 23 club/job events written.
+- Cat spirit night (GDD 4.11): play Amane's two-tailed cat on jealous nights - the sleeping town, the rival's window
+  (plan / resist), Senpai's window, four secrets, four things to knock over, roof leaps, dawn; outcomes drive
+  `Amane.plan` and the next morning.
+- Enma's Ledger page (GDD 4.14): Dosho and Domyo brush in up to ~15 entries, argue each one and stamp it; the Johari
+  mirror shows real frames captured at key moments; totals; `ledger.json` now also stores origin, stats, club, jobs,
+  quirks, deeds and cat nights.
+- Tests: new `life_test.gd` (60+ checks); all suites pass. Screenshots: docs/preview/life_*.png.
+- Open: the cat leaps between fixed rooftop points rather than walking freely on roofs/walls, and there's no sneaking;
+  companions (2 friends who follow you around) and exam cramming/cheating are not in yet; the scribes' "handwriting"
+  is the UI font slanted, not a brush font.

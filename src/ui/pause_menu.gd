@@ -182,6 +182,14 @@ func _cast_card(p: Dictionary, role: String, revealed: bool) -> Control:
 
 
 func _tab_status() -> void:
+	if DataDB.theme == "suzunari":
+		var tp := _page("Toru")  # stats, club, jobs, quirks, goal (Toru autoload)
+		var tl := HUD.make_label(Toru.status_text(), 17, Color(1.0, 0.92, 0.84))
+		tl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		tp.add_child(tl)
+		for id in Toru.STATS:
+			tp.add_child(HUD.make_label("%s: %s" % [Toru.stat_name(id), str(Toru.data.get("stat_desc", {}).get(id, ""))], 14, Color(0.85, 0.8, 0.76)))
+		return
 	var v := _page("Status")
 	var tag_lines := ""
 	for cat in Origin.CATEGORIES:

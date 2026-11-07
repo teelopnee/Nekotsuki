@@ -188,6 +188,7 @@ func converse(actor: Node3D, hud: Node) -> void:
 		return
 	if not s["met"]:
 		s["met"] = true
+		Ledger.capture("The boy at the gate")  # for the Johari mirror
 		for l in data.get("first_meeting", []):
 			await hud.say(fill(str(l[0])), fill(str(l[1])))
 		set_tears(2.2)
@@ -328,8 +329,10 @@ func reply_choices(topic: String) -> Array:
 		if not ok(r.get("when", {})):
 			continue
 		var c := {"id": str(i), "text": fill(str(r.get("t", "...")))}
-		if str(r.get("tone", "")) == "cold" and lv >= 2:
-			c["scale"] = 1.0 - 0.14 * (lv - 1)
+		var tm := Toru.tears_mult()  # soft-hearted: his tears hit you x1.5
+		var k := float(lv - 1) * tm if lv >= 2 else (0.6 if tm > 1.2 and lv >= 1 else 0.0)
+		if str(r.get("tone", "")) == "cold" and k > 0.0:
+			c["scale"] = maxf(0.45, 1.0 - 0.14 * k)
 		out.append(c)
 	var order := RandomNumberGenerator.new()
 	order.seed = hash("%s:%d:%d" % [topic, Clock.day(), int(st()["talks"])])
@@ -361,7 +364,7 @@ func answer(topic: String, idx: int) -> Dictionary:
 		elif k == "hp":
 			Game.hp = minf(Game.max_hp(), Game.hp + float(fx[k]))
 		elif s.has(k):
-			add(k, float(fx[k]))
+			add(k, float(fx[k]) * Toru.tone_mult(tone))  # personality: kind / sharp / indifferent words land differently
 	match tone:
 		"flirt":
 			s["route"] = "romance"
@@ -444,7 +447,7 @@ func phone_reply(kind: String) -> String:
 func _tick(m: int) -> void:
 	var s := st()
 	if float(s["tears"]) > 0.0:
-		set_tears(float(s["tears"]) - 0.02)
+		set_tears(float(s["tears"]) - 0.02 * Toru.calm())
 	s["rain"] = move_toward(float(s["rain"]), rain_target(), 0.03)
 	if s["met"] and not s["blocked"] and m - int(s["last_msg"]) >= 45 and _rng.randf() < 0.25:
 		var mood := "sad" if tears_level() >= 2 else ("jealous" if str(s["rival"]) != "" and _rng.randf() < 0.4 else "clingy")
@@ -513,6 +516,10 @@ func notice_rival(who: String, actor: Node3D = null) -> void:
 
 ## Objective line for the HUD while in Suzunari.
 func objective_text() -> String:
+	if Game.flags.has("cat_night"):
+		var lvl := get_tree().get_first_node_in_group("level")
+		if lvl and lvl.has_method("cat_objective"):
+			return lvl.cat_objective()
 	var w := Week.objective()
 	var base := _objective_base()
 	return base if w == "" else w + "\n" + base
@@ -537,6 +544,8 @@ func add_closeness(who: String, v: int) -> void:
 	if who == "" or who == "Amane":
 		return
 	var c: Dictionary = st()["closeness"]
+	if v > 0:
+		v = maxi(1, roundi(v * Toru.close_mult()))  # charm warms people faster; being see-through slows it
 	c[who] = int(c.get(who, 0)) + v
 
 
@@ -568,6 +577,9 @@ func pick_rival() -> String:
 func _ikiryo_night() -> void:
 	var s := st()
 	var p: Dictionary = s["plan"]
+	if p.get("cat_decided", false):
+		p.erase("cat_decided")  # Senpai walked as the cat tonight and decided (cat_outcome)
+		return
 	var who := str(p.get("target", ""))
 	if who == "" or fate(who) in ["injured", "hidden"]:
 		return
@@ -600,6 +612,54 @@ func apply_stage(who: String, stage: int) -> void:
 			s["fates"][who] = "injured"
 		6:
 			s["fates"][who] = "hidden"
+
+
+## A cat spirit night tonight (docs/GDD.md 4.11)? High jealousy (or tears), a plan still running, Amane not yet
+## secure, the rival not warned or watched, week 2 on, once a week.
+func cat_night_due() -> bool:
+	var s := st()
+	var p: Dictionary = s["plan"]
+	var who := rival()
+	if not s["met"] or who == "" or fate(who) in ["injured", "hidden"] or int(p["stage"]) >= 6:
+		return false
+	if float(s["self"]) >= 55.0 or p.get("guarded", false) or Week.week_no() < 2 or Game.flags.has("in_ura"):
+		return false
+	if (s.get("cat_weeks", []) as Array).has(Week.week_no()):
+		return false
+	return int(s["jealousy"].get(who, 0)) >= 20 or tears_level() >= 3
+
+
+## What Senpai decided as the cat: plan (the next stage now; jealousy and tears ease, his self falls) | dawn | skip
+## (same, the cat went on alone) | resist (no stage; self +8, he wakes up crying) | window (no stage; a gentler night).
+func cat_outcome(kind: String, morning: String = "") -> void:
+	var s := st()
+	var p: Dictionary = s["plan"]
+	var weeks: Array = s.get("cat_weeks", [])
+	weeks.append(Week.week_no())
+	s["cat_weeks"] = weeks
+	p["cat_decided"] = true
+	var who := rival()
+	match kind:
+		"resist":
+			add("self", 8.0)
+			s["woke_crying"] = true
+			s["lore"]["ikiryo"] = true
+		"window":
+			add("self", 3.0)
+			add("bond_past", 2.0)
+			set_tears(maxf(0.0, float(s["tears"]) - 1.0))
+		_:
+			p["stage"] = mini(6, int(p["stage"]) + 1)
+			apply_stage(who, int(p["stage"]))
+			s["jealousy"] = {}
+			set_tears(float(s["tears"]) * 0.5)
+			add("self", -3.0)
+	if morning != "":
+		s["news"].append(morning)
+	var log: Array = Game.flags.get("cat_night_log", [])
+	log.append({"day": Clock.day(), "rival": who, "outcome": kind, "stage": int(p["stage"])})
+	Game.flags["cat_night_log"] = log
+	changed.emit()
 
 
 ## Senpai warned the rival (Hayate's "be careful around cats"): tonight the cat turns back at the window.
