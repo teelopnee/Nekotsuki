@@ -223,6 +223,9 @@ func _meet_needs(bt: Dictionary, game, amane, choice: Dictionary) -> void:
 					amane.st()["rival"] = "Inukai Hayate" if bool(v) else ""
 				"routes":
 					amane.st()["route"] = str((v as Array)[0])
+				"max_close":
+					for who in v:
+						amane.st()["closeness"][str(who)] = mini(int(amane.st()["closeness"].get(str(who), 0)), int(v[who]))
 				"min_close":
 					for who in v:
 						amane.st()["closeness"][str(who)] = maxi(int(amane.st()["closeness"].get(str(who), 0)), int(v[who]))
