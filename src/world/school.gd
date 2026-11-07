@@ -34,8 +34,8 @@ func _setup() -> void:
 		"ambient_energy": 1.0, "neon": ["#ffd6a0"], "props": [], "ground_tex": "concrete", "path_tex": "asphalt",
 		"horizon": [], "foliage": 0.0, "plant": "#6aa84f", "exposure": 1.0}
 	level_seed = 3100 + FLOORS.find(floor_id)
-	camera_pitch = 34.0
-	camera_distance = 15.0
+	camera_pitch = 27.0  # lower than outside: the back walls (windows, posters, the board) are part of the room
+	camera_distance = 13.5
 	camera_fov = 32.0
 	music = "crystal_lull"
 	spawn_key = "default"
@@ -80,6 +80,8 @@ func _post_build() -> void:
 	_rooms()
 	_features()
 	_people()
+	_crowd()
+	_build_motes()
 	environment.adjustment_saturation = 1.12
 	environment.adjustment_contrast = 1.06
 	environment.tonemap_exposure = 1.3
@@ -177,11 +179,11 @@ func _rooms() -> void:
 			var c1: Vector3 = builder.center(int(rect[2]), int(rect[3]))
 			var l := OmniLight3D.new()
 			l.light_color = Color(0.96, 0.98, 1.0)  # fluorescent tubes
-			l.light_energy = 1.1
-			l.omni_range = maxf(6.0, c0.distance_to(c1) * 0.6)
-			l.omni_attenuation = 1.4
+			l.light_energy = 0.8
+			l.omni_range = maxf(8.0, c0.distance_to(c1) * 0.75)
+			l.omni_attenuation = 0.7  # broad and even, like a ceiling of tubes - no hot spots on faces
 			add_child(l)
-			l.global_position = (c0 + c1) * 0.5 + Vector3(0, 3.0, 0)
+			l.global_position = (c0 + c1) * 0.5 + Vector3(0, 4.2, 0)
 			_room_lights.append(l)
 
 
@@ -275,6 +277,86 @@ func _people() -> void:
 		n.call("set_home", n.global_position)
 
 
+## Students where a school day puts them: classrooms full during lessons, groups in the corridor and the store at
+## lunch, club rooms after school. They pick desk / table seats (life spots) by themselves once they're in.
+func _crowd() -> void:
+	var period := Clock.period()
+	for r in data.get("rooms", []):
+		if str(r.get("floor", "")) != floor_id:
+			continue
+		var name := str(r.get("name", ""))
+		var n := 0
+		var classroom := name.length() == 3 and name[1] == "-"
+		if classroom:
+			n = 9 if period in ["Homeroom", "Class"] else (4 if period == "Lunch" else 2)
+		elif name in ["LIBRARY", "ART ROOM", "MUSIC ROOM", "SCIENCE LAB", "NEWSPAPER CLUB"]:
+			n = 4 if period in ["Clubs", "Lunch"] else 1
+		elif name in ["SCHOOL STORE", "ENTRANCE"]:
+			n = 5 if period in ["Lunch", "Morning", "Homeroom", "Evening"] else 1
+		elif name == "STAFF ROOM":
+			n = 3
+		var rect: Array = r.get("rect", [])
+		if rect.size() != 4:
+			continue
+		for i in n:
+			var spot := _free_tile(rect)
+			if spot != Vector2i(-1, -1):
+				spawn_npc("civilian", builder.center(spot.x, spot.y), "")
+	# the corridor is never empty between lessons
+	var corridor := 6 if period in ["Morning", "Homeroom", "Lunch", "Clubs", "Evening"] else 2
+	if floor_id == "roof":
+		corridor = 9 if period == "Lunch" else 2  # lunch on the roof is a school tradition
+	for i in corridor:
+		var t := _free_tile([1, 9, builder.width - 2, 10] if floor_id != "roof" else [6, 6, 34, 14])
+		if t != Vector2i(-1, -1):
+			spawn_npc("civilian", builder.center(t.x, t.y), "")
+
+
+func _free_tile(rect: Array) -> Vector2i:
+	for k in 20:
+		var x := rng.randi_range(int(rect[0]), int(rect[2]))
+		var z := rng.randi_range(int(rect[1]), int(rect[3]))
+		if builder.cell(x, z) in [".", "_", ",", ":", ";", "="]:
+			return Vector2i(x, z)
+	return Vector2i(-1, -1)
+
+
+## Dust motes turning in the window light.
+func _build_motes() -> void:
+	var motes := GPUParticles3D.new()
+	motes.name = "Motes"
+	var pm := ParticleProcessMaterial.new()
+	pm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	pm.emission_box_extents = Vector3(builder.width, 1.4, 6.0)
+	pm.gravity = Vector3(0, 0.01, 0)
+	pm.initial_velocity_min = 0.02
+	pm.initial_velocity_max = 0.1
+	pm.spread = 180.0
+	pm.turbulence_enabled = true
+	pm.turbulence_noise_strength = 0.5
+	pm.turbulence_influence_min = 0.02
+	pm.turbulence_influence_max = 0.05
+	motes.process_material = pm
+	var q := QuadMesh.new()
+	q.size = Vector2(0.03, 0.03)
+	var m := StandardMaterial3D.new()
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color(1.0, 0.94, 0.75)
+	m.emission_enabled = true
+	m.emission = Color(1.0, 0.9, 0.6)
+	m.emission_energy_multiplier = 2.0
+	q.material = m
+	motes.draw_pass_1 = q
+	motes.amount = maxi(30, int(160 * quality_mult()))
+	motes.lifetime = 8.0
+	motes.preprocess = 8.0
+	motes.visibility_aabb = AABB(Vector3(-builder.width * 2.0, -4, -10), Vector3(builder.width * 4.0, 10, 20))
+	add_child(motes)
+	motes.global_position = Vector3(builder.width, 1.8, 3.0 * LevelBuilder.TILE)
+
+
 # --- Light & time -----------------------------------------------------------------------------
 
 func _on_minute(m: int) -> void:
@@ -307,12 +389,14 @@ func _apply_light() -> void:
 	environment.ambient_light_energy = float(l.ambient_energy) * (0.75 if roof else 0.85) + 0.2 * night
 	environment.background_color = (l.ambient as Color).darkened(0.5) if not roof else (l.ambient as Color).lerp(l.sun, 0.3)
 	for r in _room_lights:
-		r.light_energy = 1.1 + 0.9 * night
+		r.light_energy = 0.8 + 0.7 * night
 	if camera_rig:
 		camera_rig.set_grade((l.ambient as Color).darkened(0.6).lerp(Color(0.12, 0.16, 0.3), 0.4), (l.sun as Color).lightened(0.35), 0.18)
 	var jp = build.get("jp")
 	if jp:
 		jp.set_night(night)
+		var golden := clampf(1.0 - absf(float(Clock.minute()) - 1020.0) / 240.0, 0.0, 1.0)  # strongest late afternoon
+		jp.set_sun((0.55 + 0.45 * golden) * (1.0 - night) * (1.0 - 0.7 * float(Amane.st()["rain"])), golden)
 
 
 func nearest_walkable(p: Vector3) -> Vector3:

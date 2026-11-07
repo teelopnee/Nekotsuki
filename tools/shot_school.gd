@@ -3,10 +3,10 @@ extends SceneTree
 ## VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" \
 ##   godot --path . --resolution 1280x800 --script res://tools/shot_school.gd -- <out_dir> [name,name]
 ## [name, floor, tile, minute]
-const SHOTS := [["staff_room", "1f", Vector2i(12, 6), 510], ["entrance", "1f", Vector2i(15, 15), 470],
-	["infirmary", "1f", Vector2i(31, 6), 600], ["class_2b", "2f", Vector2i(20, 6), 620], ["library", "2f", Vector2i(30, 7), 840],
-	["art_room", "2f", Vector2i(5, 15), 900], ["music_room", "3f", Vector2i(6, 14), 960], ["science_lab", "3f", Vector2i(18, 14), 1000],
-	["roof_lunch", "roof", Vector2i(20, 10), 735]]
+const SHOTS := [["staff_room", "1f", Vector2i(12, 5), 520], ["entrance", "1f", Vector2i(15, 15), 470],
+	["infirmary", "1f", Vector2i(31, 6), 600], ["class_2b", "2f", Vector2i(20, 6), 620], ["library", "2f", Vector2i(30, 7), 935],
+	["art_room", "2f", Vector2i(5, 15), 960], ["music_room", "3f", Vector2i(6, 14), 960], ["science_lab", "3f", Vector2i(18, 14), 1010],
+	["roof_lunch", "roof", Vector2i(20, 10), 765]]
 var _i := 0
 var _step := 0
 var _wait := 0

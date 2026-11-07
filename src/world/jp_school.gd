@@ -30,9 +30,12 @@ func _init(builder, kit) -> void:
 
 func materials() -> void:
 	for k in ["lino", "terrazzo", "wctile", "tatami", "gymfloor"]:
-		var m: StandardMaterial3D = b._textured("jp_" + k, Color.WHITE, 0.25, 0.5 if k != "tatami" else 0.9, 0.0, 0.8)
+		# Freshly waxed school floors: low roughness so lights and windows shine on them.
+		var m: StandardMaterial3D = b._textured("jp_" + k, Color.WHITE, 0.25, 0.32 if k != "tatami" else 0.9, 0.0, 0.8)
 		m.vertex_color_use_as_albedo = true
 		b._mats["jp_" + k] = m
+	if b._mats.has("jp_woodfloor"):
+		(b._mats["jp_woodfloor"] as StandardMaterial3D).roughness = 0.3
 	b._mats["wall"] = b._textured("jp_plaster", Color(0.98, 0.97, 0.93), 0.25, 0.9, 0.0, 0.5)
 
 
@@ -79,8 +82,19 @@ func wall(x0: int, x1: int, z: int, low: bool, length: float, cx: float, cz: flo
 		b.add_mesh(b.root, b.box(Vector3(length, 0.14, 0.08)), b._mats["dark"], Vector3(cx, 0.07, face + 0.04), 0.0, false)
 		if z == 0:
 			for x in range(x0, x1 + 1):
+				var wx := x * T + T * 0.5
 				if b.walkable(x, 1) and not b.cell(x, 1) in WALL_ITEMS and not b.cell(x - 1, 1) in ["k"] and not b.cell(x + 1, 1) in ["k"]:
-					_quad("window_out", Vector2(1.8, 1.8), Vector3(x * T + T * 0.5, 2.15, face + 0.03), 0.0, 0.9)
+					if (x + z) % 4 == 3 and b.cell(x, 1) != "S":
+						_quad("poster%d" % rng.randi_range(0, 7), Vector2(0.9, 1.25), Vector3(wx, 1.65, face + 0.03))
+						continue
+					_quad("window_out", Vector2(1.8, 1.8), Vector3(wx, 2.15, face + 0.03), 0.0, 0.9)
+					_window_light(wx, face)
+				elif b.cell(x, 1) == "k" and b.cell(x - 1, 1) == "k" and b.cell(x + 1, 1) == "k":
+					# above the blackboard: the class motto, the clock and the PA speaker
+					_quad("motto", Vector2(3.4, 0.55), Vector3(wx, 2.75, face + 0.03))
+					_clock(Vector3(wx + 2.4, 2.75, face + 0.06))
+					b.add_mesh(b.root, b.box(Vector3(0.35, 0.3, 0.12)), jp.painted(Color(0.92, 0.9, 0.85), "jp_sheet", 1.0), Vector3(wx - 2.4, 2.9, face + 0.06), 0.0, false)
+					_quad("timetable", Vector2(0.75, 0.75), Vector3(wx + 3.4, 1.75, face + 0.03))
 	b.add_mesh(b.root, b.box(Vector3(length + 0.05, 0.2, T + 0.1)), b._mats["dark"], Vector3(cx, h + 0.1, cz), 0.0, false)
 
 
@@ -107,6 +121,43 @@ func _quad(name: String, size: Vector2, at: Vector3, rot_y: float = 0.0, glow: f
 			m.emission_energy_multiplier = glow
 		_panels[key] = m
 	return b.add_mesh(parent if parent else b.root, q, _panels[key], at, rot_y, false)
+
+
+## Sunlight falling in through a window: a slanted additive beam (strength follows JPKit.set_sun).
+func _window_light(x: float, face: float) -> void:
+	var q := QuadMesh.new()
+	q.size = Vector2(1.7, 3.6)
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
+	m.albedo_texture = b._tex("light_shaft")
+	m.albedo_color = Color(1.0, 0.9, 0.7, 0.18)
+	m.set_meta("base", 0.18)
+	var mi: MeshInstance3D = b.add_mesh(b.root, q, m, Vector3(x, 1.5, face + 1.2), 0.0, false)
+	mi.rotation.x = -0.75
+	jp.shaft_mats.append(m)
+	# and a patch of sun on the floor below it
+	var pq := QuadMesh.new()
+	pq.size = Vector2(1.6, 1.4)
+	pq.orientation = PlaneMesh.FACE_Y
+	var pm: StandardMaterial3D = m.duplicate()
+	pm.albedo_color = Color(1.0, 0.92, 0.75, 0.1)
+	pm.set_meta("base", 0.1)
+	jp.shaft_mats.append(pm)
+	b.add_mesh(b.root, pq, pm, Vector3(x, 0.02, face + 2.6), 0.0, false)
+
+
+func _clock(at: Vector3) -> void:
+	var face: MeshInstance3D = b.add_mesh(b.root, b.cylinder(0.3, 0.06, 18), jp.painted(Color(0.98, 0.97, 0.94)), at, 0.0, false)
+	face.rotation.x = PI * 0.5
+	var rim: MeshInstance3D = b.add_mesh(b.root, b.cylinder(0.33, 0.04, 18), jp.painted(Color(0.2, 0.2, 0.22)), at - Vector3(0, 0, 0.02), 0.0, false)
+	rim.rotation.x = PI * 0.5
+	for hand in [[0.03, 0.2, 0.5], [0.025, 0.27, 2.6]]:
+		var h: MeshInstance3D = b.add_mesh(b.root, b.box(Vector3(float(hand[0]), float(hand[1]), 0.01)), jp.painted(Color(0.1, 0.1, 0.12)), at + Vector3(0, 0, 0.05), 0.0, false)
+		h.rotation.z = float(hand[2])
 
 
 # --- Furniture ---------------------------------------------------------------------------------
@@ -268,6 +319,8 @@ func cell(c: String, p: Vector3, x: int, z: int) -> bool:
 			_chair(body, Vector3(-0.4, 0, 0.75))
 			_chair(body, Vector3(0.4, 0, 0.75))
 			b.add_box_collider(body, Vector3(1.7, 0.75, 0.95), Vector3(0, 0.37, 0))
+			for sx in [-0.4, 0.4]:
+				b._life_spot(p + Vector3(sx, 0, 0.8), "sit", Vector3(0, 0, -1))
 		"j":
 			var body: StaticBody3D = b.static_body(p + Vector3(0, 0, -0.6))
 			for k in 3:
@@ -396,3 +449,71 @@ func finish() -> void:
 	for t in _desks:
 		var body: StaticBody3D = b.static_body(t.origin + Vector3(0, 0, -0.2))
 		b.add_box_collider(body, Vector3(0.66, 0.75, 0.48), Vector3(0, 0.37, 0))
+		b._life_spot(t.origin + Vector3(0, 0, 0.42), "sit", Vector3(0, 0, -1))  # students sit facing the board
+	_desk_clutter()
+	_senbazuru()
+
+
+## What students leave on and around their desks: school bags on the hooks, textbooks, pencil cases, bentos wrapped
+## in furoshiki, water bottles. Coloured per instance, one draw call per kind.
+func _desk_clutter() -> void:
+	var bags: Array[Transform3D] = []
+	var bag_cols: Array[Color] = []
+	var books: Array[Transform3D] = []
+	var book_cols: Array[Color] = []
+	var small: Array[Transform3D] = []
+	var small_cols: Array[Color] = []
+	for t in _desks:
+		var o := t.origin + Vector3(0, 0, -0.2)
+		if rng.randf() < 0.75:
+			bags.append(Transform3D(Basis(Vector3.UP, rng.randf_range(-0.2, 0.2)), o + Vector3(0.36, 0.5, 0.05)))
+			bag_cols.append([Color(0.16, 0.18, 0.3), Color(0.35, 0.22, 0.15), Color(0.12, 0.12, 0.14), Color(0.55, 0.2, 0.25)][rng.randi() % 4])
+		for k in rng.randi_range(0, 3):
+			books.append(Transform3D(Basis(Vector3.UP, rng.randf_range(-0.4, 0.4)), o + Vector3(rng.randf_range(-0.2, 0.15), 0.77 + k * 0.035, rng.randf_range(-0.12, 0.1))))
+			book_cols.append(Color.from_hsv(rng.randf(), rng.randf_range(0.3, 0.7), rng.randf_range(0.6, 0.95)))
+		if rng.randf() < 0.6:
+			small.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU), o + Vector3(rng.randf_range(-0.2, 0.2), 0.79, rng.randf_range(-0.1, 0.12))))
+			small_cols.append([Color(0.95, 0.5, 0.6), Color(0.4, 0.7, 0.95), Color(0.98, 0.85, 0.3), Color(0.6, 0.85, 0.5)][rng.randi() % 4])
+	_mm_col(bags, bag_cols, b.box(Vector3(0.12, 0.3, 0.36)), "DeskBags")
+	_mm_col(books, book_cols, b.box(Vector3(0.24, 0.03, 0.3)), "DeskBooks")
+	_mm_col(small, small_cols, b.box(Vector3(0.2, 0.06, 0.08)), "DeskThings")
+
+
+## Strings of paper cranes hanging by the classroom windows (senbazuru, folded for wishes).
+func _senbazuru() -> void:
+	var cranes: Array[Transform3D] = []
+	var cols: Array[Color] = []
+	for z in [1]:
+		for x in b.width:
+			if b.cell(x, z) == "k" and b.cell(x - 1, z) != "k":
+				for side in [-3, 4]:
+					var sx: int = x + int(side)
+					if not b.walkable(sx, 1):
+						continue
+					for strand in 3:
+						var base: Vector3 = b.center(sx, 1) + Vector3(-0.4 + strand * 0.4, 0, -0.5)
+						for k in 12:
+							cranes.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU), base + Vector3(rng.randf_range(-0.02, 0.02), 3.1 - k * 0.13, 0)))
+							cols.append(Color.from_hsv(fmod(0.95 + k * 0.08 + strand * 0.3, 1.0), 0.55, 0.95))
+	_mm_col(cranes, cols, b.box(Vector3(0.09, 0.05, 0.06)), "Senbazuru")
+
+
+func _mm_col(xf: Array[Transform3D], cols: Array[Color], mesh: Mesh, nm: String) -> void:
+	if xf.is_empty():
+		return
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = mesh
+	mm.instance_count = xf.size()
+	for i in xf.size():
+		mm.set_instance_transform(i, xf[i])
+		mm.set_instance_color(i, cols[i])
+	var m: StandardMaterial3D = b._textured("jp_paint", Color(1.6, 1.6, 1.6), 1.0, 0.8, 0.0, 0.4)
+	m.vertex_color_use_as_albedo = true
+	var mi := MultiMeshInstance3D.new()
+	mi.name = nm
+	mi.multimesh = mm
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	b.root.add_child(mi)

@@ -383,7 +383,89 @@ def stairs_sign(rnd):
     return im, em
 
 
-GEN = {"blackboard": blackboard, "cork": corkboard, "lockers": lockers, "getabako": getabako, "books": books,
+def poster(kind):
+    """1 x 1.4 m school posters: club recruitment, festival, safety - bold colours that pop on plaster walls."""
+    def make(rnd):
+        im, d, em, e = new(32, 44, (0, 0, 0, 0))
+        bg, ink, accent = {
+            0: ((250, 210, 70), (40, 40, 60), (230, 70, 60)),     # soccer club
+            1: ((120, 190, 240), (255, 255, 255), (250, 230, 90)), # swim club
+            2: ((240, 120, 160), (255, 255, 255), (120, 60, 120)), # light music
+            3: ((90, 170, 110), (250, 250, 240), (250, 210, 80)),  # gardening
+            4: ((40, 40, 70), (250, 220, 120), (200, 80, 200)),    # occult (stars)
+            5: ((250, 245, 235), (200, 40, 40), (60, 120, 200)),   # tanabata festival
+            6: ((250, 140, 60), (255, 255, 255), (60, 60, 80)),    # sports day
+            7: ((230, 235, 240), (40, 90, 160), (230, 60, 60)),    # wash your hands
+        }[kind]
+        d.rectangle((0, 0, 31, 43), fill=bg)
+        d.rectangle((0, 0, 31, 1), fill=(255, 255, 255))
+        for k in range(3):  # headline squiggles
+            y = 4 + k * 4
+            d.line([(3, y), (rnd.randint(18, 28), y)], fill=ink, width=2 if k == 0 else 1)
+        cx, cy = 16, 27
+        if kind == 0:
+            d.ellipse((cx - 8, cy - 8, cx + 8, cy + 8), fill=(255, 255, 255), outline=ink)
+            d.polygon([(cx, cy - 3), (cx + 3, cy), (cx, cy + 3), (cx - 3, cy)], fill=ink)
+        elif kind == 1:
+            for k in range(3):
+                d.arc((4, cy - 6 + k * 5, 28, cy + 2 + k * 5), 0, 180, fill=ink, width=2)
+        elif kind == 2:
+            d.line([(cx + 4, cy - 9), (cx + 4, cy + 5)], fill=ink, width=2)
+            d.ellipse((cx - 3, cy + 2, cx + 5, cy + 8), fill=ink)
+            d.line([(cx + 4, cy - 9), (cx + 10, cy - 6)], fill=ink, width=2)
+        elif kind == 3:
+            d.ellipse((cx - 7, cy - 7, cx + 7, cy + 5), fill=accent)
+            d.line([(cx, cy + 5), (cx, cy + 12)], fill=(60, 120, 60), width=2)
+        elif kind == 4:
+            for k in range(6):
+                x, y = rnd.randint(4, 28), rnd.randint(16, 40)
+                d.point((x, y), fill=ink)
+            d.ellipse((cx - 6, cy - 6, cx + 6, cy + 6), outline=accent)
+        elif kind == 5:
+            for k in range(5):
+                x = 5 + k * 5
+                d.rectangle((x, cy - 6 + (k % 2) * 3, x + 2, cy + 6 + (k % 2) * 3), fill=[accent, ink, (240, 200, 60)][k % 3])
+            d.line([(3, cy - 8), (29, cy - 8)], fill=(60, 140, 60), width=2)
+        elif kind == 6:
+            d.polygon([(cx - 8, cy + 8), (cx, cy - 9), (cx + 8, cy + 8)], fill=ink)
+            d.rectangle((cx - 1, cy - 9, cx + 7, cy - 5), fill=accent)
+        else:
+            d.ellipse((cx - 7, cy - 4, cx + 7, cy + 8), fill=(250, 220, 190))
+            for k in range(4):
+                d.ellipse((cx - 8 + k * 4, cy - 6 - (k % 2) * 2, cx - 5 + k * 4, cy - 1), fill=(120, 190, 240))
+        d.rectangle((3, 39, 28, 41), fill=accent)
+        return im, em
+    return make
+
+
+def calligraphy(rnd):
+    """The class motto above the blackboard: brush strokes on washi, a red seal."""
+    im, d, em, e = new(96, 16, (244, 238, 222, 255))
+    for k in range(5):
+        x = 8 + k * 17
+        for s in range(rnd.randint(3, 5)):
+            x0, y0 = x + rnd.randint(0, 9), rnd.randint(2, 7)
+            d.line([(x0, y0), (x0 + rnd.randint(-3, 5), y0 + rnd.randint(3, 8))], fill=(20, 18, 22), width=2)
+    d.rectangle((86, 10, 91, 14), fill=(200, 40, 40))
+    d.rectangle((0, 0, 95, 0), fill=(120, 90, 60))
+    d.rectangle((0, 15, 95, 15), fill=(120, 90, 60))
+    return im, em
+
+
+def timetable(rnd):
+    """Weekly timetable chart: coloured subject blocks in a grid."""
+    im, d, em, e = new(32, 32, (250, 250, 245, 255))
+    cols = [(240, 140, 140), (140, 190, 240), (150, 210, 150), (240, 210, 120), (200, 160, 220), (250, 180, 110)]
+    for c in range(5):
+        for r in range(6):
+            d.rectangle((2 + c * 6, 4 + r * 4, 6 + c * 6, 6 + r * 4), fill=rnd.choice(cols))
+    d.rectangle((2, 1, 29, 2), fill=(60, 60, 80))
+    return im, em
+
+
+GEN = {"poster0": poster(0), "poster1": poster(1), "poster2": poster(2), "poster3": poster(3), "poster4": poster(4),
+       "poster5": poster(5), "poster6": poster(6), "poster7": poster(7), "motto": calligraphy, "timetable": timetable,
+       "blackboard": blackboard, "cork": corkboard, "lockers": lockers, "getabako": getabako, "books": books,
        "window_out": window_out, "exit": stairs_sign, "grime": grime, "blossom": blossom, "leaves": leaves, "clouds": clouds, "koshi": koshi, "shop": shop, "shutter": shutter, "door": door, "school": school,
        "win": lambda r: window(r, "win"), "shoji": lambda r: window(r, "shoji"), "alu": lambda r: window(r, "alu")}
 

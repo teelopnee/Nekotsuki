@@ -116,6 +116,12 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   indoors = Town spirits with `indoor` + `itile` (Makabe, Fujimura-sensei, Tomi-san, Reiji, Hanako). Town fx also
   take `minutes`, `tears`, `bond`. Exterior: the school block is one 'b' building, JPKit style `school_main`.
   Test: `tools/school_test.gd`; shots: `tools/shot_school.gd -- <dir> [names]`.
+  Life inside: `School._crowd()` spawns students by `Clock.period()` (classrooms full in lessons, store/entrance at
+  lunch and mornings, club rooms after school, roof at lunch); desks and tables are `life_spot` "sit" seats, so they sit
+  down by themselves. `JPSchool` dresses back walls (posters `jp_f_poster0-7`, motto banner, clock, PA speaker,
+  timetable), window sun beams + floor patches (`jp.shaft_mats`, driven by `set_sun`), glossy floors, desk clutter
+  (bags, books, pencil cases - coloured MultiMeshes), senbazuru by the windows, dust motes. Indoor camera: pitch 27,
+  distance 13.5 so the back wall is in frame.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

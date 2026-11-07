@@ -127,3 +127,7 @@
   lockers, shoe cubbies, bookshelves and window views.
 - Open: rooms are one floor per load (a short fade on stairs); no gym, pool or old-building interior yet; students do
   not follow a timetable between rooms yet; the classroom seat does not run a real lesson minigame.
+- Life pass (owner: "it looks bland"): students fill rooms by period and sit at desks/tables by themselves; posters,
+  class motto, clock, timetable, paper cranes, bags and books on desks; window sun beams with dust; waxed floors; a lower
+  indoor camera so the back wall is part of the picture. Open: some light-haired sprites bloom under room lights; the
+  roof at lunch could use more groups; students still don't change rooms on their own between periods.
