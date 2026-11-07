@@ -262,6 +262,10 @@ func ok(when: Dictionary) -> bool:
 			return false
 		elif k == "min_lore_count" and (s["lore"] as Dictionary).size() < int(v):
 			return false
+		elif k == "max_close":
+			for who in v:
+				if int(s["closeness"].get(str(who), 0)) > int(v[who]):
+					return false
 		elif k == "min_close":
 			for who in v:
 				if int(s["closeness"].get(str(who), 0)) < int(v[who]):

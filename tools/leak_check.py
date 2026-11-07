@@ -12,7 +12,7 @@ PAT = re.compile(r"\b(credits?|paragon|planets?|consortium|corp|corporate|neon|d
 FILES = (sorted(glob.glob(os.path.join(ROOT, "data/suzunari/*.json"))) + [os.path.join(ROOT, "data/copy_suzunari_auto.json")]
          + sorted(glob.glob(os.path.join(ROOT, "data/people/*.json")))
          + sorted(glob.glob(os.path.join(ROOT, "data/weeks/*.json")))
-         + [os.path.join(ROOT, "data", f) for f in ["town.json", "school.json", "lessons.json", "amane.json", "endings.json",
+         + [os.path.join(ROOT, "data", f) for f in ["town.json", "school.json", "lessons.json", "amane.json", "endings.json", "ura.json", "weekend.json",
                                                     "amane_talk.json", "hayate.json"]])
 # Words that are fine in Suzunari in these exact places (ids, flags, not text).
 SKIP_KEYS = {"flag", "requires", "id", "icon", "look", "variant", "verb", "kind"}

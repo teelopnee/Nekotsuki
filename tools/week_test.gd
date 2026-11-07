@@ -159,8 +159,9 @@ func _beats(week, clock, amane, game, lvl, hud) -> void:
 			for bt in week.weeks[wn].days[d].get("beats", []):
 				var choices: Array = bt.get("choices", [])
 				for i in choices.size():
-					if (choices[i].get("fx", {}) as Dictionary).has("final"):
-						continue  # endings are checked separately (they leave the level)
+					var cfx: Dictionary = choices[i].get("fx", {})
+					if cfx.has("final") or cfx.has("enter_ura"):
+						continue  # endings and Ura-Suzunari leave the level: ura_test / _endings check them
 					clock.st()["day"] = (int(wn) - 1) * 7 + int(d)
 					week.st()["done"].erase(str(bt.id))
 					town_picked_reset(bt)
@@ -194,7 +195,7 @@ func _beats(week, clock, amane, game, lvl, hud) -> void:
 					_close_all(hud)
 					if str(bt.id) == "d5_question" and i == 1:
 						_check(amane.route() == "romance", "Sunday's question sets the route (flirt -> romance)")
-	_check(bad.is_empty() and played >= 250, "every story beat choice plays (%d, %d dreams) %s" % [played, night, str(bad.slice(0, 8))])
+	_check(bad.is_empty() and played >= 260, "every story beat choice plays (%d, %d dreams) %s" % [played, night, str(bad.slice(0, 8))])
 	# Fallback: Sunday's question finds you anywhere once Omagatoki has passed.
 	week.st()["done"].erase("d5_question")
 	clock.st()["day"] = 5

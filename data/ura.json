@@ -1,0 +1,52 @@
+{
+ "_doc": "Ura-Suzunari (LORE 1.6, 7.4): the same town at an endless red Omagatoki, rain falling upward, a festival that never ends. Entered by a story beat (fx enter_ura: <goal>) or by the thousandth step at dusk once you've met Rin (flag met_rin). Suzunari in ura mode (Router.params.ura): shadows of townsfolk, echoes at landmarks (Town.scene), wild kasha that hunt the living, the goal scene, and the way out down the steps. Two-bell rule: after `bell_seconds` the bell rings once (warning); at twice that you're thrown out and a whole day has passed outside (and you forget one thing you knew).",
+ "bell_seconds": 150,
+ "arrive": [4, 20],
+ "exit": [4, 19],
+ "kasha": {"count": 7, "look": {"variant": "cat_b", "colors": {"hair": "#160b12", "scarf": "#6a1220", "iris": "#ffb02e", "dark": "#080306"}}},
+ "enter_text": "The thousandth step takes your weight. The world turns red. The rain falls upward, slowly, like it's being called home. Below, Suzunari is lit for a festival that never ends - and the people in it are shadows. Somewhere a bell is counting.",
+ "first_bell": "Far away, a bell rings once. (Leave down the steps before it rings twice.)",
+ "second_bell": "The bell rings twice. The red sky folds like paper. You wake up on the 999th step in grey morning rain, and a whole day has gone by without you. Something you knew is gone too.",
+ "leave_text": "You walk down the thousandth step backwards, the way Rin told you, and the ordinary rain falls on you the ordinary way. It's later than it should be.",
+ "goals": {
+  "rin": {
+   "objective": "Ura-Suzunari. The bell is waiting at the bottom of the steps. Then get out the way you came.",
+   "speaker": "Rin", "tile": [6, 21], "look": "", "label": "A bell, floating",
+   "text": "A small gold bell on a red cord is hanging in the air by itself, swinging slightly in the upward rain. \"Hello, latecomer,\" it says, in the voice of a very rude old woman. Mio, beside you, bows so low her hair touches the ground.",
+   "choices": [
+    {"t": "Bow and ask the bell its name.", "say": "\"Rin. Three hundred and fourteen years old, cast for your family, worn by your cat.\" The bell rings irritably. \"And you're the one who's late. A hundred and fifty-eight years late, give or take. Now walk back down before the second bell, or I'll have to send a five-year-old to fetch you again.\"", "fx": {"lore": "bell_old", "flag": "met_rin", "zukan": "tsukumogami"}},
+    {"t": "Refuse the dango a festival shadow holds out to you.", "say": "A smiling shadow with no face offers you a stick of dango. You keep your hands at your sides. It shrugs and eats it itself. \"Smart,\" says the bell. \"The last time you took one I had to send a five-year-old to fetch you.\"", "fx": {"flag": "met_rin", "lore": "thousandth_step", "luck": 1}},
+    {"t": "\"Where's Amane? He'll be frightened.\"", "say": "\"He's behind you. He's always behind you.\" You turn. He's on the steps, soaked with rain falling up, out of breath. \"You came here without me,\" he says. Not angry. Terrified. \"Don't. Please. This place keeps people.\" The bell chimes: \"Listen to the boy. Then walk. The cats here are not the friendly kind.\"", "fx": {"flag": "met_rin", "bond": 3, "tears": 0.8, "lore": "dusk_side"}}
+   ]},
+  "riverbed": {
+   "objective": "Ura-Suzunari. Follow the river to the bridge: the riverbed of stones. Then get back to the steps.",
+   "speaker": "Nekomori Sayo", "tile": [27, 44], "look": "haruka", "label": "A woman in a summer kimono",
+   "elite": true,
+   "text": "Under the bridge the river has gone dry. Grey stones everywhere, and on them hundreds of small towers built by small hands. A woman in a faded summer kimono is helping a ghost child balance one more stone. She looks up. She sees the boy in the black hood behind you, and the stone falls from her hand. \"...Amane?\"",
+   "choices": [
+    {"t": "Step aside so they can see each other.", "say": "He doesn't move for a long time. Then: \"Mum.\" She holds him the way you hold someone you've been queuing fifteen years to see. \"I went up to ask them to let you go,\" she says into his hair. \"So you wouldn't spend your life paying for someone you used to be.\" Rin, on his collar, is crying. Bells can apparently do that.", "fx": {"flag": "sayo_found", "lore": "sayo_waiting", "bond": 4, "tears": 1.0}},
+    {"t": "\"Sayo-san. We came to bring you home.\"", "say": "She smiles at you - she has your father's description of her laugh exactly. \"Asagiri's boy. You have his frown.\" She looks at the queue of small towers. \"Not tonight. On Tanabata, when the steps have a thousand, the way home is wide enough.\" She takes Amane's hand. \"Tonight I just want to look at him.\"", "fx": {"flag": "sayo_found", "lore": "sayo_court", "trust": 3}},
+    {"t": "Read her Letter 101.", "when": {"flag": "letter_101"}, "say": "You read it out loud on the dry riverbed: 'If I can't come home as a man, I will come home some other way, however long it takes.' Sayo closes her eyes. \"That's what I came up here to say to Enma, in my own words,\" she says. \"Love isn't a debt. It's a way home.\" She keeps her hand on her son's head the whole time.", "fx": {"flag": "sayo_found", "lore": "tabaruzaka", "bond": 3, "amane_self": 4}}
+   ]},
+  "free": {
+   "objective": "Ura-Suzunari. Look around if you dare - the echoes remember things. Leave down the steps before the second bell."
+  }
+ },
+ "echoes": [
+  {"id": "e1868", "tile": [4, 14], "look": "toru", "label": "An echo: 1868", "speaker": "",
+   "text": "A boy of seventeen in an old-fashioned kimono is crouching on the steps with a black-and-white cat. He hooks his little finger round its paw. \"I'll be back before Tanabata next year,\" he says. \"Pinky swear. If I lie, I'll swallow a thousand needles.\" The cat's bell rings. The echo starts again from the beginning.",
+   "choices": [{"t": "Watch it again.", "say": "The same words. The same paw. Your own little finger aches along the faint red line.", "fx": {"lore": "kotodama"}}, {"t": "Look away.", "say": "Behind you the promise is made again, and again, and again, the way a stuck record plays a song it loves.", "fx": {}}]},
+  {"id": "e1890", "tile": [5, 11], "look": "toru", "label": "An echo: 1890", "speaker": "",
+   "text": "At the top of the steps an old cat with two tails lies very still on the 999th step. At the bottom, a ghost in a soldier's coat, muddy to the knees, looks up. \"Tadaima,\" he says. The cat's ears move. It doesn't answer. The echo starts again.",
+   "choices": [{"t": "Say \"Okaeri\" for the cat.", "say": "The ghost at the bottom of the steps stops. Turns his head. Looks straight at you, through a hundred and thirty-six years, puzzled and grateful. Then the echo starts again, and he doesn't.", "fx": {"lore": "suzu_grave", "bond": 1}}, {"t": "Bow to them both.", "say": "You bow. Something in the red air bows back.", "fx": {"luck": 1}}]},
+  {"id": "e1945", "tile": [40, 50], "look": "makabe", "label": "An echo: 1945", "speaker": "",
+   "text": "On the harbour wall a young teacher in a wartime uniform is counting children: twelve evacuees from the city, holding hands in a line. One girl in a red skirt is at the end. \"Hanako, hold on to the boy in front.\" Planes in the red sky. He spreads his arms in front of them. The echo starts again.",
+   "choices": [{"t": "\"Shimura-sensei.\"", "say": "He turns at the name, puzzled. The girl in the red skirt looks at you and says, \"Sensei?\" - to you. Then the echo starts again.", "fx": {"lore": "shimura", "zukan": "hanako"}}, {"t": "Count the children with him.", "say": "Twelve. Always twelve. He never lost one. He only lost himself.", "fx": {"lore": "shimura"}}]},
+  {"id": "e2011", "tile": [4, 17], "look": "haruka", "label": "An echo: 2011", "speaker": "",
+   "text": "A young woman in a summer kimono climbs the steps alone, counting out loud. She stops at nine hundred and ninety-nine, looks back down at the town once - toward a small house by the shrine where a baby is crying - and takes one more step.",
+   "choices": [{"t": "Call her name: \"Sayo-san!\"", "say": "She almost turns. Then she climbs. The echo starts again from the bottom, every time, with the same small hesitation at the top.", "fx": {"lore": "sayo_waiting"}}, {"t": "Let her go.", "say": "She goes. She has somewhere to be. She has been going there for fifteen years.", "fx": {}}]},
+  {"id": "e2016", "tile": [3, 19], "look": "amane", "label": "An echo: 2016", "speaker": "",
+   "text": "A seven-year-old boy with a candy apple stands at the top of the steps, dazed. A five-year-old in a black hood runs up, a bell ringing on its wrist, slaps the candy out of his hand and drags him down by his little finger. \"Next year I'll come again,\" the boy says at the bottom. \"Promise.\"",
+   "choices": [{"t": "Watch the promise.", "say": "Two little fingers. A red line that wasn't there before. You know this one. You remember it now - or you will.", "fx": {"lore": "promise_2016"}}, {"t": "Pick up the candy apple.", "say": "Your hand goes straight through it. Good. Don't eat anything here. Not even memories.", "fx": {"lore": "kamikakushi_2016"}}]}
+ ]
+}

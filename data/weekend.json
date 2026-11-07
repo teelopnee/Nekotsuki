@@ -1,0 +1,35 @@
+{
+ "_doc": "Weekends and holidays (Week.weekend_menu): once per free day, at home before noon, Aunt Haruka asks how you'll spend it. Each activity costs hours (minutes), gives its effect, and picks one line. {who} = the person you're closest to.",
+ "ask": [
+  "Aunt Haruka is wiping the counter. \"No school! What's the plan, Toru? Don't say 'sleep'. Okay, you can say 'sleep'.\"",
+  "\"A free day!\" Aunt Haruka hands you a mochi for breakfast. \"Help me in the shop, or go and be seventeen somewhere. Your choice.\"",
+  "Kiku is sitting on the counter swinging her legs. Aunt Haruka can't see her. \"Day off,\" Haruka says. \"How are you spending it?\" Kiku mouths: 'shop'.",
+  "Rain on the shutters. \"Even on a wet day off you shouldn't mope,\" says Aunt Haruka. \"What'll it be?\""
+ ],
+ "activities": [
+  {"id": "shop", "t": "Help in Asagiri-do all morning.", "minutes": 210, "fx": {"money": 10, "luck": 1},
+   "lines": ["You wrap mochi until your fingers smell of rice flour. A tourist couple asks if the shop is haunted. Kiku waves at them. They buy three boxes.",
+    "Aunt Haruka teaches you to shape cat mochi. Yours look like potatoes with ears. They sell first.",
+    "Old Tomi-san from the school store comes in and tells you your grandfather once let her pay later for a whole winter. She pays you back with gossip.",
+    "A first-year in a black hood buys one mochi, very slowly, and doesn't look at you once. He comes back four times."]},
+  {"id": "fish", "t": "Go fishing at the harbour with Gen-san.", "minutes": 240, "fx": {"luck": 1, "hp": 15},
+   "lines": ["Gen-san catches nothing and talks the whole time about the night he saw Umibozu rise out of a storm. He puts a bowl of ramen on the breakwater 'for the sea' before you leave.",
+    "You catch a mackerel. Gen-san catches an old boot with a fish in it. You agree to call it a draw.",
+    "Fog on the harbour. A voice from a boat that isn't there asks to borrow a ladle. Gen-san hands over one with no bottom, without looking up. \"Funayurei. Polite ones,\" he says.",
+    "Herons on the breakwater. Gen-san says the Shirasagi family used to own every boat in the harbour. \"Now they own the harbour and no boats,\" he says, and spits."]},
+  {"id": "study", "t": "Study at the school library.", "minutes": 180, "fx": {"study": 2},
+   "lines": ["The library is empty except for a stone statue of a boy carrying firewood, reading. You're almost sure it wasn't there yesterday.",
+    "You actually learn something. You also find a 1901 town record with the name 'Asagiri Soichiro' crossed out in red.",
+    "Reiji is at the next table with a pile of files. Neither of you speaks for two hours. It's oddly comfortable.",
+    "You fall asleep on a history book and dream of rain on a hill. Still, you studied. Mostly."]},
+  {"id": "friend", "t": "Spend the day with {who}.", "minutes": 300, "fx": {"friend": 6},
+   "lines": ["You and {who} walk the whole length of the town and back, talking about nothing. It's the best kind of day.",
+    "{who} drags you to the arcade by the station. You lose every game. {who} wins a cat keyring and gives it to you.",
+    "You spend the afternoon at the river with {who}, skipping stones. The kappa skips one back.",
+    "{who} shows you a place in Suzunari you've never been: a tiny overgrown garden behind the shops with a single, perfect hydrangea."]},
+  {"id": "rest", "t": "Sleep in. You've earned it.", "minutes": 240, "fx": {"hp": 40},
+   "lines": ["You sleep until noon. The pillow is turned round when you wake up. Somebody small has left a sweet on it.",
+    "You sleep through two of Hayate's calls and four of Amane's messages. The fourth one is just a cat sticker.",
+    "You dream of nothing at all for the first time in weeks. You wake up starving and happy."]}
+ ]
+}

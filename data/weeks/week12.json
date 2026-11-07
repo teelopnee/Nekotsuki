@@ -230,6 +230,36 @@
        }
       }
      ]
+    },
+    {
+     "id": "w12_after_storeroom",
+     "where": "suzunari",
+     "after": 600,
+     "needs": {
+      "max_close": {
+       "Shirasagi Reiji": 34
+      }
+     },
+     "speaker": "Amane",
+     "text": "Amane comes down the 999 steps at ten in the morning and sits beside you on the bottom one. \"A hundred plastic cats,\" he says. \"In boxes. All waving. All night.\" He laughs, which surprises both of you. \"I kept thinking, that's what they want me to be. Something that waves and brings luck and doesn't say anything.\"",
+     "choices": [
+      {
+       "t": "\"You're not a plastic cat. You say plenty.\"",
+       "say": "\"Too much, Grandma says.\" He bumps your shoulder. \"I'm going to keep saying it. Even the embarrassing things.\"",
+       "fx": {
+        "amane_self": 5,
+        "bond": 2
+       }
+      },
+      {
+       "t": "\"Are you okay? Really?\"",
+       "say": "He thinks about it properly. \"No. But I will be. That's new - knowing I will be.\" He looks at the silent bell. \"Rin would say something rude now. I'll say it for her: you look terrible, Senpai. Sleep.\"",
+       "fx": {
+        "bond": 3,
+        "tears": -0.8
+       }
+      }
+     ]
     }
    ]
   },

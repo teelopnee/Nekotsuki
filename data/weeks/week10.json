@@ -158,6 +158,44 @@
        }
       }
      ]
+    },
+    {
+     "id": "w10_hill_alone",
+     "where": "any",
+     "after": 1250,
+     "fallback": true,
+     "needs": {
+      "no_flag": "reiji_found_list"
+     },
+     "speaker": "",
+     "text": "Midnight on Saturday the 13th. The knocking starts on the hill again - and this time it's close, in the cedars right behind the cat shrine. Amane's grandmother's house is a hundred metres away. So is Amane.",
+     "choices": [
+      {
+       "t": "Go up the hill.",
+       "say": "You find a woman in white with a hammer and a straw doll with a gold thread round its neck. She turns. Shirasagi Kyoko, perfectly calm, as if you'd met at a tea shop. \"Asagiri-kun. Go home.\" She doesn't finish the nail. She just leaves. You pull the doll down. Your hands shake for an hour.",
+       "fx": {
+        "flag": "pulled_doll",
+        "luck": 1,
+        "hp": -10
+       }
+      },
+      {
+       "t": "Wake Chiyo-san.",
+       "say": "The old woman is already awake, already dressed, cane in hand. \"Stay with the boy,\" she says, and goes up the hill alone at sixty-eight. The knocking stops. In the morning she says nothing, and burns a doll in the incense burner.",
+       "fx": {
+        "flag": "chiyo_on_hill",
+        "lore": "chiyo_two"
+       }
+      },
+      {
+       "t": "Text Amane: 'Are you awake? Stay inside.'",
+       "say": "\"I'm awake,\" he answers at once. \"I can hear it. It's for Rin, isn't it.\" A pause. \"I'm not scared when you're texting. Keep texting.\" You do, until three.",
+       "fx": {
+        "bond": 3,
+        "tears": -0.5
+       }
+      }
+     ]
     }
    ]
   },

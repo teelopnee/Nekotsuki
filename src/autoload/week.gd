@@ -20,6 +20,8 @@ const HOUSES := {"Inukai Hayate": "the Inukai house", "Hayase Hina": "the flower
 var lessons: Dictionary = {}
 var weeks: Dictionary = {}  ## week number -> data/weeks/weekNN.json
 var endings: Dictionary = {}
+var ura: Dictionary = {}      ## data/ura.json - the other side
+var weekend: Dictionary = {}  ## data/weekend.json - free days
 const LAST_WEEK := 13
 var _busy := false
 var _rng := RandomNumberGenerator.new()
@@ -33,6 +35,8 @@ func _ready() -> void:
 		if not w.is_empty():
 			weeks[n] = w
 	endings = _load("res://data/endings.json")
+	ura = _load("res://data/ura.json")
+	weekend = _load("res://data/weekend.json")
 	Clock.minute_passed.connect(_on_minute)
 	Clock.day_started.connect(func(_d): st()["today"] = {})
 
@@ -78,7 +82,7 @@ func level_ready() -> void:
 
 
 func _on_minute(m: int) -> void:
-	if _busy or not Game.location_id in ["suzunari", "school"]:
+	if _busy or not Game.location_id in ["suzunari", "school"] or bool(Game.flags.get("in_ura", false)):
 		return
 	_check_lessons(m)
 	if not _busy:
@@ -233,13 +237,19 @@ func day_data(d: int = -1) -> Dictionary:
 	return weeks.get(week_no(day), {}).get("days", {}).get(str(day_in_week(day)), {})
 
 
+var marker_hint := ""  ## " (NE 120 m)" - set by the Suzunari level from marker()
+
+
 func objective() -> String:
+	if bool(Game.flags.get("in_ura", false)):
+		var g: Dictionary = ura.get("goals", {}).get(str(st().get("ura_goal", "free")), {})
+		return str(g.get("objective", ura.get("goals", {}).get("free", {}).get("objective", "")))
 	var dd := day_data()
 	if dd.is_empty():
 		return ""
 	for bt in dd.get("beats", []):
 		if not st()["done"].has(str(bt.id)) and _needs_ok(bt):
-			return str(dd.get("objective", ""))
+			return str(dd.get("objective", "")) + marker_hint
 	return ""
 
 
@@ -256,12 +266,53 @@ func _check_beats(m: int) -> void:
 	var hud := _hud()
 	if not _free(hud) or People.escorting():
 		return
-	for bt in day_data().get("beats", []):
-		if st()["done"].has(str(bt.id)) or str(bt.get("when", "")) == "night":
-			continue
+	for bt in _candidates():
 		if _beat_ready(bt, m):
 			play_beat(bt)
 			return
+	if free_day() and Game.location_id == "suzunari" and m < 720 and not today().has("weekend") and _near_home():
+		weekend_menu()
+
+
+## Today's beats, then yesterday's that were missed (they carry over one day unless "carry": false).
+func _candidates() -> Array:
+	var out := []
+	for d in [Clock.day(), Clock.day() - 1]:
+		if d < 1:
+			continue
+		for bt in day_data(d).get("beats", []):
+			if st()["done"].has(str(bt.id)) or str(bt.get("when", "")) == "night":
+				continue
+			if d != Clock.day() and not bool(bt.get("carry", true)):
+				continue
+			out.append(bt)
+	return out
+
+
+func free_day() -> bool:
+	return Clock.is_weekend() or bool(day_data().get("holiday", false))
+
+
+func _near_home() -> bool:
+	var lvl := _level()
+	var p := lvl.get("player") as Node3D if lvl else null
+	return p != null and lvl.get("builder") != null and p.global_position.distance_to(lvl.builder.center(27, 48)) < 12.0
+
+
+## The next story place to go to: [tile, label] of the first pending beat today (or yesterday's) that has a place,
+## or [] - Suzunari puts a lantern there and the HUD shows the way.
+func marker() -> Array:
+	var m := Clock.minute()
+	for bt in _candidates():
+		if not bt.has("near") or not _needs_ok(bt):
+			continue
+		if m < int(bt.get("after", 0)) - 90:
+			continue
+		if bt.has("before") and m >= int(bt["before"]) and not bool(bt.get("fallback", false)):
+			continue
+		var n: Array = bt["near"]
+		return [Vector2i(int(n[0]), int(n[1])), str(bt.get("speaker", ""))]
+	return []
 
 
 func _needs_ok(bt: Dictionary) -> bool:
@@ -304,6 +355,10 @@ func play_beat(bt: Dictionary) -> void:
 		var fx: Dictionary = choices[int(pick)].get("fx", {})
 		if fx.has("final"):
 			await ending(str(fx["final"]))
+		elif fx.has("enter_ura"):
+			_busy = false
+			enter_ura(str(fx["enter_ura"]))
+			return
 	_busy = false
 
 
@@ -335,6 +390,14 @@ func before_day_end(hud: Node) -> void:
 			await play_beat(bt)
 	if Game.flags.has("ending"):
 		return
+	if week_no() >= 13 and day_in_week() == 7:
+		# Tanabata can't be slept through: if you end the night early, you go up the steps anyway.
+		for bt in day_data().get("beats", []):
+			if str(bt.id) == "w13_tanabata":
+				await hud.say("", "You lie down. You can't sleep. Nobody in Suzunari can sleep tonight. You get up, and you go to the steps.")
+				st()["done"].erase("w13_tanabata")
+				await play_beat(bt)
+				return
 	if day_in_week() == 7 and not (s["closed"] as Array).has(week_no()):
 		await close_week(hud, week_no())
 
@@ -438,7 +501,105 @@ func ending(choice: String) -> void:
 			epi = "\n\n" + fill(str(endings.get("family_epilogue", "")))
 		await hud.say("", "%s\n\n%s%s\n\n%s" % [str(e.get("title", id)).to_upper(), "\n".join(summary()), epi,
 			str(endings.get("end_card", "EPISODE 0 - END"))])
+	remember_ending(id)
 	Ledger.write()
 	Game.save_game()
 	Clock.running = false
 	Router.goto(Router.TITLE)
+
+
+const SEEN_PATH := "user://endings_seen.json"
+
+
+## Every ending ever reached on this device (the title screen shows them).
+func endings_seen() -> Dictionary:
+	if FileAccess.file_exists(SEEN_PATH):
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string(SEEN_PATH))
+		if parsed is Dictionary:
+			return parsed
+	return {}
+
+
+func remember_ending(id: String) -> void:
+	var seen := endings_seen()
+	seen[id] = {"title": str(endings.get("endings", {}).get(id, {}).get("title", id)), "date": Time.get_date_string_from_system()}
+	seen["_last"] = id
+	var f := FileAccess.open(SEEN_PATH, FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify(seen))
+		f.close()
+
+
+# --- Free days -----------------------------------------------------------------------------------------
+
+## Weekends and holidays: Aunt Haruka asks how you'll spend the day (data/weekend.json). Costs hours.
+func weekend_menu() -> void:
+	var hud := _hud()
+	if not _free(hud):
+		return
+	_busy = true
+	today()["weekend"] = true
+	var who := _closest()
+	var menu := []
+	for a in weekend.get("activities", []):
+		if str(a.id) == "friend" and who == "":
+			continue
+		menu.append({"id": str(a.id), "text": str(a.t).replace("{who}", who.split(" ")[-1] if who != "" else "")})
+	menu.append({"id": "", "text": "\"I'll decide as I go.\""})
+	var picked: String = await hud.say("Asagiri Haruka", Amane.fill(_pick(weekend.get("ask", []))), menu)
+	for a in weekend.get("activities", []):
+		if str(a.id) != picked or picked == "":
+			continue
+		var fx: Dictionary = (a.get("fx", {}) as Dictionary).duplicate()
+		var extra := ""
+		if fx.has("friend"):
+			Amane.add_closeness(who, int(fx["friend"]))
+			extra = "> %s +%d" % [who, int(fx["friend"])]
+			fx.erase("friend")
+		var lines := Town.apply_fx(fx)
+		Clock.advance(int(a.get("minutes", 180)))
+		var line := _pick(a.get("lines", [])).replace("{who}", who.split(" ")[-1] if who != "" else "a friend")
+		var notes: Array[String] = []
+		for x in [lines, extra, "> %d hours pass" % int(int(a.get("minutes", 180)) / 60)]:
+			if str(x) != "":
+				notes.append(str(x))
+		await hud.say("", line + "\n" + "\n".join(notes))
+	_busy = false
+
+
+func _closest() -> String:
+	var best := ""
+	var best_v := 9
+	var c: Dictionary = Amane.st()["closeness"]
+	for who in c:
+		if int(c[who]) > best_v and not str(who).ends_with("-sensei") and str(who) != "Sato Yui":
+			best_v = int(c[who])
+			best = str(who)
+	return best
+
+
+# --- Ura-Suzunari ----------------------------------------------------------------------------------------
+
+## Step onto the thousandth stair: the town level reloads as Ura-Suzunari (Suzunari._setup reads Router.params).
+func enter_ura(goal: String) -> void:
+	st()["ura_goal"] = goal
+	Game.flags["ura_visits"] = int(Game.flags.get("ura_visits", 0)) + 1
+	Game.flags["in_ura"] = true
+	Clock.running = false
+	Router.goto(Router.SUZUNARI, {"ura": true, "goal": goal})
+
+
+## Walk back down: ordinary Suzunari, a little later than you left (Omagatoki is over).
+func leave_ura(thrown_out: bool = false) -> void:
+	Game.flags.erase("in_ura")
+	Game.location_id = "suzunari"
+	if thrown_out:
+		var lore: Dictionary = Amane.st()["lore"]
+		if not lore.is_empty():
+			lore.erase(lore.keys()[_rng.randi() % lore.size()])
+		Clock.next_day()
+		Clock.st()["minute"] = Clock.START_MIN
+		Router.goto(Router.SUZUNARI, {"spawn_tile": [4, 21]})
+		return
+	Clock.advance(maxi(0, Clock.NIGHT + 10 - Clock.minute()))
+	Router.goto(Router.SUZUNARI, {"spawn_tile": [4, 21]})

@@ -11,7 +11,8 @@
 			"shield": 0,
 			"stun": 0.0,
 			"arc": 0.15,
-			"color": "#9ff7ff"
+			"color": "#9ff7ff",
+			"suzunari_name": "Umbrella"
 		},
 		"baton": {
 			"name": "Shock Baton",
@@ -23,7 +24,8 @@
 			"shield": 1,
 			"stun": 0.55,
 			"arc": 0.15,
-			"color": "#7dc8ff"
+			"color": "#7dc8ff",
+			"suzunari_name": "Bamboo Shinai"
 		},
 		"chain": {
 			"name": "Chain Whip",
@@ -35,7 +37,8 @@
 			"shield": 0,
 			"stun": 0.0,
 			"arc": -0.45,
-			"color": "#ffd23e"
+			"color": "#ffd23e",
+			"suzunari_name": "Prayer Beads"
 		},
 		"katana": {
 			"name": "Mono-Katana",
@@ -48,7 +51,8 @@
 			"stun": 0.0,
 			"arc": 0.25,
 			"pierce": true,
-			"color": "#ff5ad2"
+			"color": "#ff5ad2",
+			"suzunari_name": "Old Katana"
 		},
 		"hammer": {
 			"name": "Repo Hammer",
@@ -61,7 +65,8 @@
 			"stun": 0.2,
 			"arc": 0.1,
 			"finisher": "shockwave",
-			"color": "#ffa040"
+			"color": "#ffa040",
+			"suzunari_name": "Kanabo"
 		}
 	},
 	"ranged": {
@@ -75,7 +80,8 @@
 			"spread": 0,
 			"life": 1.6,
 			"charge": true,
-			"color": "#fff0b0"
+			"color": "#fff0b0",
+			"suzunari_name": "Salt Throw"
 		},
 		"scatter": {
 			"name": "Scatter Cannon",
@@ -87,7 +93,8 @@
 			"spread": 28,
 			"life": 0.4,
 			"push": 5.0,
-			"color": "#ff9a5a"
+			"color": "#ff9a5a",
+			"suzunari_name": "Handful of Salt"
 		},
 		"arc": {
 			"name": "Arc Thrower",
@@ -98,7 +105,8 @@
 			"range": 10.0,
 			"chains": 2,
 			"stun": 0.3,
-			"color": "#8ae8ff"
+			"color": "#8ae8ff",
+			"suzunari_name": "Ofuda Charm"
 		},
 		"harpoon": {
 			"name": "Repo Harpoon",
@@ -108,7 +116,8 @@
 			"speed": 30.0,
 			"special": "pull",
 			"life": 0.6,
-			"color": "#c8ff7a"
+			"color": "#c8ff7a",
+			"suzunari_name": "Fishing Rod"
 		},
 		"grenade": {
 			"name": "Paste Grenade",
@@ -117,7 +126,8 @@
 			"rate": 0.55,
 			"special": "grenade",
 			"radius": 3.0,
-			"color": "#7dff4a"
+			"color": "#7dff4a",
+			"suzunari_name": "Firecrackers"
 		}
 	},
 	"start_kit": {

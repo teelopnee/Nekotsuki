@@ -222,3 +222,18 @@ Worked through the priority list in order; no new world systems or visual passes
 - Open: beats are scenes (no Ura-Suzunari level, no fights - the relay and the hill are text); a few beats need the
   player at the right place and time with no map marker; weekend days can feel empty without a beat; nothing yet for
   people you never befriended (some beats only appear with closeness); the endings don't yet change the title screen.
+
+## Fixing the story pass's open items (2026-11-07)
+- Ura-Suzunari is a place now, not a paragraph: red endless dusk, rain falling up, shadow townsfolk, five echoes of
+  1868/1890/1945/2011/2016, wild kasha to fight (umbrella / salt), Rin as a floating bell, Sayo on the riverbed with a
+  Kasha Matriarch, the two-bell rule (stay too long and a day is gone, with one memory), free entry at dusk after you've
+  met Rin. Weeks 6 and 11 walk you in.
+- Places have markers: a paper lantern over the next story place and "(NE 85 m)" on the objective line.
+- Weekends and holidays are never empty: Aunt Haruka's day menu (5 activities, each costs hours).
+- Missed beats carry over one day; seven fallback beats for days that used to need closeness with someone; Tanabata
+  can't be slept through; the title screen lists endings reached on this device.
+- Fixes found on the way: weapon names are Japanese in Suzunari (Umbrella, Salt Throw...), the O2/bounty line no longer
+  shows in town, kasha have no sci-fi shield pips.
+- Tests: ura_test 28 checks, week_test still plays every choice.
+- Open: the relay and the hill on the 13th are still scenes; kasha use the cat sprite (no attack/hurt frames yet);
+  Ura has no unique map of its own (it is Suzunari re-lit); no Ura-only music.

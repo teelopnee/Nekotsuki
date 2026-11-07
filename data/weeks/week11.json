@@ -124,35 +124,22 @@
      ],
      "fallback": false,
      "speaker": "Rin",
-     "text": "The thousandth step, the red sky, the upward rain. This time Amane is holding your sleeve and Mio is filming. Down in the endless festival, the echoes are playing: a boy of seventeen hooking his little finger round a cat's paw on a step in 1868; an old cat dying on the 999th step in 1890 as a ghost says 'tadaima' at the bottom; a young woman in a summer kimono climbing alone in 2011. The bell on Amane's collar speaks. \"Well, latecomer. Where to?\"",
+     "text": "The 999th step, at dusk, with Amane holding your sleeve and Mio filming. The bell on his collar speaks, faint and cracked: \"Well, latecomer. His mother is on the dry riverbed under the bridge, on the other side. The cats over there have smelled you coming. Do you want to go?\"",
      "choices": [
       {
-       "t": "\"To the riverbed. Take us to Sayo.\"",
-       "say": "The festival parts. Beyond it: a dry riverbed of grey stones, children's small towers everywhere, a Jizo with a lantern. A woman in a faded kimono is helping a ghost child balance one more stone. She looks up. She sees the boy in the black hood beside you, and the stone falls from her hand. \"...Amane?\" He doesn't move. He doesn't breathe. \"Mum,\" he says.",
+       "t": "Take the thousandth step, all three of you.",
+       "say": "Three feet come down on nothing, and the nothing holds.",
        "fx": {
-        "flag": "sayo_found",
-        "lore": "sayo_waiting",
-        "tears": 1.0,
-        "bond": 3
+        "enter_ura": "riverbed"
        }
       },
       {
-       "t": "\"Show me 1890. All of it.\"",
-       "say": "The echo plays for you alone: the old cat on the 999th step, the ghost at the bottom, the word 'tadaima', the cat dying a breath too early to answer. Amane is crying silently beside you. \"I didn't get to say it,\" he whispers. \"I've been trying to say it for a hundred and thirty-six years.\"",
-       "fx": {
-        "lore": "suzu_grave",
-        "bond": 4,
-        "trust": 3
-       }
-      },
-      {
-       "t": "\"Get us out. Now.\"",
-       "say": "\"Coward,\" says Rin, not unkindly. The red sky folds. You're on the 999th step in ordinary rain. Mio checks her camera: two hours of tape, all of it red. Amane is gripping your sleeve so hard his knuckles are white.",
-       "fx": {
-        "tears": 0.5
-       }
+       "t": "\"Not tonight.\"",
+       "say": "\"Coward,\" says Rin, not unkindly. \"Tomorrow, then. The riverbed isn't going anywhere. That's rather the point of it.\"",
+       "fx": {}
       }
-     ]
+     ],
+     "carry": true
     }
    ]
   },
@@ -197,6 +184,33 @@
        }
       }
      ]
+    },
+    {
+     "id": "w11_not_yet",
+     "where": "any",
+     "after": 600,
+     "needs": {
+      "no_flag": "sayo_found"
+     },
+     "speaker": "Amane",
+     "text": "Amane is sitting on the shop step with his hood all the way up. \"Rin says she's on the riverbed,\" he says. \"On the other side. Under the bridge.\" He pulls his sleeves over his hands. \"I'm scared to go. What if she doesn't know me? I was one.\"",
+     "choices": [
+      {
+       "t": "\"She'll know you. Mothers do. We'll go together at dusk.\"",
+       "say": "\"Together.\" He holds on to the word. \"Okay. Omagatoki. The top of the steps.\" He doesn't let go of your sleeve until the shop opens.",
+       "fx": {
+        "bond": 3,
+        "trust": 2
+       }
+      },
+      {
+       "t": "\"You don't have to go until you're ready.\"",
+       "say": "\"I've been ready for fifteen years.\" He stands up. \"I just needed someone to say I didn't have to be.\"",
+       "fx": {
+        "amane_self": 4
+       }
+      }
+     ]
     }
    ]
   },
@@ -212,9 +226,6 @@
       44,
       8
      ],
-     "needs": {
-      "flag": "jizo_promise"
-     },
      "speaker": "Gataro (kappa)",
      "text": "The kappa surfaces under the bridge holding a cucumber you didn't give him. \"Six stone grandfathers. River mouth. Two hundred metres out. Deep, deep, deep.\" He bows. The water in his head-dish slops dangerously. \"The nun put them down gently. I watched. I was small then.\" Mio, beside you, is shaking. \"I can't dive,\" she says. \"I'm so afraid of deep water.\"",
      "choices": [

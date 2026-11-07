@@ -166,7 +166,7 @@ func _update_calm(fighting: bool) -> void:
 		return
 	_tucked = tucked
 	for c in [_weapon_label, _air_label, _oc_bar]:
-		c.visible = not tucked and (DataDB.theme != "suzunari" or c != _oc_bar)
+		c.visible = not tucked and (DataDB.theme != "suzunari" or (c != _oc_bar and c != _air_label))
 	var tw := create_tween()
 	tw.tween_property(_status_panel, "self_modulate:a", 0.35 if tucked else 1.0, 0.4)
 
@@ -708,6 +708,9 @@ func _refresh_status() -> void:
 	if b > 0:
 		bits.append("BOUNTY %d" % b)
 	_air_label.text = "   ".join(bits) if not bits.is_empty() else "O2: PAID UP"
+	if DataDB.theme == "suzunari":
+		_air_label.text = ""  # no air bills or bounties in Suzunari
+		_air_label.visible = false
 	_air_label.add_theme_color_override("font_color", Color(0.4, 0.95, 1.0) if bits.is_empty() else (Color(1.0, 0.4, 0.35) if b > 0 else Color(1.0, 0.6, 0.2)))
 	_bounty_label.visible = false
 	_loc_label.text = "  @ " + Game.location_name

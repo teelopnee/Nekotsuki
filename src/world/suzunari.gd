@@ -12,6 +12,13 @@ const GIVEN := ["Haruto", "Sota", "Yuto", "Ren", "Riku", "Kaito", "Yui", "Hina",
 
 var amane: AmaneNPC
 var _ending := false
+## Ura-Suzunari (data/ura.json, Week.enter_ura): the same map at an endless red dusk.
+var ura := false
+var ura_goal := ""
+var _ura_t := 0.0
+var _ura_bells := 0
+var _marker: Node3D
+var _marker_t := 0.0
 var home: HomeVisits  ## the five houses: doors, morning pick-ups, walking people home
 var overlay: Node
 var _rain: Array[CPUParticles3D] = []
@@ -42,6 +49,18 @@ func _setup() -> void:
 	DataDB.apply_theme("suzunari")
 	Game.location_id = "suzunari"
 	Game.location_name = "Suzunari"
+	ura = bool(Router.params.get("ura", false)) and bool(Game.flags.get("in_ura", false))
+	if not ura:
+		Game.flags.erase("in_ura")
+	else:
+		ura_goal = str(Router.params.get("goal", "free"))
+		Game.location_name = "Ura-Suzunari"
+		music = "suzunari_dusk"
+		palette["bg"] = "#4a0e1c"
+		palette["fog"] = "#8a2236"
+		palette["fog_density"] = 0.011
+		palette["sun"] = "#ff5a3a"
+		palette["ambient"] = "#b0405a"
 
 
 func _is_outdoor() -> bool:
@@ -80,7 +99,7 @@ func _post_build() -> void:
 	_build_motes()
 	_build_clouds()
 	var jp = build.get("jp")
-	if jp:
+	if jp and not ura:
 		var life := TownLife.new()
 		life.name = "TownLife"
 		add_child(life)
@@ -89,7 +108,7 @@ func _post_build() -> void:
 	var w := builder.width
 	var lanes := [[builder.center(-3, 32), builder.center(w + 2, 32)], [builder.center(w + 2, 33), builder.center(-3, 33)],
 		[builder.center(-3, 43), builder.center(w + 2, 43)], [builder.center(w + 2, 43), builder.center(-3, 43)]]
-	for i in 6:
+	for i in (0 if ura else 6):
 		var car := Critter.new()
 		car.kind = "streetcar"
 		car.style = "kei"
@@ -117,15 +136,21 @@ func _post_build() -> void:
 	add_child(overlay)
 	Clock.minute_passed.connect(_on_minute)
 	_apply_light()
-	Cats.spawn_in(self, 8)
-	if not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
+	if not ura:
+		Cats.spawn_in(self, 8)
+	if not ura and not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
 		var h = NPC_SCENE.instantiate()
 		h.set_script(load("res://src/actors/hayate_npc.gd"))
 		actors.add_child(h)
 		h.global_position = builder.center(16, 29) + Vector3(0, 0.1, 0)
 		h.spot = h.global_position
+	if ura:
+		_build_ura.call_deferred()
+		_morning.call_deferred()
+		return
 	Town.spawn_in(self)
 	_school_doors()
+	_thousandth_step()
 	if str(Amane.st()["pending"]) == "doorstep":
 		People.today("amane")["out"] = true  # he's on Senpai's doorstep, not at home
 	home = HomeVisits.new()
@@ -168,6 +193,10 @@ func _exit_tree() -> void:
 
 
 func _morning() -> void:
+	if ura:
+		if hud:
+			await hud.say("", str(Week.ura.get("enter_text", "")))
+		return
 	var note := Amane.morning_event()
 	if note != "" and hud:
 		amane.global_position = player.global_position + Vector3(0.6, 0.1, -1.6)
@@ -207,7 +236,11 @@ func _set_rain(r: float) -> void:
 
 
 func _process(delta: float) -> void:
-	var r := float(Amane.st()["rain"])
+	if ura:
+		_ura_process(delta)
+	else:
+		_marker_process(delta)
+	var r := float(Amane.st()["rain"]) if not ura else 0.8
 	_set_rain(r)
 	if _petals and player:
 		_petals.global_position = player.global_position + Vector3(0, 6.0, -5.0)
@@ -229,7 +262,8 @@ func _process(delta: float) -> void:
 
 func _on_minute(m: int) -> void:
 	_apply_light()
-	Audio.play_music(Week.music_now(), 2.5)
+	if not ura:
+		Audio.play_music(Week.music_now(), 2.5)
 	if m >= Clock.END_MIN and is_inside_tree():
 		end_day()
 
@@ -290,6 +324,25 @@ func _apply_light() -> void:
 	# Morning mist hugging the ground, a thin haze by day, none in the dark.
 	environment.fog_height = 0.8
 	environment.fog_height_density = 0.05 * morning
+
+
+## The thousandth step, at the top of the 999: after you've met Rin, at Omagatoki, you can go over on your own.
+	if ura:
+		_ura_light()
+
+
+func _thousandth_step() -> void:
+	var it := Interactable.new()
+	it.name = "ThousandthStep"
+	it.prompt = "Count the steps... and take one more (Ura-Suzunari)"
+	it.radius = 2.0
+	add_child(it)
+	it.global_position = builder.center(4, 10) + Vector3(0, 0.9, 0)
+	it.interacted.connect(func(_p):
+		if Clock.is_dusk() and bool(Game.flags.get("met_rin", false)) and not People.escorting():
+			Week.enter_ura("free")
+		elif hud:
+			hud.say("", "Nine hundred and ninety-nine. You count them twice. There is no thousandth step - not now. (Omagatoki, 18:00-18:30, once you've met the bell.)"))
 
 
 func nearest_walkable(p: Vector3) -> Vector3:
@@ -441,3 +494,244 @@ func _build_clouds() -> void:
 	_clouds.extra_cull_margin = 200.0
 	add_child(_clouds)
 	_clouds.position.x = builder.width * LevelBuilder.TILE * 0.5
+
+
+# --- Ura-Suzunari ------------------------------------------------------------------------------------------
+
+func _build_ura() -> void:
+	var u: Dictionary = Week.ura
+	Clock.running = false
+	var arrive: Array = u.get("arrive", [4, 20])
+	player.global_position = builder.center(int(arrive[0]), int(arrive[1])) + Vector3(0, 0.1, 0)
+	if amane and Amane.st()["met"]:
+		amane.global_position = player.global_position + Vector3(1.2, 0.1, 1.4)
+	# Everyone who lives here now is a shadow of someone who didn't want to leave.
+	for n in get_tree().get_nodes_in_group("npc"):
+		if n == amane or n.is_in_group("echo"):
+			continue
+		var spr = n.get("sprite")
+		if spr:
+			spr.modulate = Color(0.16, 0.05, 0.1, 0.7)
+		var lbl = n.get("name_label")
+		if lbl is Label3D:
+			lbl.text = "a shadow"
+		var t = n.get("talk")
+		if t:
+			t.enabled = false
+	for e in u.get("echoes", []):
+		_spawn_echo(e, false)
+	var goal: Dictionary = u.get("goals", {}).get(ura_goal, {})
+	if goal.has("tile"):
+		if ura_goal == "rin":
+			_spawn_rin(goal)
+		else:
+			var g := goal.duplicate()
+			g["id"] = "goal_" + ura_goal
+			_spawn_echo(g, true)
+	# Wild kasha hunt the living - away from where you arrive.
+	var k: Dictionary = u.get("kasha", {})
+	var spots: Array = []
+	for z in range(1, builder.height - 1):
+		for x in range(1, builder.width - 1):
+			if builder.cell(x, z) in [".", ",", "_"] and builder.center(x, z).distance_to(player.global_position) > 26.0:
+				spots.append(Vector2i(x, z))
+	spots.shuffle()
+	for i in mini(int(k.get("count", 6)), spots.size()):
+		spawn_enemy("kasha", builder.center(spots[i].x, spots[i].y), {"look": k.get("look", {}), "name": "Wild Kasha", "hostile": true})
+	if bool(goal.get("elite", false)) and goal.has("tile"):
+		var gt: Array = goal["tile"]
+		spawn_enemy("kasha", builder.center(int(gt[0]) + 3, int(gt[1]) - 1), {"look": k.get("look", {}), "name": "Kasha Matriarch",
+			"hostile": true, "elite": true})
+	if Arsenal.owned("melee").is_empty():
+		Game.flags["weapons"] = {"melee": ["pipe"], "ranged": ["sidearm"]}
+	# The way out: back down the thousandth step.
+	var ex: Array = u.get("exit", [4, 19])
+	var it := Interactable.new()
+	it.prompt = "Walk back down the thousandth step"
+	it.radius = 2.2
+	add_child(it)
+	it.global_position = builder.center(int(ex[0]), int(ex[1])) + Vector3(0, 0.9, 0)
+	it.interacted.connect(func(_p): Week.leave_ura(false))
+	# Upward rain.
+	for p in _rain:
+		if is_instance_valid(p):
+			p.gravity = Vector3(0, absf(p.gravity.y) * 0.5 + 2.0, 0)
+			p.position.y -= 10.0
+	_apply_light()
+	if hud and hud.has_method("toast"):
+		hud.toast("Ura-Suzunari. Wild kasha hunt here: MELEE / FIRE to fight, ROLL to dodge.", Color(1.0, 0.6, 0.6))
+
+
+func _spawn_echo(e: Dictionary, solid: bool) -> void:
+	var n = NPC_SCENE.instantiate()
+	n.set_script(load("res://src/actors/echo_npc.gd"))
+	n.echo = e
+	n.solid = solid
+	actors.add_child(n)
+	var t: Array = e.get("tile", [4, 20])
+	n.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.1, 0)
+
+
+## Rin: a gold bell hanging in the air by itself.
+func _spawn_rin(goal: Dictionary) -> void:
+	var root := Node3D.new()
+	root.name = "Rin"
+	add_child(root)
+	var t: Array = goal.get("tile", [6, 21])
+	root.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 1.6, 0)
+	var bell := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 0.22
+	sm.height = 0.36
+	bell.mesh = sm
+	var gold := StandardMaterial3D.new()
+	gold.albedo_color = Color(1.0, 0.8, 0.3)
+	gold.metallic = 0.8
+	gold.roughness = 0.25
+	gold.emission_enabled = true
+	gold.emission = Color(1.0, 0.7, 0.25)
+	gold.emission_energy_multiplier = 0.8
+	bell.material_override = gold
+	root.add_child(bell)
+	var cord := MeshInstance3D.new()
+	cord.mesh = builder.cylinder(0.02, 0.6, 5)
+	var red := StandardMaterial3D.new()
+	red.albedo_color = Color(0.8, 0.1, 0.15)
+	cord.material_override = red
+	cord.position.y = 0.42
+	root.add_child(cord)
+	var light := OmniLight3D.new()
+	light.light_color = Color(1.0, 0.75, 0.4)
+	light.omni_range = 4.0
+	light.light_energy = 1.4
+	root.add_child(light)
+	var it := Interactable.new()
+	it.prompt = "Talk to the bell"
+	it.radius = 2.0
+	root.add_child(it)
+	it.position.y = -0.8
+	it.interacted.connect(func(_p): _rin_talk(goal))
+	var tw := root.create_tween().set_loops()
+	tw.tween_property(root, "position:y", root.position.y + 0.25, 1.2).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(root, "position:y", root.position.y, 1.2).set_trans(Tween.TRANS_SINE)
+
+
+func _rin_talk(goal: Dictionary) -> void:
+	if hud == null or hud._dialogue_open:
+		return
+	await Town.scene("Rin", str(goal.get("text", "")), goal.get("choices", []), "ura_goal_rin")
+	ura_scene_done("goal_rin")
+
+
+## A goal scene finished: point the way home.
+func ura_scene_done(id: String) -> void:
+	if id.begins_with("goal_"):
+		Week.st()["ura_goal_done"] = true
+		if hud and hud.has_method("toast"):
+			hud.toast("Get back to the steps before the second bell.", Color(1.0, 0.8, 0.6))
+
+
+func _ura_process(delta: float) -> void:
+	_set_rain(0.8)
+	if hud and hud._dialogue_open:
+		return
+	_ura_t += delta
+	var bell_s := float(Week.ura.get("bell_seconds", 150))
+	if _ura_bells == 0 and _ura_t >= bell_s:
+		_ura_bells = 1
+		Audio.play_sfx("chime")
+		if hud and hud.has_method("toast"):
+			hud.toast(str(Week.ura.get("first_bell", "")), Color(1.0, 0.7, 0.5))
+	elif _ura_bells == 1 and _ura_t >= bell_s * 2.0:
+		_ura_bells = 2
+		_thrown_out()
+
+
+func _thrown_out() -> void:
+	if hud:
+		await hud.say("", str(Week.ura.get("second_bell", "")))
+	Week.leave_ura(true)
+
+
+func _ura_light() -> void:
+	var sun_node := sun as DirectionalLight3D
+	if sun_node:
+		sun_node.light_color = Color(1.0, 0.36, 0.26)
+		sun_node.light_energy = 0.9
+	environment.ambient_light_color = Color(0.7, 0.22, 0.3)
+	environment.ambient_light_energy = 0.9
+	environment.fog_light_color = Color(0.62, 0.14, 0.22)
+	environment.adjustment_saturation = 1.25
+	if jp_night_ok():
+		build.get("jp").set_night(0.8)
+
+
+func jp_night_ok() -> bool:
+	return build.get("jp") != null and build.get("jp").has_method("set_night")
+
+
+# --- Story marker ------------------------------------------------------------------------------------------
+
+## A paper lantern over the next story place (Week.marker) and "(NE 120 m)" on the objective line.
+func _marker_process(delta: float) -> void:
+	_marker_t -= delta
+	if _marker_t > 0.0:
+		if _marker and _marker.visible:
+			_marker.position.y = _marker.get_meta("y0", 0.0) + sin(Time.get_ticks_msec() / 400.0) * 0.18
+		return
+	_marker_t = 0.5
+	var mk: Array = Week.marker()
+	if mk.is_empty() or player == null:
+		Week.marker_hint = ""
+		if _marker:
+			_marker.visible = false
+		return
+	if _marker == null:
+		_marker = _make_marker()
+	var tile: Vector2i = mk[0]
+	var pos := builder.center(tile.x, tile.y)
+	_marker.visible = true
+	_marker.global_position = pos + Vector3(0, 3.0, 0)
+	_marker.set_meta("y0", _marker.position.y)
+	var to := pos - player.global_position
+	to.y = 0.0
+	var d := to.length()
+	if d < 6.0:
+		Week.marker_hint = "  (here)"
+		return
+	var ang := atan2(to.x, -to.z)  # 0 = north (up the screen)
+	var dirs := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+	var i := int(round(ang / (PI / 4.0))) % 8
+	if i < 0:
+		i += 8
+	Week.marker_hint = "  (%s %d m)" % [dirs[i], int(d)]
+
+
+func _make_marker() -> Node3D:
+	var root := Node3D.new()
+	root.name = "StoryMarker"
+	add_child(root)
+	var lantern := MeshInstance3D.new()
+	lantern.mesh = builder.cylinder(0.32, 0.6, 12)
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(1.0, 0.85, 0.6)
+	m.emission_enabled = true
+	m.emission = Color(1.0, 0.6, 0.25)
+	m.emission_energy_multiplier = 2.2
+	lantern.material_override = m
+	lantern.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(lantern)
+	for y in [0.33, -0.33]:
+		var cap := MeshInstance3D.new()
+		cap.mesh = builder.cylinder(0.2, 0.08, 10)
+		var dk := StandardMaterial3D.new()
+		dk.albedo_color = Color(0.15, 0.08, 0.06)
+		cap.material_override = dk
+		cap.position.y = y
+		root.add_child(cap)
+	var l := OmniLight3D.new()
+	l.light_color = Color(1.0, 0.7, 0.4)
+	l.omni_range = 5.0
+	l.light_energy = 1.2
+	root.add_child(l)
+	return root

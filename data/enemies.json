@@ -575,5 +575,56 @@
 			"charged",
 			"legs"
 		]
+	},
+	"kasha": {
+		"name": "Wild Kasha",
+		"faction": "",
+		"hostility": "always",
+		"hp": 26,
+		"speed": 5.4,
+		"aggro_range": 11.0,
+		"attack": "melee",
+		"range": 1.5,
+		"damage": 8,
+		"cooldown": 1.0,
+		"telegraph": 0.35,
+		"flank": true,
+		"credits": [
+			0,
+			0
+		],
+		"shield": 0,
+		"look": "cat",
+		"scale": 2.3,
+		"drops": {},
+		"subsystems": {
+			"core": {
+				"label": "BODY",
+				"hp": 999,
+				"acc": 1.0,
+				"dmg": 1.0,
+				"y": 0.5,
+				"effect": ""
+			},
+			"head": {
+				"label": "FACE",
+				"hp": 6,
+				"acc": 0.6,
+				"dmg": 2.0,
+				"y": 0.8,
+				"effect": "crit"
+			},
+			"legs": {
+				"label": "PAWS",
+				"hp": 8,
+				"acc": 0.85,
+				"dmg": 0.7,
+				"y": 0.2,
+				"effect": "crippled"
+			}
+		},
+		"weak": [
+			"melee"
+		]
 	}
 }

@@ -236,6 +236,42 @@
        }
       }
      ]
+    },
+    {
+     "id": "w9_shutters",
+     "where": "suzunari",
+     "after": 600,
+     "near": [
+      20,
+      39,
+      12
+     ],
+     "needs": {
+      "max_close": {
+       "Shirasagi Reiji": 29,
+       "Hayase Hina": 24
+      }
+     },
+     "speaker": "Gen-san",
+     "text": "Half the shopping street has its shutters down on a Saturday. On every closed shop the same small sign: a white heron. Gen-san from the ramen shop is smoking outside his door. \"Thirty-one shops when I was your age,\" he says. \"Twelve now. Every one that closed, the heron bought.\" He looks at the hill. \"Since 2010. Since the shrine went quiet. Funny, that.\"",
+     "choices": [
+      {
+       "t": "\"Who's behind the heron company?\"",
+       "say": "\"Shirasagi Kyoko.\" He says it like a weather warning. \"Married in from the city. Loves this town more than the people born in it. Loves owning it, anyway.\"",
+       "fx": {
+        "flag": "heron_buyouts",
+        "lore": "night_shop"
+       }
+      },
+      {
+       "t": "\"Will your shop close too?\"",
+       "say": "\"Over my dead body.\" He grins. \"Which is what she's waiting for, probably.\" He gives you a free bowl anyway. \"For luck. Somebody in this town has to have some.\"",
+       "fx": {
+        "hp": 20,
+        "luck": 1
+       }
+      }
+     ]
     }
    ]
   },

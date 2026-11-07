@@ -37,7 +37,11 @@ static func equipped(slot: String) -> String:
 
 
 static func stats(slot: String) -> Dictionary:
-	return data().get(slot, {}).get(equipped(slot), {})
+	var st: Dictionary = data().get(slot, {}).get(equipped(slot), {})
+	if DataDB.theme == "suzunari" and st.has("suzunari_name"):
+		st = st.duplicate()
+		st["name"] = st["suzunari_name"]  # Suzunari: an umbrella and a pinch of salt, not a lead pipe and a sidearm
+	return st
 
 
 static func unlock(id: String, equip: bool = true) -> bool:

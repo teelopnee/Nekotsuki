@@ -157,6 +157,21 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `flag` as a list, `final` (week 13 only) -> `Week.ending(choice)` -> `ending_id()` (route, bond, self, flags
   memory_2016 / sayo_found / letter_101 / makabe_letter_sent / seal_known / kyoko_offer, rival fates) -> pages + end card
   + `Game.flags.ending` + Ledger + back to the title. Validate all story data: `tools/week_test.gd` (plays every choice).
+- Ura-Suzunari (`data/ura.json`, `Week.enter_ura(goal)` / `leave_ura(thrown_out)`, flag `in_ura`): the Suzunari level in
+  ura mode (`Router.params.ura`, `Suzunari.ura`): clock stopped at the entry minute, red light (`_ura_light`), rain
+  falling up, townsfolk turned to shadows, five `EchoNPC`s (`src/actors/echo_npc.gd`: 1868 / 1890 / 1945 / 2011 / 2016,
+  Town.scene), the goal (Rin = floating bell `_spawn_rin`; riverbed = solid echo Sayo + elite "Kasha Matriarch"), wild
+  kasha (`data/enemies.json` "kasha", cat sprite, look in ura.json) and the exit Interactable at the steps. Two-bell rule:
+  `bell_seconds` -> toast; x2 -> thrown out, `Clock.next_day()`, one lore entry forgotten. Story beats enter with fx
+  `enter_ura: rin|riverbed`; after meeting Rin (flag `met_rin`) the "ThousandthStep" Interactable at the top of the 999
+  (4,10) lets you go over on your own at Omagatoki (goal `free`). Weapons show Suzunari names (`weapons.json
+  suzunari_name`: Umbrella, Salt Throw...). Test: `tools/ura_test.gd`; shots: `tools/shot_ura.gd -- <dir>`.
+- Story flow: `Week.marker()` = place of the next pending beat (lantern `StoryMarker` + `marker_hint` "(NE 85 m)" on
+  the objective line); missed beats carry over one day (`_candidates`, `"carry": false` to stop it); weekends and
+  holidays open Aunt Haruka's menu at home before noon (`data/weekend.json`, `weekend_menu`: shop / fishing / study /
+  a day with your closest friend / sleep, each costs hours); `max_close` need + fallback beats where a day depended on
+  closeness; Tanabata can't be slept through (`before_day_end` plays w13_tanabata); endings reached are kept in
+  `user://endings_seen.json` and shown on the title screen.
 - School days & week 1 (`Week` autoload, `data/weeks/week01.json`, `data/lessons.json`, state `Game.flags["week"]`): lesson
   blocks AM 510-750 / PM 800-920 are ONE event when you're in the school (4 choices, clock jumps to the block end);
   late = > 2 min into a block; absent = in town 15+ min into a block (toast, Makabe -3, Ura post "truant", Amane tears);

@@ -55,6 +55,14 @@ func _ready() -> void:
 		plate.add_child(info)
 		v.add_child(plate)
 	v.add_child(_button("NEW GAME", _content_notice))
+	var seen: Dictionary = Week.endings_seen()
+	if seen.has("_last"):
+		var total: int = (Week.endings.get("endings", {}) as Dictionary).size()
+		var n := seen.size() - 1
+		var last: Dictionary = seen.get(str(seen["_last"]), {})
+		var el := HUD.make_label("Endings reached: %d / %d   -   last: %s" % [n, total, str(last.get("title", ""))], 15, Color(1.0, 0.86, 0.6))
+		el.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		v.add_child(el)
 	v.add_child(_button("CREDITS & LICENSES", _show_credits))
 	if not OS.has_feature("mobile") and not OS.has_feature("web"):
 		v.add_child(_button("QUIT", func(): get_tree().quit()))
