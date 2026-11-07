@@ -1,0 +1,379 @@
+{
+ "_doc": "Week 9 (3-9 June): the town's grown-ups push 'keep the boy for our luck'; Shirasagi Kyoko invites Toru to tea and makes her offer (flag kyoko_offer -> the 'return the god' choice in week 13); Reiji starts to break; the Ura board turns on Toru.",
+ "days": {
+  "1": {
+   "morning": "A white envelope sealed with a heron is waiting on the shop counter. Aunt Haruka hasn't touched it. She's looking at it the way you'd look at a wasp.",
+   "objective": "The Shirasagi residence has invited you to tea, tomorrow after school.",
+   "beats": [
+    {
+     "id": "w9_invite",
+     "where": "school",
+     "after": 750,
+     "before": 800,
+     "speaker": "Reiji",
+     "text": "Reiji sits down opposite you at lunch, which he has never done. \"My mother has invited you to tea.\" He says it to the table. \"She doesn't invite people. She summons them.\" He finally looks up. \"I'd like to say don't come. I can't. If you don't come, she'll come to you.\"",
+     "choices": [
+      {
+       "t": "\"I'll come. Will you be there?\"",
+       "say": "\"I'll be there.\" A breath. \"I'll be in the room. That's all I can promise.\" From Reiji, that's an oath sworn on a sword.",
+       "fx": {
+        "closeness": 5,
+        "who": "Shirasagi Reiji",
+        "flag": "tea_accepted"
+       }
+      },
+      {
+       "t": "\"What does she want with me?\"",
+       "say": "\"I don't know.\" A lie. He hears himself tell it and hates it. \"...I know some of it. She wants the shrine full again. She thinks you're the key to it.\" He stands up. \"Be careful what you agree to. She remembers every word.\"",
+       "fx": {
+        "closeness": 3,
+        "who": "Shirasagi Reiji",
+        "flag": "tea_accepted",
+        "lore": "bell_goshintai"
+       }
+      },
+      {
+       "t": "\"I'm not going.\"",
+       "say": "\"Then she'll come to the shop.\" He's already resigned. \"She'll be very polite. Your aunt will want to throw a broom at her. Please don't let her.\"",
+       "fx": {
+        "flag": "tea_refused"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Tea at the Shirasagi residence (after school).",
+   "beats": [
+    {
+     "id": "w9_tea",
+     "where": "suzunari",
+     "after": 960,
+     "near": [
+      51,
+      51,
+      8
+     ],
+     "speaker": "Shirasagi Kyoko",
+     "text": "The tea room smells of new tatami and old money. Shirasagi Kyoko pours without spilling a drop. Reiji kneels by the wall like furniture. \"Asagiri-kun. Your family and mine have been unkind to each other for a hundred and fifty years. Let's be practical instead.\" She sets down the pot. \"The Nekomori shrine has been empty since a child was born wearing its god round his wrist. Since then, this town has been dying. On Tanabata, bring the boy up to the shrine, and let the god go home. That's all I ask. Everyone will be lucky again. Even him, in a way.\"",
+     "choices": [
+      {
+       "t": "\"What happens to Amane if the god 'goes home'?\"",
+       "say": "Kyoko smiles beautifully. \"He becomes what he was meant to be. Gods don't cry, Asagiri-kun. Gods don't wait for anybody.\" Against the wall, Reiji's hands close into fists. \"Think about it. You have until Tanabata.\"",
+       "fx": {
+        "flag": "kyoko_offer",
+        "lore": "bell_goshintai"
+       }
+      },
+      {
+       "t": "\"No. Never.\"",
+       "say": "\"Never is such a young word.\" She refills your cup anyway. \"I'll ask again in July. People change their minds when the rain doesn't stop.\" When you leave, Reiji walks you to the gate and says, very quietly, \"Thank you for saying no in front of me.\"",
+       "fx": {
+        "flag": "kyoko_offer",
+        "closeness": 8,
+        "who": "Shirasagi Reiji",
+        "amane_self": 2
+       }
+      },
+      {
+       "t": "\"I'll think about it.\"",
+       "say": "\"That's all I ask.\" She bows exactly as deep as you do. At the gate Reiji won't look at you. \"You'll think about it,\" he repeats, as if filing it. \"I'll be thinking about it too.\"",
+       "fx": {
+        "flag": [
+         "kyoko_offer",
+         "kyoko_maybe"
+        ],
+        "closeness": -4,
+        "who": "Shirasagi Reiji"
+       }
+      }
+     ]
+    },
+    {
+     "id": "w9_tea_refused",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "needs": {
+      "flag": "tea_refused"
+     },
+     "speaker": "Shirasagi Kyoko",
+     "text": "Shirasagi Kyoko is sitting in Asagiri-do's only customer chair, holding a cat mochi she hasn't eaten. Aunt Haruka is gripping a broom. \"Since you couldn't come to me.\" Kyoko smiles. \"On Tanabata, bring the Nekomori boy to his shrine and let the god inside him go home. The town will be lucky again. That's all.\"",
+     "choices": [
+      {
+       "t": "\"Get out of my aunt's shop.\"",
+       "say": "She stands, smooths her kimono, and leaves the mochi on the chair. \"Until July, then.\" Haruka doesn't let go of the broom for an hour.",
+       "fx": {
+        "flag": "kyoko_offer",
+        "luck": 1
+       }
+      },
+      {
+       "t": "\"What happens to him?\"",
+       "say": "\"Nothing he'll mind. Gods don't mind things.\" She bows. \"Until July.\"",
+       "fx": {
+        "flag": "kyoko_offer",
+        "lore": "bell_goshintai"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "Friday. You can't stop thinking about Kyoko's offer.",
+   "beats": [
+    {
+     "id": "w9_dream",
+     "when": "night",
+     "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa has a heron feather on the shogi board, like a piece. He looks angry for the first time in any dream. \"The heron's always wanted the cat's luck,\" he says. \"They took everything else. Ships. Land. That factory full of plastic cats.\" He sweeps the feather off the board. \"A shrine with a god in it is a shrine. A boy with a god in him is a boy. Don't let anyone tell you which one he is.\"",
+     "choices": [
+      {
+       "t": "\"How do I stop her?\"",
+       "say": "\"You don't. Her son does, if you're kind to him first.\" He picks the feather up again, gently this time. \"That boy's been carrying her for five years. Somebody has to carry him for a bit.\"",
+       "fx": {
+        "flag": "genzo_reiji_hint"
+       }
+      },
+      {
+       "t": "\"Would the town really be lucky again?\"",
+       "say": "\"Lucky.\" He snorts. \"Luck bought with a child is a debt, not luck. This town's paid enough debts.\" He looks at you hard. \"So have you.\"",
+       "fx": {
+        "amane_self": 1
+       }
+      },
+      {
+       "t": "\"Grandpa, tell me about the hundred letters.\"",
+       "say": "\"Ninety-nine burned, one hidden. Under the storehouse floor, under the third board from the door.\" He winks. \"I said I'd tell you on a Friday. Read it when you're brave. Not before.\"",
+       "fx": {
+        "lore": "hundred_letters",
+        "flag": "letter_101_hint"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "objective": "Saturday. Someone wants to talk where nobody can hear.",
+   "beats": [
+    {
+     "id": "w9_reiji_breaks",
+     "where": "suzunari",
+     "after": 540,
+     "needs": {
+      "min_close": {
+       "Shirasagi Reiji": 30
+      }
+     },
+     "speaker": "Reiji",
+     "text": "Reiji is at the end of the breakwater again, but this time he's waiting for you. \"I found the box in the storeroom,\" he says. \"Straw dolls. Nails. A list of names in my mother's handwriting. Nekomori Amane is at the top. Nekomori Sayo is crossed out.\" His voice is perfectly level. His hands are not. \"And my father's name is crossed out too. Dated five years ago.\"",
+     "choices": [
+      {
+       "t": "\"You don't have to decide anything today.\"",
+       "say": "\"Yes I do.\" He folds the list very small. \"I've been not deciding for five years.\" A long breath out over the sea. \"But thank you. For not telling me what to do. Everyone in my house tells me what to do.\"",
+       "fx": {
+        "closeness": 8,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_found_list"
+       }
+      },
+      {
+       "t": "\"Take it to the police. To someone.\"",
+       "say": "\"A list of names and some straw dolls.\" He laughs, which is awful. \"They'd return it to her with an apology.\" He puts it in his breast pocket. \"I'll keep it. For when it matters. Help me know when it matters.\"",
+       "fx": {
+        "closeness": 6,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_found_list",
+        "promise": "help_reiji"
+       }
+      },
+      {
+       "t": "Put your hand on his shoulder.",
+       "say": "He goes rigid. Then, very slowly, he lets his forehead drop against your shoulder for exactly three seconds. Then he straightens his scarf. \"That didn't happen.\" \"It didn't.\" \"...Thank you.\"",
+       "fx": {
+        "closeness": 10,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_found_list"
+       }
+      }
+     ]
+    },
+    {
+     "id": "w9_hina_article",
+     "where": "school",
+     "after": 600,
+     "needs": {
+      "min_close": {
+       "Hayase Hina": 25
+      }
+     },
+     "speaker": "Hina",
+     "text": "Hina has the newspaper club printer going on a Saturday. \"I traced the money,\" she says without turning round. \"Every shop that closed in the shopping street since 2010 was bought by one company. Guess whose.\" A heron logo on the printout. \"I can publish it. If I publish it, the Ura board will eat us all alive.\"",
+     "choices": [
+      {
+       "t": "\"Publish it. The truth matters.\"",
+       "say": "\"It does.\" She hits PRINT. \"It also costs.\" By Monday the article is on every desk in the school, and Hina's name is on every page of the Ura board.",
+       "fx": {
+        "closeness": 8,
+        "who": "Hayase Hina",
+        "flag": "hina_published"
+       }
+      },
+      {
+       "t": "\"Wait. Get more before you go public.\"",
+       "say": "She stops the printer. \"...You're right. I hate that you're right.\" She files the printout in a folder labelled TANABATA. \"When I go, I go with everything.\"",
+       "fx": {
+        "closeness": 5,
+        "who": "Hayase Hina",
+        "flag": "hina_waits"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "Amane has been very quiet all weekend.",
+   "beats": [
+    {
+     "id": "w9_lucky_charm",
+     "where": "suzunari",
+     "after": 960,
+     "speaker": "Amane",
+     "text": "He finds you on the river bank. His hood is down, which it never is. \"The fishmonger said something to Grandma,\" he says. \"That I should stay close to you. 'For the town's luck.'\" He looks at the water. \"Senpai. Am I just... the town's lucky charm to you? Is that why you're nice to me?\"",
+     "choices": [
+      {
+       "t": "\"You're not a charm. You're Amane. That's why.\"",
+       "say": "He takes that in like a breath after being underwater. \"...Amane.\" He says his own name like he's checking it fits. \"Okay.\" He puts his hood back up, but not all the way.",
+       "fx": {
+        "amane_self": 6,
+        "bond": 4,
+        "tears": -1.0
+       }
+      },
+      {
+       "t": "\"I don't care what the town wants. I care what you want.\"",
+       "say": "\"What I want.\" He has clearly never been asked. He thinks for a long time. \"I want to go to the beach again. And I want a friend in my own class. And I want Senpai.\" He goes red. \"That's three. Is three too many?\"",
+       "fx": {
+        "amane_self": 5,
+        "bond": 3
+       }
+      },
+      {
+       "t": "\"Maybe the town's right. You're lucky to have around.\"",
+       "say": "He smiles, very carefully, the way you smile at a camera. \"I'm glad I'm useful.\" He walks home. The rain doesn't fall, which is somehow worse.",
+       "fx": {
+        "amane_self": -4,
+        "bond": 1
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "objective": "The Ura board has a new thread. It's about you, and it's bad.",
+   "beats": [
+    {
+     "id": "w9_cursed",
+     "where": "school",
+     "after": 750,
+     "before": 800,
+     "speaker": "",
+     "text": "THE ASAGIRI CURSE - 800 replies. A list of everyone who's been hurt since April, each next to a photo of them talking to you. Someone has drawn a red line around your little finger in one of the photos. In 2-B, people move their desks a few centimetres away from yours. Only Hayate moves his closer.",
+     "choices": [
+      {
+       "t": "Find Sato Yui.",
+       "say": "She's at her desk, smiling, phone face down. \"Asagiri-kun! Terrible, isn't it, those threads.\" You look at her phone. She looks at you. \"...Bring me a melon bread,\" she says softly, \"and I'll make it go away for a week. Bring me the truth about the cat, and I'll make it go away forever.\"",
+       "fx": {
+        "closeness": 2,
+        "who": "Sato Yui",
+        "flag": "yui_unmasked"
+       }
+      },
+      {
+       "t": "Sit next to Hayate and ignore it.",
+       "say": "\"Curse,\" Hayate says loudly, to the whole room. \"Yeah. He cursed me with good grades and free ramen. Terrible.\" A few people laugh. A few desks move back.",
+       "fx": {
+        "closeness": 6,
+        "who": "Inukai Hayate"
+       }
+      },
+      {
+       "t": "Ask Hina to write the real story.",
+       "say": "\"I'm already writing it,\" she says, not looking up. \"I've been writing it since April.\" She shows you the headline: THE BOY WHO CAME BACK. \"I just need an ending.\"",
+       "fx": {
+        "closeness": 5,
+        "who": "Hayase Hina",
+        "flag": "hina_story"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "Exams next week. And a train from Tokyo on Wednesday.",
+   "beats": [
+    {
+     "id": "w9_haruka_dad",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "speaker": "Asagiri Haruka",
+     "text": "Aunt Haruka is cleaning the shop for the third time today. \"Your father's coming on Wednesday,\" she says to the counter. \"Evening train. He hasn't set foot in Suzunari since your grandfather's funeral, and he left that before the incense burned down.\" She scrubs harder. \"Be gentle with him. And don't let him take you anywhere.\"",
+     "choices": [
+      {
+       "t": "\"I won't. I'm staying.\"",
+       "say": "She stops scrubbing and hugs you with the cloth still in her hand. \"Good.\" Muffled. \"Good.\"",
+       "fx": {
+        "flag": "toru_stays",
+        "luck": 1
+       }
+      },
+      {
+       "t": "\"Was Dad always like this?\"",
+       "say": "\"No. He laughed. He was the one who climbed trees and sang badly at festivals.\" She looks toward the shrine. \"Then one summer a cat looked at him every evening and he stopped laughing. He was nineteen.\"",
+       "fx": {
+        "lore": "makabe_2001"
+       }
+      },
+      {
+       "t": "\"Maybe I should go with him.\"",
+       "say": "She's quiet for a long time. \"Maybe.\" She puts the cloth down. \"But then there'd be a boy on the steps again, every summer. And me, leaving mochi he doesn't eat.\"",
+       "fx": {
+        "tears": 0.5
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 9 - The town wants something",
+  "route": {
+   "none": "Everyone in town has decided what he is to you. Everyone except you.",
+   "friend": "He asked if he was a lucky charm. You told him his name instead.",
+   "romance": "The town calls him your lucky charm. He calls you Senpai, and means more.",
+   "boundary": "He told the fishmonger, politely, that he's not anybody's luck. You heard about it from three people.",
+   "ignore": "The town wants you close to him. You stayed away. The fish left again."
+  },
+  "hook": [
+   "On Wednesday evening the last train from Tokyo stops at Suzunari station and plays Toryanse at the crossing.",
+   "A man in a grey suit steps off, looks up at the 999 steps, and doesn't move for a very long time."
+  ],
+  "next": "WEEK 10 - finals, your father, the truth about 2001."
+ }
+}

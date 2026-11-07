@@ -1,0 +1,287 @@
+{
+ "_doc": "Week 10 (10-16 June): finals (exam days 6-7), Asagiri Makoto comes to town, the truth about Tanabata 2001, Kyoko's night on the 13th (Saturday), Makoto on the steps (flag makoto_apologised -> family epilogue).",
+ "days": {
+  "1": {
+   "objective": "Your father's train arrives this evening. Meet him at the station (after 17:00).",
+   "beats": [
+    {
+     "id": "w10_station",
+     "where": "suzunari",
+     "after": 1020,
+     "near": [
+      5,
+      37,
+      8
+     ],
+     "fallback": true,
+     "speaker": "Asagiri Makoto",
+     "text": "Your father is standing on the platform in a grey suit with a briefcase he doesn't need. He looks older than on the phone and younger than you remember. \"Toru.\" He doesn't hug you. He looks past you at the hill. \"It still rains here,\" he says. \"It rained the whole summer I left.\"",
+     "choices": [
+      {
+       "t": "\"Hi, Dad.\" Hug him anyway.",
+       "say": "He goes stiff as a coat hanger. Then one of his hands comes up and pats your back, twice, awkwardly. \"...You've grown.\" His voice isn't quite steady. \"Let's get out of the rain.\"",
+       "fx": {
+        "flag": "hugged_dad"
+       }
+      },
+      {
+       "t": "\"I'm not going back to Tokyo.\"",
+       "say": "\"We'll talk about it.\" Which means no. Then he looks at you properly, and something in his face gives a little. \"...We'll talk about it,\" he says again, and this time it might mean talk.",
+       "fx": {
+        "flag": "toru_stays"
+       }
+      },
+      {
+       "t": "\"Why do you hate this town so much?\"",
+       "say": "\"I don't hate it.\" He watches the 999 steps vanish into cloud. \"I'm afraid of it. Hate would be easier.\"",
+       "fx": {
+        "flag": "dad_afraid"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Your father and Aunt Haruka are talking in the shop. Join them (evening).",
+   "beats": [
+    {
+     "id": "w10_2001",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "speaker": "Asagiri Makoto",
+     "text": "The shop is shut. Aunt Haruka has made tea nobody drinks. Your father is turning a cat mochi round and round in his fingers. \"Tanabata, 2001,\" he says at last, as if reading it off a gravestone. \"I was nineteen. Every evening for a month a black-and-white cat sat on the steps and watched me. Just me. It knew my name. I swear it knew my name.\" He puts the mochi down. \"So I ran. I got on the night train. And Sayo stood on the steps and watched me go.\"",
+     "choices": [
+      {
+       "t": "\"You left her there.\"",
+       "say": "\"I left her there.\" He doesn't defend it. \"Ten years later she climbed those steps herself and never came down, and I heard about it from Haruka in a letter.\" His glasses fog. \"I've been running ever since. I made you run too. I'm sorry.\"",
+       "fx": {
+        "lore": "makabe_2001",
+        "flag": "dad_confessed"
+       }
+      },
+      {
+       "t": "\"The cat wasn't watching you, Dad. It was waiting for me.\"",
+       "say": "He stares at you. Aunt Haruka stares at you. \"...For you,\" he says slowly. \"You weren't even born.\" Then, very quietly, like a man watching twenty-five years rearrange themselves: \"It wasn't me it wanted. I ran for nothing.\"",
+       "fx": {
+        "lore": "makabe_2001",
+        "flag": [
+         "dad_confessed",
+         "dad_understands"
+        ]
+       }
+      },
+      {
+       "t": "\"Did you love her?\"",
+       "say": "Aunt Haruka puts her hand over her mouth. Your father looks at the window for a very long time. \"Yes,\" he says. \"The ordinary way. No past lives. No cats. Just a girl who laughed louder than me.\" He takes off his glasses. \"I never told her.\"",
+       "fx": {
+        "lore": "sayo_court",
+        "flag": "dad_confessed"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "Friday. Your father is sleeping in Grandpa's old room.",
+   "beats": [
+    {
+     "id": "w10_dream",
+     "when": "night",
+     "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa isn't at the shogi board. He's standing in the doorway of his old room, looking at your father asleep in it. \"My son was always afraid,\" he says softly. \"Of thunder, of dogs, of girls who laughed too loud. Of this town most of all.\" He doesn't come in. \"Be braver than him, Toru. And forgive him for not being brave. Both. That's the hard part.\"",
+     "choices": [
+      {
+       "t": "\"I'll try to do both.\"",
+       "say": "Grandpa nods. \"Then take him up the steps on Sunday. At dusk. He won't go alone.\" He looks at his sleeping son one last time. \"Tell him I wasn't angry. Not really. Just old.\"",
+       "fx": {
+        "flag": "genzo_steps_hint"
+       }
+      },
+      {
+       "t": "\"Why don't you tell him yourself?\"",
+       "say": "\"I've tried every Friday for three months.\" A sad laugh. \"He doesn't dream about me. He dreams about trains.\" He steps back from the door. \"Some people only hear things from the living.\"",
+       "fx": {
+        "flag": "genzo_steps_hint"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday the 13th.",
+   "objective": "Saturday the 13th. Whatever happens on the hill tonight, someone shouldn't face it alone.",
+   "beats": [
+    {
+     "id": "w10_hill",
+     "where": "any",
+     "after": 1250,
+     "fallback": true,
+     "needs": {
+      "flag": "reiji_found_list"
+     },
+     "speaker": "Reiji (Rinrin)",
+     "text": "23:40. \"She's leaving the house. With the box.\" 23:41. \"I'm following her.\" 23:41. \"Come if you want. Don't if you don't. I'm going either way.\" Up on the hill behind the shrine a single lantern is moving between the cedars.",
+     "choices": [
+      {
+       "t": "Go up the hill and stand with Reiji.",
+       "say": "You find him behind a cedar, watching his mother nail a straw doll to a tree with a face that is perfectly calm. At the sound of your footsteps she turns. For one second she sees her son. The hammer stops. \"Go home, Reiji,\" she says, very gently. \"No,\" he says. It's the first time. She lowers the hammer.",
+       "fx": {
+        "closeness": 10,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_stood_up",
+        "luck": 1
+       }
+      },
+      {
+       "t": "Call Hina - she should document this.",
+       "say": "Hina arrives with a flash camera and no fear at all. One photo. Kyoko turns in the white light like an animal. By morning Hina has the picture and a very long night's worth of shaking hands.",
+       "fx": {
+        "closeness": 6,
+        "who": "Hayase Hina",
+        "flag": "kyoko_photo"
+       }
+      },
+      {
+       "t": "Stay home. It's not your family.",
+       "say": "You don't go. At 02:13 your phone lights up once more. \"She saw me. She didn't say anything. She just went home.\" Then nothing. In the morning a straw doll is nailed to the cedar nearest the cat shrine.",
+       "fx": {
+        "luck": -1,
+        "tears": 0.8
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "Take your father up the 999 steps, at dusk.",
+   "beats": [
+    {
+     "id": "w10_steps_dad",
+     "where": "suzunari",
+     "after": 1060,
+     "near": [
+      4,
+      18,
+      9
+     ],
+     "speaker": "Asagiri Makoto",
+     "text": "He climbs slowly, counting under his breath without knowing he's doing it. At the top he stops in front of the empty cat shrine. A black-and-white cat is sitting on the offering box. It isn't real; you can both see straight through it. It looks at him the way it looked at him in 2001. He doesn't run.",
+     "choices": [
+      {
+       "t": "\"Say it, Dad. Whatever you didn't say.\"",
+       "say": "He takes off his glasses. \"Sayo,\" he says to the shrine. \"I'm sorry I ran. I'm sorry I made you climb this alone. I loved you. The ordinary way.\" The bell on the offering box rings once, softly. The cat closes its eyes. When it opens them it's gone.",
+       "fx": {
+        "flag": "makoto_apologised",
+        "luck": 2
+       }
+      },
+      {
+       "t": "Stand beside him and say nothing.",
+       "say": "He stands there until the lanterns come on. Then, very quietly: \"Thank you for bringing me.\" He doesn't say anything to the shrine. Maybe next time. Maybe there won't be one.",
+       "fx": {
+        "flag": "dad_climbed"
+       }
+      },
+      {
+       "t": "\"Grandpa says he wasn't angry. Just old.\"",
+       "say": "Your father makes a sound you've never heard from him. Then he's crying, on the 999th step, and you hold him up, and it's the wrong way round, and it's fine. \"Sayo,\" he says to the dark, eventually. \"I'm sorry.\" The bell rings once.",
+       "fx": {
+        "flag": [
+         "makoto_apologised",
+         "dad_forgave_genzo"
+        ],
+        "luck": 1
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "exam": true,
+   "objective": "Finals, day 1.",
+   "beats": [
+    {
+     "id": "w10_dad_leaves",
+     "where": "any",
+     "after": 920,
+     "speaker": "Asagiri Makoto",
+     "text": "Your father is waiting at the school gate with his briefcase. \"Evening train.\" He looks at the school, the hill, the rain. \"I'm not going to take you back. Not by force. I can't protect you from this town by running away from it - I tried that.\" He holds out his hand, like a businessman, then changes his mind and pats your head instead. \"Call me. On Sundays. Tell me about the boy with the bell.\"",
+     "choices": [
+      {
+       "t": "\"I will. Come back for Tanabata?\"",
+       "say": "\"...Maybe.\" He looks up at the steps. \"Maybe I've climbed them enough for one year.\" He smiles, actually smiles. \"Good luck on your exams. Get a C. Family tradition.\"",
+       "fx": {
+        "flag": "dad_maybe_tanabata",
+        "luck": 1
+       }
+      },
+      {
+       "t": "\"Thanks for coming, Dad.\"",
+       "say": "\"Thanks for making me.\" He walks to the station. Halfway there he turns and waves, which he hasn't done since you were small.",
+       "fx": {
+        "luck": 1
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "exam": true,
+   "objective": "Finals, day 2. Then the long run to Tanabata.",
+   "beats": [
+    {
+     "id": "w10_after_finals",
+     "where": "any",
+     "after": 920,
+     "speaker": "Mio",
+     "text": "Mio is waiting at the gate with her camera, which she points at you before she says hello. \"Rin has been talking in my dreams,\" she says. \"She never does that. She says: 'Tell the latecomer his mother-in-law-of-a-past-life is on the riverbed.'\" Mio tilts her head. \"I don't think she meant 'mother-in-law'. I think she meant 'Sayo'. Rin is very old and very rude.\"",
+     "choices": [
+      {
+       "t": "\"Sayo's on the other side? Alive?\"",
+       "say": "\"Not alive. Not dead. Waiting.\" Mio lowers the camera. \"On the dry riverbed where children build towers of stones, helping the Jizo look after them. Rin says she's been in the queue for Enma's court since 2011.\" A small smile. \"The underworld is very bureaucratic.\"",
+       "fx": {
+        "lore": "sayo_court",
+        "flag": "sayo_location"
+       }
+      },
+      {
+       "t": "\"Will you come with me to find her?\"",
+       "say": "\"Fufu. Of course.\" She bows to you, deeply. \"I've been waiting my whole life for someone to ask me to go somewhere frightening with them.\"",
+       "fx": {
+        "closeness": 8,
+        "who": "Kuroe Mio",
+        "flag": "sayo_location"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 10 - Your father",
+  "route": {
+   "none": "Your father said he loved someone, the ordinary way. You still haven't said anything, any way.",
+   "friend": "You told Amane about your father. He listened all evening and didn't ask about himself once.",
+   "romance": "Amane met your father at the station by accident and bowed so low his hood fell off. Your father looked at his ears for a long time.",
+   "boundary": "Amane asked about your father, then said, 'Mine left too. I'm going to be okay. You will be.'",
+   "ignore": "Your father asked about the boy with the bell. You didn't have much to say."
+  },
+  "hook": [
+   "Under the storehouse floor of the old Asagiri house - under the third board from the door - something has been waiting since 1877.",
+   "It is addressed, in faded ink, to 'Suzu, at the shrine'."
+  ],
+  "next": "WEEK 11 - Letter 101, the riverbed of stones, Sayo."
+ }
+}

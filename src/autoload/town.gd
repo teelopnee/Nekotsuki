@@ -13,7 +13,9 @@ const DEFAULTS := {"seen": {}, "zukan": {}, "eggs": {}, "picked": {}, "today": [
 const ZUKAN := {"kappa": "Kappa", "tanuki": "Bake-danuki", "tsukumogami": "Tsukumogami", "rokurokubi": "Rokurokubi",
 	"nopperabo": "Nopperabo", "kuchisake": "Kuchisake-onna", "zashiki_warashi": "Zashiki-warashi",
 	"hanako": "Hanako-san", "okuri_inu": "Okuri-inu", "ikiryo": "Ikiryo", "nekomata": "Nekomata",
-	"makuragaeshi": "Makura-gaeshi"}
+	"makuragaeshi": "Makura-gaeshi", "kitsune": "Kitsune no yomeiri", "kasa_obake": "Kasa-obake",
+	"funayurei": "Funayurei", "aoandon": "Ao-andon", "kasha": "Kasha", "tengu": "Tengu", "umibozu": "Umibozu",
+	"azukiarai": "Azuki-arai", "odori_neko": "Odori-neko (dancing cats)"}
 
 const TALK_MINUTES := 10
 
@@ -246,7 +248,8 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 				if r != "":
 					lines.append(r)
 			"flag":
-				Game.flags[str(v)] = true
+				for fl in (v if v is Array else [v]):
+					Game.flags[str(fl)] = true
 			"promise":
 				var pr: Array = Amane.st()["promises"]
 				if not pr.has(str(v)):
@@ -273,6 +276,22 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 				lines.append("> %d minutes pass" % int(v))
 			"tears":
 				Amane.add("tears", float(v))
+			"trust":
+				if not again:
+					Amane.add("trust", float(v))
+			"study":
+				if not again:
+					Week.st()["study"] = int(Week.st()["study"]) + int(v)
+					lines.append("> Studied +%d" % int(v))
+			"warn_rival":
+				if not again and Amane.rival() != "":
+					Amane.warn(Amane.rival())
+					lines.append("> %s has been warned. Tonight the cat finds a closed window." % Amane.rival())
+			"name_ikiryo":
+				if not again:
+					Amane.st()["ikiryo_named"] = true
+					Amane.add("self", 4.0)
+					lines.append("> You said his name to the cat. It stopped.")
 			"amane_choose":
 				if not again:
 					lines.append(str(Amane.choose(str(v)).text))

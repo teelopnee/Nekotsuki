@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Every line the Suzunari theme can show, checked for ODD-SPACE sci-fi words (docs/REVIEW.md hard review #7).
 Scans data/suzunari/*.json, data/copy_suzunari_auto.json, data/people/*.json, data/town.json, data/school.json,
-data/week1.json, data/lessons.json, data/amane*.json, data/hayate.json. Exit code = number of leaks.
+data/weeks/*.json, data/endings.json, data/lessons.json, data/amane*.json, data/hayate.json. Exit code = number of leaks.
 python3 tools/leak_check.py"""
 import glob, json, os, re, sys
 
@@ -11,7 +11,8 @@ PAT = re.compile(r"\b(credits?|paragon|planets?|consortium|corp|corporate|neon|d
                  r"implants?|chrome|cyber\w*|repo|bounty|plasma|starship|spaceship|airlock|oxygen|freighter|keytar|in hock)\b", re.I)
 FILES = (sorted(glob.glob(os.path.join(ROOT, "data/suzunari/*.json"))) + [os.path.join(ROOT, "data/copy_suzunari_auto.json")]
          + sorted(glob.glob(os.path.join(ROOT, "data/people/*.json")))
-         + [os.path.join(ROOT, "data", f) for f in ["town.json", "school.json", "week1.json", "lessons.json", "amane.json",
+         + sorted(glob.glob(os.path.join(ROOT, "data/weeks/*.json")))
+         + [os.path.join(ROOT, "data", f) for f in ["town.json", "school.json", "lessons.json", "amane.json", "endings.json",
                                                     "amane_talk.json", "hayate.json"]])
 # Words that are fine in Suzunari in these exact places (ids, flags, not text).
 SKIP_KEYS = {"flag", "requires", "id", "icon", "look", "variant", "verb", "kind"}

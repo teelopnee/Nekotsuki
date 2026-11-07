@@ -208,3 +208,17 @@ Worked through the priority list in order; no new world systems or visual passes
 - Open: (7) time the first 10 minutes on the tablet (owner); weeks 2-13 are not authored yet; townsfolk are still grammar
   filler with pickpocket/threaten verbs; Toru still walks with his back to the lens (that's the camera, by design);
   engine debt unchanged. Score now (my estimate): 5/10 as a playable game - week 1 has a start, a middle and an end.
+
+## Story pass: weeks 2-13 and the endings (2026-11-07)
+- Episode 0 now runs from 8 April to Tanabata (91 days): 13 week files, 96 beats, 277 exact-word choices, 12 Friday
+  dreams with Grandpa Genzo (his last on week 11) plus Rin's dream on week 13, Golden Week holidays, midterms and finals
+  graded by attendance, a summary + hook at the end of every week, and the last night on the 999 steps with 8 choices
+  (some gated by route / flags) -> 13 written endings + the "family" epilogue, recorded in Enma's Ledger.
+- Follows LORE/CAST: 1868 promise, the hundred letters and Letter 101, Tabaruzaka, 1890 "tadaima", Sayo on the riverbed
+  since 2011, Makoto and the cat in 2001, Makabe's unsent letters, Kyoko's 13th-night ritual and "return the god to the
+  shrine", the Inukai seal, Mio's six Jizo, Hina's 2016 photo, Reiji's father.
+- Tests: week_test 40 checks (plays every non-final choice of every week; maps every final choice to a written ending;
+  plays one ending through to the end card). leak_check 0 over 32 files.
+- Open: beats are scenes (no Ura-Suzunari level, no fights - the relay and the hill are text); a few beats need the
+  player at the right place and time with no map marker; weekend days can feel empty without a beat; nothing yet for
+  people you never befriended (some beats only appear with closeness); the endings don't yet change the title screen.

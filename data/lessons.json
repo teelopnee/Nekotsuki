@@ -1,7 +1,27 @@
 {
  "_doc": "Lessons are one event, not a wait (Week autoload): when a class block starts and you're in the school, pick how you spend it and the clock jumps to the end of the block (morning: homeroom -> 12:30 lunch, afternoon: 13:20 -> 15:20). Late = arrived after 8:30. Truancy = in town 15+ minutes into a block. subjects.<weekday> = [morning, afternoon]. results.<choice> = lines ({subject}).",
- "subjects": {"Mon": ["Japanese Literature (Makabe-sensei)", "Maths"], "Tue": ["English", "PE"], "Wed": ["History", "Science"],
-  "Thu": ["Maths", "Japanese Literature (Makabe-sensei)"], "Fri": ["Art", "Home Economics"]},
+ "subjects": {
+  "Mon": [
+   "Japanese Literature (Makabe-sensei)",
+   "Maths"
+  ],
+  "Tue": [
+   "English",
+   "PE"
+  ],
+  "Wed": [
+   "History",
+   "Science"
+  ],
+  "Thu": [
+   "Maths",
+   "Japanese Literature (Makabe-sensei)"
+  ],
+  "Fri": [
+   "Art",
+   "Home Economics"
+  ]
+ },
  "open": [
   "{block}: {subject}. The windows are fogged with rain. Hayate is already drawing a dog in the margin.",
   "{block}: {subject}. The class rep, Sato Yui, hands out worksheets with a perfect smile.",
@@ -14,10 +34,22 @@
   "You creep in {late} minutes late. Nobody says anything. The silence says it for them."
  ],
  "choices": [
-  {"id": "attend", "t": "Pay attention."},
-  {"id": "doze", "t": "Doze off."},
-  {"id": "window", "t": "Look out of the window."},
-  {"id": "note", "t": "Pass Hayate a note."}
+  {
+   "id": "attend",
+   "t": "Pay attention."
+  },
+  {
+   "id": "doze",
+   "t": "Doze off."
+  },
+  {
+   "id": "window",
+   "t": "Look out of the window."
+  },
+  {
+   "id": "note",
+   "t": "Pass Hayate a note."
+  }
  ],
  "results": {
   "attend": [
@@ -54,5 +86,42 @@
  "consequence": {
   "late_3": "Aunt Haruka is waiting at the counter with a letter from the school. \"Three times late in one week, Toru.\" She doesn't shout. She just gives you a mochi with no filling, which is worse.",
   "truant_2": "Makabe-sensei phoned the shop. Aunt Haruka says nothing at dinner, which she has never done before. Later, through the wall, you hear her on the phone to Tokyo."
+ },
+ "exam": {
+  "open": [
+   "EXAM: {subject}. Makabe-sensei hands out the papers face down. \"Begin.\" Thirty pencils scratch at once. The rain taps the window like someone counting.",
+   "EXAM: {subject}. The clock above the blackboard is loud enough to hear. Hayate is already sweating. Sato Yui has already finished the first page.",
+   "EXAM: {subject}. A black hood passes the door's little window twice. Makabe-sensei draws the blind without looking up."
+  ],
+  "choices": [
+   {
+    "id": "careful",
+    "t": "Work through it carefully."
+   },
+   {
+    "id": "guess",
+    "t": "Guess the ones you don't know and move on."
+   },
+   {
+    "id": "help",
+    "t": "Slide your answers where Hayate can see them."
+   },
+   {
+    "id": "clock",
+    "t": "Watch the clock and pace yourself."
+   }
+  ],
+  "results": {
+   "careful": "You work through it line by line. Some of it you actually know.",
+   "guess": "You circle answers by feel. Your feel is not very well educated.",
+   "help": "Hayate sees. Hayate copies. Hayate copies your name too, then frantically rubs it out. Makabe-sensei sighs at the ceiling and says nothing.",
+   "clock": "You split the time evenly and finish with two minutes spare. You use them to look out of the window."
+  },
+  "grades": {
+   "A": "The paper comes back with a red circle and a tiny drawn cat. Aunt Haruka pins it to the shop wall.",
+   "B": "Respectable. Makabe-sensei writes \"Good. Sleep more.\" in the margin.",
+   "C": "Passable. Aunt Haruka says \"Your father got Cs too,\" and then looks like she wishes she hadn't.",
+   "D": "Red ink everywhere. Hayate got the same mark and wants to high-five about it."
+  }
  }
 }

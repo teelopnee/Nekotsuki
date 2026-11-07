@@ -1,0 +1,291 @@
+{
+ "_doc": "Week 11 (17-23 June): Letter 101 under the storehouse floor (flag letter_101), Makabe's unsent letter (flag makabe_letter_sent), Grandpa's last dream, Ura-Suzunari with Mio and Amane - echoes of 1868, 1890, 2011, 2016 - and Sayo on the riverbed (flag sayo_found).",
+ "days": {
+  "1": {
+   "objective": "The storehouse behind the old Asagiri house. Third board from the door. (Evening, at home.)",
+   "beats": [
+    {
+     "id": "w11_letter",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "speaker": "",
+     "text": "The storehouse smells of rice sacks and incense, exactly like the dreams. Kiku watches from a shelf with her chin in her hands. The third board lifts. Underneath, wrapped in oilcloth: a letter, the paper brown as tea, addressed in a boy's careful brush hand to 'Suzu, at the shrine'. The hundred-and-first. The one that wasn't burned.",
+     "choices": [
+      {
+       "t": "Read it.",
+       "say": "'Suzu. I am at Tabaruzaka. It has rained for seventeen days. I don't think I will come home by Tanabata. I'm sorry. If I can't come home as a man, I will come home some other way, however long it takes. Wait for me if you can. If you can't, I'll wait for you. Either way, I'll say it first: tadaima. - Soichiro.' Your hands are wet. It isn't raining in the storehouse.",
+       "fx": {
+        "flag": "letter_101",
+        "lore": "tabaruzaka"
+       }
+      },
+      {
+       "t": "Don't open it. Give it to the one it was written to.",
+       "say": "You wrap it again and put it inside your blazer. Kiku nods approvingly. \"Letters should arrive,\" she says. \"Even late ones. Especially late ones.\" It feels warm against your chest all the way to the shrine.",
+       "fx": {
+        "flag": "letter_101",
+        "lore": "hundred_letters",
+        "bond": 2
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Makabe-sensei is still in the staff room after classes.",
+   "beats": [
+    {
+     "id": "w11_makabe",
+     "where": "school",
+     "after": 925,
+     "speaker": "Makabe-sensei",
+     "text": "He's sitting at his desk with the bottom drawer open, red-string bundles in front of him. \"I heard your father came,\" he says. \"I heard he climbed the steps. And said her name.\" He touches the top letter. \"Twenty-five years, Asagiri. Makoto ran and came back. I stayed and never went up. I don't know which of us was the coward.\"",
+     "choices": [
+      {
+       "t": "\"Send it, sensei. The letter. She's on the riverbed - she can read it.\"",
+       "say": "He looks at you as if you'd handed him a key. \"...On the riverbed.\" He puts one letter - the oldest - in his jacket pocket. \"Then I suppose it's my turn to climb something.\" He closes the drawer. For the first time since you've known him, he doesn't look sad. He looks frightened, which is much better.",
+       "fx": {
+        "flag": "makabe_letter_sent",
+        "closeness": 8,
+        "who": "Makabe-sensei"
+       }
+      },
+      {
+       "t": "\"Keep them. Some letters are for the one who writes them.\"",
+       "say": "\"Perhaps.\" He ties the bundle again, carefully. \"Perhaps I'll read them to her myself one day. Out loud. Somewhere she can hear.\" He pushes up his glasses. \"Go home, Asagiri. It's going to rain.\"",
+       "fx": {
+        "closeness": 4,
+        "who": "Makabe-sensei"
+       }
+      },
+      {
+       "t": "\"You weren't a coward. You stayed for the people who were left.\"",
+       "say": "He stares at you. Then he laughs, short and surprised. \"That's the kindest lie anyone's told me in years.\" He looks out of the window at the shrine. \"Thank you. I might even start believing it.\"",
+       "fx": {
+        "closeness": 6,
+        "who": "Makabe-sensei",
+        "lore": "makabe_letters"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "Friday. Grandpa said he wouldn't come forever.",
+   "beats": [
+    {
+     "id": "w11_dream_last",
+     "when": "night",
+     "speaker": "Grandpa Genzo (dream)",
+     "text": "The shogi board is set up properly for once. No cheating. Grandpa is wearing his funeral kimono. \"This is the last one, Toru. They've finally processed my paperwork downstairs.\" He moves a pawn, one square, the correct way. \"Read the letter. Find the woman on the riverbed. Climb the steps on Tanabata. And whatever you say up there - mean it.\" He tips over his own king. \"There. You win. First time.\"",
+     "choices": [
+      {
+       "t": "\"Thank you, Grandpa. For the house. For all of it.\"",
+       "say": "\"Thank you for coming back.\" He stands up. He is suddenly much younger, a boy in a rice-shop apron. \"Tell your father I'm sorry about the shogi. I always cheated. He always knew.\" Then the room is empty and the board is folded, and you wake up holding a single silver general you didn't have before.",
+       "fx": {
+        "flag": "genzo_farewell",
+        "luck": 2,
+        "hp": 40
+       }
+      },
+      {
+       "t": "\"Don't go yet. One more game.\"",
+       "say": "\"One more game is how it starts. Then it's a hundred years on a riverbed.\" He smiles. \"I've met people like that downstairs. Let me go, Toru.\" He bows to you, deeply, a shopkeeper's bow. You bow back. When you look up, he's gone.",
+       "fx": {
+        "flag": "genzo_farewell",
+        "amane_self": 0,
+        "hp": 40
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday. Mio's message: \"Omagatoki. Bring the letter. Bring the cat. Bring salt. Bring nothing to eat.\"",
+   "objective": "Omagatoki (18:00): the 999 steps, with Mio and Amane. Ura-Suzunari.",
+   "beats": [
+    {
+     "id": "w11_ura",
+     "where": "suzunari",
+     "after": 1075,
+     "before": 1110,
+     "near": [
+      4,
+      18,
+      9
+     ],
+     "fallback": false,
+     "speaker": "Rin",
+     "text": "The thousandth step, the red sky, the upward rain. This time Amane is holding your sleeve and Mio is filming. Down in the endless festival, the echoes are playing: a boy of seventeen hooking his little finger round a cat's paw on a step in 1868; an old cat dying on the 999th step in 1890 as a ghost says 'tadaima' at the bottom; a young woman in a summer kimono climbing alone in 2011. The bell on Amane's collar speaks. \"Well, latecomer. Where to?\"",
+     "choices": [
+      {
+       "t": "\"To the riverbed. Take us to Sayo.\"",
+       "say": "The festival parts. Beyond it: a dry riverbed of grey stones, children's small towers everywhere, a Jizo with a lantern. A woman in a faded kimono is helping a ghost child balance one more stone. She looks up. She sees the boy in the black hood beside you, and the stone falls from her hand. \"...Amane?\" He doesn't move. He doesn't breathe. \"Mum,\" he says.",
+       "fx": {
+        "flag": "sayo_found",
+        "lore": "sayo_waiting",
+        "tears": 1.0,
+        "bond": 3
+       }
+      },
+      {
+       "t": "\"Show me 1890. All of it.\"",
+       "say": "The echo plays for you alone: the old cat on the 999th step, the ghost at the bottom, the word 'tadaima', the cat dying a breath too early to answer. Amane is crying silently beside you. \"I didn't get to say it,\" he whispers. \"I've been trying to say it for a hundred and thirty-six years.\"",
+       "fx": {
+        "lore": "suzu_grave",
+        "bond": 4,
+        "trust": 3
+       }
+      },
+      {
+       "t": "\"Get us out. Now.\"",
+       "say": "\"Coward,\" says Rin, not unkindly. The red sky folds. You're on the 999th step in ordinary rain. Mio checks her camera: two hours of tape, all of it red. Amane is gripping your sleeve so hard his knuckles are white.",
+       "fx": {
+        "tears": 0.5
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "The day after the riverbed.",
+   "beats": [
+    {
+     "id": "w11_after_sayo",
+     "where": "any",
+     "after": 540,
+     "needs": {
+      "flag": "sayo_found"
+     },
+     "speaker": "Amane",
+     "text": "Amane comes to Asagiri-do at nine in the morning and sits on the step without ringing. When you come out he doesn't look up. \"She said she went up to ask Enma to let me go. So I wouldn't spend my whole life paying for someone I used to be.\" He wipes his face. \"She's been in a queue for fifteen years. For me.\"",
+     "choices": [
+      {
+       "t": "\"She loved you more than any past life could.\"",
+       "say": "\"The ordinary way,\" he says. \"That's what she said. 'I love you the ordinary way, the only way I know.'\" He looks at you. \"Is it okay if I don't know which way I love anyone? Mine's all mixed up.\"",
+       "fx": {
+        "amane_self": 6,
+        "bond": 3,
+        "lore": "sayo_court"
+       }
+      },
+      {
+       "t": "\"We'll bring her home. I promise.\"",
+       "say": "He grabs your hand. \"Don't promise things on the step of a sweet shop,\" he says shakily. \"Promise them on the shrine steps. That's where they count.\" He doesn't let go.",
+       "fx": {
+        "bond": 4,
+        "trust": 3,
+        "flag": "promised_sayo"
+       }
+      },
+      {
+       "t": "Sit beside him and let him cry.",
+       "say": "He cries for a long time, and the street stays dry, because this isn't the town's grief. It's his. When he's done, he says, \"Thank you for not fixing it.\"",
+       "fx": {
+        "bond": 3,
+        "amane_self": 4,
+        "tears": -1.0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "objective": "Mio says the kappa knows where the six Jizo are.",
+   "beats": [
+    {
+     "id": "w11_jizo",
+     "where": "suzunari",
+     "after": 960,
+     "near": [
+      15,
+      44,
+      8
+     ],
+     "needs": {
+      "flag": "jizo_promise"
+     },
+     "speaker": "Gataro (kappa)",
+     "text": "The kappa surfaces under the bridge holding a cucumber you didn't give him. \"Six stone grandfathers. River mouth. Two hundred metres out. Deep, deep, deep.\" He bows. The water in his head-dish slops dangerously. \"The nun put them down gently. I watched. I was small then.\" Mio, beside you, is shaking. \"I can't dive,\" she says. \"I'm so afraid of deep water.\"",
+     "choices": [
+      {
+       "t": "\"Gataro - can you bring them up? For Mio?\"",
+       "say": "He looks at Mio for a long time. \"For the nun's girl.\" He bows once more - his dish empties - and he flops over, exhausted, then slides into the river. By morning six moss-covered stone Jizo are standing in the shallows by the crossroads. Mio cries in front of them for an hour. The old crossroads Jizo look, somehow, relieved.",
+       "fx": {
+        "flag": "jizo_found",
+        "luck": 3,
+        "closeness": 10,
+        "who": "Kuroe Mio",
+        "zukan": "kappa"
+       }
+      },
+      {
+       "t": "\"We'll find another way. You don't have to dive.\"",
+       "say": "\"Fufu.\" She wipes her eyes. \"You're the first person who ever said I don't have to.\" She bows to the river. \"They waited a hundred and fifty years. They can wait until I'm brave.\"",
+       "fx": {
+        "closeness": 8,
+        "who": "Kuroe Mio"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "The bell has been very quiet since the riverbed.",
+   "beats": [
+    {
+     "id": "w11_quiet",
+     "where": "any",
+     "after": 1000,
+     "speaker": "Amane",
+     "text": "Amane taps his collar. The gold bell swings and makes no sound at all. He taps it again. Nothing. \"Rin?\" His voice is very small. \"She's never been quiet. Not once. Not since I was born.\" Somewhere on the hill, a single nail is being hammered into a cedar.",
+     "choices": [
+      {
+       "t": "\"We'll find out why. Together.\"",
+       "say": "\"Together.\" He holds the silent bell like a heartbeat he can't feel. \"Okay. Okay.\" The rain starts, and it's heavier than it's been since April.",
+       "fx": {
+        "lore": "bell_silent",
+        "bond": 2,
+        "tears": 1.0
+       }
+      },
+      {
+       "t": "\"Ask Chiyo-san. She'll know.\"",
+       "say": "He runs. You follow. Chiyo is already on the shrine steps with her cane, looking up at the hill. \"Something has been put in her,\" she says. \"Something with a nail through it.\"",
+       "fx": {
+        "lore": "bell_silent",
+        "flag": "chiyo_warned_nail"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 11 - The riverbed",
+  "route": {
+   "none": "You found his mother. You still haven't found your answer.",
+   "friend": "He met his mother. You held his sleeve the whole time.",
+   "romance": "He said 'Mum' and then, on the way back, 'Senpai' in the same voice.",
+   "boundary": "He went back to the riverbed alone the next evening, to say goodbye properly. He came back on his own.",
+   "ignore": "He met his mother. He told her about you. She asked him to be kind to himself."
+  },
+  "hook": [
+   "The bell on Amane's collar has gone silent.",
+   "At the Shirasagi residence, a straw doll with a gold thread round its neck has a nail through its chest."
+  ],
+  "next": "WEEK 12 - the silent bell, the heron moves."
+ }
+}

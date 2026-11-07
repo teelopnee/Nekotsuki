@@ -252,6 +252,20 @@ func ok(when: Dictionary) -> bool:
 			return false
 		elif k == "dusk" and Clock.is_dusk() != bool(v):
 			return false
+		elif k == "flag" and not bool(Game.flags.get(str(v), false)):
+			return false
+		elif k == "no_flag" and bool(Game.flags.get(str(v), false)):
+			return false
+		elif k == "routes" and not (v as Array).has(route()):
+			return false
+		elif k == "max_bond" and float(s["bond_now"]) > float(v):
+			return false
+		elif k == "min_lore_count" and (s["lore"] as Dictionary).size() < int(v):
+			return false
+		elif k == "min_close":
+			for who in v:
+				if int(s["closeness"].get(str(who), 0)) < int(v[who]):
+					return false
 	return true
 
 

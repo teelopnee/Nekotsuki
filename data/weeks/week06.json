@@ -1,0 +1,97 @@
+{
+ "_doc": "Week 6 (13-19 May): the rainy season; the 13th (Kyoko's night); Mio takes Toru up the thousandth step into Ura-Suzunari for the first time; Rin the bell speaks.",
+ "days": {
+  "1": {
+   "morning": "Wednesday the 13th. Grandpa said not to walk on the hill road after midnight on the 13th.",
+   "objective": "An ordinary wet Wednesday. Stay off the hill road tonight.",
+   "beats": [
+    {"id": "w6_hammer", "when": "night", "needs": {"min_close": {"Shirasagi Reiji": 20}}, "speaker": "Reiji (Rinrin)",
+     "text": "01:58. A message from a number you didn't know Reiji had given you. \"Are you awake. Don't answer.\" Another. \"My mother went out again. She took the box from the storeroom. I can hear it from my window. Knock. Knock. Knock. On the hill.\" A long gap. \"Why am I telling you this.\"",
+     "choices": [
+      {"t": "\"Because you needed to tell someone. I'm here.\"", "say": "Three dots for a long time. \"...Thank you.\" Then: \"Delete this.\" You don't. Neither, you suspect, does he.", "fx": {"closeness": 8, "who": "Shirasagi Reiji", "flag": "reiji_told_13th"}},
+      {"t": "\"What's she doing up there?\"", "say": "\"Ushi no koku mairi. The hour of the ox. A straw doll and a nail, every thirteenth night.\" A pause. \"It's real. Not the curse. The hatred is real.\" [A real Japanese curse ritual.]", "fx": {"closeness": 5, "who": "Shirasagi Reiji", "flag": "reiji_told_13th"}},
+      {"t": "\"Do you want me to come?\"", "say": "\"No.\" Very fast. Then: \"Not this time. If she saw you on the hill...\" The message stops there. In the morning there's one more: \"Thank you for offering. Nobody has offered before.\"", "fx": {"closeness": 6, "who": "Shirasagi Reiji", "flag": "reiji_told_13th"}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "Mio left a note on the club-room door. Read it after school (2F).",
+   "beats": [
+    {"id": "w6_teru", "where": "school", "after": 920, "speaker": "Mio",
+     "text": "Mio is hanging teru-teru-bozu from the club-room window: little white rain dolls on strings, a whole row of them. \"You hang them to ask for sunshine,\" she says. \"Upside down, they ask for rain.\" She holds one out to you. \"Saturday we're going up the steps. Choose how you want the weather.\"",
+     "choices": [
+      {"t": "Hang it the right way up.", "say": "\"Sun, then.\" She nods. \"Brave. In sun you see more on the other side. And they see more of you.\"", "fx": {"closeness": 4, "who": "Kuroe Mio", "tears": -0.4}},
+      {"t": "Hang it upside down.", "say": "\"Fufu.\" She looks delighted. \"Rain. The cat boy will know someone did that, you know. He always knows when someone asks for rain.\"", "fx": {"egg": "teru_upside", "tears": 1.0, "closeness": 3, "who": "Kuroe Mio"}},
+      {"t": "\"What's on the other side, Mio?\"", "say": "\"The town. The same town. Just... later in the evening. Forever.\" She films the dolls swaying. \"Everyone who didn't want to leave. And a festival that never ends. You've been there before, Asagiri-kun. You just came back without your memory.\"", "fx": {"lore": "dusk_side"}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "Tomorrow, Omagatoki, the shrine steps. Get some sleep.",
+   "beats": [
+    {"id": "w6_dream", "when": "night", "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa isn't playing shogi tonight. He's standing at the window looking at the shrine on the hill, very serious. \"You're going up tomorrow.\" He doesn't ask how he knows. \"Listen to me. Over there, don't eat. Not a dango, not a sip. Whatever you eat there keeps you there. That's how they kept you last time, almost.\"",
+     "choices": [
+      {"t": "\"I won't eat anything. I promise.\"", "say": "\"Good boy.\" He ruffles your hair, which he never did when he was alive. \"And if the bell talks to you - be polite. She's older than this house and ruder than your aunt.\"", "fx": {"promise": "dont_eat_ura", "flag": "genzo_warned_food"}},
+      {"t": "\"Last time? What kept me?\"", "say": "\"A festival. You were seven and there was candy.\" He smiles sadly. \"A little girl with a bell slapped it out of your hand and dragged you down. Well. A little someone.\"", "fx": {"lore": "kamikakushi_2016", "flag": "genzo_warned_food"}},
+      {"t": "\"Come with me.\"", "say": "\"I can't, Toru. The dead don't go back over. We only go on.\" He turns from the window. \"I'll be here on Fridays as long as they let me. That's not forever. Remember that, too.\"", "fx": {"flag": "genzo_warned_food"}}
+     ]}
+   ]
+  },
+  "4": {
+   "morning": "Saturday. It is raining sideways. Mio sends a single photo: a box of salt.",
+   "objective": "Omagatoki (18:00): the bottom of the 999 steps. Mio is waiting.",
+   "beats": [
+    {"id": "w6_ura", "where": "suzunari", "after": 1075, "before": 1110, "near": [4, 18, 9], "fallback": false, "speaker": "Mio",
+     "text": "You climb and count. Mio counts with you, out loud. Nine hundred and ninety-seven. Ninety-eight. Ninety-nine. \"And one more,\" she whispers. There isn't one more. Your foot comes down on it anyway. The world turns red. The rain falls upward. Below you, Suzunari is lit for a festival that has been going on since 1868. And at the top of the steps, a small gold bell on a red cord is hanging in the air by itself. \"Hello, latecomer,\" it says, in the voice of a very rude old woman.",
+     "choices": [
+      {"t": "Bow and ask the bell its name.", "say": "\"Rin. Three hundred and fourteen years old, cast for your family, worn by your cat.\" The bell rings irritably. \"And you're the one who's late. A hundred and fifty-eight years late, give or take. Sit. I've been waiting to tell someone off since 1890.\"", "fx": {"lore": "bell_old", "flag": "met_rin", "zukan": "tsukumogami"}},
+      {"t": "Refuse the dango a festival ghost holds out to you.", "say": "A smiling stallholder with no shadow offers you a stick of dango. You keep your hands at your sides. He shrugs and eats it himself. \"Smart,\" says the bell from nowhere. \"The last time you took one I had to send a five-year-old to fetch you.\"", "fx": {"flag": "met_rin", "lore": "thousandth_step", "luck": 1}},
+      {"t": "Look for Amane - you're sure he's here.", "say": "He's on the steps behind you, out of breath, hood soaked with rain that falls up. \"You came here without me,\" he says. Not angry. Terrified. \"Don't. Please. This place keeps people.\" The bell on his collar rings and speaks: \"Listen to the boy. He's done this before.\"", "fx": {"flag": "met_rin", "bond": 3, "tears": 0.8, "lore": "dusk_side"}}
+     ]}
+   ]
+  },
+  "5": {
+   "objective": "The day after. Your head feels like it's been rained on from below.",
+   "beats": [
+    {"id": "w6_after", "where": "suzunari", "after": 540, "needs": {"flag": "met_rin"}, "speaker": "Amane",
+     "text": "Amane is sitting outside Asagiri-do when you come down, holding two cans of warm tea. \"Rin talked to you.\" He hands you one. \"She talks to me all the time, but only there, and in dreams.\" He turns the can round and round. \"Did she say anything about me? She says embarrassing things about me.\"",
+     "choices": [
+      {"t": "\"She said you've done this before. Fetched someone back.\"", "say": "He goes red to the tips of his hidden ears. \"She's a gossip.\" A pause. \"I was five. You were seven. You were holding a candy apple. I hit it out of your hand.\" He almost laughs. \"You cried. I cried. We walked down. That's all.\"", "fx": {"lore": "kamikakushi_2016", "bond": 4}},
+      {"t": "\"She called me a latecomer.\"", "say": "\"She calls you worse when you're not there.\" He smiles into his tea. \"She's not wrong, though. You are late. You're just... late in a way I don't mind any more.\"", "fx": {"bond": 3, "amane_self": 2}},
+      {"t": "\"I won't go there again without telling you.\"", "say": "\"Promise?\" He holds out his little finger from his sleeve. You hook it. Your own little finger, the one with the faint red line round it, tingles. He stares at it. \"...Oh,\" he says, very quietly.", "fx": {"promise": "ura_together", "bond": 3, "trust": 3}}
+     ]}
+   ]
+  },
+  "6": {
+   "objective": "It's raining again. The lost-and-found box at school has umbrellas.",
+   "beats": [
+    {"id": "w6_kasa", "where": "school", "after": 915, "speaker": "",
+     "text": "The lost-and-found box by the entrance is full of umbrellas nobody ever came back for. One of them is old, oiled paper, and when you pick it up it opens a single eye in its canopy and sticks out a very long tongue. It looks at the rain. It looks at you. It is clearly asking to be taken out.",
+     "choices": [
+      {"t": "Take it home.", "say": "It hops along beside you on its one leg, keeping you perfectly dry and licking raindrops out of the air. At the gate Hayate stares. \"Is that umbrella... licking?\" \"No.\" \"Okay.\" [Kasa-obake: a hundred-year-old umbrella come to life.]", "fx": {"zukan": "kasa_obake", "flag": "kasa_friend"}},
+      {"t": "Put it back gently.", "say": "It closes its eye, disappointed, and sulks back into the box. Tomorrow every other umbrella in the box has been neatly folded. Hospitality, umbrella-style.", "fx": {"zukan": "kasa_obake"}},
+      {"t": "Lend it to Amane.", "say": "He opens it and it licks his cheek. He shrieks, then laughs, the loudest laugh anyone in the school has heard from him. Half the corridor turns. He doesn't hide.", "fx": {"zukan": "kasa_obake", "bond": 2, "amane_self": 3}}
+     ]}
+   ]
+  },
+  "7": {
+   "objective": "The sports festival is next Saturday. Teams go up on the board tomorrow.",
+   "beats": [
+    {"id": "w6_smoke", "where": "any", "after": 920, "speaker": "Hayate",
+     "text": "Hayate stops you at the gate, sniffing. \"You went up there, didn't you. The shrine. Past the top.\" He isn't joking for once. \"My dad says nobody's gone past the 999th step on purpose since 2011. He says the last one who did was a woman, and she didn't come back.\" He grabs your sleeve. \"Don't be the next one.\"",
+     "choices": [
+      {"t": "\"Who was she?\"", "say": "\"Sayo. Nekomori Sayo. The cat kid's mum.\" He says it quietly, like his father must have. \"Dad says she went up to ask for something. That's all he'll say.\"", "fx": {"lore": "sayo_waiting", "closeness": 3, "who": "Inukai Hayate"}},
+      {"t": "\"I'll be careful. I'll take you next time.\"", "say": "\"Me? Up THERE?\" He goes pale, then squares his shoulders. \"...Yeah. Okay. Somebody has to walk you home from wherever that is.\"", "fx": {"closeness": 6, "who": "Inukai Hayate", "flag": "hayate_will_come"}},
+      {"t": "\"It's not your business, Hayate.\"", "say": "He lets go of your sleeve. \"Right.\" A dog that has been told to stay. \"Right. Sorry.\" He doesn't walk you home that evening. You notice. You notice all the way.", "fx": {"closeness": -5, "who": "Inukai Hayate", "amane_self": 1}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 6 - The rainy season",
+  "route": {"none": "You went to the other side and came back. He was there to make sure.", "friend": "You hooked little fingers. Friends do that. Probably.", "romance": "Your little finger tingled when you made the promise. He noticed. So did Rin.", "boundary": "You crossed over without him and told him afterwards. He was hurt, and he said so, in words.", "ignore": "You went up the steps alone. He followed anyway. He always will."},
+  "hook": ["The teams for the sports festival go up on the board: 2-B is White. 1-A is Red.", "That night the two-tailed cat walks on the school roof and sits for an hour on the finish line of the running track."],
+  "next": "WEEK 7 - the sports festival, the relay, the first time you face the cat."
+ }
+}

@@ -20,6 +20,8 @@ func snapshot() -> Dictionary:
 	return {"version": 1, "episode": 0, "player": Game.player_name, "day": Clock.day(), "date": Clock.date_text(),
 		"rival": Amane.rival(), "stage": int(a["plan"]["stage"]), "characters": chars, "cats": cats,
 		"promises": (a["promises"] as Array).duplicate(), "lore": (a["lore"] as Dictionary).keys(),
+		"ending": str(Game.flags.get("ending", "")), "ending_choice": str(Game.flags.get("ending_choice", "")),
+		"week": Week.st().duplicate(true),
 		"mornings": {"pickups": People.st()["pickups"].duplicate(), "walks": People.st()["walks"].duplicate(),
 			"broken": People.st()["broken"].keys(), "known": People.st()["known"].duplicate()},
 		"town": {"zukan": Town.st()["zukan"].duplicate(), "eggs": Town.st()["eggs"].duplicate(), "luck": Town.luck(),

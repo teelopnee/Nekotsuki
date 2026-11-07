@@ -1,0 +1,101 @@
+{
+ "_doc": "Week 8 (27 May - 2 June): 2016 comes back - Hina's enlargement, Haruka's account, Grandpa's last memory dream, Toru remembers he was the child who promised (flag memory_2016, needed for the true ending).",
+ "days": {
+  "1": {
+   "objective": "Hina has an envelope for you. Find her at lunch.",
+   "beats": [
+    {"id": "w8_negative", "where": "school", "after": 750, "before": 800, "speaker": "Hina",
+     "text": "Hina puts the envelope on your desk and doesn't let go of it. \"I enlarged the negative. Ten times.\" Inside: grainy, beautiful, two small hands on the 999th step. A boy's little finger hooked round a smaller one, and between them, caught in the flash, a thin red line. \"There's something on your finger,\" she says. \"There's something on your finger now, too.\"",
+     "choices": [
+      {"t": "Show her your left little finger.", "say": "The faint red line around the base of it. She takes a photo of it with shaking hands, then of the print, then of both together. \"That's not a mark,\" she says. \"That's evidence.\" She puts her hand over yours for a second. \"I'm sorry you don't remember. I'm sorry I was angry.\"", "fx": {"lore": "promise_2016", "closeness": 8, "who": "Hayase Hina"}},
+      {"t": "\"Can I keep this?\"", "say": "\"It's yours. It was always yours.\" She lets go. \"Dad took it for your grandfather. Your grandfather gave the negative back to us and said 'when he's ready'.\" A shaky laugh. \"I decided you were ready.\"", "fx": {"lore": "photo_2016", "closeness": 6, "who": "Hayase Hina", "flag": "has_negative"}},
+      {"t": "\"Hina... was I a good friend to you, back then?\"", "say": "She looks at you for a very long time. \"You were my best friend every summer for four years,\" she says. \"Then you were gone.\" She pushes her glasses up. \"Now you're back. I'm deciding whether that counts.\"", "fx": {"closeness": 10, "who": "Hayase Hina"}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "Ask Aunt Haruka what really happened in 2016 (at home, evening).",
+   "beats": [
+    {"id": "w8_haruka", "where": "suzunari", "after": 1000, "near": [27, 48, 6], "speaker": "Asagiri Haruka",
+     "text": "She's waiting at the counter with two cups of tea and no mochi, which is how you know it's serious. \"You went up the steps alone at the festival. Counted out loud. Your grandfather said you counted to a thousand.\" Her hands shake round the cup. \"You were gone all night. At dawn you came down holding the Nekomori baby's hand. He was five. You were both soaked, and it hadn't rained.\"",
+     "choices": [
+      {"t": "\"And then Dad took me away.\"", "say": "\"He came on the first train. He didn't even sit down. He took you and he never let you come back.\" She wipes her eyes. \"He wasn't cruel, Toru. He was terrified. He ran from this town once already.\"", "fx": {"lore": "kamikakushi_2016", "flag": "haruka_told_2016"}},
+      {"t": "\"What did Amane do when I left?\"", "say": "\"Sat on the steps. Every summer. Nine years.\" She stares into her tea. \"Chiyo-san used to carry him home asleep. I used to leave mochi on the step for him. He never ate it. He saved it for someone.\"", "fx": {"lore": "waited_nine", "flag": "haruka_told_2016", "tears": 0.5}},
+      {"t": "Hold her hand.", "say": "She grips your hand hard, flour and all. \"Your grandfather made me promise not to tell you until you asked,\" she says. \"You asked. Good.\" She finally smiles. \"Now eat something. Remembering is hungry work.\"", "fx": {"flag": "haruka_told_2016", "luck": 1, "hp": 20}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "Friday. Tonight, sleep with your head toward the shrine.",
+   "beats": [
+    {"id": "w8_dream_2016", "when": "night", "speaker": "Grandpa Genzo (dream)",
+     "text": "There is no shogi board tonight. Grandpa is sitting on the 999th step in the festival light of 2016, and next to him, swinging his legs, is you - seven years old, sticky with candy. \"Watch,\" Grandpa says. The small you stands up and starts counting. Nine hundred and ninety-nine. A thousand. The world goes red. A tiny hooded child runs up the steps after him, a gold bell ringing on its wrist, and grabs his hand, and pulls.",
+     "choices": [
+      {"t": "Remember.", "say": "You remember. The red sky. The candy apple knocked out of your hand. A five-year-old with wet eyes and a bell, pulling you down the steps in the dark. And at the bottom, your own seven-year-old voice: \"I'll come again next year. Promise.\" The little finger. The red line. You wake up crying, and outside, for the first time since you came to Suzunari, the rain stops completely.", "fx": {"flag": "memory_2016", "lore": "promise_2016", "tears": -2.0, "bond": 5}},
+      {"t": "Look away.", "say": "You turn your face from the steps. Grandpa sighs. \"Not ready. That's allowed.\" The dream goes grey. \"But he's been ready for nine years, Toru. Don't make it ten.\" You wake up with a dull ache behind your eyes and no memory at all.", "fx": {"flag": "memory_refused"}}
+     ]}
+   ]
+  },
+  "4": {
+   "objective": "Go to the shrine steps. You know who's waiting.",
+   "beats": [
+    {"id": "w8_steps", "where": "suzunari", "after": 540, "near": [4, 18, 9], "needs": {"flag": "memory_2016"}, "speaker": "Amane",
+     "text": "He's on the bottom step, exactly where the five-year-old let go of your hand. He stands up when he sees your face. He knows. He has always been able to tell. \"Senpai,\" he says, and his voice breaks right down the middle. \"You remember.\"",
+     "choices": [
+      {"t": "\"I'm sorry I didn't come back. I'm sorry you waited.\"", "say": "Then he cries - not the rain kind, the ordinary kind, the kind a nine-years-late apology deserves. You stand there and let him. When he's done he wipes his face on his sleeve and says, \"You came back. You were just very, very slow.\" Above Suzunari the sky is a clean, rinsed blue.", "fx": {"bond": 8, "trust": 5, "tears": -1.5}},
+      {"t": "\"You pulled me out. Thank you, Amane.\"", "say": "\"I didn't think,\" he says. \"I just ran. You were so small and the sky was so red.\" He laughs wetly. \"You were heavy. You wouldn't let go of the candy stick.\" He holds out his little finger. This time you both know what it means.", "fx": {"bond": 6, "amane_self": 3, "tears": -1.0}},
+      {"t": "\"I remember. But I was seven, Amane. I'm not that kid any more.\"", "say": "He takes that in slowly. \"I know.\" He nods. \"I'm not that baby either.\" He sits back down on the step. \"Then let's be who we are now. That's... harder. But it's ours.\"", "fx": {"amane_self": 8, "bond": 3}}
+     ]},
+    {"id": "w8_steps_no", "where": "suzunari", "after": 540, "near": [4, 18, 9], "needs": {"flag": "memory_refused"}, "speaker": "Amane",
+     "text": "He's on the bottom step. He looks at your face and his own falls, just a little. \"Not yet,\" he says, mostly to himself. \"That's okay. Yet is a good word.\" He makes room on the step beside him.",
+     "choices": [
+      {"t": "Sit with him.", "say": "You sit. Neither of you says anything for a long time. The lanterns come on. It's not remembering, but it's something.", "fx": {"bond": 3, "tears": -0.5}},
+      {"t": "\"Maybe I'll never remember.\"", "say": "\"Then I'll remember for both of us.\" He says it the way you'd say the time. \"I'm good at it. It's the thing I'm best at.\"", "fx": {"amane_self": -2, "bond": 1}}
+     ]}
+   ]
+  },
+  "5": {
+   "morning": "Sunday. Your phone rings at seven in the morning. TOKYO - DAD.",
+   "objective": "Your father is calling.",
+   "beats": [
+    {"id": "w8_dad_call", "where": "any", "after": 450, "speaker": "Asagiri Makoto (phone)",
+     "text": "\"Toru.\" Your father's voice, flat with the effort of not shouting. \"Your aunt says you've been going up those steps. I told you. I told your grandfather. That town eats people. I'm coming to bring you home after your exams. Don't argue.\"",
+     "choices": [
+      {"t": "\"I remember 2016, Dad.\"", "say": "Silence on the line for so long you check it hasn't dropped. Then, very quietly: \"...I'm sorry. I thought if you forgot, it couldn't find you again.\" He clears his throat. \"I'm still coming.\"", "fx": {"flag": "dad_knows_memory", "lore": "kamikakushi_2016"}},
+      {"t": "\"Who was Sayo, Dad?\"", "say": "The breath he takes is the sound of a door being closed very hard. \"Don't.\" Then: \"Someone I left on those steps. Twenty-five years ago. Don't do what I did, Toru. Either way. Don't.\" He hangs up.", "fx": {"flag": "asked_dad_sayo", "lore": "sayo_court"}},
+      {"t": "\"I'm staying. Grandpa wanted me here.\"", "say": "\"Grandpa wanted -\" He stops. He breathes. \"Your grandfather always got what he wanted.\" A pause. \"I'll come anyway. To see. That's all. To see.\"", "fx": {"flag": "toru_stays"}}
+     ]}
+   ]
+  },
+  "6": {
+   "objective": "Chiyo has been waiting for you to come and ask the right question.",
+   "beats": [
+    {"id": "w8_chiyo_knew", "where": "suzunari", "after": 920, "near": [28, 6, 9], "speaker": "Nekomori Chiyo",
+     "text": "Chiyo is sitting on the edge of the shrine porch with her cane across her knees. \"So. You remember now.\" It isn't a question. \"I knew who you were the day you stepped off the train. Not because of 2016. Because of 1868.\" She looks straight at you. \"I was a girl called Haru, once, and I fed a cat every day while it waited for you.\"",
+     "choices": [
+      {"t": "\"You knew all this time and said nothing?\"", "say": "\"Words said on shrine ground are kept by the shrine.\" She taps the step. \"If I'd told you, it would have been my memory, not yours. A promise has to be remembered by the one who made it. That's the rule.\"", "fx": {"lore": "chiyo_two", "flag": "chiyo_told"}},
+      {"t": "\"What happens if I keep the promise now?\"", "say": "\"Then a debt of a thousand needles is paid, on the night it was made.\" She looks up the steps. \"Tanabata. The thousandth step. You'll have to choose whether to climb it, and what to say when you do.\"", "fx": {"lore": "thousandth_step", "flag": "chiyo_told"}},
+      {"t": "\"Thank you for feeding the cat, Chiyo-san.\"", "say": "The old woman's face does something it hasn't done in fifty years. \"...Hm.\" She looks away fast. \"Somebody had to. You were very late.\" She gives your back a hard slap. \"Go home.\"", "fx": {"lore": "chiyo_two", "flag": "chiyo_told", "luck": 1}}
+     ]}
+   ]
+  },
+  "7": {
+   "objective": "An ordinary Tuesday, if anything is ordinary now.",
+   "beats": [
+    {"id": "w8_elders", "where": "suzunari", "after": 1000, "near": [27, 48, 6], "speaker": "",
+     "text": "There are three old men from the shopping street association in the shop when you get home, drinking Haruka's tea and not buying anything. They stop talking when you come in. One of them - the fishmonger - smiles at you too widely. \"Ah! The Asagiri boy. We were just saying. Since you came, the rain's eased now and then. The fish are back. Funny how luck works, eh?\"",
+     "choices": [
+      {"t": "\"What are you trying to say?\"", "say": "\"Only that the cat shrine's been empty since 2010, and the town's been dying since 2010.\" He sips his tea. \"And that boy follows you around like a lucky charm. Keep him happy, eh? For all of us.\" Aunt Haruka throws them out with a broom.", "fx": {"flag": "elders_pressure", "luck": 1}},
+      {"t": "Say nothing and go upstairs.", "say": "You hear them through the floor for another hour. 'For the town.' 'Just keep the boy close.' 'The Shirasagi lady says...' When they leave, Kiku has filled all their shoes with flour.", "fx": {"flag": "elders_pressure"}},
+      {"t": "\"Amane isn't a lucky charm. He's a person.\"", "say": "The fishmonger's smile slips. \"Of course, of course.\" They leave soon after. Aunt Haruka hugs you so hard you can't breathe. \"Your grandfather would have said exactly that,\" she says. \"Louder.\"", "fx": {"flag": "elders_pressure", "amane_self": 3, "luck": -1}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 8 - 2016",
+  "route": {"none": "You know now what you promised. You still haven't said what he is to you.", "friend": "You were his first friend, at seven. You're trying to deserve it at seventeen.", "romance": "Two little fingers, a red line, nine years. He hasn't stopped smiling since Saturday.", "boundary": "You remembered, and you didn't let it decide for you. Neither did he.", "ignore": "You remembered. Whatever you do with it now is up to you."},
+  "hook": ["On Monday the whole town seems to know that 'the Asagiri boy remembers'. Nobody can say who told them.", "At the Shirasagi residence, a woman in a pale kimono writes a polite invitation to tea, and seals it with a white heron."],
+  "next": "WEEK 9 - the grown-ups want something, and a heron invites you to tea."
+ }
+}

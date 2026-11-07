@@ -1,0 +1,98 @@
+{
+ "_doc": "Week 13 (1-7 July): Tanabata. Festival preparations, who you'll go with, Mio's hundredth story, Hayate's walk home, the Night Parade of a Hundred Demons (6 July), and Tanabata night on the 999 steps: the final choice -> Week.ending() (data/endings.json). Choices are gated by `when` (Amane.ok keys incl. routes / flag / min_close).",
+ "days": {
+  "1": {
+   "objective": "Festival preparations. Everyone is asking who you're going with.",
+   "beats": [
+    {"id": "w13_who", "where": "school", "after": 750, "before": 800, "speaker": "",
+     "text": "The lunchroom is full of yukata catalogues and arguments. Hina pretends she isn't waiting for you to ask her. Hayate asks you outright, twice. Mio says, \"I'll be at the old stones, if anyone wants a quiet festival.\" Reiji says nothing at all, very loudly. And at the door of 2-B, a black hood, holding two festival tickets for the shrine lanterns, too scared to come in.",
+     "choices": [
+      {"t": "Go to the door and take one of Amane's tickets.", "say": "He stares at the ticket in your hand as if you'd taken one of his ribs. \"You'll... come with me? To the festival?\" A whole room pretends not to listen. \"Okay. Okay. I need a yukata. Grandma has one. It's eighty years old. It's fine.\"", "fx": {"flag": "festival_amane", "bond": 5, "tears": -1.0}},
+      {"t": "Ask Hina.", "say": "\"Me?\" She drops her pen. Picks it up. Drops it again. \"For the newspaper. I mean. Yes. For coverage.\" She is grinning so hard her glasses slide down. Behind you, the door of 2-B closes very softly.", "fx": {"flag": "festival_hina", "closeness": 10, "who": "Hayase Hina", "tears": 0.6}},
+      {"t": "\"Let's all go together. Everyone.\"", "say": "A pause. Then Hayate yells YES, Hina rolls her eyes and agrees, Mio says \"fufu\", and Reiji says \"Acceptable\" and writes the meeting time in ink. At the door, Amane slowly lowers his two tickets, then raises them again. \"...Can I bring one more person?\" he asks. \"Is that allowed?\" \"Who?\" \"Me.\"", "fx": {"flag": "festival_everyone", "amane_self": 4, "bond": 2}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "Hina wants you to read something before she publishes it.",
+   "beats": [
+    {"id": "w13_article", "where": "school", "after": 920, "speaker": "Hina",
+     "text": "THE BOY WHO CAME BACK, by Hayase Hina. Eight pages. Everything: 1868, the hundred letters, 2016, the shops bought up by a company with a heron on its logo, a straw doll on a cedar, a storeroom full of plastic cats. And one paragraph about a first-year whose tears make it rain, written so gently you have to read it twice. \"Tomorrow,\" she says. \"Unless you tell me not to.\"",
+     "choices": [
+      {"t": "\"Publish it. All of it.\"", "say": "She hits PRINT. \"Proof,\" she whispers. By Friday the article is on every doorstep in Suzunari, delivered by hand by a postman with a very proud face. The Shirasagi company's sign comes down from three shops by the weekend.", "fx": {"flag": "article_out", "closeness": 8, "who": "Hayase Hina", "luck": 2}},
+      {"t": "\"Take Amane out of it. His part is his.\"", "say": "She reads the paragraph one more time, then deletes it. \"You're right. That's not news. That's a person.\" She publishes the rest. Amane never finds out there was a paragraph. You both decide that's correct.", "fx": {"flag": "article_out", "closeness": 6, "who": "Hayase Hina", "amane_self": 3}},
+      {"t": "\"Don't. Not yet. After Tanabata.\"", "say": "\"After Tanabata.\" She puts the pages in a folder and writes the date on it. \"If there's an after.\" She tries to make it a joke. It isn't one.", "fx": {"closeness": 2, "who": "Hayase Hina"}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "Friday. No Grandpa now. But somebody else talks in dreams.",
+   "beats": [
+    {"id": "w13_rin_dream", "when": "night", "speaker": "Rin (dream)",
+     "text": "Darkness, and a small gold light swinging in it. \"Latecomer.\" The bell's voice, cracked and furious and tired. \"Somebody nailed me shut. In a straw doll. Me. Three hundred and fourteen years old.\" A long, offended silence. \"I can still talk in dreams. Tomorrow I can't. So listen. On the night, he'll ask you nothing. He'll just wait. He's very good at that. Don't make him good at it for another hundred years.\"",
+     "choices": [
+      {"t": "\"Will you forgive the one who nailed you?\"", "say": "\"Never.\" A pause. \"...Probably never. Ask me on the night. I'm more reasonable at a thousand steps.\"", "fx": {"flag": "rin_reasonable"}},
+      {"t": "\"Thank you for looking after him all these years.\"", "say": "The light flickers. \"Hmph.\" Another flicker. \"He's a stupid cat and a stupid boy and I've been on his neck since he was a baby.\" Very quietly: \"Someone had to tell him he wasn't alone. Now you do it.\"", "fx": {"flag": "rin_reasonable", "bond": 2}}
+     ]}
+   ]
+  },
+  "4": {
+   "objective": "Mio is telling her hundredth ghost story tonight, in the club room (after school).",
+   "beats": [
+    {"id": "w13_hundred", "where": "school", "after": 960, "speaker": "Mio",
+     "text": "Ninety-nine candles burnt out. One left. Mio, cross-legged in the dark club room, camera off for once. \"Story one hundred,\" she says. \"A nun rowed six stone grandfathers out to sea so they wouldn't be broken. A hundred and fifty years later she was born again, afraid of the water, and someone told her she didn't have to dive.\" She leans toward the last candle. \"When I blow this out, something comes. That's the rule. Stay?\"",
+     "choices": [
+      {"t": "Stay, and hold her sleeve.", "say": "She blows the candle out. In the dark a blue lantern lights by itself, and a tall woman made of blue paper light kneels beside it, looks at Mio, and bows. \"Ao-andon,\" Mio breathes. The blue woman puts a hand on her head, once, like a grandmother, and is gone. Mio is laughing and crying. \"She said I can stop now. I can stop telling stories to be brave.\"", "fx": {"zukan": "aoandon", "closeness": 12, "who": "Kuroe Mio"}},
+      {"t": "\"Don't blow it out. Some stories can stay unfinished.\"", "say": "She looks at the last candle for a long time. \"...Fufu. Ninety-nine and one candle.\" She leaves it burning. \"Then I'll always have one story left to tell you.\"", "fx": {"closeness": 8, "who": "Kuroe Mio"}}
+     ]}
+   ]
+  },
+  "5": {
+   "objective": "Sunday. Hayate wants to walk somewhere with you. Of course he does.",
+   "beats": [
+    {"id": "w13_hayate_walk", "where": "suzunari", "after": 1000, "speaker": "Hayate",
+     "text": "Hayate walks you home the long way: the dog shrine, the river, the bakery, the bridge. He doesn't talk much, which is how you know. At your door he stops. \"Tuesday,\" he says. \"The steps. I'm going to be at the bottom. Dad says nobody but you can go up to a thousand.\" He scuffs his shoe. \"So I'll be at the bottom. Whatever happens. Like - like a dog waiting for someone to come down.\"",
+     "choices": [
+      {"t": "\"I'll come down, Hayate. I promise.\"", "say": "\"You'd better.\" His voice goes funny. \"I walked a ghost home for thirteen years once. I think. In a dream. I'm not doing it again.\" He hugs you, hard, a full Inukai hug, and runs off before you can see his face.", "fx": {"promise": "come_down_the_steps", "closeness": 10, "who": "Inukai Hayate"}},
+      {"t": "\"Thank you for every walk home.\"", "say": "\"It's what we do.\" He grins with the fang. \"Inukai family. We walk people home. Even when they're not going home.\" He bumps your fist. \"See you at the bottom.\"", "fx": {"closeness": 8, "who": "Inukai Hayate"}}
+     ]}
+   ]
+  },
+  "6": {
+   "morning": "6 July. Tanabata Eve. Tonight the Night Parade walks through the shopping street. Everyone in town will be indoors with the shutters down.",
+   "objective": "Tanabata Eve. Tonight (after 21:00) the Night Parade of a Hundred Demons walks the shopping street.",
+   "beats": [
+    {"id": "w13_hyakki", "where": "suzunari", "after": 1260, "near": [20, 39, 14], "fallback": true, "speaker": "",
+     "text": "Every shutter in the shopping street is down. Then the parade comes: umbrellas on one leg, lanterns with tongues, a kappa carrying a cucumber like a sword, a tanuki in a salaryman's suit, a rokurokubi waving with her neck, Hanako-san in her red skirt, a woman in a mask, a faceless man bowing, foxes, crows, a pair of shrine dogs - and at the very end, walking alone, a black cat with two tails that looks at you and does not cry. [Hyakki yagyo: the night parade of a hundred demons. Real folklore.]",
+     "choices": [
+      {"t": "Hold your breath until it has all gone past.", "say": "Your lungs burn. The last tail passes. You breathe. And the parade, as it turns the corner, all of it, every single one of them, turns its head and bows to you. You have the feeling you've been invited to something.", "fx": {"egg": "hyakki_breath", "zukan": "tengu", "luck": 1}},
+      {"t": "Step out and walk with the cat at the end.", "say": "It lets you. You walk side by side to the end of the street. At the river it stops and looks up at you with gold eyes. \"Tomorrow,\" it says, in Amane's voice, not angry, not jealous, just tired. \"Please.\" Then it walks into the river and isn't there.", "fx": {"zukan": "kasha", "bond": 3, "amane_self": 2}},
+      {"t": "Stay inside with the shutter down.", "say": "You hear it go past: wooden sandals, bells, laughter, the drip of things that are always wet. At the very end, very softly, someone scratches on Asagiri-do's shutter, once, and moves on.", "fx": {"zukan": "odori_neko"}}
+     ]}
+   ]
+  },
+  "7": {
+   "morning": "7 July. Tanabata. Bamboo with paper wishes on every door. The 999 steps are strung with lanterns from the bottom to the top. Tonight, there will be a thousand.",
+   "objective": "TANABATA. The festival is at the shrine all evening. At Omagatoki, go to the 999 steps. He'll be waiting.",
+   "beats": [
+    {"id": "w13_tanabata", "where": "suzunari", "after": 1075, "before": 1200, "near": [4, 18, 10], "fallback": true, "speaker": "",
+     "text": "The festival roars below you: lanterns, drums, yukata, the smell of grilled corn. Hayate is at the bottom of the steps, as promised. Hina is photographing everything. Mio is bowing to six moss-covered Jizo. Reiji is standing very straight beside a heron that isn't there. You climb. Nine hundred and ninety-nine. Amane is on the last step in his grandmother's eighty-year-old yukata, the silent bell at his throat, waiting. He doesn't ask you anything. He just waits. Above him, where there should be sky, there is one more step.",
+     "choices": [
+      {"t": "Climb the thousandth step and say \"Tadaima.\"", "say": "You lift your foot.", "fx": {"final": "tadaima"}},
+      {"t": "Ring the shrine bell together.", "when": {"routes": ["romance"]}, "say": "You take the bell rope and hold out the end to him.", "fx": {"final": "bell"}},
+      {"t": "Ask him for the bell on his collar.", "say": "You hold out your hand, palm up.", "fx": {"final": "remove_bell"}},
+      {"t": "Walk back down the steps beside him - not ahead, not behind.", "when": {"routes": ["friend", "boundary", "none"]}, "say": "You turn round and offer him the space beside you.", "fx": {"final": "walk_beside"}},
+      {"t": "Step into the red dusk: Ura-Suzunari.", "say": "You turn toward the place where the sky goes red.", "fx": {"final": "ura"}},
+      {"t": "Signal to the Inukai priest to seal the cat shrine.", "when": {"flag": "seal_known"}, "say": "You look down the steps to where Hayate's father waits with the rope.", "fx": {"final": "seal"}},
+      {"t": "Do what Shirasagi Kyoko asked.", "when": {"flag": "kyoko_offer"}, "say": "You take him by the hand and walk him toward the empty shrine.", "fx": {"final": "return_god"}},
+      {"t": "Turn round and catch the last train out of Suzunari.", "say": "You turn your back on the thousandth step.", "fx": {"final": "leave"}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 13 - Tanabata",
+  "hook": ["Enma's Ledger closes for the season."],
+  "next": "EPISODE 0 - END"
+ }
+}

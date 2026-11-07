@@ -148,7 +148,16 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `People.menu_items(id)` + `run_item` add "p:" choices to Town.meet / HayateNPC (ask schedule, walk home, buy, trade, sorry).
   Closeness = Amane `closeness` (Amane: bond_now), so pick-ups feed the weekly rival. Test: `tools/people_test.gd`;
   shots: `tools/shot_suzunari.gd -- <dir> house_inukai,house_shirasagi,house_kuroe,house_hayase,house_nekomori,pickup_hina`.
-- School days & week 1 (`Week` autoload, `data/week1.json`, `data/lessons.json`, state `Game.flags["week"]`): lesson
+- Story, 13 weeks (`Week` autoload, `data/weeks/week01..13.json`, `data/endings.json`): days are keyed 1-7 inside each
+  week (day 1 = Wed 8 Apr; `week_no()`, `day_in_week()`; 91 days to Tanabata 7 July). Day keys: `objective`, `morning`,
+  `holiday` (no lessons), `exam` (lessons become exams graded by `study`), `beats`. Beat keys as below plus `"when":
+  "night"` (played in `before_day_end`: Grandpa Genzo's Friday dreams, midnight messages). Text placeholders `{rival}`,
+  `{rival_short}`, `{player}` (`Week.fill`). `needs` / choice `when` use `Amane.ok` (now also `flag`, `no_flag`, `routes`,
+  `min_close {name: n}`, `min_lore_count`, `max_bond`). Scene fx also: `study`, `trust`, `warn_rival`, `name_ikiryo`,
+  `flag` as a list, `final` (week 13 only) -> `Week.ending(choice)` -> `ending_id()` (route, bond, self, flags
+  memory_2016 / sayo_found / letter_101 / makabe_letter_sent / seal_known / kyoko_offer, rival fates) -> pages + end card
+  + `Game.flags.ending` + Ledger + back to the title. Validate all story data: `tools/week_test.gd` (plays every choice).
+- School days & week 1 (`Week` autoload, `data/weeks/week01.json`, `data/lessons.json`, state `Game.flags["week"]`): lesson
   blocks AM 510-750 / PM 800-920 are ONE event when you're in the school (4 choices, clock jumps to the block end);
   late = > 2 min into a block; absent = in town 15+ min into a block (toast, Makabe -3, Ura post "truant", Amane tears);
   `before_day_end(hud)` (Suzunari/School `end_day`, awaited): Haruka hears about 3 lates / 2 absences, day 7 closes week 1

@@ -1,0 +1,102 @@
+{
+ "_doc": "Week 4 (29 April - 5 May, Golden Week): holidays on day 1 (Showa Day), 6 and 7 (Greenery Day, Children's Day). The beach, the student council inquiry, Reiji at the harbour, Mio's promise about the six Jizo, Children's Day.",
+ "days": {
+  "1": {
+   "holiday": true,
+   "morning": "Showa Day. No school. The beach opened this morning; Hayate has sent eleven messages in capital letters.",
+   "objective": "Holiday. The beach is open (south of your house). Everyone's there.",
+   "beats": [
+    {"id": "w4_beach", "where": "suzunari", "after": 540, "near": [27, 52, 10], "speaker": "",
+     "text": "The sea is grey-green and cold and nobody cares. Hayate is already in up to his knees, shouting. Hina is photographing a crab. Mio is sitting under a black umbrella reading a book about drowned villages. Amane stands exactly where the sand turns wet, and not one step further. His hands are shaking inside his sleeves.",
+     "choices": [
+      {"t": "Stand beside Amane at the edge of the water.", "say": "You don't say anything. You just stand there. After a long time he takes one step, so the foam touches his shoes, and grabs your sleeve, and doesn't let go. \"Deep water took someone once,\" he whispers. \"Not me. Someone I was.\"", "fx": {"bond": 5, "trust": 3, "tears": -0.6, "lore": "kappa_suzu"}},
+      {"t": "Race Hayate into the waves.", "say": "He forgets his ankle and runs, and for twenty glorious metres he's the fastest boy in Suzunari again. Then he limps the rest, laughing. From the shore, a black hood watches you both and the clouds pile up over the sea.", "fx": {"closeness": 7, "who": "Inukai Hayate", "tears": 0.6}},
+      {"t": "Sit under Mio's umbrella.", "say": "\"The six Jizo are out there,\" she says, pointing at nothing in particular in the sea. \"Two hundred metres. I dream about diving for them.\" She closes the book. \"I'm afraid of deep water. Isn't that funny.\"", "fx": {"closeness": 7, "who": "Kuroe Mio", "lore": "jizo_sea"}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "You've been summoned to the student council room (2F, after classes).",
+   "beats": [
+    {"id": "w4_council", "where": "school", "after": 920, "speaker": "Reiji",
+     "text": "The council room is too neat. Reiji sits under a framed photo of the school in 1890 with a folder in front of him. \"Formal inquiry,\" he says. \"Four incidents. Five, as of yesterday: a first-year in 2-C's bicycle chain cut through.\" He opens the folder. \"I'm obliged to ask. Where were you on these nights?\"",
+     "choices": [
+      {"t": "Answer every question honestly.", "say": "You answer. He writes everything down. At the end he closes the folder and, for the first time, looks at you without his president face on. \"You're telling the truth. That's worse. Because then it's something I can't file.\"", "fx": {"closeness": 6, "who": "Shirasagi Reiji", "flag": "reiji_trusts"}},
+      {"t": "\"Look at who benefits when the town's luck goes bad.\"", "say": "\"What's that supposed to mean?\" But his hand has gone very still on the folder. \"...My family has lost three ships since 2010.\" He says it as if someone else is speaking. \"Get out, Asagiri. Please.\"", "fx": {"closeness": 2, "who": "Shirasagi Reiji", "flag": "reiji_doubts_mother"}},
+      {"t": "\"I won't answer that.\"", "say": "\"Then it goes in the file as 'refused'.\" He writes it. He underlines it. \"I'll find out anyway. I always do. I would just have preferred to hear it from you.\"", "fx": {"closeness": -3, "who": "Shirasagi Reiji"}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "A school day between holidays. Half the class is still asleep.",
+   "beats": [
+    {"id": "w4_dream", "when": "night", "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa has put on his good haori and arranged the shogi pieces in a circle, which makes no sense. \"The Shirasagi,\" he says, \"have never forgiven us. 1868. A boy of ours wouldn't marry a girl of theirs.\" He moves the gold general into the middle. \"They've waited longer than the cat has. People forget how long people can hold a grudge.\"",
+     "choices": [
+      {"t": "\"What happened to the girl?\"", "say": "\"Aya. She waited by the harbour in the snow for a letter that never came.\" He's quiet a moment. \"Her family made her into a heron after that. Proud. Cold. White.\" He looks at you. \"Her soul didn't stay cold, I think. Be kind to the president.\"", "fx": {"lore": "soichiro", "flag": "aya_known"}},
+      {"t": "\"Is Reiji's mother dangerous?\"", "say": "\"Kyoko married into all that and loved it more than any of them.\" He frowns. \"On the thirteenth of each month, don't walk on the hill road after midnight. That's all I'll say.\"", "fx": {"flag": "genzo_13th"}},
+      {"t": "\"Grandpa, the pieces don't go in a circle.\"", "say": "\"Everything goes in a circle in this town, Toru.\" He laughs, then doesn't. \"That's the problem.\"", "fx": {"hp": 20}}
+     ]}
+   ]
+  },
+  "4": {
+   "morning": "Saturday, early. You couldn't sleep. The harbour is the only place awake.",
+   "objective": "Go down to the harbour at dawn (the beach, before 8:30). Somebody else couldn't sleep either.",
+   "beats": [
+    {"id": "w4_harbour", "where": "suzunari", "before": 510, "near": [40, 52, 12], "speaker": "Reiji",
+     "text": "Reiji is standing at the end of the breakwater in his scarf, very straight, looking at one particular spot in the water. He doesn't turn round. \"My father was a strong swimmer,\" he says. \"Calm night. No storm. They found him here.\" A long breath. \"I come every Saturday. Nobody knows. Now you do.\"",
+     "choices": [
+      {"t": "Stand next to him and say nothing.", "say": "The tide comes in. A heron lands on the breakwater, looks at the two of you, and stays. After a long time Reiji says, \"Thank you,\" so quietly the sea almost takes it.", "fx": {"closeness": 9, "who": "Shirasagi Reiji"}},
+      {"t": "\"Do you think it was an accident?\"", "say": "His jaw tightens. \"The night he died, my mother came home at three in the morning with salt water on her hem.\" He hears himself. \"I've never said that out loud.\" He turns and walks away very fast.", "fx": {"closeness": 5, "who": "Shirasagi Reiji", "flag": "reiji_father_doubt"}},
+      {"t": "\"Funayurei ask for ladles out here, you know.\"", "say": "\"Ghost sailors.\" He almost smiles. \"My father used to carry a ladle with no bottom in his boat. For them. My mother laughed at him.\" He looks at the water differently. \"...Maybe he wasn't silly.\"", "fx": {"closeness": 6, "who": "Shirasagi Reiji", "zukan": "funayurei"}}
+     ]}
+   ]
+  },
+  "5": {
+   "morning": "Sunday. The sound of a ladder against the shop wall. Aunt Haruka is up there with a box of carp streamers.",
+   "objective": "Help Aunt Haruka hang the carp streamers (at home).",
+   "beats": [
+    {"id": "w4_koinobori", "where": "suzunari", "near": [27, 48, 6], "speaker": "Asagiri Haruka",
+     "text": "Three carp streamers - black, red, and a small blue one - flap above Asagiri-do. \"Your grandfather bought the little blue one the year you were born,\" Haruka says, holding the ladder. \"He hung it every Children's Day. Even the years you didn't come.\" She sniffs. \"Hay fever.\"",
+     "choices": [
+      {"t": "\"Thank you for keeping it, Aunt Haruka.\"", "say": "She shoves a whole kashiwa-mochi into your mouth so she doesn't have to answer. Kiku, on the roof, is holding the end of the blue carp's string. Nobody else sees her. The shop is full all afternoon.", "fx": {"luck": 2}},
+      {"t": "\"Did Grandpa ever talk about the 2016 night?\"", "say": "The ladder wobbles. \"He sat on those steps till dawn. When you came down, holding a little hand, he cried like a child.\" She steadies the ladder. \"Then your father took you home and wouldn't let him see you again. It broke his heart, Toru.\"", "fx": {"lore": "kamikakushi_2016"}},
+      {"t": "Climb up and fix the tangled one.", "say": "You untangle the red carp. From up here you can see the whole river, and the shrine, and - on the first step of the 999 - a small figure in a black hood, watching your streamers fly.", "fx": {"bond": 2, "hp": -5}}
+     ]}
+   ]
+  },
+  "6": {
+   "holiday": true,
+   "morning": "Greenery Day. A message from Mio: \"The temple stones. 10:00. Bring nothing. Bring a towel.\"",
+   "objective": "Holiday. Mio is waiting at the old temple stones by the Rokujizo crossroads.",
+   "beats": [
+    {"id": "w4_jizo", "where": "suzunari", "after": 570, "near": [44, 36, 8], "speaker": "Mio",
+     "text": "Mio is sitting on the largest of the old stones with her video camera in her lap. \"In 1868 the town threw the temple's six Jizo into the sea,\" she says. \"The nun who looked after them rowed out at night and put them somewhere safe. Somewhere deep.\" She looks at you. \"I dream I'm that nun. I've never told anyone that.\"",
+     "choices": [
+      {"t": "\"Then let's find them. Together.\"", "say": "She stares at you, then laughs - a real laugh, not 'fufu'. She covers her mouth, shocked at herself. \"...Okay. The kappa knows the river mouth. He'll want cucumbers.\" She writes it down. \"A promise.\"", "fx": {"promise": "find_the_jizo", "closeness": 9, "who": "Kuroe Mio", "flag": "jizo_promise"}},
+      {"t": "\"Maybe some things are safer left at the bottom.\"", "say": "\"Maybe.\" She films the stones. \"But the town's been unlucky since 2010, and the shrine's half empty, and the crossroads are guarded by copies.\" She shrugs. \"Safe isn't the same as right.\"", "fx": {"closeness": 4, "who": "Kuroe Mio"}},
+      {"t": "\"You dream you were someone else too?\"", "say": "\"Everyone in this town is someone else too, Asagiri-kun.\" She smiles her scary smile. \"Some of us just wake up remembering a bit more.\" She points the camera at you. \"What do you dream about?\" \"...Rain. On a hill.\" \"Fufu. Of course you do.\"", "fx": {"closeness": 6, "who": "Kuroe Mio", "lore": "tabaruzaka"}}
+     ]}
+   ]
+  },
+  "7": {
+   "holiday": true,
+   "objective": "Children's Day. Amane said he'd made something. Find him in the evening.",
+   "beats": [
+    {"id": "w4_kashiwa", "where": "suzunari", "after": 1000, "speaker": "Amane",
+     "text": "Amane holds out a slightly squashed kashiwa-mochi wrapped in its oak leaf. \"Children's Day.\" He goes pink. \"Grandma says you eat these so the family doesn't end. Because oak leaves don't fall until the new ones grow.\" He looks at your carp streamers in the distance. \"...Was I part of your childhood, Senpai? Even a bit?\"",
+     "choices": [
+      {"t": "\"I think you were. I just can't reach it yet.\"", "say": "\"Yet.\" He holds the word like the goldfish bag. \"Yet is okay. Yet is a good word.\" He watches you eat the whole thing. It's terrible. You tell him it's perfect. It doesn't rain all evening.", "fx": {"bond": 4, "tears": -1.0}},
+      {"t": "\"You're part of it now. That's what counts.\"", "say": "He thinks about that for a long time. \"Now,\" he says. \"Not before. Now.\" Something in his shoulders lets go. \"Grandma would like that answer. She says I live too much in before.\"", "fx": {"amane_self": 5, "bond": 2}},
+      {"t": "\"Amane, I'm not responsible for who you were.\"", "say": "\"I know.\" He doesn't cry. That's almost worse. \"I know you're not. I just hoped.\" He leaves the mochi on the wall and walks home in a rain that only falls on him.", "fx": {"tears": 1.4, "amane_self": 3}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 4 - Golden Week",
+  "route": {"none": "Golden Week ended. You still haven't said what he is to you.", "friend": "He went to the beach. He touched the sea. Friends make you braver.", "romance": "He made you mochi so the family doesn't end. He meant every word of it.", "boundary": "He spent a holiday without you on purpose. He told you about it afterwards, proudly.", "ignore": "He spent the holidays on the shrine steps."},
+  "hook": ["On Monday a new seating plan appears on the 1-A noticeboard, signed by Makabe-sensei. Nekomori Amane has been moved to the desk furthest from the door.", "Next to it, in small careful handwriting: 'Midterms in one week. Focus, everyone.'"],
+  "next": "WEEK 5 - midterms, a teacher who wants to keep you apart, a drawer full of letters."
+ }
+}

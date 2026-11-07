@@ -1,0 +1,324 @@
+{
+ "_doc": "Week 12 (24-30 June): the silent bell, Kyoko moves, the Inukai priest, Amane goes missing and is found (who finds him depends on who you're close to), Reiji chooses, the tanzaku wishes.",
+ "days": {
+  "1": {
+   "morning": "No rain this morning. That's how you know something is very wrong.",
+   "objective": "Chiyo is waiting at the shrine. The bell is still silent.",
+   "beats": [
+    {
+     "id": "w12_chiyo_nail",
+     "where": "suzunari",
+     "after": 920,
+     "near": [
+      28,
+      6,
+      9
+     ],
+     "speaker": "Nekomori Chiyo",
+     "text": "Chiyo holds out a straw doll with a gold thread round its neck. There's a long iron nail through its chest. \"Found it on the cedar behind the shrine. A doll for the bell, not the boy. Clever woman.\" She pulls the nail out with a sound like a tooth. Nothing changes. \"Nailing is easy. Unnailing takes the one who was nailed to forgive the one who did it. The bell won't forgive anyone. She's three hundred and fourteen and very petty.\"",
+     "choices": [
+      {
+       "t": "\"Then what do we do?\"",
+       "say": "\"We wait until Tanabata, when the steps have a thousand, and the bell can hear across.\" Chiyo throws the doll into the incense burner. \"And we keep that boy away from the heron until then. Can you do that?\"",
+       "fx": {
+        "lore": "bell_silent",
+        "flag": "guard_amane"
+       }
+      },
+      {
+       "t": "\"Can a bell be made to forgive?\"",
+       "say": "\"No. But it can be talked round.\" Something almost like a smile. \"By someone who's been rude to it for a hundred and fifty years and come back anyway. That's you, latecomer.\"",
+       "fx": {
+        "lore": "bell_silent",
+        "flag": "talk_rin_round"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Men in dark suits have been seen at the cat shrine. The dog shrine is right next door.",
+   "beats": [
+    {
+     "id": "w12_inukai",
+     "where": "suzunari",
+     "after": 960,
+     "near": [
+      47,
+      25,
+      9
+     ],
+     "speaker": "Inukai Takeshi",
+     "text": "Hayate's father is standing at the dog-shrine gate in full white robes with a staff, which you have never seen. Hayate beside him, with his bad ankle braced and a broom like a spear. \"The Shirasagi woman's men came up the steps twice,\" the priest says. \"The cat shrine has no priest. The cat shrine has an old woman and a crying boy.\" His jaw sets. \"Our family walks people home. All of them. Even cats.\"",
+     "choices": [
+      {
+       "t": "\"Will you guard the cat shrine until Tanabata?\"",
+       "say": "Takeshi looks at the hill, at the feud of a hundred and fifty years, at his son. \"...Yes.\" Hayate whoops. His father hits him gently with the staff. \"Quietly, idiot. We guard quietly.\"",
+       "fx": {
+        "flag": "inukai_ally",
+        "closeness": 6,
+        "who": "Inukai Hayate",
+        "luck": 1
+       }
+      },
+      {
+       "t": "\"Hayate, you don't have to - your ankle -\"",
+       "say": "\"I'm not running,\" Hayate says. \"I'm standing. I can stand fine.\" He grins with his fang. \"Dogs are good at standing in the way. Ask anyone.\"",
+       "fx": {
+        "flag": "inukai_ally",
+        "closeness": 10,
+        "who": "Inukai Hayate"
+       }
+      },
+      {
+       "t": "\"If it comes to it... could your family seal the cat shrine?\"",
+       "say": "The priest is very still. \"We could. The old way. Rope, salt, a dog at the gate.\" He looks at you hard. \"It would keep the town safe. It would keep the boy inside, forever.\" Hayate stares at you like you've struck him. \"That's on Tanabata. If you ask.\"",
+       "fx": {
+        "flag": "seal_known",
+        "closeness": -3,
+        "who": "Inukai Hayate"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "Friday. No Grandpa tonight. Just the phone.",
+   "beats": [
+    {
+     "id": "w12_cant_hear",
+     "when": "night",
+     "speaker": "Amane (Rinrin)",
+     "text": "23:12. \"Senpai.\" 23:12. \"I can't hear Rin.\" 23:13. \"She's been in my ear my whole life. She tells me what time it is and that my hair is bad and that I'm not alone.\" 23:15. \"I'm alone.\" 23:15. \"Sorry. I'm not doing anything. I'm in bed. I'm safe. I just wanted to say it to someone.\"",
+     "choices": [
+      {
+       "t": "Call him and stay on the line until he falls asleep.",
+       "say": "He doesn't say much. Neither do you. At some point his breathing slows. At some point it starts to rain, very softly, the kind of rain that sounds like someone humming. You fall asleep with the phone on the pillow.",
+       "fx": {
+        "bond": 5,
+        "tears": -1.0
+       }
+      },
+      {
+       "t": "\"You're not alone. Tell Chiyo-san too. Then sleep.\"",
+       "say": "Three dots. \"Okay.\" Three dots. \"I told her. She brought me tea and sat by the door. She's snoring now. It's nice.\" A last message: \"Thank you for making me tell someone else.\"",
+       "fx": {
+        "amane_self": 5,
+        "bond": 2
+       }
+      },
+      {
+       "t": "\"Rin will come back. Goodnight, Amane.\"",
+       "say": "\"Goodnight, Senpai.\" A minute later: \"If she doesn't, will you tell me the time sometimes? And that my hair is bad?\" A minute after that: \"That was a joke. Mostly.\"",
+       "fx": {
+        "bond": 2,
+        "tears": -0.4
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday. Chiyo calls the shop at seven. \"Is he with you?\" He isn't.",
+   "objective": "Amane didn't come home last night. Find him.",
+   "beats": [
+    {
+     "id": "w12_missing_reiji",
+     "where": "any",
+     "after": 540,
+     "needs": {
+      "flag": "reiji_found_list"
+     },
+     "speaker": "Reiji",
+     "text": "Reiji finds you before you find anyone. He's running, which he never does, scarf flying. \"The storeroom under our house. My mother had him brought there before dawn - 'for his own safety until Tanabata'.\" He holds up a key. \"I took this from her desk. I've never stolen anything in my life.\" He's shaking. \"Come on.\"",
+     "choices": [
+      {
+       "t": "Go with Reiji and get Amane out.",
+       "say": "The storeroom is dark and full of plastic maneki-neko in boxes. Amane is sitting in the middle of them, knees up, perfectly calm, the way people are calm when they've given up. When he sees you he doesn't cry. Reiji unlocks the door and holds it open and doesn't look at either of you. \"Go,\" he says. \"Before I lose my nerve.\"",
+       "fx": {
+        "flag": "amane_rescued",
+        "closeness": 10,
+        "who": "Shirasagi Reiji",
+        "bond": 4
+       }
+      },
+      {
+       "t": "\"Reiji, if you do this, your mother -\"",
+       "say": "\"I know.\" He puts the key in your hand and closes your fingers over it. \"I've known for five years.\" He walks ahead of you to his own house. At the storeroom he stops, and does the bravest thing you've ever seen him do: he knocks first, and says, \"Nekomori. It's Shirasagi. You're going home.\"",
+       "fx": {
+        "flag": "amane_rescued",
+        "closeness": 12,
+        "who": "Shirasagi Reiji",
+        "bond": 3
+       }
+      }
+     ]
+    },
+    {
+     "id": "w12_missing_hayate",
+     "where": "any",
+     "after": 600,
+     "needs": {
+      "no_flag": "reiji_found_list"
+     },
+     "speaker": "Hayate",
+     "text": "Hayate is at your door, out of breath, ankle brace and all. \"I can smell him. Rain and smoke. All the way to the east of town.\" He looks at you. \"The heron house. You coming?\" Behind him, three shrine dogs are waiting with their noses pointed east.",
+     "choices": [
+      {
+       "t": "\"Lead the way.\"",
+       "say": "The dogs lead. Hayate limps. You run. The Shirasagi storeroom door has a padlock that Hayate's father simply cuts with a pair of shrine shears and an apology. Amane is inside among a hundred boxed plastic cats. He looks up at the dogs, at Hayate, at you. \"You came,\" he says. \"Even the dog came.\" \"ESPECIALLY the dog,\" says Hayate.",
+       "fx": {
+        "flag": "amane_rescued",
+        "closeness": 10,
+        "who": "Inukai Hayate",
+        "bond": 4
+       }
+      },
+      {
+       "t": "\"Call the police - no. Call Hina.\"",
+       "say": "Hina arrives with a camera and her father's postman's bicycle. Kyoko's men take one look at the flash and step aside. 'Proof,' Hina says, photographing the open storeroom, the boxes, the boy. 'They hate proof.' Amane walks out into the light blinking.",
+       "fx": {
+        "flag": [
+         "amane_rescued",
+         "kyoko_photo"
+        ],
+        "closeness": 8,
+        "who": "Hayase Hina"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "Sunday. The Shirasagi house is very quiet.",
+   "beats": [
+    {
+     "id": "w12_reiji_choice",
+     "where": "suzunari",
+     "after": 600,
+     "needs": {
+      "min_close": {
+       "Shirasagi Reiji": 35
+      }
+     },
+     "speaker": "Reiji",
+     "text": "Reiji is sitting on the harbour wall in yesterday's clothes. \"I gave the list to the police this morning,\" he says. \"The dolls. The nails. My father's name.\" A heron lands on the breakwater. \"They'll do nothing. It's a list and some straw. But she knows I did it.\" He looks at you. \"I chose. I don't know if I chose right. I only know I couldn't keep not choosing.\"",
+     "choices": [
+      {
+       "t": "\"You chose right.\"",
+       "say": "He closes his eyes. \"Say it again. Slowly. I'm writing it down.\" You say it again. He doesn't write it down. He just listens.",
+       "fx": {
+        "closeness": 10,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_exposed"
+       }
+      },
+      {
+       "t": "\"Whatever you chose, I'm still here.\"",
+       "say": "\"That's not an answer.\" A pause. \"It's a better one.\" He takes a small wrapped box out of his pocket - from the box of gifts he's never given - and puts it in your hand. \"Don't open it till Tanabata. Don't argue.\"",
+       "fx": {
+        "closeness": 12,
+        "who": "Shirasagi Reiji",
+        "flag": [
+         "reiji_exposed",
+         "reiji_gift"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "objective": "The school's Tanabata bamboo is up in the entrance hall. Write a wish.",
+   "beats": [
+    {
+     "id": "w12_tanzaku",
+     "where": "school",
+     "after": 750,
+     "speaker": "",
+     "text": "A huge bamboo branch stands in the entrance hall, hung with paper strips in every colour. You can read everyone's wishes. Hina's: 'The truth, published.' Hayate's: 'Run once more.' Mio's: 'The six of them home.' Reiji's, very small: 'Courage.' And one in shaky handwriting, low down where a short first-year could reach: 'Please don't let Senpai disappear.' You hold a blank strip and a pen.",
+     "choices": [
+      {
+       "t": "Write: 'Let Amane have a life that's his.'",
+       "say": "You tie it next to his. The bamboo rustles. On the way out you pass him in the corridor; he has clearly read it, and he is pretending very hard that he hasn't, and his ears are entirely out.",
+       "fx": {
+        "lore": "tanabata_wish",
+        "amane_self": 5
+       }
+      },
+      {
+       "t": "Write: 'Let me keep my promise.'",
+       "say": "You tie it at the very top, where the bamboo bends. In the morning someone has tied a second strip right next to it in the same shaky hand: 'Me too.'",
+       "fx": {
+        "lore": "tanabata_wish",
+        "bond": 4
+       }
+      },
+      {
+       "t": "Write: 'Everyone home.'",
+       "say": "Two words. Mio, passing, reads it and bows to the bamboo. Hina photographs it. Reiji straightens it. Hayate draws a dog next to it. Nobody says anything. Everybody agrees.",
+       "fx": {
+        "lore": "tanabata_wish",
+        "luck": 2
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "One week to Tanabata. The steps will have a thousand.",
+   "beats": [
+    {
+     "id": "w12_chiyo_rope",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      28,
+      6,
+      9
+     ],
+     "speaker": "Nekomori Chiyo",
+     "text": "Chiyo is tying a new red cord on the shrine bell rope, slowly, with old hands. \"A week,\" she says. \"Then you climb, and you choose. Bell together, bell taken off, a word said, the train out of town, the red door, the heron's way, or the dog's.\" She pulls the knot tight. \"I asked you once not to leave that child. I'm not asking again. I'm asking you to choose like a person, not like a debt.\"",
+     "choices": [
+      {
+       "t": "\"I'll choose like a person. I promise.\"",
+       "say": "\"Words said on shrine ground,\" she says, \"are kept by the shrine.\" She almost smiles. \"Good. Then you've already started.\"",
+       "fx": {
+        "promise": "choose_like_a_person",
+        "amane_self": 2
+       }
+      },
+      {
+       "t": "\"What do you want me to choose, Chiyo-san?\"",
+       "say": "\"What I want doesn't matter. I'm sixty-eight and I've fed cats for a hundred and fifty years.\" She taps her cane. \"Ask him what he wants. Then ask yourself. If the answers fight, choose the one that lets him stand on his own.\"",
+       "fx": {
+        "amane_self": 3
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 12 - The silent bell",
+  "route": {
+   "none": "He wrote 'Please don't let Senpai disappear.' You've read it. You still haven't answered.",
+   "friend": "You found him in a room full of plastic cats. He's been laughing about it all week, which is new.",
+   "romance": "He held your hand all the way home from the heron house and didn't let go at the door.",
+   "boundary": "When you found him, he'd already started picking the lock himself. He was a bit annoyed you interrupted.",
+   "ignore": "Other people found him. He thanked them. He looked for you in the crowd."
+  },
+  "hook": [
+   "The paper lanterns go up on all 999 steps.",
+   "On the night of 6 July, the Night Parade of a Hundred Demons will walk through the shopping street. On 7 July, the steps will have a thousand."
+  ],
+  "next": "WEEK 13 - Tanabata."
+ }
+}

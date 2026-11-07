@@ -4,8 +4,10 @@ extends Node
 ##   spend it and the clock jumps to the end of the block (data/lessons.json). After 8:30 you're late; in town
 ##   15+ minutes into a block you're absent (Makabe notices, the Ura board notices, Amane notices). Three lates
 ##   or two absences reach Aunt Haruka at night.
-## - Week 1 (data/week1.json): an objective and authored beats per day (where / when / near), the first route
-##   choice on Sunday at Omagatoki, and a week-close summary + hook for week 2 when day 7 ends.
+## - The 13 weeks of episode 0 (data/weeks/weekNN.json, 8 April -> Tanabata 7 July): an objective and authored beats
+##   per day (where / when / near / needs), dreams on Friday nights ("when": "night", played as the day ends), exam
+##   days, a week-close summary + hook at the end of every 7th day, and the last night on the steps -> an ending
+##   (data/endings.json, Week.ending()).
 ## State: Game.flags["week"].
 
 const AM := [510, 750]   ## homeroom 8:30 -> lunch 12:30
@@ -16,7 +18,9 @@ const HOUSES := {"Inukai Hayate": "the Inukai house", "Hayase Hina": "the flower
 	"Shirasagi Reiji": "the Shirasagi residence"}
 
 var lessons: Dictionary = {}
-var week1: Dictionary = {}
+var weeks: Dictionary = {}  ## week number -> data/weeks/weekNN.json
+var endings: Dictionary = {}
+const LAST_WEEK := 13
 var _busy := false
 var _rng := RandomNumberGenerator.new()
 
@@ -24,7 +28,11 @@ var _rng := RandomNumberGenerator.new()
 func _ready() -> void:
 	_rng.randomize()
 	lessons = _load("res://data/lessons.json")
-	week1 = _load("res://data/week1.json")
+	for n in range(1, LAST_WEEK + 1):
+		var w := _load("res://data/weeks/week%02d.json" % n)
+		if not w.is_empty():
+			weeks[n] = w
+	endings = _load("res://data/endings.json")
 	Clock.minute_passed.connect(_on_minute)
 	Clock.day_started.connect(func(_d): st()["today"] = {})
 
@@ -91,7 +99,7 @@ func music_now() -> String:
 
 func block(m: int = -1) -> String:
 	var t := Clock.minute() if m < 0 else m
-	if Clock.is_weekend():
+	if Clock.is_weekend() or bool(day_data().get("holiday", false)):
 		return ""
 	if t >= AM[0] and t < AM[1]:
 		return "am"
@@ -138,6 +146,9 @@ func _lesson(b: String, late: int) -> void:
 		text = _pick(lessons.get("late", [])).replace("{late}", str(late)) + "\n\n" + text
 		notes.append("> Late mark (%d this week)" % int(s["late"]))
 		Amane.add_closeness("Makabe-sensei", -1)
+	if bool(day_data().get("exam", false)):
+		await _exam(b, text, notes)
+		return
 	var menu := []
 	for c in lessons.get("choices", []):
 		menu.append({"id": str(c.id), "text": str(c.t)})
@@ -167,6 +178,32 @@ func _lesson(b: String, late: int) -> void:
 	_busy = false
 
 
+## Exam days (midterms week 5, finals week 10): what you studied (lessons attended) decides the grade.
+func _exam(b: String, late_text: String, notes: Array[String]) -> void:
+	var hud := _hud()
+	var s := st()
+	var ex: Dictionary = lessons.get("exam", {})
+	var menu := []
+	for c in ex.get("choices", []):
+		menu.append({"id": str(c.id), "text": str(c.t)})
+	var text := _pick(ex.get("open", [])).replace("{subject}", _subject(b))
+	if late_text.contains("late") or late_text.contains("Late"):
+		text = late_text.split("\n\n")[0] + "\n\n" + text
+	var picked: String = await hud.say("", text, menu)
+	var score: int = int(s["study"]) + int({"careful": 2, "guess": 0, "help": -1, "clock": 1}.get(picked, 0))
+	var grade := "A" if score >= 9 else ("B" if score >= 6 else ("C" if score >= 3 else "D"))
+	if picked == "help":
+		Amane.add_closeness(Amane.FRIEND, 6)
+		notes.append("> Hayate +6")
+	Game.flags["exam_w%d_%s" % [week_no(), b]] = grade
+	var res := str(ex.get("results", {}).get(picked, "")) + "\n" + str(ex.get("grades", {}).get(grade, ""))
+	notes.append("> Grade: %s (studied %d)" % [grade, int(s["study"])])
+	var end_at: int = AM[1] if b == "am" else PM[1]
+	Clock.advance(maxi(0, end_at - Clock.minute()))
+	await hud.say("", res + "\n" + "\n".join(notes))
+	_busy = false
+
+
 func _truant(b: String) -> void:
 	var s := st()
 	today()["truant_" + b] = true
@@ -183,8 +220,17 @@ func _truant(b: String) -> void:
 
 # --- Week 1 beats --------------------------------------------------------------------------------
 
+func week_no(d: int = -1) -> int:
+	return int(((Clock.day() if d < 0 else d) - 1) / 7) + 1
+
+
+func day_in_week(d: int = -1) -> int:
+	return ((Clock.day() if d < 0 else d) - 1) % 7 + 1
+
+
 func day_data(d: int = -1) -> Dictionary:
-	return week1.get("days", {}).get(str(Clock.day() if d < 0 else d), {})
+	var day := Clock.day() if d < 0 else d
+	return weeks.get(week_no(day), {}).get("days", {}).get(str(day_in_week(day)), {})
 
 
 func objective() -> String:
@@ -192,7 +238,7 @@ func objective() -> String:
 	if dd.is_empty():
 		return ""
 	for bt in dd.get("beats", []):
-		if not st()["done"].has(str(bt.id)):
+		if not st()["done"].has(str(bt.id)) and _needs_ok(bt):
 			return str(dd.get("objective", ""))
 	return ""
 
@@ -211,17 +257,21 @@ func _check_beats(m: int) -> void:
 	if not _free(hud) or People.escorting():
 		return
 	for bt in day_data().get("beats", []):
-		if st()["done"].has(str(bt.id)):
+		if st()["done"].has(str(bt.id)) or str(bt.get("when", "")) == "night":
 			continue
 		if _beat_ready(bt, m):
 			play_beat(bt)
 			return
 
 
-func _beat_ready(bt: Dictionary, m: int) -> bool:
+func _needs_ok(bt: Dictionary) -> bool:
 	if str(bt.get("speaker", "")).begins_with("Amane") and not Amane.st()["met"]:
 		return false
-	if bt.has("needs") and not Amane.ok(bt["needs"]):
+	return not bt.has("needs") or Amane.ok(bt["needs"])
+
+
+func _beat_ready(bt: Dictionary, m: int) -> bool:
+	if not _needs_ok(bt):
 		return false
 	if m < int(bt.get("after", 0)):
 		return false
@@ -248,8 +298,21 @@ func play_beat(bt: Dictionary) -> void:
 		return
 	_busy = true
 	st()["done"][str(bt.id)] = Clock.day()
-	await Town.scene(str(bt.get("speaker", "")), Amane.fill(str(bt.get("text", ""))), bt.get("choices", []), "wk_" + str(bt.id))
+	var choices: Array = bt.get("choices", [])
+	var pick: String = await Town.scene(str(bt.get("speaker", "")), fill(str(bt.get("text", ""))), choices, "wk_" + str(bt.id))
+	if pick.is_valid_int() and int(pick) < choices.size():
+		var fx: Dictionary = choices[int(pick)].get("fx", {})
+		if fx.has("final"):
+			await ending(str(fx["final"]))
 	_busy = false
+
+
+## {rival}, {rival_short}, {player} in story text.
+func fill(t: String) -> String:
+	var r := Amane.rival()
+	if r == "":
+		r = str(Amane.st()["rival"]) if str(Amane.st()["rival"]) != "" else Amane.FRIEND
+	return Amane.fill(t).replace("{rival_short}", r.split(" ")[-1] if r.contains(" ") else r).replace("{rival}", r)
 
 
 # --- Night: consequences and the week close -----------------------------------------------------
@@ -267,8 +330,13 @@ func before_day_end(hud: Node) -> void:
 		s["told"]["truant_2"] = true
 		Town.st()["luck"] = clampi(int(Town.st()["luck"]) - 1, -5, 5)
 		await hud.say("", Amane.fill(str(cons.get("truant_2", ""))) + "\n> Asagiri-do's luck falls")
-	if Clock.day() >= 7 and not (s["closed"] as Array).has(1):
-		await close_week(hud)
+	for bt in day_data().get("beats", []):  # dreams and other night scenes
+		if str(bt.get("when", "")) == "night" and not s["done"].has(str(bt.id)) and _needs_ok(bt):
+			await play_beat(bt)
+	if Game.flags.has("ending"):
+		return
+	if day_in_week() == 7 and not (s["closed"] as Array).has(week_no()):
+		await close_week(hud, week_no())
 
 
 func summary() -> Array[String]:
@@ -299,12 +367,12 @@ func summary() -> Array[String]:
 	return lines
 
 
-func close_week(hud: Node) -> void:
+func close_week(hud: Node, n: int = 1) -> void:
 	var s := st()
-	(s["closed"] as Array).append(1)
-	var c: Dictionary = week1.get("close", {})
-	var text := "%s\n\n%s\n\n%s" % [str(c.get("title", "WEEK 1")), "\n".join(summary()),
-		str(c.get("route", {}).get(Amane.route(), ""))]
+	(s["closed"] as Array).append(n)
+	var c: Dictionary = weeks.get(n, {}).get("close", {})
+	var text := "%s\n\n%s\n\n%s" % [str(c.get("title", "WEEK %d" % n)), "\n".join(summary()),
+		fill(str(c.get("route", {}).get(Amane.route(), "")))]
 	await hud.say("", text)
 	var rival := Amane.rival()
 	if rival == "":
@@ -312,5 +380,65 @@ func close_week(hud: Node) -> void:
 	var house: String = HOUSES.get(rival, "a house on the river street")
 	var hook: Array[String] = []
 	for h in c.get("hook", []):
-		hook.append(Amane.fill(str(h)).replace("{rival_house}", house).replace("{rival}", rival))
+		hook.append(fill(str(h)).replace("{rival_house}", house))
 	await hud.say("", "\n\n".join(hook) + "\n\n" + str(c.get("next", "")))
+
+
+# --- The last night (week 13): an ending -------------------------------------------------------------
+
+## The final choice on the 999 steps -> which ending (data/endings.json, docs/GDD.md section 6).
+func ending_id(choice: String) -> String:
+	var a := Amane.st()
+	var bond := float(a["bond_now"])
+	var self_v := float(a["self"])
+	var f := Game.flags
+	var rivals_gone := 0
+	for who in ["Inukai Hayate", "Hayase Hina", "Kuroe Mio", "Shirasagi Reiji"]:
+		if Amane.fate(who) in ["injured", "hidden"]:
+			rivals_gone += 1
+	if rivals_gone >= 3 and choice != "return_god":
+		return "two_of_us"
+	match choice:
+		"tadaima":
+			if bool(f.get("memory_2016", false)) and bond >= 45.0:
+				return "okaeri"
+			return "right_distance" if Amane.route() in ["boundary", "friend"] and self_v >= 45.0 else "cat_who_waits"
+		"bell":
+			return "red_thread" if Amane.route() == "romance" and bond >= 50.0 else "this_life_stranger"
+		"remove_bell":
+			return "this_life_love" if bond >= 50.0 else "this_life_stranger"
+		"walk_beside":
+			return "right_distance" if self_v >= 45.0 else "cat_who_waits"
+		"leave":
+			return "cat_who_waits"
+		"ura":
+			if bool(f.get("makabe_letter_sent", false)):
+				return "unsent_letter"
+			if bool(f.get("sayo_found", false)) and bool(f.get("letter_101", false)):
+				return "homecoming"
+			return "endless_festival" if bond >= 40.0 else "hidden"
+		"seal":
+			return "dog_and_cat"
+		"return_god":
+			return "god_returned"
+	return "cat_who_waits"
+
+
+func ending(choice: String) -> void:
+	var hud := _hud()
+	var id := ending_id(choice)
+	var e: Dictionary = endings.get("endings", {}).get(id, {})
+	Game.flags["ending"] = id
+	Game.flags["ending_choice"] = choice
+	if hud:
+		for page in e.get("pages", []):
+			await hud.say("", fill(str(page)))
+		var epi := ""
+		if bool(Game.flags.get("makoto_apologised", false)) and not id in ["god_returned", "two_of_us", "hidden"]:
+			epi = "\n\n" + fill(str(endings.get("family_epilogue", "")))
+		await hud.say("", "%s\n\n%s%s\n\n%s" % [str(e.get("title", id)).to_upper(), "\n".join(summary()), epi,
+			str(endings.get("end_card", "EPISODE 0 - END"))])
+	Ledger.write()
+	Game.save_game()
+	Clock.running = false
+	Router.goto(Router.TITLE)

@@ -1,0 +1,98 @@
+{
+ "_doc": "Week 2 (15-21 April): the first rival, the first Ura board thread, the first night walk of the two-tailed cat. Format: see data/weeks/week01.json _doc.",
+ "days": {
+  "1": {
+   "morning": "Your phone has 43 notifications. All of them are from the Ura board. All of them have your name in them.",
+   "objective": "Somebody started a thread about you on the Ura board. Hina will want to talk about it at lunch.",
+   "beats": [
+    {"id": "w2_thread", "where": "school", "after": 750, "before": 800, "speaker": "Hina",
+     "text": "Hina slams her phone onto your desk hard enough to make Hayate jump. On the screen: THE TRANSFER STUDENT AND THE CRYBABY - 212 replies. A blurry photo of you at the gate, Amane two steps behind, holding your sleeve. \"Anonymous,\" Hina says through her teeth. \"Every time. Cowards love anonymous.\"",
+     "choices": [
+      {"t": "\"Can you find out who runs it?\"", "say": "Her eyes light up the way other people's light up at cake. \"Give me a week.\" She is already writing a list of suspects. Sato Yui's name is not on it. Sato Yui, two desks away, smiles at nobody.", "fx": {"closeness": 5, "who": "Hayase Hina", "flag": "hina_hunts_ura"}},
+      {"t": "\"Let them talk. It's just a board.\"", "say": "\"It's never just a board.\" She pushes her glasses up. \"It's how a whole town decides what's true without checking.\" But she puts the phone away. \"Fine. For now.\"", "fx": {"closeness": 2, "who": "Hayase Hina", "amane_self": 1}},
+      {"t": "\"Is Amane okay? He'll have seen it.\"", "say": "Hina blinks. She hadn't thought of that. \"...He's in 1-A. Everyone in 1-A reads it.\" A pause. \"You're nicer than you look, Asagiri.\" Outside, the drizzle thins a little.", "fx": {"closeness": 3, "who": "Hayase Hina", "bond": 2, "tears": -0.5}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "Something happened to {rival} this morning. Find out what (after school).",
+   "beats": [
+    {"id": "w2_shoes", "where": "any", "after": 920, "needs": {"rival": true}, "speaker": "",
+     "text": "{rival} is sitting on the step by the shoe lockers, holding a pair of indoor shoes. They are soaked through - on the inside - and the floor of the locker is full of small wet paw prints that lead nowhere. \"Weird, right?\" {rival_short} laughs, not very well. \"Locker was shut. I had the key.\"",
+     "choices": [
+      {"t": "\"Lock it again tonight. And keep your window shut.\"", "say": "{rival_short} gives you a long look. \"You know something.\" You don't say yes. You don't say no. \"...Okay. Window shut.\"", "fx": {"warn_rival": true}},
+      {"t": "\"It's just a stray cat getting in.\"", "say": "\"Through a locked locker?\" But {rival_short} wants to believe it, so they do. The paw prints dry by the end of the afternoon. They come back tomorrow.", "fx": {"luck": -1}},
+      {"t": "Look for Amane.", "say": "He's at the end of the corridor, half behind a pillar, perfectly dry. When he sees you looking he smiles and waves with his sleeve. You don't know why that makes your stomach turn over.", "fx": {"lore": "cats_spies"}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "An ordinary Friday. Go to bed early - you've been sleeping badly.",
+   "beats": [
+    {"id": "w2_dream", "when": "night", "speaker": "Grandpa Genzo (dream)",
+     "text": "You are in Grandpa's tatami room, which was sold years ago. He is setting up a shogi board and cheating already. \"Toru! Sit. You've let your bishop wander.\" He moves a piece that isn't his. \"Cats walk on rooftops when boys are asleep. That's not a riddle. It's a timetable. Your move.\"",
+     "choices": [
+      {"t": "\"Grandpa, what does 'cats on rooftops' mean?\"", "say": "\"It means watch the roofs, after nine, when the boy's jealous.\" He takes your rook with a pawn, which isn't allowed. \"Phone's in your pocket. Use it. Your move.\"", "fx": {"lore": "ikiryo"}},
+      {"t": "\"Why did you leave me the house?\"", "say": "\"Because someone has to be here for Tanabata next year. And the year after.\" He squints at the board. \"Read the will properly, Toru. Eighteen. The cat counts in years.\"", "fx": {"lore": "will_2027"}},
+      {"t": "Just play.", "say": "You play. He cheats. You let him. For one game it is an ordinary summer and you are seven and nobody has gone anywhere. You wake up with your cheeks wet. It's raining.", "fx": {"amane_self": 0, "hp": 20}}
+     ]}
+   ]
+  },
+  "4": {
+   "morning": "Saturday. Hayate has sent a photo of a dog wearing his school cap. No caption.",
+   "objective": "Day off. At Omagatoki, the Rokujizo crossroads are said to be worth watching.",
+   "beats": [
+    {"id": "w2_cat", "where": "suzunari", "after": 1075, "before": 1110, "near": [46, 35, 9], "fallback": true, "speaker": "",
+     "text": "The six Jizo stand in a row in the red light. On the roof behind them something walks - a black cat, far too big, with two tails swaying like smoke. It doesn't jump between roofs. It just arrives on the next one. It is heading east, toward {rival_house}.",
+     "choices": [
+      {"t": "Follow it.", "say": "You run. It doesn't. It stays exactly the same distance ahead whatever you do, and at the end of the street it looks back at you with gold eyes that are crying. Then it isn't there. [Ikiryo: a living person's soul, walking out of their body. Real folklore.]", "fx": {"zukan": "ikiryo", "lore": "ikiryo"}},
+      {"t": "Call Amane.", "say": "It rings eight times. \"...Senpai?\" His voice is thick with sleep. \"I was dreaming. I was running on roofs, really fast...\" On the roof, the cat stops dead and turns its head toward your phone.", "fx": {"zukan": "nekomata", "lore": "ikiryo", "bond": 1}},
+      {"t": "Bow to the six Jizo and go home.", "say": "You bow. The stone faces are wet. When you look up, the roof is empty, and the sixth Jizo has a fresh flower in its hands that wasn't there a second ago.", "fx": {"luck": 1, "lore": "jizo_sea"}}
+     ]}
+   ]
+  },
+  "5": {
+   "objective": "Climb the shrine steps. Chiyo will know what you saw.",
+   "beats": [
+    {"id": "w2_chiyo", "where": "suzunari", "after": 540, "near": [28, 6, 9], "needs": {"lore": "ikiryo"}, "speaker": "Nekomori Chiyo",
+     "text": "Chiyo doesn't let you finish. \"Two tails. Gold eyes. Crying.\" She sets down the cat food. \"When that child is jealous, his heart walks out of him at night and does what he would never do awake. He doesn't remember. He thinks it's a bad dream.\" She taps her cane. \"So. What will you do about it?\"",
+     "choices": [
+      {"t": "\"Warn whoever it's walking towards.\"", "say": "\"Good. A warned house is a shut house.\" She nods slowly. \"It will be someone new every week, mind. Whoever stands closest to you.\"", "fx": {"warn_rival": true, "lore": "chiyo_knows"}},
+      {"t": "\"Make him feel safe enough that it stops.\"", "say": "\"That's the long way, and the only one that ends.\" For a moment she looks almost kind. \"Let him have a life that isn't you, boy. Then the cat has nowhere to walk to.\"", "fx": {"amane_self": 5}},
+      {"t": "\"Can I stop it myself?\"", "say": "\"Watch the roofs after nine. When you see it, say his name - his real name - and mean it.\" She looks at the town below. \"Names are the oldest leash there is.\"", "fx": {"lore": "kotodama"}}
+     ]}
+   ]
+  },
+  "6": {
+   "morning": "Monday. Amane has decided who to watch this week. You can feel it the way you feel weather.",
+   "objective": "Lunch. Amane wants to ask you something.",
+   "beats": [
+    {"id": "w2_who", "where": "school", "after": 750, "before": 800, "speaker": "Amane",
+     "text": "Amane eats his bento very slowly, not looking at you. \"Senpai.\" Chopsticks down. \"Who is {rival_short} to you?\" He says it pleasantly. The window behind him fogs over all at once.",
+     "choices": [
+      {"t": "\"A friend. Like you're my friend.\"", "say": "\"Like me.\" He turns it over. \"...Not more than me?\" You don't answer that. He nods as if you had. \"Okay.\" The fog clears from one corner of the window.", "fx": {"bond": 2, "tears": -0.4}},
+      {"t": "\"That's not something you get to ask, Amane.\"", "say": "He goes very still. \"Asagiri-san.\" Then, quietly: \"...Sorry. You're right. I'm sorry.\" He eats the rest in silence. It rains for an hour, and then, surprisingly, it stops.", "fx": {"amane_self": 4, "tears": 0.6}},
+      {"t": "\"Nobody you need to worry about.\"", "say": "His whole face lights up so fast it's almost frightening. \"Really? Really really?\" He offers you his tamagoyaki. The window clears completely. Somewhere in the east of town, a cat stops walking.", "fx": {"bond": 4, "tears": -1.0, "amane_self": -2}}
+     ]}
+   ]
+  },
+  "7": {
+   "objective": "Go home. The house has been strange lately.",
+   "beats": [
+    {"id": "w2_kiku", "where": "suzunari", "after": 1000, "near": [27, 48, 6], "speaker": "",
+     "text": "There is a small girl in a red kimono sitting on the counter of Asagiri-do eating your aunt's best mochi. She has a bob haircut and powder on her nose. Aunt Haruka walks straight past her, humming. The girl puts a finger to her lips. \"Shh. She can't see me. You can. That's new.\"",
+     "choices": [
+      {"t": "\"Who are you?\"", "say": "\"Kiku. I live here. I lived here before your grandpa's grandpa.\" She licks powder off her fingers. \"The shop does well when the house is happy. It's been very unhappy since that rain started. Fix it.\" [Zashiki-warashi]", "fx": {"zukan": "zashiki_warashi", "lore": "kiku"}},
+      {"t": "Put another mochi beside her.", "say": "She looks at it, then at you, very seriously. \"Bribery.\" She eats it. \"Accepted.\" The next morning the shop sells out by noon for the first time in months.", "fx": {"zukan": "zashiki_warashi", "luck": 1}},
+      {"t": "Pretend you didn't see her.", "say": "\"Rude,\" she says to your back. When you turn round she's gone, and so is every single mochi on the counter. Aunt Haruka blames you for a week.", "fx": {"zukan": "zashiki_warashi"}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 2 - 15 to 21 April",
+  "route": {"none": "You still haven't told him what he is to you. The cat has noticed.", "friend": "You are his friend. He is learning that friends have other friends.", "romance": "He hopes. The cat walks every night now.", "boundary": "Your line holds. He is trying to stand on his own side of it.", "ignore": "You looked away. He kept looking."},
+  "hook": ["In the newspaper club room, Hina pins a faded photo to the corkboard: a summer festival, 2016, two small children on the shrine steps.", "She has circled one of them in red pen. It's you."],
+  "next": "WEEK 3 - a photo from 2016, the spring festival in the shopping street."
+ }
+}

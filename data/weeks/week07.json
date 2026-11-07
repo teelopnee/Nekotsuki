@@ -1,0 +1,308 @@
+{
+ "_doc": "Week 7 (20-26 May): the sports festival (Saturday), the relay, the first confrontation with the two-tailed cat in daylight.",
+ "days": {
+  "1": {
+   "objective": "The relay team for 2-B is being picked. Hayate's name is on the list.",
+   "beats": [
+    {
+     "id": "w7_relay",
+     "where": "school",
+     "after": 750,
+     "before": 800,
+     "speaker": "Hayate",
+     "text": "Hayate is staring at the board. ANCHOR - INUKAI. \"Somebody put my name down.\" He laughs, too loud. \"I can't. The ankle. If I fall in front of everyone - \" He stops. He's afraid of falling more than he's afraid of anything. \"What do I do, Toru?\"",
+     "choices": [
+      {
+       "t": "\"Run. I'll be at the finish line.\"",
+       "say": "He looks at you for a long moment. \"...At the finish line.\" He nods slowly, like a dog accepting a command it wanted. \"Okay. Okay. I'll run. Don't move from there.\"",
+       "fx": {
+        "closeness": 8,
+        "who": "Inukai Hayate",
+        "flag": "hayate_runs"
+       }
+      },
+      {
+       "t": "\"Tell them no. Your ankle comes first.\"",
+       "say": "\"Yeah.\" Relief and disappointment at the same time. \"Yeah, you're right.\" He crosses his own name out. Later you see him timing the others with his stopwatch, smiling, and not smiling.",
+       "fx": {
+        "closeness": 3,
+        "who": "Inukai Hayate"
+       }
+      },
+      {
+       "t": "\"Who put your name down?\"",
+       "say": "He checks. The handwriting is neat, small, and careful, and nobody in 2-B owns up to it. Sato Yui, two desks away, is typing very fast on her phone.",
+       "fx": {
+        "flag": "relay_mystery",
+        "closeness": 2,
+        "who": "Inukai Hayate"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Practice after school. Red team and White team on the same field.",
+   "beats": [
+    {
+     "id": "w7_teams",
+     "where": "any",
+     "after": 920,
+     "speaker": "Amane",
+     "text": "Amane is on Red. You are on White. He stands on his side of the white chalk line holding a red headband as if it were a sentence. \"We're on different teams,\" he says. \"For a whole day.\" The sky darkens over the field in one smooth movement, like a lid.",
+     "choices": [
+      {
+       "t": "\"Then beat me. I'll be proud of you.\"",
+       "say": "\"Beat... you?\" The idea seems to reach him from very far away. Then he ties the headband on, slowly. \"Okay. I'll try. Don't be angry if I win.\" The clouds hold.",
+       "fx": {
+        "amane_self": 5,
+        "bond": 2
+       }
+      },
+      {
+       "t": "Swap a headband with him - just for practice.",
+       "say": "He takes your white one and gives you his red. For the rest of practice he runs harder than anyone on the field, in the wrong colour, grinning. Makabe-sensei pretends not to notice.",
+       "fx": {
+        "bond": 4,
+        "tears": -0.8
+       }
+      },
+      {
+       "t": "\"It's one day, Amane. You'll survive.\"",
+       "say": "\"I know I'll survive,\" he says. \"I always survive.\" He goes back to his side of the line. It rains on Red and not on White for the whole practice.",
+       "fx": {
+        "tears": 0.8,
+        "amane_self": 2
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "The festival is tomorrow. Sleep.",
+   "beats": [
+    {
+     "id": "w7_dream",
+     "when": "night",
+     "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa has a stopwatch round his neck and a dog at his feet - a big white dog with one ear down. \"This is Shiro,\" Grandpa says. \"He walked someone home once. Took thirteen years.\" The dog looks at you with Hayate's eyes. \"Tomorrow someone falls. Say 'I'm only resting' if it's you. That's the old rule. And if it's not you - catch them.\"",
+     "choices": [
+      {
+       "t": "\"Who falls, Grandpa?\"",
+       "say": "\"Whoever the cat is looking at.\" Shiro whines. Grandpa scratches his ears. \"The cat boy can't help it. The cat can. Say his name to it. His real name.\"",
+       "fx": {
+        "lore": "ikiryo",
+        "flag": "genzo_name_hint"
+       }
+      },
+      {
+       "t": "Scratch the white dog's ears.",
+       "say": "Shiro leans his whole weight against your legs, the way Hayate leans on your shoulder. \"He remembers you,\" Grandpa says. \"Dogs always do.\" [Okuri-inu]",
+       "fx": {
+        "zukan": "okuri_inu",
+        "lore": "okuri_inu"
+       }
+      },
+      {
+       "t": "\"I'll catch them.\"",
+       "say": "\"I know you will.\" Grandpa clicks the stopwatch. \"You were always faster than you thought.\"",
+       "fx": {
+        "hp": 30
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday: the sports festival. Flags across the schoolyard, parents with picnic sheets, the school brass band doing its best.",
+   "objective": "The sports festival at Suzunari Gakuen. The relay is at 14:00.",
+   "beats": [
+    {
+     "id": "w7_festival_relay",
+     "where": "any",
+     "after": 840,
+     "before": 960,
+     "fallback": true,
+     "speaker": "",
+     "text": "Last leg. {rival_short} has the baton. Halfway down the straight the sky goes black in a single second and it pours, and on the finish line - in front of the whole school - sits a black cat the size of a dog, with two tails, staring at {rival_short} with gold, crying eyes. Nobody else seems to see it. {rival_short}'s foot slides on the wet track.",
+     "choices": [
+      {
+       "t": "Shout his name at the cat: \"AMANE!\"",
+       "say": "The cat flinches as if you'd hit it. It looks at you - right at you - and for one second it is a crying boy in a hood. Then it isn't there. {rival_short} stumbles, catches themselves, and crosses the line. In the Red team's tent, Amane wakes up with a start from a nap he doesn't remember taking.",
+       "fx": {
+        "name_ikiryo": true,
+        "lore": "ikiryo",
+        "bond": 2
+       }
+      },
+      {
+       "t": "Run onto the track and catch {rival_short}.",
+       "say": "You get there just in time. You both go down in the mud, but softly. \"I'm only resting,\" you hear yourself say, the old rule, and the cat on the line lowers its head and walks away into the rain. Everyone cheers, mostly for the mud.",
+       "fx": {
+        "warn_rival": true,
+        "hp": -15
+       }
+      },
+      {
+       "t": "Look for Amane in the Red tent.",
+       "say": "He's asleep sitting up, headband over his eyes, crying in his sleep. You put your hand on his shoulder and say his name. On the track, the cat dissolves. {rival_short} slips, falls, and gets up with a scraped knee and a laugh. It could have been much worse.",
+       "fx": {
+        "bond": 3,
+        "tears": -1.0
+       }
+      },
+      {
+       "t": "Do nothing. It's just rain.",
+       "say": "{rival_short} falls hard. The whole field goes quiet. In the Red tent a hooded first-year wakes up and starts to cry for no reason he can name. The rain doesn't stop until evening.",
+       "fx": {
+        "tears": 1.5,
+        "luck": -1
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "Sunday. The school nurse wants to see you about yesterday.",
+   "beats": [
+    {
+     "id": "w7_nurse",
+     "where": "any",
+     "after": 600,
+     "speaker": "Fujimura-sensei",
+     "text": "Fujimura-sensei catches you outside the konbini with a bag of ice and a notebook. \"Asagiri. I treated six people from yesterday's festival. Four slipped on a dry patch of track. One has scratches on her ankle that look like claws.\" She flips the notebook open. \"I worked in an emergency room for six years. I know what claws look like. I keep a list. You're on every page.\"",
+     "choices": [
+      {
+       "t": "\"It's not me. But I know what it is.\"",
+       "say": "She studies you. \"I believe you. I'm not sure that's good news.\" She tears out a page and gives it to you: a list of names and dates. \"Then you can stop it. Can't you.\"",
+       "fx": {
+        "closeness": 6,
+        "who": "Fujimura-sensei",
+        "flag": "nurse_list"
+       }
+      },
+      {
+       "t": "\"Do you see things too, sensei?\"",
+       "say": "A long pause. \"Sometimes, at dusk, there are more children in the infirmary than there are beds.\" She closes the notebook. \"I quit the ER to get away from that. It followed me. I've decided to be useful instead.\"",
+       "fx": {
+        "closeness": 8,
+        "who": "Fujimura-sensei"
+       }
+      },
+      {
+       "t": "\"Keep the list. Show it to Reiji.\"",
+       "say": "\"The president?\" She thinks about it. \"He's already asked for it, actually. Twice.\" She nods. \"Two lists are better than one.\"",
+       "fx": {
+        "closeness": 4,
+        "who": "Fujimura-sensei",
+        "flag": "reiji_has_list"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "objective": "Amane has something to tell you. He's been working up to it all weekend.",
+   "beats": [
+    {
+     "id": "w7_confess_dream",
+     "where": "any",
+     "after": 920,
+     "speaker": "Amane",
+     "text": "He's waiting on the roof, which is supposed to be locked. He is holding the railing very tight. \"Senpai. I have bad dreams. When I'm... when I see you with someone. I'm running on roofs. I'm fast. I'm angry. And in the morning someone's hurt.\" He finally looks at you. \"Is it me? Is it really me?\"",
+     "choices": [
+      {
+       "t": "\"Yes. But it's not all of you, and it can stop.\"",
+       "say": "He doesn't cry. He just nods, and nods, and holds the railing. \"Then I'll stop it,\" he says. \"I don't know how. I'll learn. Will you - will you tell me when it happens? Even if I don't want to hear it?\" You promise. The rain stops over the roof. Only over the roof.",
+       "fx": {
+        "amane_self": 8,
+        "trust": 4,
+        "promise": "tell_him_the_truth"
+       }
+      },
+      {
+       "t": "\"No. It's just bad dreams.\"",
+       "say": "He wants to believe it so badly that he does. \"Okay.\" His shoulders drop. \"Okay. Thank you.\" That night the cat walks further than it ever has.",
+       "fx": {
+        "bond": 3,
+        "tears": -1.0,
+        "amane_self": -3,
+        "luck": -1
+       }
+      },
+      {
+       "t": "\"If you care about me, you'll give me room to breathe.\"",
+       "say": "He looks like you slapped him, then like you saved him. \"Room.\" He lets go of the railing one finger at a time. \"I can do room. I'll practise room.\" He leaves first. He doesn't look back. It costs him everything.",
+       "fx": {
+        "amane_self": 6,
+        "tears": 1.0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "The last day of the month's longest week. Grandpa said Fridays aren't forever.",
+   "beats": [
+    {
+     "id": "w7_haruka_lullaby",
+     "where": "suzunari",
+     "after": 1100,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "speaker": "Asagiri Haruka",
+     "text": "Aunt Haruka is closing the shop, humming. The tune makes the back of your neck prickle - you know it. You've always known it. \"Oh, this?\" She laughs. \"My mother sang it, and her mother. Nobody knows where it comes from. Something about a bell and a cat waiting for a boy to come home.\"",
+     "choices": [
+      {
+       "t": "Sing the next line without thinking.",
+       "say": "She stops dead with the shutter half down. \"Who taught you that?\" You don't know. Neither does she. Upstairs, the pillow on your futon turns itself around, gently, to face the shrine.",
+       "fx": {
+        "lore": "soichiro",
+        "flag": "lullaby_known"
+       }
+      },
+      {
+       "t": "\"Sing it again, please.\"",
+       "say": "She sings it again, and you sit on the step, and for three minutes the rain on the street sounds like a lot of very small bells. Kiku, on the counter, sings along, a beat behind.",
+       "fx": {
+        "luck": 1,
+        "hp": 20
+       }
+      },
+      {
+       "t": "\"Aunt Haruka, do you believe in past lives?\"",
+       "say": "\"Not even slightly!\" She pulls the shutter down with a bang. Then, quieter: \"But if I did, I'd want to have been someone's mother. Someone's who went far away.\" She doesn't know why she said that.",
+       "fx": {
+        "flag": "haruka_mother_hint"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 7 - The sports festival",
+  "route": {
+   "none": "You faced the cat on the finish line. You still haven't faced the question.",
+   "friend": "He knows what the cat is now. He asked you to tell him the truth, and you did.",
+   "romance": "He ran in your headband. He asked if the cat was him. You were holding his hand when he asked.",
+   "boundary": "He's practising room. You can see him practising, every day, on purpose.",
+   "ignore": "He asked if the cat was him. Whatever you said, the cat kept walking."
+  },
+  "hook": [
+   "Hina has been in the darkroom all weekend. On Monday she comes to school with red eyes and an envelope.",
+   "Inside is the 2016 negative, enlarged ten times. Two little fingers, hooked together."
+  ],
+  "next": "WEEK 8 - 2016 comes back."
+ }
+}

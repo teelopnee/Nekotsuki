@@ -1,0 +1,321 @@
+{
+ "_doc": "Week 3 (22-28 April): Hina's photo from 2016, the spring festival in the shopping street, the fox's wedding rain, Reiji starts asking questions.",
+ "days": {
+  "1": {
+   "objective": "After school, drop by the newspaper club (2F). Hina has something to show you.",
+   "beats": [
+    {
+     "id": "w3_photo",
+     "where": "school",
+     "after": 920,
+     "speaker": "Hina",
+     "text": "The club room smells of developer fluid and cactus. Hina doesn't say hello. She hands you the photo: the 999 steps at night, festival lanterns, two small children. A boy of about seven in a borrowed yukata - you. And a tiny hooded child of five beside you, a gold bell on its collar, holding your little finger. \"My dad took it,\" she says. \"2016. The night you went missing.\"",
+     "choices": [
+      {
+       "t": "\"I went missing?\"",
+       "say": "\"For a whole night. The whole town searched. Your grandpa was on the steps till dawn.\" Her voice cracks and she hates it. \"And then you went home to Tokyo and never came back and never wrote and you don't even remember.\"",
+       "fx": {
+        "lore": "photo_2016",
+        "closeness": 4,
+        "who": "Hayase Hina",
+        "flag": "saw_photo"
+       }
+      },
+      {
+       "t": "\"Who's the little one with the bell?\"",
+       "say": "Hina looks at the photo, then at you, then at the photo. \"You really don't know?\" She taps the bell. \"How many kids in this town wear a bell, Asagiri?\" Outside the window, it starts to rain.",
+       "fx": {
+        "lore": "remembers_child",
+        "flag": "saw_photo"
+       }
+      },
+      {
+       "t": "\"Why didn't you show me before?\"",
+       "say": "\"Because I wanted you to remember on your own.\" She takes the photo back and pins it to the corkboard very precisely. \"You didn't. So. Here's the evidence. That's what I do.\"",
+       "fx": {
+        "lore": "photo_2016",
+        "closeness": 6,
+        "who": "Hayase Hina",
+        "flag": "saw_photo"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "2": {
+   "objective": "Amane knows about the photo. He always knows.",
+   "beats": [
+    {
+     "id": "w3_amane_photo",
+     "where": "any",
+     "after": 920,
+     "needs": {
+      "flag": "saw_photo"
+     },
+     "speaker": "Amane",
+     "text": "He is waiting at the bottom of the school stairs, hood up, hands lost in his sleeves. \"Hina-senpai showed you a picture.\" It isn't a question. \"Did you... look at it properly?\" His bell is ringing very faintly, though he isn't moving.",
+     "choices": [
+      {
+       "t": "\"Was that you? On the steps?\"",
+       "say": "He looks at you for a long time. \"Senpai held my finger,\" he says, very quietly. \"And said something. You don't remember what.\" He smiles like it hurts. \"It's okay. I remember enough for both of us.\"",
+       "fx": {
+        "lore": "remembers_child",
+        "bond": 3,
+        "tears": 0.5
+       }
+      },
+      {
+       "t": "\"It's just an old photo, Amane.\"",
+       "say": "\"Just an old photo.\" He repeats it to himself like a word in a foreign language. \"Okay.\" The rain starts before you reach the gate.",
+       "fx": {
+        "tears": 1.0,
+        "amane_self": 1
+       }
+      },
+      {
+       "t": "\"Tell me what happened that night.\"",
+       "say": "\"Not yet.\" He shakes his head hard. \"If I tell you, you'll only know it. I want you to remember it.\" A breath. \"I've been waiting for that for nine years. I can wait a bit more.\"",
+       "fx": {
+        "trust": 2,
+        "lore": "waited_nine"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "3": {
+   "objective": "Friday. The shopping street is putting up lanterns for tomorrow's spring festival.",
+   "beats": [
+    {
+     "id": "w3_dream",
+     "when": "night",
+     "speaker": "Grandpa Genzo (dream)",
+     "text": "The shogi board again. Grandpa has a camera round his neck this time, Hina's father's camera. \"I asked Ken to take that one,\" he says. \"I wanted proof. Proof you came down.\" He moves a silver general backwards, which it can't do. \"You came down holding a hand. Remember whose.\"",
+     "choices": [
+      {
+       "t": "\"I don't remember, Grandpa. I've tried.\"",
+       "say": "\"Then stop trying with your head.\" He taps your chest with a captured pawn. \"Try with your feet. Count the steps one day. You always counted.\"",
+       "fx": {
+        "lore": "steps_1703"
+       }
+      },
+      {
+       "t": "\"Why did Dad stop bringing me?\"",
+       "say": "\"Because he was frightened. He's always been frightened of this town.\" Grandpa sighs. \"It's not his fault. Some people are just ordinary. It's a mercy.\"",
+       "fx": {
+        "flag": "genzo_makoto_hint"
+       }
+      },
+      {
+       "t": "Ask him to stop cheating.",
+       "say": "\"Cheating? I'm teaching.\" He laughs his big laugh. For a second the room smells of rice sacks and incense, exactly like the storehouse at the old house.",
+       "fx": {
+        "hp": 20
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "4": {
+   "morning": "Saturday: the spring festival. Lanterns from the station to the river. Aunt Haruka is selling cat mochi at a stall and has already cried twice from happiness.",
+   "objective": "The spring festival in the shopping street (from 17:00). Choose who to spend it with.",
+   "beats": [
+    {
+     "id": "w3_festival",
+     "where": "suzunari",
+     "after": 1020,
+     "near": [
+      20,
+      39,
+      12
+     ],
+     "fallback": true,
+     "speaker": "",
+     "text": "Paper lanterns, the smell of grilled squid and sweet sauce, children with water balloons. Everybody you know is here somewhere. Amane is by the goldfish stall with a paper scoop he's afraid to use. Hina is photographing everything. Hayate is eating everything. Mio is standing very still at the edge of the lantern light, watching the old temple stones.",
+     "choices": [
+      {
+       "t": "Scoop goldfish with Amane.",
+       "say": "He tears four paper scoops. On the fifth you hold his wrist steady and together you catch a tiny black-and-white fish. He names it immediately and won't tell you the name. His ears are out. Nobody seems to see them except you.",
+       "fx": {
+        "bond": 5,
+        "tears": -1.0,
+        "lore": "cat_ears"
+       }
+      },
+      {
+       "t": "Help Hina photograph the festival.",
+       "say": "She hands you the camera. \"Lantern, child, lantern, dog, cat, cat - is that cat watching us? - lantern.\" At the end she takes one of you, laughing. \"Evidence,\" she says, and doesn't explain.",
+       "fx": {
+        "closeness": 8,
+        "who": "Hayase Hina"
+       }
+      },
+      {
+       "t": "Eat your way down the street with Hayate.",
+       "say": "Yakisoba, takoyaki, candied apples, a second yakisoba. \"Best night of the year,\" Hayate says with sauce on his face. Behind you, at a distance that never changes, a black hood follows the whole way.",
+       "fx": {
+        "closeness": 8,
+        "who": "Inukai Hayate"
+       }
+      },
+      {
+       "t": "Go and stand with Mio by the old stones.",
+       "say": "\"The temple used to be here,\" she says. \"Before they threw the six of them into the sea.\" She bows to an empty patch of dark. \"There's a woman there every festival. She waves at you. Wave back.\" You do. Something cold and kind touches your hand.",
+       "fx": {
+        "closeness": 8,
+        "who": "Kuroe Mio",
+        "lore": "jizo_sea"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "5": {
+   "objective": "A quiet Sunday. Strange weather is forecast for the shopping street.",
+   "beats": [
+    {
+     "id": "w3_kitsune",
+     "where": "suzunari",
+     "after": 600,
+     "near": [
+      20,
+      39,
+      12
+     ],
+     "fallback": false,
+     "speaker": "",
+     "text": "The sun is out and it is raining. Bright, warm drops falling out of a blue sky. Down the middle of the shopping street walks a procession you are almost sure isn't there: lanterns carried by figures with long white faces and pointed ears, and in the middle a bride in white under a red umbrella. Nobody else is looking. [Kitsune no yomeiri - the fox's wedding: a sun-shower. Real folklore.]",
+     "choices": [
+      {
+       "t": "Look away, the way you're supposed to.",
+       "say": "You look at your shoes until the rain stops. When you look up the street is dry, and there is a small fried tofu on the step of Asagiri-do, left as thanks.",
+       "fx": {
+        "zukan": "kitsune",
+        "luck": 1
+       }
+      },
+      {
+       "t": "Watch the bride.",
+       "say": "She turns her head. Under the hood she has Amane's sleepy eyes, smiling and crying at once. Then she has a fox's. You blink, and the sky is just blue. Your phone buzzes: 'Senpai, did it rain where you are? I was happy and sad at the same time.'",
+       "fx": {
+        "zukan": "kitsune",
+        "lore": "rain_tears"
+       }
+      },
+      {
+       "t": "Bow to the procession.",
+       "say": "Every white face turns to you at once and bows back, perfectly together. The bride's umbrella dips. It doesn't rain on you again for the rest of the day, even when it pours on everyone else.",
+       "fx": {
+        "zukan": "kitsune",
+        "luck": 2
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "6": {
+   "objective": "The student council president wants a word. (School, after classes.)",
+   "beats": [
+    {
+     "id": "w3_reiji",
+     "where": "school",
+     "after": 915,
+     "speaker": "Reiji",
+     "text": "Shirasagi Reiji is waiting at the shoe lockers with a clipboard. \"Asagiri. Walk with me.\" He doesn't wait to see if you do. \"Three falls on the east stairs since you arrived. Soaked shoes. A girl in 2-C who says a cat followed her home and tore up her umbrella from the inside.\" He stops. \"Every one of them had spoken to you that day.\"",
+     "choices": [
+      {
+       "t": "\"You think I'm doing it?\"",
+       "say": "\"I think you're the only thing they have in common.\" He studies you. \"I don't think you're the type. That's what bothers me.\" He writes something down. \"Don't leave town.\"",
+       "fx": {
+        "closeness": 2,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_investigates"
+       }
+      },
+      {
+       "t": "\"It's a black cat with two tails.\"",
+       "say": "The pen stops. For a second his face does something it was trained not to do. \"...My mother says that about the Nekomori shrine.\" He clicks the pen. \"I don't believe in cats with two tails, Asagiri.\" He says it like a man trying very hard.",
+       "fx": {
+        "closeness": 4,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_investigates",
+        "lore": "nekomori_once"
+       }
+      },
+      {
+       "t": "\"Ask the Ura board. It knows everything else.\"",
+       "say": "\"I'd rather eat my scarf.\" A tiny pause that might, in another person, be a laugh. \"...That was almost funny. Don't do it again.\"",
+       "fx": {
+        "closeness": 3,
+        "who": "Shirasagi Reiji",
+        "flag": "reiji_investigates"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "7": {
+   "objective": "Golden Week starts tomorrow. Go home and plan it with Aunt Haruka.",
+   "beats": [
+    {
+     "id": "w3_gw_plan",
+     "where": "suzunari",
+     "after": 1000,
+     "near": [
+      27,
+      48,
+      6
+     ],
+     "speaker": "Asagiri Haruka",
+     "text": "Aunt Haruka has spread a map of Suzunari across the counter and drawn on it in three colours. \"Golden Week! Beach opens Wednesday, Children's Day on Tuesday - I'm putting up carp streamers whether you like it or not - and the ramen shop does a special. What do you want to do?\"",
+     "choices": [
+      {
+       "t": "\"The beach. Everyone's going.\"",
+       "say": "\"Everyone!\" She beams. \"Take the cat-shrine boy. He's never been, Chiyo-san says. Afraid of the water.\" She draws a circle on the beach. \"Be gentle with that.\"",
+       "fx": {
+        "flag": "gw_beach"
+       }
+      },
+      {
+       "t": "\"Sleep. A lot.\"",
+       "say": "\"Ha! Your father said exactly that at your age. Then he went to the beach anyway.\" She draws a small sleeping face on the map. \"Sleep, then beach.\"",
+       "fx": {
+        "hp": 30,
+        "flag": "gw_beach"
+       }
+      },
+      {
+       "t": "\"Tell me about Dad when he was here.\"",
+       "say": "She traces the river on the map. \"He laughed more. He had a girlfriend who laughed even more.\" She stops. \"Ask him about Sayo one day. Not me.\"",
+       "fx": {
+        "flag": "asked_about_sayo",
+        "lore": "sayo_waiting"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 3 - 22 to 28 April",
+  "route": {
+   "none": "You saw the photo. You still don't remember holding his hand.",
+   "friend": "Friends go to festivals together. He keeps the goldfish on his windowsill.",
+   "romance": "He named the goldfish. He won't tell you the name. You suspect it's yours.",
+   "boundary": "He watched the festival from a little further away. It cost him something. He paid it.",
+   "ignore": "He saw you laughing with other people all night. The rain came early."
+  },
+  "hook": [
+   "On the last night before Golden Week, Shirasagi Reiji pins a map of the school to his bedroom wall and marks every fall with a red pin.",
+   "Downstairs, his mother is looking at the same map. She is using black pins, and one of them is on the cat shrine."
+  ],
+  "next": "WEEK 4 - Golden Week: the beach, the student council, Children's Day."
+ }
+}

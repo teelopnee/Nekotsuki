@@ -1,0 +1,99 @@
+{
+ "_doc": "Week 5 (6-12 May): midterms (exam days 6-7), Makabe tries to keep the two apart, the letters in his drawer.",
+ "days": {
+  "1": {
+   "morning": "A new seating plan on the 1-A board. Amane's desk is now the one furthest from the door. Makabe-sensei signed it.",
+   "objective": "Amane can't come to 2-B any more. Look for him at lunch.",
+   "beats": [
+    {"id": "w5_note", "where": "school", "after": 750, "before": 800, "speaker": "",
+     "text": "Amane doesn't come at lunch. Instead a folded note slides under the door of 2-B, pushed by a sleeve. In careful, shaky handwriting: 'Makabe-sensei says I have to stay in my own classroom. He says it's for midterms. It isn't for midterms. I'm not crying. It's just raining. - A.' It is pouring.",
+     "choices": [
+      {"t": "Go down to 1-A and eat with him there.", "say": "The whole of 1-A goes silent when a second-year walks in. Amane looks up from his bento as if you'd walked out of a dream. You eat together at the desk furthest from the door. Makabe-sensei sees you through the window, sighs, and lets it go.", "fx": {"bond": 5, "tears": -1.4, "closeness": -2, "who": "Makabe-sensei"}},
+      {"t": "Write back: 'See you after school.'", "say": "You push it back under the door of 1-A on your way past. Ten minutes later the rain eases to a drizzle, as if somebody has just read something twice.", "fx": {"bond": 2, "tears": -0.6, "amane_self": 2}},
+      {"t": "Leave it. Makabe-sensei has a point.", "say": "You fold the note and put it in your pocket. It rains for the rest of the day, steady and patient, like someone sitting on a step.", "fx": {"amane_self": 3, "tears": 0.8}}
+     ]}
+   ]
+  },
+  "2": {
+   "objective": "After classes the staff room is often empty. (1F)",
+   "beats": [
+    {"id": "w5_drawer", "where": "school", "after": 925, "speaker": "",
+     "text": "The staff room is empty except for the hum of the fridge. Makabe-sensei's bottom drawer is open a finger's width. Inside, tied in neat bundles with red string: letters. Dozens. All in his handwriting. All to the same name. 'Nekomori Sayo.' None of them has a stamp.",
+     "choices": [
+      {"t": "Read the top one.", "say": "'Sayo - It's Tanabata again. Twenty-one years. I stood at the bottom of the steps tonight and didn't climb. Makoto ran from a cat. I ran from a staircase. We are both cowards, and you are the only one who went up.' You put it back exactly where it was. Your hands are not steady.", "fx": {"lore": "makabe_letters", "flag": "read_makabe_letter"}},
+      {"t": "Close the drawer without reading.", "say": "You push it shut. It makes a small sound like a held breath. Behind you, in the doorway, Makabe-sensei has been standing for some time. \"Thank you,\" he says. That's all.", "fx": {"closeness": 6, "who": "Makabe-sensei"}},
+      {"t": "Take one letter.", "say": "You put one in your bag. All evening it feels heavier than it should. That night you dream of a woman in a summer kimono on a dry riverbed, reading it, and smiling, and crying, both.", "fx": {"flag": "took_makabe_letter", "lore": "sayo_waiting", "closeness": -4, "who": "Makabe-sensei"}}
+     ]}
+   ]
+  },
+  "3": {
+   "objective": "Midterms are on Monday. Study, or at least look like it.",
+   "beats": [
+    {"id": "w5_dream", "when": "night", "speaker": "Grandpa Genzo (dream)",
+     "text": "Grandpa is marking a pile of exam papers with a red brush and giving everyone full marks. \"Makabe loved her,\" he says without looking up. \"Sayo. Since they were fifteen. He never said. In this town not saying is a disease.\" He paints a circle. \"He'll tell you, if you ask him the right way. At the right place.\"",
+     "choices": [
+      {"t": "\"What's the right place?\"", "say": "\"Where people go to say things they couldn't say.\" He nods at the window. In the dream it shows the river at dusk. \"He walks there on Sundays.\"", "fx": {"flag": "makabe_sunday"}},
+      {"t": "\"Should I study, Grandpa?\"", "say": "\"Of course not, it's a dream.\" He gives your paper full marks. \"...Yes. Study. Your aunt needs one Asagiri who passes things.\"", "fx": {"study": 1}},
+      {"t": "\"Did you love someone like that?\"", "say": "He puts the brush down. \"Your grandmother. And a cat, once, in a letter I wasn't supposed to read.\" He winks. \"Ask me about the letter another Friday.\"", "fx": {"lore": "hundred_letters"}}
+     ]}
+   ]
+  },
+  "4": {
+   "morning": "Saturday. Hina: \"STUDY SESSION. MY HOUSE. 13:00. BRING SNACKS AND SHAME.\"",
+   "objective": "Study session above the flower shop (13:00).",
+   "beats": [
+    {"id": "w5_study", "where": "suzunari", "after": 780, "near": [12, 39, 7], "speaker": "Hina",
+     "text": "Hina's room is wallpapered with clippings. Hayate is face-down on a maths book. Hina's mother brings tea, then more tea, then a third tea just to look at you. Through the window, across the street in the rain, a black hood is standing under the eaves of the antique shop, not coming any closer.",
+     "choices": [
+      {"t": "\"Can Amane join us?\"", "say": "Hina looks at the window, then at you, then sighs and opens it. \"Nekomori! Get in here before you dissolve.\" He sits in the corner with a first-year textbook and doesn't say a word for two hours. He gets every one of Hayate's maths questions right, by whispering the answers to you.", "fx": {"study": 2, "bond": 3, "closeness": 2, "who": "Hayase Hina", "tears": -0.8}},
+      {"t": "Ignore the window and study.", "say": "You study. You actually learn some things. When you look up an hour later the black hood is gone, and so is the rain, and there's a single folded paper crane on the windowsill outside.", "fx": {"study": 3, "amane_self": 2}},
+      {"t": "Text him: 'Go home, it's cold. See you Monday.'", "say": "Across the street he reads it, looks up at the window, bows, and goes. It's the first time he's ever left first. Hina raises an eyebrow. \"Huh.\"", "fx": {"study": 2, "amane_self": 4}}
+     ]}
+   ]
+  },
+  "5": {
+   "objective": "Sunday evening. The river bank by the bridge, at dusk.",
+   "beats": [
+    {"id": "w5_makabe_river", "where": "suzunari", "after": 1040, "near": [27, 44, 8], "speaker": "Makabe-sensei",
+     "text": "Makabe-sensei is on the river bank in a cardigan, throwing nothing into the water. \"Asagiri.\" He doesn't seem surprised. \"I suppose you want to know why I moved him.\" He pushes up his glasses. \"Because I've watched this before. A boy from Asagiri-do and a child from the cat shrine. It did not end well, the last time.\"",
+     "choices": [
+      {"t": "\"Tell me about the last time.\"", "say": "\"Tanabata, 2001. Your father, Sayo, and me.\" He watches the river. \"Your father saw a black-and-white cat on the steps every evening for a month and it frightened him so badly he caught the night train. Sayo stood on the steps and cried. I stood at the bottom.\" A long breath. \"I'm trying not to stand at the bottom twice.\"", "fx": {"lore": "makabe_2001", "closeness": 6, "who": "Makabe-sensei"}},
+      {"t": "\"Amane isn't Sayo. And I'm not my father.\"", "say": "\"No.\" He looks at you properly. \"No, you're not.\" Something in his face eases. \"Fine. He can sit where he likes. But you look after him, Asagiri. Not just when it's convenient.\"", "fx": {"closeness": 4, "who": "Makabe-sensei", "flag": "makabe_relents"}},
+      {"t": "\"Maybe you're right. Some distance would help him.\"", "say": "\"It might.\" He sounds tired. \"Distance helped me survive. It didn't help me live.\" He turns to go. \"Good luck on Monday.\"", "fx": {"closeness": 3, "who": "Makabe-sensei", "amane_self": 2}}
+     ]}
+   ]
+  },
+  "6": {
+   "exam": true,
+   "objective": "Midterms, day 1. (Lessons today are exams: what you've studied counts.)",
+   "beats": [
+    {"id": "w5_charm", "where": "school", "before": 520, "speaker": "Amane",
+     "text": "Amane is at the shoe lockers with a small cloth charm in both hands. \"Grandma made it. For exams. It's from the shrine. It's - \" He stops. \"I asked her to make two. One's mine. One's yours. So we're... passing at the same time.\"",
+     "choices": [
+      {"t": "Take it and tie it to your bag.", "say": "He watches you tie it as if you were tying something round his own wrist. \"Good luck, Senpai.\" He bows and runs. The sun comes out for the first time in four days, briefly, absurdly, over the school.", "fx": {"bond": 3, "luck": 1, "tears": -0.8}},
+      {"t": "\"Keep both. You need the luck more.\"", "say": "\"I...\" He looks at the two charms. \"Okay. Then I'll pass for both of us.\" He laughs, surprised at himself. He goes to his exam with his chin up.", "fx": {"amane_self": 4, "bond": 1}},
+      {"t": "\"I don't believe in charms.\"", "say": "\"That's okay. The charm believes in you.\" He tucks it into your blazer pocket before you can stop him. \"It doesn't need permission.\"", "fx": {"bond": 1, "luck": 1}}
+     ]}
+   ]
+  },
+  "7": {
+   "exam": true,
+   "objective": "Midterms, day 2. Then it's over.",
+   "beats": [
+    {"id": "w5_after_exam", "where": "any", "after": 920, "speaker": "Hayate",
+     "text": "Hayate finds you at the gate and throws both arms round your neck. \"WE SURVIVED. Did we survive? I wrote 'okuri-inu' as the answer to a history question. Is that a history answer?\" He sniffs the air and frowns. \"...You smell like the cat shrine again. And like smoke.\"",
+     "choices": [
+      {"t": "\"Let's celebrate. Ramen. My treat.\"", "say": "Gen-san at the ramen shop gives you both extra char siu 'for surviving'. Hayate cries a little into his broth from happiness. He walks you home after, of course, all the way to your door.", "fx": {"closeness": 6, "who": "Inukai Hayate", "money": -8}},
+      {"t": "\"Hayate - do you ever feel like you've walked me home before? A long time ago?\"", "say": "He stops dead. \"...Yeah.\" Very quietly, for him. \"Like a really long road. At night. And I wasn't allowed to let you fall.\" He shakes himself like a wet dog. \"That's crazy, right? Ramen?\"", "fx": {"closeness": 4, "who": "Inukai Hayate", "lore": "okuri_inu"}},
+      {"t": "\"I'm going to find Amane. See you tomorrow.\"", "say": "\"Right. Course.\" He grins, but his ears - if he had ears - would be flat. \"Say hi from the dog.\" He watches you go all the way to the corner.", "fx": {"bond": 2, "closeness": -1, "who": "Inukai Hayate"}}
+     ]}
+   ]
+  }
+ },
+ "close": {
+  "title": "WEEK 5 - Midterms",
+  "route": {"none": "You passed some exams. You still haven't passed the one on the steps.", "friend": "He got the best marks in 1-A. He showed you first.", "romance": "Two charms from the same shrine. He checks yours is still on your bag every morning.", "boundary": "He went home first, once. He's proud of it. So are you.", "ignore": "He sat at the desk furthest from the door and didn't mind it at all."},
+  "hook": ["The rainy season comes early to Suzunari. It was already raining; now it doesn't stop.", "On the club-room door, a new note in Mio's handwriting: 'Asagiri-kun. Saturday. Omagatoki. The steps. Bring salt. Don't eat anything you're offered. - Kuroe.'"],
+  "next": "WEEK 6 - the rainy season, the thousandth step, a bell that talks."
+ }
+}
