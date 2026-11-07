@@ -275,6 +275,11 @@ func _update_occluders() -> void:
 		var t3 := t as Node3D
 		if t3 and t3.global_position.z > tp.z + 2.2 and t3.global_position.z < from.z and absf(t3.global_position.x - tp.x) < 10.0:
 			hits[t3] = true
+	if target.has_meta("standing_on"):  # the cat on a roof: never fade the house under its paws
+		var under = target.get_meta("standing_on")
+		hits.erase(under)
+		if under is Node and (under as Node).get_parent():
+			hits.erase((under as Node).get_parent())
 	for body in hits:
 		if not _faded.has(body):
 			_set_faded(body, true)

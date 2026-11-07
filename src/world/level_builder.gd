@@ -32,6 +32,7 @@ const FLOOR_T := 0.3
 const CHUNK := 6
 const LAYER_WORLD := 1
 const LAYER_OCCLUDER := 128
+const LAYER_ROOF := 512  ## sloped roof surfaces only Amane's cat walks on (cat spirit night)
 const WALKABLE_EXCLUDE := ["#", " ", "b", "O", "~", "^"]
 const WATER_SHADER := "res://assets/shaders/water.gdshader"
 const STREETS := ["NEON AVE", "DEBT ST", "PASTE BLVD", "OBEY LN", "4TH QTR", "AIR WAY", "COLLATERAL RD", "SYNERGY SQ", "MARKUP ALLEY", "REFUND? NO", "LOYALTY PKWY", "CLAUSE 9 ST"]

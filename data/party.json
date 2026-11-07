@@ -1,0 +1,59 @@
+{
+  "_doc": "Companions (docs/GDD.md 4.13, Party autoload): up to 2 friends hang out with you after school (from 15:20) or on weekends (from 10:00) until their curfew. Ask through the People menu ('p:hang:<id>', closeness >= need). They follow you through town and into school, chat (banter, pair lines between two of them), get closer every 30 minutes (Amane notices). Each has a gift: passive (while with you) + ask (once a day, talk to them). {player}, {rival} work in lines.",
+  "need": 30,
+  "max": 2,
+  "curfew": 1230,
+  "members": {
+    "hayate": {"gift": "Loyalty", "passive": "Cats keep their distance from you while Hayate is around (no reports to Amane). The Inukai dogs' blood.",
+      "ask_t": "\"Got my back?\"", "ask": ["\"Always. Since we were six. Even when you moved away and didn't write.\" He bumps your shoulder. A cat on the wall flattens its ears and leaves.", "\"You even have to ask?\" He grins and walks half a step closer. Somehow the street feels safer."],
+      "yes": "\"Finally! I thought you'd never ask.\" Hayate falls in beside you like he's been waiting all week. He has.",
+      "no": "\"Ehh, today? ...Ask me when we're tighter, Asagiri.\"",
+      "bye": "\"Grandpa will kill me if I'm late for dinner. Later, Asagiri!\"",
+      "part": "\"Yeah? Okay. Text me.\" He jogs off backwards, waving.",
+      "banter": ["\"Race you to the next pole. Go!\" He doesn't wait for an answer.", "\"You smell like cat. Again. How?\"", "\"My grandpa says the shrine dogs bark at things that aren't there. They're barking a lot this spring.\"", "\"Let's get croquettes. Then more croquettes.\"", "\"When I win the prefecturals I'm putting your name on the trophy too. As 'moral support'.\"", "\"Your aunt gave me dango last week and I haven't stopped thinking about it.\""]},
+    "hina": {"gift": "Truth", "passive": "People open up around Hina: everyone warms to you faster while she is with you.",
+      "ask_t": "\"Tell me something true.\"", "ask": [],
+      "yes": "\"Ooh, an investigation! I'm in.\" Hina clicks her pen twice like a starting pistol.",
+      "no": "\"Sorry, deadline! ...Okay, the truth is I don't know you well enough yet.\"",
+      "bye": "\"Mum'll worry. And the shop needs closing. Bye-bye, Asagiri-kun!\"",
+      "part": "\"Off the record? You're bad at goodbyes.\" She waves anyway.",
+      "banter": ["\"Did you know the bus stop salaryman has been there since 1987? I checked.\"", "\"Headline: BOY WITH HEADPHONES NOT ACTUALLY LISTENING TO MUSIC. Am I wrong?\"", "\"Everyone in this town has a secret. Yours is that you care. Gross.\"", "\"The florist on our street sells chrysanthemums only to one customer. A cat.\"", "\"Rain forecast today: depends who you talk to. You know what I mean.\"", "\"I'm writing a piece on the 999 steps. Nobody will be interviewed about step 13.\""]},
+    "mio": {"gift": "Curiosity", "passive": "Night spirits show themselves an hour early while Mio is with you.",
+      "ask_t": "\"Seen anything strange lately?\"", "ask": [],
+      "yes": "\"A field trip. With a sensitive subject. Perfect.\" Mio pulls her camera out of her sleeve.",
+      "no": "\"Not today. You're not haunted enough yet. Come back when something follows you home.\"",
+      "bye": "\"Grandmother locks the door at dark. She says it's for burglars. It isn't for burglars.\"",
+      "part": "\"Go on. Don't look back at the crossroads.\" She says it like a joke. It isn't.",
+      "banter": ["\"That jizo moved. Third from the left. Don't say anything.\"", "\"Kotodama: words have weight. So be careful who you say goodnight to.\"", "\"I have nine years of photos of this street. One of them has you in it, at seven.\"", "\"The 13th step counts you back if you count it out loud. Counting quietly is fine.\"", "\"If a woman in a mask asks if she's pretty, say 'so-so'. Trust me.\"", "\"Your shadow is a little late today. Only a little.\""]},
+    "reiji": {"gift": "Rules", "passive": "Rules bend around Reiji: while he's with you nothing gets marked, and he can write you a council pass.",
+      "ask_t": "\"Any rules I should know about?\"", "ask": [],
+      "yes": "Reiji closes his planner. \"I have forty minutes.\" He gives you all forty and then, surprisingly, twenty more.",
+      "no": "\"I don't have time for people I don't know, Asagiri.\"",
+      "bye": "\"Father dines at eight. I'm expected to have been home for an hour.\"",
+      "part": "\"Understood.\" He nods once and is gone, exactly on time.",
+      "banter": ["\"The council approved the festival budget. I approved it. It's the same thing.\"", "\"Don't walk on the left of the steps. The left is for the kami. Rule nine, unwritten.\"", "\"My family owns the land under that konbini. I've never been inside.\"", "\"You're the first person who's walked next to me instead of behind me in a year.\"", "\"Rules are just promises nobody wants to make out loud.\"", "\"If you're late tomorrow, I'll write you a pass. Once.\""]}
+  },
+  "pairs": {
+    "hayate+hina": ["Hayate: \"Hina, write about my PB!\" -- Hina: \"Your PB isn't news, it's a diary.\" -- Hayate: \"...Rude.\""],
+    "hayate+mio": ["Mio: \"Inukai. Your family's dogs are awake at night.\" -- Hayate: \"They're STONE.\" -- Mio: \"Yes.\""],
+    "hayate+reiji": ["Hayate: \"Council guy! Fund the track team!\" -- Reiji: \"Win something.\" -- Hayate: \"...Fair.\""],
+    "hina+mio": ["Hina: \"Mio-senpai, can I interview you?\" -- Mio: \"Only after dark.\" -- Hina: \"That's... a yes?\""],
+    "hina+reiji": ["Hina: \"Shirasagi-senpai, a quote for the paper?\" -- Reiji: \"No.\" -- Hina: \"'No,' says council president. Printed.\""],
+    "mio+reiji": ["Mio: \"Your family has a deed from 1890.\" -- Reiji: \"...How do you know that?\" -- Mio: \"Ghosts gossip.\""]
+  },
+  "truth": {
+    "schedule": "\"Truth? {who} leaves home at {time} every morning. I have a spreadsheet. Don't ask.\"",
+    "rival": "\"Truth: Amane's been weird about {rival}. Not normal-weird. Plan-weird. Cat hair on {rival}'s desk weird. Watch out for him, okay? For both of them.\"",
+    "none": "\"Truth? You already know everything I know. That's... kind of scary, Asagiri-kun.\""
+  },
+  "curious": {
+    "lore": ["kappa_drowned", "mujina", "night_shop", "okuri_inu", "go_en", "obon_lanterns"],
+    "say": "Mio leans in. \"Strange? Always. Listen.\" She tells you a story you will think about at 3 a.m.",
+    "none": "\"You've heard all my stories. Now go and make some.\""
+  },
+  "rules": {
+    "say": "Reiji takes a council pass out of his planner, writes your name in perfect kanji and signs it. \"Next time you're late, you were 'on council business'. Once. Don't waste it.\"",
+    "again": "\"One pass a day. That's the rule.\""
+  },
+  "amane_sees": "Amane, half behind a pole: \"...Senpai has a lot of friends today.\""
+}

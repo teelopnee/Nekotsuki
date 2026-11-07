@@ -228,10 +228,23 @@ func gable(body: Node3D, w: float, d: float, h: float, roof: StandardMaterial3D,
 	var rise := hd * tan(pitch)
 	var run := hd + over
 	var slab_len := run / cos(pitch)
+	# Walkable roof surfaces on their own layer: only the cat on a spirit night collides with them.
+	var rb := StaticBody3D.new()
+	rb.name = "Roof"
+	rb.collision_layer = LevelBuilder.LAYER_ROOF
+	rb.collision_mask = 0
+	body.add_child(rb)
 	for s in [1.0, -1.0]:
 		var slab: MeshInstance3D = b.add_mesh(body, b.box(Vector3(w + 1.0, 0.16, slab_len)), roof,
 			Vector3(0, h + rise - run * tan(pitch) * 0.5, s * run * 0.5))
 		slab.rotation.x = s * pitch
+		var cs := CollisionShape3D.new()
+		var bs := BoxShape3D.new()
+		bs.size = Vector3(w + 1.0, 0.16, slab_len)
+		cs.shape = bs
+		cs.position = slab.position
+		cs.rotation.x = s * pitch
+		rb.add_child(cs)
 	var prism := PrismMesh.new()
 	prism.size = Vector3(d, rise, w)
 	var gm: MeshInstance3D = b.add_mesh(body, prism, wall, Vector3(0, h + rise * 0.5, 0))

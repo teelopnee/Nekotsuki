@@ -12,6 +12,8 @@ var _tries := 0
 var _page: Control
 var _self0 := 0.0
 var _day0 := 0
+var _sub := 0
+var _watcher: Node = null
 
 
 func _check(ok: bool, what: String) -> void:
@@ -218,11 +220,45 @@ func _process(_d: float) -> bool:
 			lvl._cat_knock(knock, spot)
 			_close_all(hud)
 			_check(not spot.enabled and (game.flags.get("deeds", []) as Array).size() >= 1, "knocked the florist's pot over (the ledger noticed)")
-			lvl._cat_hop([20, 34])
-			_wait = 200
+			_check(get_nodes_in_group("night_watch").size() == 3, "the night watch is out (patrol, drunk, stone dogs)")
+			# LEAP: from the shopping street up onto the roofs.
+			lvl.player.global_position = lvl.builder.center(13, 39) + Vector3(0, 0.1, 0)
+			lvl.player.facing = Vector3(0, 0, 1)
+			_check(lvl.cat_leap(), "LEAP finds the roof ahead")
+			_wait = 120
 		3:
-			var to: Vector3 = lvl.builder.center(20, 34)
-			_check(lvl.player.global_position.distance_to(to) < 1.5, "leapt across the roofs (%.1f m off)" % lvl.player.global_position.distance_to(to))
+			if lvl.player.has_meta("hopping") and _tries < 600:
+				_tries += 1
+				return false  # still in the air
+			_tries = 0
+			if _sub == 0:
+				_check(lvl.player.global_position.y > 3.0, "the cat is up on the roofs (y %.1f)" % lvl.player.global_position.y)
+				var nw = get_nodes_in_group("night_watch")[0]
+				_check(not nw.sees(lvl.player), "nobody sees you on the roofs")
+				lvl.player.facing = Vector3(0, 0, -1)
+				lvl.cat_leap()
+				_sub = 1
+				_wait = 120
+				return false
+			if _sub == 1:
+				_check(lvl.player.global_position.y < 1.0, "LEAP off the edge back down to the street (y %.1f)" % lvl.player.global_position.y)
+				var w = null
+				for n in get_nodes_in_group("night_watch"):
+					if str(n.spec.get("name", "")) == "Omawari-san":
+						w = n
+				_watcher = w
+				lvl.player.global_position = w.global_position + w.facing * 2.5
+				lvl.player.set_meta("sneaking", false)
+				_sub = 2
+				_wait = 150
+				return false
+			_check(lvl.cat_spotted >= 1, "walking in front of Omawari-san's torch gets you spotted (%d)" % lvl.cat_spotted)
+			_check(((amane.st()["ura"] as Array).back().text as String).contains("TWO tails"), "...and the Ura board hears about a two-tailed cat")
+			lvl.player.global_position = _watcher.global_position + _watcher.facing * 6.0
+			lvl.player.set_meta("sneaking", true)
+			_check(not _watcher.sees(lvl.player), "SNEAK: at 6 m the torch misses you")
+			lvl.player.set_meta("sneaking", false)
+			lvl.player.global_position = Vector3(0, -30, 0)
 			# The rival's window: watch first, then resist.
 			lvl._cat_rival_window()
 			_check(hud._dialogue_open and str(hud._dialogue_text.text).contains("Tonight's step"), "at the rival's window the next step of the plan is spelled out")

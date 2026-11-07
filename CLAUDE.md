@@ -216,8 +216,14 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `Game.flags.cat_night` -> Suzunari in cat mode (`cat_night`, `_build_cat_night`): clock frozen at night, townsfolk
   hidden, other Interactables off, player = black two-tailed cat (`kasha` sheet, meta `cat_mode` = no combat,
   `speed_mult`), spots (group `cat_spot`): rival's window (People door or `rival_homes`; plan / resist / watch),
-  Senpai's window (ends the night gently), secrets (lore), knocks (`Ledger.deed`, Ura board), roof hops (`_cat_hop`),
-  dawn timer. `finish_cat_night(kind)` -> `Amane.cat_outcome` (sets `plan.cat_decided` so `_ikiryo_night` skips) ->
+  Senpai's window (ends the night gently), secrets (lore), knocks (`Ledger.deed`, Ura board), dawn timer.
+  Roofs: `JPKit.gable` adds the roof slabs as colliders on `LevelBuilder.LAYER_ROOF` (512, only the cat's mask has it);
+  ROLL = LEAP (`Suzunari.cat_leap`: rays down 1.5-7 m ahead -> up onto a roof/wall top, across a gap, or down to the
+  street; `_cat_hop_to` arc). The navmesh includes rooftops - don't use `nearest_walkable` for "down". Player meta
+  `standing_on` stops CameraRig fading the house under the cat. GUARD = SNEAK (meta `sneaking`: x0.45 speed, half
+  sight range). Night watch: `src/actors/night_watcher.gd` (group `night_watch`, data `watchers`: patrol with torch,
+  drunk, stone dogs; suspicion "?" -> "!" = `spotted` -> `_cat_spotted`: hop away, dawn +25 s, Ura board post,
+  deed "seen"; 3 = the night ends as "dawn"). Touch buttons become LEAP / SNEAK (HUD `_update_context_buttons`). `finish_cat_night(kind)` -> `Amane.cat_outcome` (sets `plan.cat_decided` so `_ikiryo_night` skips) ->
   next day. Log `Game.flags.cat_night_log`.
 - Enma's Ledger page (GDD 4.14): `Week.ending` -> end card (+ goal epilogue) -> `Ledger.show_page()` ->
   `src/ui/ledger_page.gd`: Dosho (left, slanted ink) and Domyo (right) brush in each `Ledger.entries()` entry
@@ -226,6 +232,20 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   (`user://mirror/*.png`, taken at first meeting, races, Rin, club/job events, cat windows, the ending; headless keeps
   captions only), then totals. Scribe sprites: `python3 tools/gen_scribes.py`. Test: `tools/life_test.gd` (creator,
   origin effects, clubs, jobs, weekend, Sunday, cat night, ledger page).
+- Companions (`Party` autoload, `data/party.json`, GDD 4.13): People menu `p:hang:<id>` (closeness >= 30, after 15:20
+  or weekend 10:00, max 2, until `curfew`) -> `PartyNPC` (`src/actors/party_npc.gd`, extends CompanionNPC with
+  `follow_offset`, group `party`), spawned by Suzunari/School (`Party.spawn_in`); `People.hides` hides their usual
+  body. Every 30 min closeness +2 (Amane notices if near); banter + pair lines. Gifts: Hayate (cats don't report:
+  Cats), Hina (`Toru.close_mult` x1.25; ask = a schedule or the rival plan), Mio (`Toru.ghosts_early` 60; ask = lore),
+  Reiji (`Party.excused()` while with him; ask = a council pass token `Week.st().passes`). Members reset each day.
+- Exams (GDD 4.13): grade = min(4, lessons/8) + Study/12 + choice. `Week.days_to_exam()`, `exam_hint()` on the
+  objective; `Week.cram(hud, library|home)` (School 2F `LibraryCram`, Suzunari `HomeDesk`; 1 h, Study +3, 3 a day);
+  `Week.tutor(id)` via People menu `p:tutor:<id>` (Reiji/Hina/Mio teach you, you drill Hayate -> flag
+  `taught_hayate`); exam choice `copy` (catch chance from agility/courage, see-through ~0; `Week.copy_roll` for
+  tests) -> F + Makabe -8 + Ura post; `_exam_results` after the last exam day = ranking board (`st().ranks`).
+  Grades in `Game.flags["exam_d<day>_<am|pm>"]` + `st().grades`. Test: `tools/friends_test.gd`.
+- Ledger page fonts: `assets/fonts/yuji_syuku_ledger.woff2` (Domyo, subset Latin + 善悪閻魔帳) and
+  `caveat_brush.woff2` (Dosho), SIL OFL (texts `assets/fonts/OFL_*.txt`, shown in CREDITS, exported by include_filter).
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).
@@ -237,7 +257,7 @@ Rename and rewrite these notes as systems are replaced (GDD section 10). `docs/R
 ### Layout
 - `src/autoload/` singletons (order matters, see `project.godot`): `EventBus`, `DataDB`, `Game`,
   `Factions`, `Causality`, `Origin`, `Crew`, `FlawPerk`, `Encounters`, `Saga`, `Stories`, `Interactions`, `ShipAI`, `Audio`, `Router`
-  (NEKOTSUKI adds `Clock`, `Amane`, `Cats`, `Ledger`, `Town`, `People`, `Week`, `Toru` before `ShipAI`).
+  (NEKOTSUKI adds `Clock`, `Amane`, `Cats`, `Ledger`, `Town`, `People`, `Week`, `Toru`, `Party` before `ShipAI`).
   `Origin` = 6 tag categories (class incl. 5 Consortium heirs .. beggar, age + exact years, background, personality,
   motivation, secret; `data/tags.json`). `Saga` = branching procedural main story (`data/saga.json`: approaches per beat,
   surrender choices, twist, 15+ finales, composed endings, early motivation endings). `Stories` = per-planet local arcs

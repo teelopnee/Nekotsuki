@@ -6,6 +6,7 @@ extends NPC
 
 var person := ""
 var leaving := false
+var follow_offset := Vector3.ZERO  ## where beside you to walk (two companions take different sides)
 var _leave_dir := Vector3.ZERO
 var _leave_t := 0.0
 var _talking_now := false
@@ -43,7 +44,7 @@ func _physics_process(delta: float) -> void:
 		_catch_up(p)
 		return
 	var side := off.normalized() if off.length() > 0.2 else Vector3(1, 0, 0.4).normalized()
-	var to := p.global_position + side * 1.7 - global_position
+	var to := p.global_position + side * 1.7 + follow_offset - global_position
 	to.y = 0.0
 	var vel := Vector3.ZERO
 	if to.length() > 0.45:

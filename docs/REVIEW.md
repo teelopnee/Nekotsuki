@@ -271,6 +271,17 @@ Worked through the priority list in order; no new world systems or visual passes
   mirror shows real frames captured at key moments; totals; `ledger.json` now also stores origin, stats, club, jobs,
   quirks, deeds and cat nights.
 - Tests: new `life_test.gd` (60+ checks); all suites pass. Screenshots: docs/preview/life_*.png.
-- Open: the cat leaps between fixed rooftop points rather than walking freely on roofs/walls, and there's no sneaking;
-  companions (2 friends who follow you around) and exam cramming/cheating are not in yet; the scribes' "handwriting"
-  is the UI font slanted, not a brush font.
+- Open (closed in the next pass): fixed rooftop points, no sneaking, no companions, no exam prep, slanted UI font.
+
+## The leftovers (2026-11-07)
+- Cat night: real roofs (roof slabs collide on their own layer), LEAP up / across / down, SNEAK, a night watch
+  (torch patrol, a drunk, the stone dogs) with "?" -> "!" suspicion; spotted = chased off, dawn closer, the Ura board
+  talks, three times ends the night. The camera no longer fades the house the cat is standing on.
+- Companions: up to two friends hang out after school / on weekends, follow you into the school, banter, grow closer
+  every half hour, and each has a passive + a once-a-day gift (loyalty, truth, curiosity, rules).
+- Exams: rebalanced grades (attending alone used to give an A), cramming at the library / home desk, tutoring (or
+  drilling Hayate), copying with a real chance of a zero, the ranking board; all of it reaches the ledger.
+- Ledger page: real brush handwriting (Yuji Syuku for Domyo, Caveat Brush for Dosho, OFL, credited) and kanji stamps.
+- Tests: friends_test (31 checks), life_test extended (roofs, sneaking). Screenshots: docs/preview/life_*.png.
+- Open: walls are only climbable where a building's top is in reach (no wall-running); watchers don't follow the
+  cat up or search for it; companions don't join the cat night or Ura (by design for now).

@@ -70,9 +70,19 @@ func _process(_d: float) -> bool:
 			_wait = 90
 		3:
 			_shot("life_cat_night")
+			lvl.player.global_position = lvl.builder.center(13, 39) + Vector3(0, 0.1, 0)
+			lvl.player.facing = Vector3(0, 0, 1)
+			lvl.cat_leap()
+			_wait = 240
+		4:
+			lvl.player.facing = Vector3(1, 0, 0)
+			_shot("life_cat_roof")
+			lvl.player.global_position = lvl._cat_rival_pos + Vector3(-1.5, 0.1, 2.5)
+			_wait = 60
+		5:
 			lvl._cat_rival_window()
 			_wait = 30
-		4:
+		6:
 			_shot("life_cat_window")
 			_close_all(hud)
 			# A life's worth of deeds for the ledger page.
@@ -86,26 +96,26 @@ func _process(_d: float) -> bool:
 			root.add_child(holder)
 			root.get_node("Ledger").show_page(holder)
 			_wait = 10
-		5:
+		7:
 			for n in root.find_children("*", "Control", true, false):
 				if n.get_script() and str(n.get_script().resource_path).ends_with("ledger_page.gd"):
 					_page = n
 			_wait = 400
-		6:
+		8:
 			_page.advance()
 			_wait = 400
-		7:
+		9:
 			_shot("life_ledger_entry")
 			_page.skip_all()
 			_wait = 60
-		8:
+		10:
 			_page.stage = "entry"
 			_page.index = _page.entries.size()
 			_page._busy = false
 			_page._skip = false
 			_page.advance()
 			_wait = 160
-		9:
+		11:
 			_shot("life_ledger_mirror")
 			quit(0)
 	_step += 1

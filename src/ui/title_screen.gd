@@ -165,6 +165,8 @@ static func credits_text() -> String:
 	t += "  mossy_rock, forest_leaves_02, rusty_painted_metal, green_metal_rust, distressed_painted_planks,\n"
 	t += "  old_sandstone_02, denim_fabric, corrugated_iron_02, lacquered_cherry_wood, linoleum_brown, terrazzo_tiles,\n"
 	t += "  floor_tiles_06, long_white_tiles, tatami_mat, plank_flooring_02. Thank you, Poly Haven.\n\n"
+	t += "Fonts on Enma's Ledger page (SIL Open Font License 1.1, full texts below): Yuji Syuku (c) 2021 The Yuji Project\n"
+	t += "  Authors (subset: Latin + 5 kanji); Caveat Brush (c) 2015 Google Inc. / Impallari Type.\n\n"
 	t += "[b][color=#3ee6ff]Made with Godot Engine[/color][/b]\n%s\n\n" % Engine.get_license_text()
 	t += "[b][color=#3ee6ff]Third-party components bundled with Godot[/color][/b]\n"
 	for c in Engine.get_copyright_info():
@@ -174,6 +176,9 @@ static func credits_text() -> String:
 				t += "  (c) %s\n" % str(cr)
 			t += "  License: %s\n" % str(part.get("license", ""))
 	t += "\n[b][color=#3ee6ff]License texts[/color][/b]\n"
+	for f in ["res://assets/fonts/OFL_yuji_syuku.txt", "res://assets/fonts/OFL_caveat_brush.txt"]:
+		if FileAccess.file_exists(f):
+			t += "\n[b]%s[/b]\n%s\n" % [f.get_file().get_basename(), FileAccess.get_file_as_string(f)]
 	var lic: Dictionary = Engine.get_license_info()
 	for k in lic:
 		t += "\n[b]%s[/b]\n%s\n" % [str(k), str(lic[k])]

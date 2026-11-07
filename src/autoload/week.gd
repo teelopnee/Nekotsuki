@@ -144,7 +144,9 @@ func _lesson(b: String, late: int) -> void:
 	var block_name := "Morning lessons" if b == "am" else "Afternoon lessons"
 	var text := _pick(lessons.get("open", [])).replace("{block}", block_name).replace("{subject}", _subject(b))
 	var notes: Array[String] = []
-	if late > 2:
+	if late > 2 and Party.excused():
+		notes.append("> Late, but excused (council pass)")
+	elif late > 2:
 		s["late"] = int(s["late"]) + 1
 		today()["late"] = true
 		text = _pick(lessons.get("late", [])).replace("{late}", str(late)) + "\n\n" + text
@@ -198,13 +200,38 @@ func _exam(b: String, late_text: String, notes: Array[String]) -> void:
 	if late_text.contains("late") or late_text.contains("Late"):
 		text = late_text.split("\n\n")[0] + "\n\n" + text
 	var picked: String = await hud.say("", text, menu)
-	var score: int = int(s["study"]) + int(Toru.stat("study") / 15) + int({"careful": 2, "guess": 0, "help": -1, "clock": 1}.get(picked, 0))
+	# Grade = lessons attended (up to 4) + the Study stat (cramming, tutoring, clubs) + how you sit the paper.
+	var score: int = mini(4, int(int(s["study"]) / 8)) + int(Toru.stat("study") / 12) + int({"careful": 1, "guess": 0, "help": -1, "clock": 1}.get(picked, 0))
 	var grade := "A" if score >= 9 else ("B" if score >= 6 else ("C" if score >= 3 else "D"))
+	var res_key := picked
 	if picked == "help":
 		Amane.add_closeness(Amane.FRIEND, 6)
 		notes.append("> Hayate +6")
-	Game.flags["exam_w%d_%s" % [week_no(), b]] = grade
-	var res := str(ex.get("results", {}).get(picked, "")) + "\n" + str(ex.get("grades", {}).get(grade, ""))
+	elif picked == "copy":
+		var catch := clampf(0.45 - Toru.stat("agility") / 250.0 - Toru.stat("courage") / 400.0, 0.08, 0.6)
+		if Toru.quirk("see_through"):
+			catch = 0.05  # nobody notices you, not even when you cheat
+		var roll := copy_roll if copy_roll >= 0.0 else randf()
+		if roll < catch:
+			grade = "F"
+			res_key = "copy_caught"
+			s["caught"] = int(s.get("caught", 0)) + 1
+			Amane.add_closeness("Makabe-sensei", -8)
+			Toru.add("charm", -3)
+			Ledger.deed("cheat_caught", "%d_%s" % [Clock.day(), b])
+			var u: Array = Amane.st()["ura"]
+			u.append({"day": Clock.date_text(), "time": Clock.clock_text(), "text": str(lessons.get("copy", {}).get("post", ""))})
+			notes.append("> Caught copying (Makabe-sensei -8)")
+		else:
+			grade = "A" if score >= 4 else "B"
+			res_key = "copy_ok"
+			Ledger.deed("cheat", "%d_%s" % [Clock.day(), b])
+			notes.append("> Copied. Nobody saw. (The ledger did.)")
+	Game.flags["exam_d%d_%s" % [Clock.day(), b]] = grade
+	var gl: Array = s.get("grades", [])
+	gl.append({"day": Clock.day(), "block": b, "grade": grade, "copied": picked == "copy"})
+	s["grades"] = gl
+	var res := str(ex.get("results", {}).get(res_key, "")) + "\n" + str(ex.get("grades", {}).get(grade, ""))
 	notes.append("> Grade: %s (studied %d · Study %d)" % [grade, int(s["study"]), Toru.stat("study")])
 	var end_at: int = AM[1] if b == "am" else PM[1]
 	Clock.advance(maxi(0, end_at - Clock.minute()))
@@ -215,6 +242,11 @@ func _exam(b: String, late_text: String, notes: Array[String]) -> void:
 func _truant(b: String) -> void:
 	var s := st()
 	today()["truant_" + b] = true
+	if Party.excused():  # Reiji: "on council business"
+		var h1 := _hud()
+		if h1 and h1.has_method("toast"):
+			h1.toast("Cutting class - but you're 'on council business'. Not marked.", Color(0.8, 0.9, 1.0))
+		return
 	if Toru.quirk("see_through") and randf() < 0.5:
 		var h0 := _hud()
 		if h0 and h0.has_method("toast"):
@@ -249,7 +281,32 @@ func day_data(d: int = -1) -> Dictionary:
 var marker_hint := ""  ## " (NE 120 m)" - set by the Suzunari level from marker()
 
 
+## Days until the next exam day (0 = today), or -1 if none in the next week.
+func days_to_exam() -> int:
+	for i in 8:
+		if bool(day_data(Clock.day() + i).get("exam", false)):
+			return i
+	return -1
+
+
+func exam_hint() -> String:
+	var n := days_to_exam()
+	if n == 0:
+		return str(lessons.get("exam_hint_today", ""))
+	if n > 0 and n <= 4:
+		return str(lessons.get("exam_hint", "")).replace("{n}", str(n))
+	return ""
+
+
 func objective() -> String:
+	var hint := exam_hint()
+	var o := _objective_story()
+	if hint == "":
+		return o
+	return hint if o == "" else o + "\n" + hint
+
+
+func _objective_story() -> String:
 	if bool(Game.flags.get("in_ura", false)):
 		var g: Dictionary = ura.get("goals", {}).get(str(st().get("ura_goal", "free")), {})
 		return str(g.get("objective", ura.get("goals", {}).get("free", {}).get("objective", "")))
@@ -260,6 +317,123 @@ func objective() -> String:
 		if not st()["done"].has(str(bt.id)) and _needs_ok(bt):
 			return str(dd.get("objective", "")) + marker_hint
 	return ""
+
+
+# --- Exam prep: cramming, tutoring, the ranking board ----------------------------------------------
+
+var copy_roll := -1.0  ## tests: force the copy roll (0 = caught, 1 = clean)
+
+
+## Cram for an hour (the library at school, your desk at home). 3 a day; tired = less in more time.
+func cram(hud: Node, where: String) -> void:
+	if hud == null:
+		return
+	var c: Dictionary = lessons.get("cram", {})
+	var t := today()
+	if int(t.get("cram", 0)) >= 3:
+		await hud.say("", str(c.get("done", "")))
+		return
+	var menu := [{"id": "study", "text": str(c.get("study", "Study."))}]
+	if where == "library" and Amane.st()["met"] and Amane.route() in ["friend", "romance"]:
+		menu.append({"id": "amane", "text": str(c.get("amane", ""))})
+	menu.append({"id": "", "text": str(c.get("leave", "Not now."))})
+	var pick: String = await hud.say("", _pick(c.get(where, c.get("home", []))), menu)
+	if pick == "":
+		return
+	t["cram"] = int(t.get("cram", 0)) + 1
+	var notes: Array[String] = []
+	var text := _pick(c.get("result", []))
+	var minutes := 60
+	var gain := 3.0
+	if Toru.stat("stamina") < 15:
+		text = str(c.get("tired", ""))
+		minutes = 90
+		gain = 1.0
+	if pick == "amane":
+		text = _pick(c.get("amane_result", []))
+		Amane.add("bond_now", 2.0)
+		notes.append("> Amane is happy")
+	st()["study"] = int(st()["study"]) + 1
+	for l in [Toru.add("study", gain), Toru.add("stamina", -3.0)]:
+		if l != "":
+			notes.append(l)
+	Clock.spend(minutes)
+	notes.append("> %d minutes pass (%s)" % [minutes, Clock.clock_text()])
+	await hud.say("", text + "\n" + "\n".join(notes))
+
+
+## A friend tutors you (Reiji, Hina, Mio) or you drill Hayate - People menu "p:tutor:<id>", exams 0-4 days away.
+func tutor(id: String, hud: Node) -> void:
+	var tt: Dictionary = lessons.get("tutor", {})
+	var d: Dictionary = tt.get(id, {})
+	if hud == null or d.is_empty():
+		return
+	var who := People.short(id)
+	if bool(today().get("tutored", false)):
+		await hud.say(who, str(tt.get("done", "")))
+		return
+	if People.close(id) < 15:
+		await hud.say(who, str(d.get("no", "")))
+		return
+	today()["tutored"] = true
+	var notes: Array[String] = []
+	var l := Toru.add("study", float(d.get("gain", 4)))
+	if l != "":
+		notes.append(l)
+	st()["study"] = int(st()["study"]) + 1
+	Amane.add_closeness(People.full_name(id), 3)
+	notes.append("> %s +3" % who)
+	if bool(d.get("teach", false)):
+		Game.flags["taught_hayate"] = true
+		notes.append("> Hayate's grades will thank you")
+	if d.has("lore"):
+		var r := Town.remember(str(d["lore"]))
+		if r != "":
+			notes.append(r)
+	Clock.spend(90)
+	notes.append("> 90 minutes pass (%s)" % Clock.clock_text())
+	var text := str(d.get("yes", ""))
+	if Amane.st()["met"] and Amane.route() != "boundary" and randf() < 0.5:
+		Amane.notice_rival(People.full_name(id))
+		text += "\n\n" + str(tt.get("jealous", ""))
+	await hud.say(who, text + "\n" + "\n".join(notes))
+
+
+## After the last exam day: the ranking board (rank from this season's grades), and who says what.
+func _exam_results(hud: Node) -> void:
+	var s := st()
+	var kind := "midterm" if week_no() <= 6 else "final"
+	var ranks: Dictionary = s.get("ranks", {})
+	if ranks.has(kind):
+		return
+	var pts := {"A": 4.0, "B": 3.0, "C": 2.0, "D": 1.0, "F": 0.0}
+	var total := 0.0
+	var n := 0
+	var caught := false
+	for g in s.get("grades", []):
+		if int(g.day) >= Clock.day() - 2:
+			total += float(pts.get(str(g.grade), 1.0))
+			n += 1
+			caught = caught or str(g.grade) == "F"
+	var avg := total / maxf(1.0, float(n))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("%s:%d" % [kind, Clock.day()])
+	var rank := clampi(int(160.0 - avg / 4.0 * 150.0) + rng.randi_range(-6, 6), 1, 160)
+	ranks[kind] = rank
+	s["ranks"] = ranks
+	var r: Dictionary = lessons.get("ranking", {})
+	var lines: Array[String] = [str(r.get("title", "")).replace("{kind}", kind), str(r.get("line", "")).replace("{rank}", str(rank))]
+	lines.append(str(r.get("top" if rank <= 30 else ("mid" if rank <= 110 else "low"), "")))
+	if caught:
+		lines.append(str(r.get("caught", "")))
+	if Amane.st()["met"]:
+		lines.append(str(r.get("amane_good" if rank <= 60 else "amane_bad", "")))
+	if Game.flags.has("taught_hayate"):
+		lines.append(str(r.get("hayate_taught", "")))
+		Amane.add_closeness(Amane.FRIEND, 5)
+	Ledger.deed("exam", "%s:%d" % [kind, rank])
+	if hud:
+		await hud.say("", "\n\n".join(lines))
 
 
 func morning_note() -> String:
@@ -410,6 +584,8 @@ func before_day_end(hud: Node) -> void:
 				st()["done"].erase("w13_tanabata")
 				await play_beat(bt)
 				return
+	if bool(day_data().get("exam", false)) and not bool(day_data(Clock.day() + 1).get("exam", false)):
+		await _exam_results(hud)
 	if day_in_week() == 7 and not (s["closed"] as Array).has(week_no()):
 		await close_week(hud, week_no())
 

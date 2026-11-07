@@ -69,7 +69,7 @@ func pet(cat: Node) -> void:
 
 
 func _on_interaction(_verb: String, success: bool, npc: Node) -> void:
-	if not success or npc == null or npc.is_in_group("amane") or not Amane.st()["met"] or Toru.quirk("cat_servant"):
+	if not success or npc == null or npc.is_in_group("amane") or not Amane.st()["met"] or Toru.quirk("cat_servant") or Party.has("hayate"):
 		return
 	var p := get_tree().get_first_node_in_group("player") as Node3D
 	if p == null:

@@ -145,7 +145,8 @@ func cats_mult() -> float:
 
 ## Minutes earlier the night spirits show themselves to you.
 func ghosts_early() -> int:
-	return int(fx_num("ghosts_early", 0.0)) + (60 if quirk("third_eye") and fx_num("ghosts_early", 0.0) <= 0.0 else 0)
+	var early := int(fx_num("ghosts_early", 0.0)) + (60 if quirk("third_eye") and fx_num("ghosts_early", 0.0) <= 0.0 else 0)
+	return maxi(early, 60) if Party.has("mio") else early  # Mio's curiosity
 
 
 ## Extra seconds before Ura-Suzunari's bell finds you (courage, quirks).
@@ -155,7 +156,7 @@ func bell_bonus() -> float:
 
 ## How fast people warm up to you (charm; being see-through slows it down).
 func close_mult() -> float:
-	return (1.0 + stat("charm") / 200.0) * (0.75 if quirk("see_through") else 1.0)
+	return (1.0 + stat("charm") / 200.0) * (0.75 if quirk("see_through") else 1.0) * (1.25 if Party.has("hina") else 1.0)
 
 
 func race_speed() -> float:

@@ -84,6 +84,7 @@ func _post_build() -> void:
 	_rooms()
 	_features()
 	_club_spots()
+	Party.spawn_in.call_deferred(self)
 	_people()
 	_crowd()
 	_build_motes()
@@ -246,6 +247,14 @@ func _features() -> void:
 
 ## Club rooms on this floor + the recruitment board at the 1F entrance (data/clubs.json, Toru autoload).
 func _club_spots() -> void:
+	if floor_id == "2f":  # the library: cram for exams
+		var lib := Interactable.new()
+		lib.name = "LibraryCram"
+		lib.prompt = "Study at the library"
+		lib.radius = 1.6
+		add_child(lib)
+		lib.global_position = builder.center(28, 6) + Vector3(0, 0.9, 0)
+		lib.interacted.connect(func(_p): Week.cram(hud, "library"))
 	var b: Dictionary = Toru.clubs.get("board", {})
 	if floor_id == str(b.get("floor", "1f")):
 		var bt: Array = b.get("tile", [15, 12])

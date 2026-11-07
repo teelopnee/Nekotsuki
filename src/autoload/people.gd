@@ -174,7 +174,7 @@ func hides(id: String, m: int = -1) -> bool:
 			return false
 		var sa := status(id, t)
 		return sa == "morning" or bool(today(id).get("home", false))
-	if escorting(id):
+	if escorting(id) or Party.has(id):
 		return true
 	var s := status(id, t)
 	if s == "evening":
@@ -263,6 +263,11 @@ func menu_items(id: String) -> Array:
 		out.append({"id": "p:walk:" + id, "text": "\"Can I walk you home?\""})
 	if bool(today(id).get("broken_told", false)) == false and st()["broken"].has(id):
 		out.push_front({"id": "p:sorry:" + id, "text": "\"Sorry I didn't come this morning.\""})
+	var dte := Week.days_to_exam()
+	var tu: Dictionary = Week.lessons.get("tutor", {}).get(id, {})
+	if dte >= 0 and dte <= 4 and not tu.is_empty() and m < 1260:
+		out.append({"id": "p:tutor:" + id, "text": str(tu.get("ask", "\"Help me study?\""))})
+	out.append_array(Party.menu_items(id))  # hang out / go home (companions)
 	return out
 
 
@@ -280,6 +285,12 @@ func run_item(item: String, hud: Node) -> void:
 		return
 	var what := parts[1]
 	var id := parts[2]
+	if what == "tutor":
+		await Week.tutor(id, hud)
+		return
+	if what in ["hang", "part"]:
+		await Party.run_item(what, id, hud)
+		return
 	match what:
 		"ask":
 			var need := 20 if id == "amane" else NEED_ASK

@@ -135,9 +135,14 @@ func entries() -> Array:
 	var deeds := {}
 	for d in Game.flags.get("deeds", []):
 		deeds[str(d.get("kind", ""))] = int(deeds.get(str(d.get("kind", "")), 0)) + 1
-	for k in ["eavesdrop", "knock"]:
+	for k in ["eavesdrop", "knock", "seen", "cheat", "cheat_caught"]:
 		if deeds.has(k):
 			out.append(_entry(k, {"n": deeds[k]}))
+	for d in Game.flags.get("deeds", []):
+		if str(d.get("kind", "")) == "exam":
+			var parts := str(d.get("id", "")).split(":")
+			if parts.size() == 2:
+				out.append(_entry("exam_good" if int(parts[1]) <= 60 else "exam", {"name": parts[0], "n": parts[1]}))
 	var broken: Array = People.st()["broken"].keys()
 	for i in mini(3, broken.size()):
 		out.append(_entry("promise_broken", {"who": People.short(str(broken[i]))}))

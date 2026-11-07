@@ -42,17 +42,25 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	data = Ledger.scribes
 	entries = Ledger.entries()
+	# Handwriting (OFL fonts, assets/fonts): Domyo writes a neat brush hand (Yuji Syuku, which also carries the
+	# ledger's kanji), Dosho scrawls with a dry brush (Caveat Brush). Falls back to the UI font, slanted.
 	var base := get_theme_default_font()
 	_dosho_font = FontVariation.new()
-	_dosho_font.base_font = base
-	_dosho_font.variation_transform = Transform2D(Vector2(1, 0), Vector2(-0.28, 1), Vector2.ZERO)  # slanted, hurried
-	_dosho_font.variation_embolden = 0.5
+	_dosho_font.base_font = _font("res://assets/fonts/caveat_brush.woff2", base)
+	if _dosho_font.base_font == base:
+		_dosho_font.variation_transform = Transform2D(Vector2(1, 0), Vector2(-0.28, 1), Vector2.ZERO)
 	_domyo_font = FontVariation.new()
-	_domyo_font.base_font = base
-	_domyo_font.variation_embolden = 0.25
-	_domyo_font.spacing_glyph = 1
+	_domyo_font.base_font = _font("res://assets/fonts/yuji_syuku_ledger.woff2", base)
 	_build()
 	_show_intro()
+
+
+func _font(path: String, fallback: Font) -> Font:
+	if ResourceLoader.exists(path):
+		var f = load(path)
+		if f is Font:
+			return f
+	return fallback
 
 
 func _build() -> void:
@@ -82,7 +90,8 @@ func _build() -> void:
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 8)
 	paper.add_child(col)
-	var title := _label(str(data.get("title", "ENMA'S LEDGER")), 30, RED)
+	var title := _label("閻魔帳  " + str(data.get("title", "ENMA'S LEDGER")), 34, RED)
+	title.add_theme_font_override("font", _domyo_font)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	col.add_child(title)
 	var sub := _label(str(data.get("subtitle", "")), 15, Color(0.4, 0.32, 0.26))
@@ -105,7 +114,8 @@ func _build() -> void:
 	_heading = _label("", 16, Color(0.45, 0.35, 0.28))
 	_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_center.add_child(_heading)
-	_text = _label("", 25, INK)
+	_text = _label("", 27, INK)
+	_text.add_theme_font_override("font", _domyo_font)
 	_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_text.custom_minimum_size = Vector2(300, 120)
@@ -124,6 +134,7 @@ func _build() -> void:
 	_mirror_caption.visible = false
 	_center.add_child(_mirror_caption)
 	_stamp = _label("", 30, RED)
+	_stamp.add_theme_font_override("font", _domyo_font)
 	_stamp.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_stamp.custom_minimum_size = Vector2(0, 54)
 	var ssb := StyleBoxFlat.new()
@@ -275,7 +286,7 @@ func _show_entry(e: Dictionary) -> void:
 	await _write(_domyo_line, str(e.get("domyo", "")), _domyo_spr)
 	var v := str(e.get("verdict", "argued"))
 	tally[v] = int(tally.get(v, 0)) + 1
-	_stamp.text = str(data.get("stamps", {}).get(v, v.to_upper()))
+	_stamp.text = {"good": "善  ", "bad": "悪  "}.get(v, "") + str(data.get("stamps", {}).get(v, v.to_upper()))
 	_stamp.pivot_offset = _stamp.size * 0.5
 	_stamp.rotation = deg_to_rad(-9.0 if v == "good" else (8.0 if v == "bad" else -3.0))
 	if _skip:

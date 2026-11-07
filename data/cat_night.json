@@ -44,12 +44,17 @@
     {"id": "bin", "tile": [36, 40], "prompt": "The Suzunari Mart bins", "text": "You knock the lid off. Inside: three expired onigiri, wrapped. Yamane-san's neck appears round the corner, three metres of it, sighs, and puts the lid back.", "fx": {}, "post": ""},
     {"id": "chime", "tile": [28, 47], "prompt": "Asagiri-do's wind chime", "text": "Ting. Ting-ting. Upstairs, Aunt Haruka mutters, \"...the cat again,\" and goes back to sleep. Senpai doesn't wake. He sleeps like a stone, your Senpai.", "fx": {}, "post": ""}
   ],
-  "roofs": [
-    {"from": [20, 38], "to": [20, 34], "prompt": "Leap up onto the roofs"},
-    {"from": [20, 34], "to": [20, 38], "prompt": "Leap across the roofs to the shopping street"},
-    {"from": [40, 39], "to": [51, 34], "prompt": "Run along the rooftops toward the Rokujizo"},
-    {"from": [51, 34], "to": [40, 39], "prompt": "Run back along the rooftops"}
+  "how_to": "LEAP (Roll / Space / B) onto any roof and across the gaps between them; walk off an edge to drop down. Hold SNEAK (Guard) to creep past the night watch. On the roofs nobody sees you.",
+  "watchers": [
+    {"kind": "patrol", "name": "Omawari-san", "look": "officer", "points": [[4, 33], [26, 33], [52, 33], [26, 32]], "speed": 1.5, "sight": 9.0, "light": true,
+      "spotted": ["\"Hm? A black cat... with two- no. No. Shoo! Go home, kitty.\" The torch beam chases you into the dark.", "\"Hey! You again?\" Omawari-san writes something in his notebook. You don't want to know what."]},
+    {"kind": "patrol", "name": "A salaryman, very drunk", "look": "civilian", "points": [[3, 39], [24, 39], [44, 39], [24, 38]], "speed": 0.9, "sight": 5.5, "light": false,
+      "spotted": ["\"Kitty! Kitty has TWO tails! Kitty, I love you!\" He tries to hug you. You are already on the other side of the street.", "\"Two tails... I'm never drinking again.\" He says this every night."]},
+    {"kind": "dog", "name": "The Inukai stone dogs", "tile": [46, 26], "sight": 7.0,
+      "spotted": ["The stone dogs' eyes open. A bark without a sound, deep enough to feel in your tails. Every fur on your back stands up. You run.", "The shrine dogs remember you. The barking follows you all the way down the road."]}
   ],
+  "spotted_post": "Someone saw a black cat with TWO tails near {place} last night. Pics or it didn't happen.",
+  "spotted_out": "Three times seen. Lights are going on all over Suzunari, and the cat runs - all the way back to the shrine hill, past {rival_short}'s window without stopping. The night decides itself.",
   "dawn": "The sky over the sea is going grey. Your paws are already walking toward {rival_short}'s house on their own. You're out of time to decide.",
   "morning": {
     "plan": "Amane is waiting at the gate, rested for once, almost glowing. \"I slept so well, Senpai. I dreamed I was a cat.\" He smiles. It doesn't reach his eyes.",

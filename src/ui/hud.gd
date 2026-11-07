@@ -173,6 +173,16 @@ func _update_calm(fighting: bool) -> void:
 
 func _update_context_buttons(fighting: bool = _in_combat()) -> void:
 	var p := get_tree().get_first_node_in_group("player") as Node3D
+	if Game.flags.has("cat_night"):  # Amane's cat: LEAP onto roofs, hold SNEAK past the night watch
+		for b in _touch_buttons:
+			b.visible = b.text == "MENU" or b.action in ["dodge", "parry"]
+			if b.action == "dodge" and b.text != "LEAP":
+				b.text = "LEAP"
+				b.queue_redraw()
+			elif b.action == "parry" and b.text != "SNEAK":
+				b.text = "SNEAK"
+				b.queue_redraw()
+		return
 	var town := DataDB.theme == "suzunari" and not fighting
 	for b in _touch_buttons:
 		var vis := true

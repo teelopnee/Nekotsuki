@@ -180,6 +180,7 @@ func _post_build() -> void:
 	home.name = "HomeVisits"
 	add_child(home)
 	home.setup(self)
+	Party.spawn_in.call_deferred(self)  # friends hanging out with you
 	_morning.call_deferred()
 
 
@@ -201,8 +202,16 @@ func _school_doors() -> void:
 		it.interacted.connect(func(_p): enter_school(t))
 
 
-## Club places and part-time jobs out in town (data/clubs.json `where.level` = suzunari, Toru autoload).
+## Club places and part-time jobs out in town (data/clubs.json `where.level` = suzunari, Toru autoload),
+## and your desk at home (cram for exams).
 func _work_spots() -> void:
+	var desk := Interactable.new()
+	desk.name = "HomeDesk"
+	desk.prompt = "Your desk at home: study"
+	desk.radius = 1.5
+	add_child(desk)
+	desk.global_position = builder.center(24, 47) + Vector3(0, 0.9, 0)
+	desk.interacted.connect(func(_p): Week.cram(hud, "home"))
 	for kind in ["clubs", "jobs"]:
 		var all: Dictionary = Toru.clubs.get(kind, {})
 		for id in all:
@@ -1008,11 +1017,12 @@ func _build_cat_night() -> void:
 	player.sprite.set_look(cat.get("look", {}))
 	player.set_meta("speed_mult", float(cat.get("speed", 1.45)))
 	player.set_meta("cat_mode", true)
+	player.collision_mask |= LevelBuilder.LAYER_ROOF  # the roofs are a road tonight
 	var glow = player.get("glow")
 	if glow is OmniLight3D:
 		glow.light_color = Color(0.72, 0.5, 1.0)  # a faint violet halo, so a black cat still reads at night
-		glow.light_energy *= 2.2
-		glow.omni_range = maxf(glow.omni_range, 4.5)
+		glow.light_energy = maxf(glow.light_energy * 2.2, 2.0)
+		glow.omni_range = maxf(glow.omni_range, 5.0)
 	_cat_spots()
 	_apply_light()
 	_cat_intro.call_deferred()
@@ -1052,8 +1062,11 @@ func _cat_spots() -> void:
 		_cat_spot(sc.tile, str(sc.prompt), func(it): _cat_secret(sc, it))
 	for k in cat.get("knocks", []):
 		_cat_spot(k.tile, "Knock it over: " + str(k.prompt).to_lower(), func(it): _cat_knock(k, it), 1.5)
-	for r in cat.get("roofs", []):
-		_cat_spot(r.from, str(r.prompt), func(_it): _cat_hop(r.to), 1.4)
+	for w in cat.get("watchers", []):
+		var nw = load("res://src/actors/night_watcher.gd").new()
+		nw.setup(w, self)
+		actors.add_child(nw)
+		nw.spotted.connect(_cat_spotted)
 
 
 func _cat_intro() -> void:
@@ -1069,6 +1082,7 @@ func _cat_intro() -> void:
 		return
 	if hud.has_method("toast"):
 		hud.toast("The town's cats lower their heads as you pass. Find %s's window - or Senpai's." % Amane.rival().split(" ")[-1], Color(0.8, 0.85, 1.0))
+		hud.toast(str(cat.get("how_to", "")), Color(0.85, 0.8, 1.0))
 
 
 func cat_objective() -> String:
@@ -1087,6 +1101,7 @@ func _cat_process(delta: float) -> void:
 	if _cat_done or (hud and hud._dialogue_open):
 		return
 	_cat_t += delta
+	_cat_under(delta)
 	if hud and hud.has_method("_refresh_objective") and int(_cat_t * 2.0) != int((_cat_t - delta) * 2.0):
 		hud._refresh_objective()  # the clock is stopped, so nothing else refreshes the distance / dawn line
 	var dawn := float(cat.get("dawn_seconds", 240))
@@ -1178,25 +1193,120 @@ func _cat_knock(k: Dictionary, it: Interactable) -> void:
 	await hud.say("", _cat_fill(str(k.get("text", ""))) + ("\n" + lines if lines != "" else ""))
 
 
-## Leap across the roofs in one arc (the camera follows the cat over the tiles).
-func _cat_hop(to: Array) -> void:
+## LEAP (Roll): up onto the roof or wall ahead, across a gap to the next roof, or down to the street.
+## Looks 1.5-7 m ahead along the cat's facing, casting down onto houses (WORLD) and roof slabs (ROOF).
+func cat_leap() -> bool:
+	if player == null or player.has_meta("hopping") or _cat_done:
+		return false
+	var f: Vector3 = player.facing
+	f.y = 0.0
+	if f.length() < 0.1:
+		f = Vector3.FORWARD
+	f = f.normalized()
+	var from := player.global_position
+	var space := get_world_3d().direct_space_state
+	var on_roof := from.y > 2.0
+	var gap := false
+	var target := Vector3.INF
+	var ground := Vector3.INF
+	for i in range(3, 15):
+		var pt := from + f * (i * 0.5)
+		var q := PhysicsRayQueryParameters3D.create(pt + Vector3(0, 30, 0), pt + Vector3(0, -2, 0), LevelBuilder.LAYER_WORLD | LevelBuilder.LAYER_ROOF)
+		var hit := space.intersect_ray(q)
+		if hit.is_empty():
+			continue
+		var y: float = hit.position.y
+		if not on_roof:
+			if y > from.y + 1.2 and y < from.y + 12.0:
+				target = hit.position
+				break
+		else:
+			if y < 1.0:
+				gap = true
+				if ground == Vector3.INF:
+					ground = hit.position
+			elif gap and y > 1.5:
+				target = hit.position
+				break
+	if target == Vector3.INF and on_roof:
+		target = ground if ground != Vector3.INF else Vector3(from.x + f.x * 2.5, 0.1, from.z + f.z * 2.5)  # (the navmesh has rooftops too)
+	if target == Vector3.INF:
+		if hud and hud.has_method("toast"):
+			hud.toast("Nothing to leap onto that way.", Color(0.8, 0.8, 0.9))
+		return false
+	_cat_hop_to(target + Vector3(0, 0.12, 0))
+	return true
+
+
+## One arc from here to `b` (physics off while flying; the camera follows).
+func _cat_hop_to(b: Vector3) -> void:
 	if player == null or player.has_meta("hopping"):
 		return
 	player.set_meta("hopping", true)
 	var a := player.global_position
-	var b := builder.center(int(to[0]), int(to[1])) + Vector3(0.0, 0.1, 0.0)
 	player.set_physics_process(false)
 	player.velocity = Vector3.ZERO
 	player.sprite.play("run", true)
 	player.sprite.set_facing((b - a).normalized())
 	Audio.play_sfx("roll", 0.0, -6.0)
+	var arc := maxf(1.6, b.y - a.y + 1.6)
 	var tw := create_tween()
-	tw.tween_method(func(k: float): player.global_position = a.lerp(b, k) + Vector3(0, sin(k * PI) * 7.0, 0), 0.0, 1.0, 1.2)
+	tw.tween_method(func(k: float): player.global_position = a.lerp(b, k) + Vector3(0, sin(k * PI) * arc, 0), 0.0, 1.0, 0.75)
 	await tw.finished
-	player.set_physics_process(true)
-	player.remove_meta("hopping")
-	FX.dust(self, player.global_position, 0.5)
-	Audio.play_sfx("land", 0.0, -6.0)
+	if is_instance_valid(player):
+		player.set_physics_process(true)
+		player.remove_meta("hopping")
+		FX.dust(self, player.global_position, 0.5)
+		Audio.play_sfx("land", 0.0, -6.0)
+
+
+## Which house is the cat standing on (so the camera never fades it away under its paws)?
+var _under_t := 0.0
+
+
+func _cat_under(delta: float) -> void:
+	_under_t -= delta
+	if _under_t > 0.0 or player == null:
+		return
+	_under_t = 0.2
+	if player.global_position.y < 1.5:
+		player.remove_meta("standing_on")
+		return
+	var q := PhysicsRayQueryParameters3D.create(player.global_position + Vector3(0, 0.5, 0), player.global_position + Vector3(0, -3, 0),
+		LevelBuilder.LAYER_WORLD | LevelBuilder.LAYER_ROOF)
+	var hit := get_world_3d().direct_space_state.intersect_ray(q)
+	if hit.is_empty():
+		player.remove_meta("standing_on")
+	else:
+		player.set_meta("standing_on", hit.collider)
+
+
+## The night watch saw the cat: chased off, the dawn comes closer, the town talks; three times = the night is over.
+var cat_spotted := 0
+
+
+func _cat_spotted(w: Node) -> void:
+	if _cat_done or player == null:
+		return
+	cat_spotted += 1
+	_cat_t += 25.0
+	Audio.play_sfx("alert", 0.0, -2.0)
+	Ledger.deed("seen", str(w.spec.get("kind", "patrol")))
+	var lines: Array = w.spec.get("spotted", ["Shoo!"])
+	var place := "the shopping street" if player.global_position.z > 34.0 * LevelBuilder.TILE else ("the road" if player.global_position.z > 30.0 * LevelBuilder.TILE else "the shrine")
+	var u: Array = Amane.st()["ura"]
+	u.append({"day": Clock.date_text(), "time": "23:5%d" % mini(9, cat_spotted), "text": str(cat.get("spotted_post", "")).replace("{place}", place)})
+	if hud and hud.has_method("toast"):
+		hud.toast("%s: %s" % [str(w.spec.get("name", "")), str(lines[mini(w.spotted_count - 1, lines.size() - 1)])], Color(1.0, 0.75, 0.6))
+	var away: Vector3 = player.global_position - w.global_position
+	away.y = 0.0
+	_cat_hop_to(nearest_walkable(player.global_position + away.normalized() * 4.5) + Vector3(0, 0.1, 0))
+	if cat_spotted >= 3:
+		_cat_done = true
+		if hud:
+			await hud.say("", _cat_fill(str(cat.get("spotted_out", ""))))
+		_cat_done = false
+		finish_cat_night("dawn")
 
 
 ## The night is decided: tell Amane's mind, then wake up at home the next morning as Toru.

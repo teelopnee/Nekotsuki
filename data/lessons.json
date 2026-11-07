@@ -109,19 +109,98 @@
    {
     "id": "clock",
     "t": "Watch the clock and pace yourself."
+   },
+   {
+    "id": "copy",
+    "t": "Copy from Sato Yui's paper. She always finishes first."
    }
   ],
   "results": {
    "careful": "You work through it line by line. Some of it you actually know.",
    "guess": "You circle answers by feel. Your feel is not very well educated.",
    "help": "Hayate sees. Hayate copies. Hayate copies your name too, then frantically rubs it out. Makabe-sensei sighs at the ceiling and says nothing.",
-   "clock": "You split the time evenly and finish with two minutes spare. You use them to look out of the window."
+   "clock": "You split the time evenly and finish with two minutes spare. You use them to look out of the window.",
+   "copy_ok": "Sato Yui's paper is tilted toward you like an invitation. You copy six answers, then nine. Nobody looks up. On your left shoulder, something very small giggles.",
+   "copy_caught": "Makabe-sensei's hand lands on your paper. He doesn't shout. He just writes a zero at the top, very neatly, and says \"See me after school, Asagiri.\" Thirty pencils stop at once."
   },
   "grades": {
    "A": "The paper comes back with a red circle and a tiny drawn cat. Aunt Haruka pins it to the shop wall.",
    "B": "Respectable. Makabe-sensei writes \"Good. Sleep more.\" in the margin.",
    "C": "Passable. Aunt Haruka says \"Your father got Cs too,\" and then looks like she wishes she hadn't.",
-   "D": "Red ink everywhere. Hayate got the same mark and wants to high-five about it."
+   "D": "Red ink everywhere. Hayate got the same mark and wants to high-five about it.",
+   "F": "Zero. Makabe-sensei keeps you after class and talks for an hour about trust, in a quiet voice that is much worse than shouting. Aunt Haruka gets a phone call."
   }
+ },
+ "_doc_exams": "Exam prep (Week): `exam_hint` = objective line when exams are 1-4 days away. cram.<library|home> = studying at the school library (2F) or your desk at home (1 h, Study +3; tired = +1 in 90 min; 3 a day). tutor.<id> = a friend tutors you (People menu, 90 min) or you drill Hayate. Exam choice `copy`: caught by chance (agility, courage, see-through), grade F. ranking.* = the board after the last exam day ({rank}).",
+ "exam_hint": "Exams in {n} day(s): cram at the library (2F) or your desk at home, or ask a friend to tutor you.",
+ "exam_hint_today": "Exams today: what you studied counts.",
+ "cram": {
+  "library": [
+   "The library smells of dust and radiator heat. Three third-years asleep on their textbooks. You open yours.",
+   "The librarian stamps your card without looking up. 'Exam season,' she says, as if it's weather.",
+   "A whole table to yourself, by the window. Rain on the glass. The perfect place to study, or to stare."
+  ],
+  "home": [
+   "Your desk at home: a lamp, a cold cup of tea, Grandpa's old pencil case. Downstairs, Aunt Haruka is watching a quiz show and shouting the answers.",
+   "Your room smells of tatami and eraser shavings. A cat sits on the windowsill outside, watching you study like a supervisor."
+  ],
+  "study": "Study for an hour.",
+  "amane": "Let Amane quiz you. (He's been waiting by the door.)",
+  "leave": "Not now.",
+  "done": "Your eyes won't focus any more. You've done all you can today.",
+  "result": [
+   "You read the same page three times and the third time it stays.",
+   "Formulas, dates, kanji. Some of it sticks. You can feel it sticking.",
+   "An hour of work. Your hand is grey with pencil."
+  ],
+  "tired": "You wake up with your cheek on the textbook and a page printed backwards on your face. Ninety minutes gone, a little learned.",
+  "amane_result": [
+   "Amane quizzes you from the flashcards he made. He made a hundred and twelve. Each one has a tiny cat drawn in the corner. He blushes every time you get one right.",
+   "\"Senpai, the Meiji Restoration was 1868. ...I know because I was there. A-a joke! It was a joke.\" You remember the date forever after that."
+  ]
+ },
+ "tutor": {
+  "reiji": {
+   "ask": "\"Could you help me study for the exams?\"",
+   "yes": "Reiji takes you to the council room and teaches like he runs the council: no wasted words, a timetable, a red pen. \"Again,\" he says, eleven times. You learn more in ninety minutes than in a month.",
+   "no": "\"I don't tutor people I don't know.\" (Get closer to Reiji first.)",
+   "gain": 6
+  },
+  "hina": {
+   "ask": "\"Hina, can you help me study?\"",
+   "yes": "Hina turns the syllabus into a newspaper: headlines for every chapter, 'SHOCKING: MITOCHONDRIA IS THE POWERHOUSE'. It works. You can't forget a headline.",
+   "no": "\"Ehh, I'm drowning too! Ask me when we're closer, then we can drown together.\"",
+   "gain": 4
+  },
+  "mio": {
+   "ask": "\"Mio-senpai... would you help me study?\"",
+   "yes": "Mio teaches history as a list of ghosts: who died where, who's still there. Your history is suddenly very good. You may never sleep again.",
+   "no": "\"Hmm. You're not interesting enough yet. Come back with a ghost story.\"",
+   "gain": 4,
+   "lore": "seven_mysteries"
+  },
+  "hayate": {
+   "ask": "\"Want me to drill you for the exams?\"",
+   "yes": "You drill Hayate on the steps outside the gym. He gets everything wrong, then everything right, then punches the air so hard he falls down two steps. \"If I pass, I'm buying you ramen.\"",
+   "no": "\"Studying? With YOU? ...Okay, maybe later.\"",
+   "gain": 1,
+   "teach": true
+  },
+  "jealous": "From the doorway, a hood. Amane watches you study with someone else and doesn't come in. The rain gets heavier.",
+  "done": "\"We already studied today. Go home and sleep, or it won't stick.\""
+ },
+ "copy": {
+  "post": "Someone got caught copying in 2-B today. Zero on the paper. Guess who."
+ },
+ "ranking": {
+  "title": "The {kind} results go up on the board outside the staff room.",
+  "line": "ASAGIRI TORU (2-B) - {rank} of 160.",
+  "top": "Your name is in the top thirty. People who have never said your name before say it. You don't like it as much as you expected. You like it a bit.",
+  "mid": "Somewhere in the middle. Invisible, exactly as planned. Somehow it doesn't feel like a plan.",
+  "low": "Near the bottom. Hayate finds his name below yours and is delighted for both of you.",
+  "caught": "Under your name, in Makabe-sensei's handwriting: (one paper void).",
+  "amane_good": "Amane, behind you, very quietly: \"I knew. I knew Senpai was clever.\" He takes a photo of the board.",
+  "amane_bad": "Amane, behind you: \"I'd still like Senpai if Senpai came 160th. I'd like Senpai more, actually. Fewer rivals.\"",
+  "hayate_taught": "Hayate jumps on your back. \"I PASSED. Everything! Ramen, Asagiri! I owe you ramen for LIFE!\""
  }
 }
