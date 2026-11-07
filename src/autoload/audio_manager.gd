@@ -100,6 +100,8 @@ func play_ambience(amb_name: String, volume_offset: float = -6.0) -> void:
 		wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		wav.loop_begin = 0
 		wav.loop_end = roundi(wav.get_length() * wav.mix_rate)
+	elif stream is AudioStreamOggVorbis:
+		(stream as AudioStreamOggVorbis).loop = true  # ambience beds always loop
 	_amb.stream = stream
 	_amb.volume_db = music_volume_db + volume_offset
 	_amb.play()

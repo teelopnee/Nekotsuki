@@ -5,7 +5,7 @@
   "intro_choices": [{"id": "go", "t": "Open your eyes. (Play the night as the cat.)"}, {"id": "skip", "t": "Stay asleep. (The cat goes on without you.)"}],
   "skip": "You sleep. Something small and black leaves the shrine hill without you, and comes back before dawn with wet paws.",
   "objective": "23:40 · You are Amane's two-tailed cat. {rival_short}'s window: {where}. Senpai's window: the Asagiri house. Dawn in {mins} min.",
-  "look": {"variant": "kasha", "colors": {"hair": "#0d0a12", "scarf": "#b3122a", "iris": "#ffd34a", "dark": "#040306", "glow": "#ff4a3a"}},
+  "look": {"variant": "kasha", "colors": {"hair": "#2c2540", "scarf": "#c4182f", "iris": "#ffd34a", "dark": "#0e0a16", "glow": "#ff5a46"}},
   "pixel_size": 0.06,
   "speed": 1.45,
   "home_tile": [34, 5],

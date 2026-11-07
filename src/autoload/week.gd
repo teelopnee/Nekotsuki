@@ -789,6 +789,15 @@ func enter_ura(goal: String) -> void:
 func leave_ura(thrown_out: bool = false) -> void:
 	Game.flags.erase("in_ura")
 	Game.location_id = "suzunari"
+	var rescued: Array = Game.flags.get("ura_rescue", [])
+	Game.flags.erase("ura_rescue")
+	var h: Dictionary = ura.get("hidden", {})
+	for who in rescued:
+		var n := str(who).split(" ")[-1]
+		if thrown_out:
+			Amane.st()["news"].append(str(h.get("slipped", "")).replace("{who}", n))
+		else:
+			Amane.rescue(str(who), str(h.get("home", "")).replace("{who}", n))
 	if thrown_out:
 		var lore: Dictionary = Amane.st()["lore"]
 		if not lore.is_empty():

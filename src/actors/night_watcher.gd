@@ -2,7 +2,9 @@ extends Node3D
 ## The night watch on a cat spirit night (data/cat_night.json `watchers`): Omawari-san with his torch, a drunk
 ## salaryman, the Inukai stone dogs. A patrol walks its points; a dog stays put and sees all round. Suspicion
 ## grows while the cat is in sight ("?") - faster up close, half as far while SNEAKing, never on a roof - and at
-## "!" they spot it (`spotted`). They don't fight; they chase the cat off and the town talks.
+## "!" they spot it (`spotted`). They don't fight; they chase the cat off and the town talks. A patrol that
+## half-saw something walks to where it last saw the cat, sweeps its torch around for a few seconds, then goes back
+## to its round (state route -> search -> look -> route). Roofs stay safe: nobody climbs after a cat.
 
 signal spotted(watcher: Node)
 
@@ -17,6 +19,9 @@ var _label: Label3D
 var _torch: SpotLight3D
 var _i := 0
 var _cool := 0.0
+var state := "route"
+var last_seen := Vector3.INF
+var _look_t := 0.0
 
 
 func setup(s: Dictionary, lvl: Node) -> void:
@@ -73,17 +78,7 @@ func _physics_process(delta: float) -> void:
 	if hud and hud._dialogue_open:
 		return
 	_cool = maxf(0.0, _cool - delta)
-	if points.size() > 1:
-		var to := points[_i] - global_position
-		to.y = 0.0
-		if to.length() < 0.4:
-			_i = (_i + 1) % points.size()
-		else:
-			facing = to.normalized()
-			global_position += facing * float(spec.get("speed", 1.4)) * delta
-		if sprite:
-			sprite.set_facing(facing)
-			sprite.play("walk")
+	_move(delta)
 	if _torch:
 		_torch.look_at(_torch.global_position + facing + Vector3(0, -0.35, 0), Vector3.UP)
 	var p := get_tree().get_first_node_in_group("player") as Node3D
@@ -93,6 +88,9 @@ func _physics_process(delta: float) -> void:
 	if sees(p):
 		var d := global_position.distance_to(p.global_position)
 		alert += delta * (2.2 if d < float(spec.get("sight", 8.0)) * 0.5 else 1.0)
+		last_seen = p.global_position
+		if alert > 0.35 and points.size() > 1 and state != "search":
+			state = "search"  # "...what was that?"
 	else:
 		alert = maxf(0.0, alert - delta * 0.6)
 	_label.text = "!" if alert >= 1.0 else ("?" if alert > 0.15 else "")
@@ -102,8 +100,54 @@ func _physics_process(delta: float) -> void:
 	if alert >= 1.0:
 		alert = 0.0
 		_cool = 4.0
+		state = "look"
+		_look_t = 2.0
 		spotted_count += 1
 		spotted.emit(self)
+
+
+func _move(delta: float) -> void:
+	if points.size() < 2:
+		return
+	var speed := float(spec.get("speed", 1.4))
+	var goal: Vector3 = points[_i]
+	match state:
+		"search":
+			goal = last_seen
+			speed *= 1.35
+		"look":
+			_look_t -= delta
+			facing = facing.rotated(Vector3.UP, delta * 1.6)  # sweeping the torch around
+			if sprite:
+				sprite.set_facing(facing)
+				sprite.play("idle")
+			if _look_t <= 0.0:
+				state = "route"
+				_i = _nearest_point()
+			return
+	var to := goal - global_position
+	to.y = 0.0
+	if to.length() < 0.5:
+		if state == "search":
+			state = "look"
+			_look_t = 3.0
+		else:
+			_i = (_i + 1) % points.size()
+		return
+	facing = to.normalized()
+	global_position += facing * speed * delta
+	global_position.y = points[0].y
+	if sprite:
+		sprite.set_facing(facing)
+		sprite.play("walk")
+
+
+func _nearest_point() -> int:
+	var best := 0
+	for k in points.size():
+		if points[k].distance_to(global_position) < points[best].distance_to(global_position):
+			best = k
+	return best
 
 
 ## Can this watcher see the cat right now? Range (halved while sneaking), cone (dogs see all round),

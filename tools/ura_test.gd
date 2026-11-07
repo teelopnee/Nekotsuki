@@ -107,6 +107,7 @@ func _process(_d: float) -> bool:
 			_check(clock.day() == _day0 + 1, "a whole day passed outside (day %d -> %d)" % [_day0, clock.day()])
 			clock.st()["minute"] = 1085
 			game.flags["letter_101"] = true
+			amane.st()["fates"]["Hayase Hina"] = "hidden"  # the cat took Hina: she waits on the other side
 			week.enter_ura("riverbed")
 			_wait = 120
 		4:
@@ -128,11 +129,20 @@ func _process(_d: float) -> bool:
 				bs[0].pressed.emit()
 				_close_all(hud)
 			_check(bool(game.flags.get("sayo_found", false)), "found Sayo")
+			var lost := get_nodes_in_group("lost")
+			_check(lost.size() == 1, "the spirited-away Hina waits in Ura-Suzunari")
+			if not lost.is_empty():
+				lost[0]._on_talk(null)
+				_check(hud._dialogue_open and _buttons(hud).size() == 2, "take her hand / come back later")
+				_buttons(hud)[0].pressed.emit()
+				_close_all(hud)
+				_check(lost[0].following, "Hina holds your hand and follows")
 			week.leave_ura(false)
 			_wait = 120
 		5:
 			_close_all(hud)
 			_check(lvl.get("ura") == false and clock.minute() >= clock.NIGHT, "walked back down after Omagatoki")
+			_check(amane.fate("Hayase Hina") == "rescued", "walking her down the steps brought Hina home (%s)" % amane.fate("Hayase Hina"))
 			week.remember_ending("okaeri")
 			_check(week.endings_seen().has("okaeri"), "endings are remembered for the title screen")
 			# Races: stand on the lantern -> win; stand still while the cat runs -> lose.

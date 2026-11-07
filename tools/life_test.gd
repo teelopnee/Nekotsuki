@@ -192,6 +192,8 @@ func _process(_d: float) -> bool:
 			lvl.end_day()
 			_wait = 30
 		2:
+			if lvl == null:
+				return false  # between scenes
 			if lvl.get("cat_night") != true and _tries < 40:
 				_tries += 1
 				if hud and hud._dialogue_open:

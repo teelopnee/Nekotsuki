@@ -223,7 +223,16 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `standing_on` stops CameraRig fading the house under the cat. GUARD = SNEAK (meta `sneaking`: x0.45 speed, half
   sight range). Night watch: `src/actors/night_watcher.gd` (group `night_watch`, data `watchers`: patrol with torch,
   drunk, stone dogs; suspicion "?" -> "!" = `spotted` -> `_cat_spotted`: hop away, dawn +25 s, Ura board post,
-  deed "seen"; 3 = the night ends as "dawn"). Touch buttons become LEAP / SNEAK (HUD `_update_context_buttons`). `finish_cat_night(kind)` -> `Amane.cat_outcome` (sets `plan.cat_decided` so `_ikiryo_night` skips) ->
+  deed "seen"; 3 = the night ends as "dawn"; a patrol that half-saw the cat walks to `last_seen`, sweeps its torch, then
+  returns to its round). Touch buttons become LEAP / SNEAK (HUD `_update_context_buttons`).
+  `Suzunari.nearest_walkable` never answers a street query with a rooftop (the baked navmesh covers flat house tops).
+- Kamikakushi rescue (`data/ura.json hidden`): everyone with fate "hidden" waits in Ura-Suzunari (`_spawn_hidden`,
+  `src/actors/lost_npc.gd`, group `lost`); take their hand -> `Game.flags.ura_rescue` -> they follow; `Week.leave_ura`
+  down the steps -> `Amane.rescue(who)` (fate "rescued", closeness +10, plan cleared, self +6, deed "rescue"); thrown
+  out by the second bell = the hand slips. Hidden people are gone from town (`People.hides`, doorstep line).
+- Ambience: `python3 tools/gen_ambience_suzunari.py` -> `assets/audio/music/amb_suzunari_{day,dusk,night}.ogg`;
+  `Suzunari.update_ambience()` (every minute: rain -> amb_rain, night/cat night, Omagatoki, day; Ura none);
+  `Audio.play_ambience` loops OGG too. Title and indoor levels stop it. `finish_cat_night(kind)` -> `Amane.cat_outcome` (sets `plan.cat_decided` so `_ikiryo_night` skips) ->
   next day. Log `Game.flags.cat_night_log`.
 - Enma's Ledger page (GDD 4.14): `Week.ending` -> end card (+ goal epilogue) -> `Ledger.show_page()` ->
   `src/ui/ledger_page.gd`: Dosho (left, slanted ink) and Domyo (right) brush in each `Ledger.entries()` entry

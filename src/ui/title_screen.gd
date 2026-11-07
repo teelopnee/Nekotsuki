@@ -75,6 +75,7 @@ func _ready() -> void:
 	ver.position = Vector2(10, 8)
 	add_child(ver)
 	Audio.play_music("suzunari_dusk")
+	Audio.play_ambience("")  # no town birds or crickets on the title
 	for c in v.get_children():
 		if c is Button:
 			_safe_focus.call_deferred(c)

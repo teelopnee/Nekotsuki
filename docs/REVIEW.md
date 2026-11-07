@@ -88,7 +88,7 @@
   ground mist in the morning.
 - Cost: one full-screen pass (12 blur + 11 depth taps per pixel); off on graphics "low". Check on the tablet.
 - Open: the lens is skipped by transparent effects on purpose (labels, rain, shafts stay crisp); water has no reflections.
-- Known flaky (pre-existing, also on the previous commit): `interact_back_test` "an NPC walked up and started a
+- Known flaky (FIXED 2026-11-07, see "Fix what should be fixed"): `interact_back_test` "an NPC walked up and started a
   conversation" fails ~1 run in 3 - the approaching NPC sometimes stops at ~1.8 m and returns to idle without opening the
   talk (`NPC` "approach" state, distance threshold vs. stop distance). A longer wait made it fail every time.
 
@@ -285,3 +285,19 @@ Worked through the priority list in order; no new world systems or visual passes
 - Tests: friends_test (31 checks), life_test extended (roofs, sneaking). Screenshots: docs/preview/life_*.png.
 - Open: walls are only climbable where a building's top is in reach (no wall-running); watchers don't follow the
   cat up or search for it; companions don't join the cat night or Ura (by design for now).
+
+## Fix what should be fixed (2026-11-07)
+- Spirited-away rivals can be rescued: they wait in Ura-Suzunari; take their hand and walk them down the thousandth step
+  before the second bell. Until then they are really gone (no spirit body in town, nobody comes to the door).
+- Bug: a spirited-away friend still walked around town and could be picked up in the morning - fixed.
+- Bug (the old flaky test): an NPC walking up to you gave up at ~2-3 m when Amane or a companion stood in the way -
+  now they talk from where they are once blocked or out of time. interact_back_test passed 8/8 runs.
+- Night watch: a patrol that half-saw the cat walks to where it saw it, sweeps the torch, then goes back.
+- `nearest_walkable` never returns a rooftop for a street query (the navmesh covers flat house tops).
+- Sound: Suzunari finally has an ambience bed - sparrows by day, crows + frogs at Omagatoki, frogs + bell crickets
+  at night, rain when Amane cries (all generated, `tools/gen_ambience_suzunari.py`).
+- Cat: lighter fur and a stronger halo so the black cat reads at night. CAST/LORE: Chiyo is Sayo's MOTHER (68 vs 28
+  in 2011), i.e. Amane's maternal grandmother - the docs said "granddaughter".
+- Still open (bigger jobs): house interiors (doorstep scenes only), the station has no trains, water has no
+  reflections, companions/students steer straight (they pop behind you when stuck), time the first 10 minutes on the
+  tablet (owner).

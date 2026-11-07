@@ -155,6 +155,7 @@ func _post_build() -> void:
 	add_child(overlay)
 	Clock.minute_passed.connect(_on_minute)
 	_apply_light()
+	update_ambience.call_deferred()
 	if not ura:
 		Cats.spawn_in(self, 8)
 	if not ura and not cat_night and not Amane.fate(Amane.FRIEND) in ["injured", "hidden"]:
@@ -332,8 +333,26 @@ func _on_minute(m: int) -> void:
 	_apply_light()
 	if not ura:
 		Audio.play_music(Week.music_now(), 2.5)
+	update_ambience()
 	if m >= Clock.END_MIN and is_inside_tree():
 		end_day()
+
+
+## The town's sound bed (tools/gen_ambience_suzunari.py): sparrows by day, crows and frogs at Omagatoki, frogs and
+## bell crickets at night, the rain when Amane cries. Ura-Suzunari has none: only its festival music.
+func update_ambience() -> void:
+	if ura:
+		Audio.play_ambience("")
+		return
+	var m := Clock.minute()
+	var amb := "amb_suzunari_day"
+	if float(Amane.st()["rain"]) > 0.45:
+		amb = "amb_rain"
+	elif cat_night or m >= Clock.NIGHT:
+		amb = "amb_suzunari_night"
+	elif m >= Clock.DUSK - 30:
+		amb = "amb_suzunari_dusk"
+	Audio.play_ambience(amb, -10.0 if amb != "amb_rain" else -8.0)
 
 
 func _apply_light() -> void:
@@ -416,7 +435,16 @@ func _thousandth_step() -> void:
 func nearest_walkable(p: Vector3) -> Vector3:
 	var map := get_world_3d().navigation_map
 	if NavigationServer3D.map_get_iteration_id(map) > 0:
-		return NavigationServer3D.map_get_closest_point(map, p)
+		var r := NavigationServer3D.map_get_closest_point(map, p)
+		if r.y > 1.5 and p.y < 1.5:
+			# The baked navmesh also covers flat house tops: a street query must never land on a roof.
+			for dist in [2.0, 3.5, 5.0, 7.0]:
+				for k in 8:
+					var q: Vector3 = p + Vector3.FORWARD.rotated(Vector3.UP, k * PI / 4.0) * float(dist)
+					var r2 := NavigationServer3D.map_get_closest_point(map, Vector3(q.x, 0.0, q.z))
+					if r2.y < 1.0:
+						return r2
+		return r
 	return p
 
 
@@ -593,6 +621,7 @@ func _build_ura() -> void:
 			t.enabled = false
 	for e in u.get("echoes", []):
 		_spawn_echo(e, false)
+	_spawn_hidden(u)
 	var goal: Dictionary = u.get("goals", {}).get(ura_goal, {})
 	if goal.has("tile"):
 		if ura_goal == "rin":
@@ -740,6 +769,22 @@ func _spawn_echo(e: Dictionary, solid: bool) -> void:
 	actors.add_child(n)
 	var t: Array = e.get("tile", [4, 20])
 	n.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.1, 0)
+
+
+## Everyone the cat spirited away waits here (data/ura.json `hidden`): take their hand, walk them down the steps.
+func _spawn_hidden(u: Dictionary) -> void:
+	var spots: Array = u.get("hidden", {}).get("spots", [[20, 8]])
+	var i := 0
+	for who in Amane.st()["fates"]:
+		if Amane.fate(str(who)) != "hidden":
+			continue
+		var n = NPC_SCENE.instantiate()
+		n.set_script(load("res://src/actors/lost_npc.gd"))
+		n.who = str(who)
+		actors.add_child(n)
+		var t: Array = spots[i % spots.size()]
+		n.global_position = builder.center(int(t[0]), int(t[1])) + Vector3(0, 0.1, 0)
+		i += 1
 
 
 ## Rin: a gold bell hanging in the air by itself.
@@ -1018,11 +1063,15 @@ func _build_cat_night() -> void:
 	player.set_meta("speed_mult", float(cat.get("speed", 1.45)))
 	player.set_meta("cat_mode", true)
 	player.collision_mask |= LevelBuilder.LAYER_ROOF  # the roofs are a road tonight
-	var glow = player.get("glow")
-	if glow is OmniLight3D:
-		glow.light_color = Color(0.72, 0.5, 1.0)  # a faint violet halo, so a black cat still reads at night
-		glow.light_energy = maxf(glow.light_energy * 2.2, 2.0)
-		glow.omni_range = maxf(glow.omni_range, 5.0)
+	# A soft violet halo of its own (the player's glow light is driven every frame by the player), so a black cat
+	# still reads against black roofs at night.
+	var halo := OmniLight3D.new()
+	halo.name = "CatHalo"
+	halo.light_color = Color(0.7, 0.55, 1.0)
+	halo.light_energy = 2.2
+	halo.omni_range = 4.5
+	halo.position = Vector3(0, 1.3, 0.6)
+	player.add_child(halo)
 	_cat_spots()
 	_apply_light()
 	_cat_intro.call_deferred()

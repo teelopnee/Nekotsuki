@@ -123,7 +123,7 @@ func entries() -> Array:
 	out.append(_entry("route_" + Amane.route()))
 	for who in a["fates"]:
 		var f := str(a["fates"][who])
-		if f in ["injured", "hidden", "cut"]:
+		if f in ["injured", "hidden", "cut", "rescued"]:
 			out.append(_entry("fate_" + f, {"who": who}))
 	var cats := {}
 	for c in Game.flags.get("cat_night_log", []):

@@ -81,6 +81,8 @@ var _robbed_wait := 0.0
 var _approach_kind := ""   ## they'll come over to you: "partner", "fan", "pity", "confront", "thanks", "smitten"
 var _approach_wait := 0.0
 var _approach_time := 0.0
+var _approach_stuck := 0.0
+var _approach_last := Vector3.ZERO
 var _follow_time := 0.0
 var _follow_kind := ""
 static var _last_approach := -999.0
@@ -201,15 +203,19 @@ func _physics_process(delta: float) -> void:
 				_home = global_position
 		"approach":
 			_approach_time -= delta
-			if _player == null or not is_instance_valid(_player) or _approach_time <= 0.0:
+			var dist := ((_player.global_position - global_position) * Vector3(1, 0, 1)).length() if _player != null and is_instance_valid(_player) else 99.0
+			if dist < 4.5 and _approach_last.distance_to(global_position) < 0.02:
+				_approach_stuck += delta  # blocked by Amane, a companion, a bench...
+			else:
+				_approach_stuck = 0.0
+			_approach_last = global_position
+			if dist >= 99.0 or (_approach_time <= 0.0 and dist >= 4.5):
 				state = "idle"
 				_approach_kind = ""
+			elif _approach_time <= 0.0 or _approach_stuck > 1.2 or dist <= 2.2:
+				_arrive_and_talk()  # close enough (or blocked a few steps away): talk from here
 			else:
-				var to := (_player.global_position - global_position) * Vector3(1, 0, 1)
-				if to.length() > 1.8:
-					move = to.normalized()
-				else:
-					_arrive_and_talk()
+				move = ((_player.global_position - global_position) * Vector3(1, 0, 1)).normalized()
 		"follow":
 			_follow_time -= delta
 			if _player == null or not is_instance_valid(_player) or _follow_time <= 0.0:

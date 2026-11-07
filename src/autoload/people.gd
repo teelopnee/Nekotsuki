@@ -169,6 +169,8 @@ func hides(id: String, m: int = -1) -> bool:
 	if not data.has(id):
 		return false
 	var t := Clock.minute() if m < 0 else m
+	if Amane.fate(full_name(id)) == "hidden":
+		return true  # spirited away: gone until someone brings them back from Ura-Suzunari
 	if id == "amane":
 		if not Amane.st()["met"] or escorting("amane"):
 			return false

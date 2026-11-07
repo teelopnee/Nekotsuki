@@ -10,6 +10,8 @@ var _fails := 0
 var _last: Array = []  # [speaker, text, choices, callback]
 
 
+var _approach_polls := 0
+
 func _process(_delta: float) -> bool:
 	if _wait > 0:
 		_wait -= 1
@@ -35,6 +37,9 @@ func _process(_delta: float) -> bool:
 			_step = 3
 			_wait = 200
 		3:
+			if _approachers[0].state == "approach" and _approach_polls < 600:
+				_approach_polls += 1
+				return false  # still walking over (crowd LOD ticks idle NPCs less often)
 			_approaches_check()
 			print("\nINTERACT-BACK TEST DONE - %d failures" % _fails)
 			quit(_fails)

@@ -114,6 +114,10 @@ func _visit(id: String) -> void:
 	if People.escorting():
 		await hud.say("", People.line(id, "wait_outside") + "\n(You already have company. Another morning.)")
 		return
+	if id != "amane" and Amane.fate(People.full_name(id)) == "hidden":
+		var who := People.short(id)
+		await hud.say("", "The door opens a crack. A tired face, red eyes. \"%s hasn't come home. Not since the night the cats were so loud. The police say it happens, at this time of year.\" The door closes. Somewhere up the hill, a bell doesn't ring." % who)
+		return
 	if id == "amane" and not Amane.st()["met"]:
 		await hud.say("Nekomori Chiyo", "The old shrine keeper looks at you a long time. \"He left at dawn. He said someone would come to Suzunari Gakuen today, and he had to be at the gate.\" A tap of her cane. \"Go on, then.\"")
 		return
@@ -177,6 +181,8 @@ func _ring(id: String) -> void:
 
 ## They step out of the door: their own reaction to being picked up, then walk together or not.
 func _come_out(id: String, how: String) -> void:
+	if id != "amane" and Amane.fate(People.full_name(id)) == "hidden":
+		return  # nobody comes out: they're on the other side
 	var hud := _hud()
 	People.today(id)["out"] = true
 	var key: String = {"wait": "come_out", "rushed": "come_out_rushed", "self": "ring_self", "natural": "come_out"}.get(how, "come_out")

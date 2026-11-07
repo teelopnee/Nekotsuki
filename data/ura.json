@@ -32,6 +32,16 @@
    "objective": "Ura-Suzunari. Look around if you dare - the echoes remember things. Leave down the steps before the second bell."
   }
  },
+ "hidden": {"_doc": "Kamikakushi rescue (Suzunari._spawn_hidden, src/actors/lost_npc.gd): everyone Amane's cat spirited away (fate hidden) waits somewhere in Ura-Suzunari. Take their hand and walk them down the steps before the second bell -> fate 'rescued' (Amane.rescue). Thrown out by the bell = the hand slips. {who} = short name.",
+   "spots": [[20, 8], [40, 39], [16, 51], [45, 38]],
+   "text": "{who} is standing in the red light as if waiting for a bus that stopped running years ago, pale and calm. \"Oh. Asagiri. Is it evening already? It's been evening for a long time.\" {who} doesn't seem to know how long it's been.",
+   "take": "Take {who}'s hand. \"We're going home. Don't let go.\"",
+   "not_yet": "\"Wait here. I'll come back.\"",
+   "taken": "{who}'s hand is cold, then a little warmer. \"Okay,\" says {who}, like a child. \"Don't let go, then.\" Get to the steps before the second bell.",
+   "holding": "{who} is holding on. \"Is it far?\"",
+   "slipped": "The second bell. {who}'s hand slips out of yours like water. When you look back, the red street is empty.",
+   "home": "{who} is back - found on the shrine steps at dawn with no shoes and red dust everywhere, remembering nothing but your hand. Amane saw. He didn't say anything. He went home and cried, and then - Chiyo-san says - he slept for the first time in a week.",
+   "hint": "Mio, at the gate, very quietly: \"The spirited-away wait on the other side of the 999 steps. At Omagatoki, from the top. If you go - hold on, and don't let go before you're down.\""},
  "echoes": [
   {"id": "e1868", "tile": [4, 14], "look": "toru", "label": "An echo: 1868", "speaker": "",
    "text": "A boy of seventeen in an old-fashioned kimono is crouching on the steps with a black-and-white cat. He hooks his little finger round its paw. \"I'll be back before Tanabata next year,\" he says. \"Pinky swear. If I lie, I'll swallow a thousand needles.\" The cat's bell rings. The echo starts again from the beginning.",

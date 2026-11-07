@@ -612,6 +612,7 @@ func apply_stage(who: String, stage: int) -> void:
 			s["fates"][who] = "injured"
 		6:
 			s["fates"][who] = "hidden"
+			s["news"].append(str(Week.ura.get("hidden", {}).get("hint", "")))
 
 
 ## A cat spirit night tonight (docs/GDD.md 4.11)? High jealousy (or tears), a plan still running, Amane not yet
@@ -659,6 +660,23 @@ func cat_outcome(kind: String, morning: String = "") -> void:
 	var log: Array = Game.flags.get("cat_night_log", [])
 	log.append({"day": Clock.day(), "rival": who, "outcome": kind, "stage": int(p["stage"])})
 	Game.flags["cat_night_log"] = log
+	changed.emit()
+
+
+## Senpai walked someone the cat hid back down the thousandth step (Ura-Suzunari): they're home ("rescued"),
+## closer to you, and the plan against them is over. Amane cried - and was relieved.
+func rescue(who: String, news: String = "") -> void:
+	var s := st()
+	s["fates"][who] = "rescued"
+	add_closeness(who, 10)
+	if rival() == who:
+		s["plan"] = {"target": "", "stage": 0, "guarded": false, "warned": false}
+	add("self", 6.0)
+	add("tears", 1.0)
+	s["lore"]["dusk_side"] = true
+	if news != "":
+		s["news"].append(news)
+	Ledger.deed("rescue", who)
 	changed.emit()
 
 
