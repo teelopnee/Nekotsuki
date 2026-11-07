@@ -137,13 +137,56 @@ static func slowmo(tree: SceneTree, scale: float, duration: float) -> void:
 	Engine.time_scale = 1.0
 
 
-static func rumble(weak: float, strong: float, duration: float) -> void:
-	if not bool(Game.settings.get("rumble", true)):
+static func rumble(weak: float, strong: float, duration: float, handheld: bool = false) -> void:
+	if not rumble_on():
 		return
 	for id in Input.get_connected_joypads():
 		Input.start_joy_vibration(id, clampf(weak, 0, 1), clampf(strong, 0, 1), duration)
-	if OS.has_feature("mobile") and Input.get_connected_joypads().is_empty() and strong > 0.5:
-		Input.vibrate_handheld(int(duration * 400.0))
+	# Tablet / phone with no gamepad: the device itself buzzes for big hits, or when asked (countdowns).
+	if OS.has_feature("mobile") and Input.get_connected_joypads().is_empty() and (strong > 0.5 or handheld):
+		Input.vibrate_handheld(maxi(15, int(duration * 400.0)), clampf(maxf(weak, strong), 0.1, 1.0))
+
+
+## Settings "rumble" (pause menu): "on" / "off" (old saves stored a bool).
+static func rumble_on() -> bool:
+	var v = Game.settings.get("rumble", "on")
+	return not (str(v) in ["off", "false"])
+
+
+## Countdown feedback (races): a hyoshigi tick each second, faster and harder in the last three, with a
+## matching pulse on the gamepad (or the tablet itself). kind: start | tick | urgent | win | lose.
+static var feel_log: Array[String] = []  ## last countdown cues (tests read it)
+
+
+static func countdown(kind: String) -> void:
+	feel_log.append(kind)
+	if feel_log.size() > 24:
+		feel_log.pop_front()
+	match kind:
+		"start":
+			Audio.play_sfx("race_go", 0.0, 2.0)
+			rumble(0.5, 0.8, 0.3, true)
+		"tick":
+			Audio.play_sfx("race_tick", 0.02)
+			rumble(0.25, 0.0, 0.06, true)
+		"urgent":
+			Audio.play_sfx("race_tick_urgent", 0.02, 2.0)
+			rumble(0.45, 0.65, 0.14, true)
+		"win":
+			Audio.play_sfx("race_win", 0.0, 1.0)
+			rumble(0.3, 0.5, 0.12, true)
+			_second_pulse(0.18, 0.4, 0.7, 0.18)
+		"lose":
+			Audio.play_sfx("race_lose", 0.0, 1.0)
+			rumble(0.3, 1.0, 0.6, true)
+
+
+static func _second_pulse(delay: float, weak: float, strong: float, duration: float) -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return
+	await tree.create_timer(delay, true, false, true).timeout
+	rumble(weak, strong, duration, true)
 
 
 ## Manga emote (assets/sprites/fx/emote_<kind>.png) bobbing above an actor's head; follows the actor.

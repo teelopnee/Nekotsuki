@@ -737,10 +737,13 @@ func _ura_process(delta: float) -> void:
 	if _ura_bells == 0 and _ura_t >= bell_s:
 		_ura_bells = 1
 		Audio.play_sfx("chime")
+		FX.rumble(0.3, 0.5, 0.4, true)
 		if hud and hud.has_method("toast"):
 			hud.toast(str(Week.ura.get("first_bell", "")), Color(1.0, 0.7, 0.5))
 	elif _ura_bells == 1 and _ura_t >= bell_s * 2.0:
 		_ura_bells = 2
+		Audio.play_sfx("chime", 0.0, 3.0)
+		FX.rumble(0.4, 1.0, 0.8, true)
 		_thrown_out()
 
 
@@ -874,6 +877,8 @@ func start_race(spec: Dictionary) -> bool:
 	var won := false
 	if hud and hud.has_method("toast"):
 		hud.toast(str(spec.get("toast", "RUN!")), Color(1.0, 0.55, 0.4))
+	FX.countdown("start")
+	var last_sec := int(ceil(seconds))
 	while t < seconds:
 		await get_tree().process_frame
 		if not is_inside_tree() or player == null:
@@ -890,11 +895,16 @@ func start_race(spec: Dictionary) -> bool:
 			else:
 				target.global_position = Vector3(p2.x, target.global_position.y, p2.z)
 			spr.set_facing(dir)
-		Week.marker_hint = "  (RUN! %d s)" % int(ceil(seconds - t))
+		var left := int(ceil(seconds - t))
+		Week.marker_hint = "  (RUN! %d s)" % left
+		if left < last_sec and left > 0:
+			last_sec = left
+			FX.countdown("urgent" if left <= 3 else "tick")
 		if player.global_position.distance_to(target.global_position) < 2.4:
 			won = true
 			break
 	Week.marker_hint = ""
+	FX.countdown("win" if won else "lose")
 	if is_instance_valid(target):
 		target.queue_free()
 	return won

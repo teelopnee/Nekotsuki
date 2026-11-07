@@ -249,3 +249,9 @@ Worked through the priority list in order; no new world systems or visual passes
 - Tests: ura_test 30 checks (incl. both race outcomes).
 - Open: Ura still uses the Suzunari map underneath (lore says it IS the same town); the race cat is a sprite, not an
   enemy you can hit; no gamepad rumble or sound cue for the countdown.
+
+## Countdown feel (2026-11-07)
+- Races now sound and feel like a countdown: a taiko hit + clap at the start, a hyoshigi (wooden clapper) tick every
+  second, a faster double clap with a stronger pulse in the last three, a temple bell (win) or a low drum (loss).
+  Gamepads rumble with each tick; on the tablet with no pad the device itself buzzes. Ura's bells ring and rumble too.
+- New setting: Vibration on/off (old saves keep vibrating). ura_test 34 checks (cue order, sounds, setting).

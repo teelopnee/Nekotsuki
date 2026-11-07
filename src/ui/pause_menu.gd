@@ -343,6 +343,7 @@ func _tab_system() -> void:
 	_cycle_setting(v, "NPC follow-ups after you act", "followups", ["sometimes", "often", "rare"])
 	_cycle_setting(v, "Tips", "tips", ["on", "off"])
 	_cycle_setting(v, "Tuck the status panel away when calm", "hud_fade", ["on", "off"])
+	_cycle_setting(v, "Vibration (gamepad, or the tablet itself in countdowns)", "rumble", ["on", "off"])
 	var again := Button.new()
 	again.text = "Show all tips again"
 	again.alignment = HORIZONTAL_ALIGNMENT_LEFT

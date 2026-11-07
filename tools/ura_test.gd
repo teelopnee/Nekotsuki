@@ -9,6 +9,7 @@ var _step := 0
 var _wait := 0
 var fails := 0
 var _day0 := 0
+var _tries := 0
 
 
 func _check(ok: bool, what: String) -> void:
@@ -147,7 +148,31 @@ func _process(_d: float) -> bool:
 				"fail": {"say": "It got away.", "fx": {"flag": "race_lost"}}})
 			_wait = 120
 		7:
+			_close_all(hud)
 			_check(bool(game.flags.get("race_lost", false)) and not game.flags.has("race_won2"), "the cat gets away if you don't run")
+			# Countdown feel: a race you stand still in ticks, goes urgent in the last seconds, and ends in a loss cue.
+			var fx_script = load("res://src/core/fx.gd")
+			fx_script.feel_log.clear()
+			lvl.player.global_position = lvl.builder.center(27, 47)
+			week.race({"kind": "lantern", "to": [38, 3], "seconds": 4.5, "exact": true, "ok": {"say": "-", "fx": {}},
+				"fail": {"say": "-", "fx": {}}})
+			_wait = 30
+		8:
+			var log: Array = load("res://src/core/fx.gd").feel_log
+			if (log.is_empty() or not log.back() in ["win", "lose"]) and _tries < 2000:
+				_tries += 1
+				return false  # the countdown is still running
+			_close_all(hud)
+			_check(log.has("start") and log.has("tick") and log.has("urgent") and log.back() == "lose",
+				"countdown: go, ticks, urgent ticks, loss cue %s" % str(log))
+			var sfx_ok := true
+			for n in ["race_tick", "race_tick_urgent", "race_go", "race_win", "race_lose"]:
+				sfx_ok = sfx_ok and ResourceLoader.exists("res://assets/audio/sfx/%s.wav" % n)
+			_check(sfx_ok, "countdown sounds exist")
+			game.settings["rumble"] = "off"
+			_check(not load("res://src/core/fx.gd").rumble_on(), "vibration can be switched off")
+			game.settings["rumble"] = true
+			_check(load("res://src/core/fx.gd").rumble_on(), "old saves (rumble = true) still vibrate")
 			print("ura_test: %d failure(s)" % fails)
 			quit(fails)
 	_step += 1

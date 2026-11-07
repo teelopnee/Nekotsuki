@@ -173,7 +173,10 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
 - Races (`Week.race(spec)`, fx `race`; `Suzunari.start_race`): a scene you have to run - kind `cat` (the two-tailed
   cat runs off along open street, catch it within 2.4 m) or `lantern` (reach a lantern at `to`); `seconds` (at least
   distance/4.5 + 6 unless `exact`), countdown on the objective line, then `ok` / `fail` {say, fx}. Used by the relay
-  (week 7) and the hill on the 13th (week 10).
+  (week 7) and the hill on the 13th (week 10). Feel: `FX.countdown(start|tick|urgent|win|lose)` = hyoshigi / taiko /
+  bell SFX (`tools/gen_race_sfx.py` -> `assets/audio/sfx/race_*.wav`) + `FX.rumble(..., handheld)` on every gamepad,
+  or the tablet itself (`Input.vibrate_handheld`) when no pad is connected; last 3 s = double clap + stronger pulse.
+  Ura's bells also ring + rumble. Settings "Vibration" (`Game.settings.rumble` "on"/"off", `FX.rumble_on()`).
 - Story flow: `Week.marker()` = place of the next pending beat (lantern `StoryMarker` + `marker_hint` "(NE 85 m)" on
   the objective line); missed beats carry over one day (`_candidates`, `"carry": false` to stop it); weekends and
   holidays open Aunt Haruka's menu at home before noon (`data/weekend.json`, `weekend_menu`: shop / fishing / study /
