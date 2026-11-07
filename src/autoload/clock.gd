@@ -61,6 +61,10 @@ func clock_text() -> String:
 	return "%02d:%02d" % [minute() / 60, minute() % 60]
 
 
+func time_text(m: int) -> String:
+	return "%d:%02d" % [m / 60, m % 60]
+
+
 func period() -> String:
 	var p := "Morning"
 	for e in PERIODS:

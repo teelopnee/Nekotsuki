@@ -49,7 +49,7 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   (`data/amane.json stages` 1-6: nightmare, shoes, cats, ties cut, injured, spirited away -> `fates`), blocked by
   `warn()` (Hayate dialogue), the phone "Watch the rooftops" `night_choice()` (chase / name / let_go) or self >= 55;
   Friday night jumps a step. `post()` = Ura board (phone tab). `HayateNPC` (`src/actors/hayate_npc.gd`,
-  `data/hayate.json`): courtyard by day, walks you home after 15:20. `Ledger` autoload writes `user://ledger.json`
+  `data/hayate.json`): courtyard from 8:10 (home before that), after 15:20 walks over and offers to walk you home (People). `Ledger` autoload writes `user://ledger.json`
   every night (`snapshot()`, `read()`). Test: `tools/m3_test.gd`.
 - M4 words & world: map `data/maps/suzunari.txt` is 56x56 (shrine plaza + 999 steps north, school z20-31 with the gate at
   x21-24 z31, Inukai dog shrine x41-54, road z32-33, Rokujizo crossroads, station, shopping street, river + bridge, home,
@@ -129,6 +129,25 @@ built on the ODD-SPACE engine (copied in M0 and being re-themed system by system
   `walk_path` / meta `area` (Rect2: seats are only picked inside the NPC's room). Roof at lunch: picnic sheets ('+',
   4 seats each), students start by the seats nearest the player. Indoor glow threshold 1.35 (roof 1.8) so light hair
   doesn't bloom.
+- Homes & walks (`People` autoload, state `Game.flags["people"]`; `HomeVisits` node = Suzunari `home`, `src/world/home_visits.gd`;
+  `CompanionNPC`): five houses with a door, nameplate and bell (`data/people/<id>.json` profile: `door`, `leave`/`arrive`/
+  `home_leave` minutes, parent, `answer` odds, `fx` per personality: rush / wait / broken promise / pickup / walk, `rumour`
+  (Sato Yui sells it, ¥500), `mio_says` (Mio trades it for 3+2n known lore)). Hayate 7:50 Inukai house (53,22), Hina 7:55
+  above the florist (12,38), Mio 8:12 Kuroe house (52,38), Reiji 7:40 Shirasagi residence (51,50, JPKit style `mansion`),
+  Amane 7:52 Nekomori house (34,4). Morning door: ring (parent or friend answers by tier) / wait (5 min, or to their
+  minute if known) -> `_come_out` -> "walk to school together" -> escort `school` (ends in the schoolyard tiles z20-30
+  x<=39 or at the school door: arrive line + closeness + "same time tomorrow?" promise; broken = toast + fx.broken +
+  "sorry" menu item). Standing near the door at their minute = they come out on their own. After 15:20: "walk you home"
+  (`their_home`, needs closeness 25) or they offer (`my_home`, `NEED_OFFER` 45, Hayate 20 and he walks over himself);
+  close friends then offer to pick you up tomorrow (`pickup_me` -> `at_your_door` on the next morning, `HomeVisits.resume`).
+  Lines: ~30 keys x 5 people (tiered keys `_low/_mid/_high`, `{who, t}` entries = another speaker, `morning_day` by
+  weekday) + Amane's `jealous` section (cut_in / follow / sulk / text / text_boundary / cut_in_reply / join).
+  Amane while you walk with someone: romance = cuts in (answers kind / honest / boundary / take his hand), friend/none =
+  trails + barks + sulks at the gate, ignore = sad texts, boundary = brave text. `People.hides(id, m)` hides the usual
+  body (Hayate before 8:10, spirits via `Town.present`, AmaneNPC before 7:52) while they're home / on the road / with you.
+  `People.menu_items(id)` + `run_item` add "p:" choices to Town.meet / HayateNPC (ask schedule, walk home, buy, trade, sorry).
+  Closeness = Amane `closeness` (Amane: bond_now), so pick-ups feed the weekly rival. Test: `tools/people_test.gd`;
+  shots: `tools/shot_suzunari.gd -- <dir> house_inukai,house_shirasagi,house_kuroe,house_hayase,house_nekomori,pickup_hina`.
 - Tests: `tools/day_test.gd` (day loop, routes, rain, phone, doorstep, next day). Screenshots:
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
   (needs `apt-get install mesa-vulkan-drivers`; `apt-get update` first).

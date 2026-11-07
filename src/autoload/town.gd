@@ -146,6 +146,8 @@ func spirit(id: String) -> Dictionary:
 
 func present(sp: Dictionary, minute: int = -1) -> bool:
 	var m := Clock.minute() if minute < 0 else minute
+	if People.hides(str(sp.get("id", "")), m):
+		return false  # at home, on the road, or walking with you (People autoload)
 	for w in sp.get("hours", []):
 		if m >= int(w[0]) and m < int(w[1]):
 			if sp.has("needs") and not Amane.ok(sp["needs"]):
@@ -161,8 +163,16 @@ func meet(id: String, actor: Node = null) -> void:
 	if sp.is_empty() or h == null:
 		return
 	var s := st()
+	if await People.maybe_offer_home(id, h):
+		return  # a close friend offers to walk you home (their own words)
+	var extras: Array = People.menu_items(id)
 	if (s["today"] as Array).has(id):
-		await h.say(str(sp.name), Amane.fill(_pick(sp.get("again", ["(They nod. Another day, maybe.)"]))))
+		var again := Amane.fill(_pick(sp.get("again", ["(They nod. Another day, maybe.)"])))
+		if extras.is_empty():
+			await h.say(str(sp.name), again)
+		else:
+			extras.append({"id": "bye", "text": "\"See you.\""})
+			await scene(str(sp.name), again, [], "sp_" + id, extras)
 		return
 	(s["today"] as Array).append(id)
 	var met_key := "sp_" + id
@@ -171,14 +181,14 @@ func meet(id: String, actor: Node = null) -> void:
 		codex_changed.emit()
 	if actor and actor.has_method("face_player"):
 		actor.face_player()
-	await scene(str(sp.name), Amane.fill(_pick(sp.get("open", ["..."]))), sp.get("choices", []), met_key)
+	await scene(str(sp.name), Amane.fill(_pick(sp.get("open", ["..."]))), sp.get("choices", []), met_key, extras)
 
 
 ## A one-choice scene: shows `text` with `choices` [{t, say, fx}], answers and applies effects.
 ## Choices already picked before show their answer again but don't re-apply one-off effects.
-func scene(speaker: String, text: String, choices: Array, key: String) -> String:
+func scene(speaker: String, text: String, choices: Array, key: String, extras: Array = []) -> String:
 	var h := _hud()
-	if h == null or choices.is_empty():
+	if h == null or (choices.is_empty() and extras.is_empty()):
 		return ""
 	var picked: Array = st()["picked"].get(key, [])
 	var menu := []
@@ -191,7 +201,11 @@ func scene(speaker: String, text: String, choices: Array, key: String) -> String
 			item["text"] = item["text"] + "  (asked)"
 			item["scale"] = 0.92
 		menu.append(item)
+	menu.append_array(extras)
 	var pick: String = await h.say(speaker, text, menu)
+	if pick.begins_with("p:"):
+		await People.run_item(pick, h)  # schedules, walking home, Yui's rumours (People autoload)
+		return pick
 	if not pick.is_valid_int():
 		return ""
 	var i := int(pick)

@@ -227,8 +227,8 @@ func _spirit_scenes(town, clock, hud) -> void:
 				bad.append("%s/%d" % [sp.id, i])
 			total += 1
 			_close_all(hud)
-		town.meet(str(sp.id))  # second time today: short "again" line, no menu
-		if _buttons(hud).size() > 1:
+		town.meet(str(sp.id))  # second time today: short "again" line, no menu (except People's: schedules, walk home)
+		if _buttons(hud).size() > 1 + root.get_node("People").menu_items(str(sp.id)).size():
 			bad.append("%s again" % sp.id)
 		_close_all(hud)
 	_check(bad.is_empty() and total >= 40, "every spirit choice plays (%d) %s" % [total, str(bad)])

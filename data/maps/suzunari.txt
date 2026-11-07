@@ -18,8 +18,8 @@
 #^^hllh^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 #^^cllc^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 #^^clAc^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
-#.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb______________#
-#bbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb______Y_______#
+#.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb___________bbb#
+#bbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb______Y____bbb#
 #bbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb__h_______h___#
 #bbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb______T_______#
 #bbb..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb______________#
@@ -34,8 +34,8 @@
 #,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#
 #.......V...L.....V.....i.....L.......j.....oooooo.....#
 #.bbbbbb..................................zzz..........#
-#.bbbbbb.n.bbbbb.bbbbb.bbbbbb.bbbbb.bbbb..zzz..........#
-#.bbbbbb...bbbbb.bbbbb.bbbbbb.bbbbb.bbbb...............#
+#.bbbbbb.n.bbbbb.bbbbb.bbbbbb.bbbbb.bbbb..zzz......bbbb#
+#.bbbbbb...bbbbb.bbbbb.bbbbbb.bbbbb.bbbb...........bbbb#
 #............k.....w..N..k.....N.....k........u.u.u....#
 #..w..w........L...........L.......L...................#
 #..........bbbbbb.bbbbb.bbbbb.bbbbbb.bbb.....n......n..#

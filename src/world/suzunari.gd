@@ -11,6 +11,7 @@ const GIVEN := ["Haruto", "Sota", "Yuto", "Ren", "Riku", "Kaito", "Yui", "Hina",
 	"Koharu", "Mio", "Yuna", "Taiga", "Shun", "Nanami", "Akari", "Kenta"]
 
 var amane: AmaneNPC
+var home: HomeVisits  ## the five houses: doors, morning pick-ups, walking people home
 var overlay: Node
 var _rain: Array[CPUParticles3D] = []
 var _storm_t := 0.0
@@ -124,6 +125,12 @@ func _post_build() -> void:
 		h.spot = h.global_position
 	Town.spawn_in(self)
 	_school_doors()
+	if str(Amane.st()["pending"]) == "doorstep":
+		People.today("amane")["out"] = true  # he's on Senpai's doorstep, not at home
+	home = HomeVisits.new()
+	home.name = "HomeVisits"
+	add_child(home)
+	home.setup(self)
 	_morning.call_deferred()
 
 
@@ -146,6 +153,8 @@ func _school_doors() -> void:
 
 
 func enter_school(door: Array) -> void:
+	if home and People.escorting() and str(People.escort().get("mode", "")) == "school":
+		await home.finish()  # walked someone to school: they say goodbye at the door
 	Game.flags["school_door"] = door
 	Game.flags["school_floor"] = "1f"
 	Game.location_id = "school"
@@ -165,6 +174,8 @@ func _morning() -> void:
 		Emotion.express(amane, "cry", 3.0)
 	elif Clock.day() == 1 and Clock.minute() <= Clock.START_MIN + 1 and hud:
 		await hud.say("", "Suzunari. Day one of the spring term. It has rained every single day since you arrived.\nThe school is up the hill, across the river and through the shopping street.")
+	if home:
+		await home.resume()
 
 
 ## Rain the town's mood: two particle systems from Level's weather builder, scaled by Amane's tears.

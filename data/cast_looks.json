@@ -377,5 +377,26 @@
    "scarf": "#e88a5a",
    "cap": "#b8b4bc"
   }
+ },
+ "yui": {
+  "variant": "s08",
+  "colors": {
+   "skin": "#f6cfae",
+   "hair": "#1e1a26",
+   "top": "#eceaf0",
+   "pants": "#3a3f6a",
+   "boots": "#2a2230",
+   "accent": "#3a4a8a",
+   "coat": "#2c3557",
+   "gear": "#4a4a52",
+   "glow": "#ffd23e",
+   "eyewhite": "#f4f4f0",
+   "iris": "#40344a",
+   "dark": "#1a1030",
+   "scarf": "#d23a4a",
+   "cap": "#1e1a26",
+   "gloves": "#2a2236",
+   "flash": "#fff3c4"
+  }
  }
 }

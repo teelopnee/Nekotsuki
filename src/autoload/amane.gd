@@ -343,7 +343,12 @@ func answer(topic: String, idx: int) -> Dictionary:
 
 func send(mood: String) -> void:
 	var s := st()
-	var t := _pick(data.get("phone", {}).get(mood, []))
+	send_text(_pick(data.get("phone", {}).get(mood, [])))
+
+
+## Push one message from Amane to the Rinrin phone.
+func send_text(t: String) -> void:
+	var s := st()
 	if t == "":
 		return
 	var msgs: Array = s["messages"]

@@ -1,0 +1,478 @@
+{
+ "profile": {
+  "id": "amane", "name": "Amane", "short": "Amane", "look": "amane", "class": "1-A",
+  "home": "the Nekomori house beside Suzune Shrine", "door": [34, 4], "leave": 472, "arrive": 482, "home_leave": 1110,
+  "parent": "Nekomori Chiyo", "parent_role": "his grandmother, keeper of Suzune Shrine",
+  "nature": "Shy, tearful, clingy, quietly brilliant about everything to do with Senpai and hopeless at everything else. Talks to nobody but Senpai. Terrified of being left. Leaves home at 7:52 every morning to 'happen' to be on Senpai's road. Cries, and the town rains.",
+  "fx": {"rush": 2, "wait": 3, "broken": 0, "pickup": 8, "walk": 6},
+  "answer": {"parent": 0.5, "self_high": 0.9},
+  "rumour": "The crybaby from 1-A? He leaves the cat shrine at 7:52 and then... honestly? He's wherever YOU are by 7:55. Everyone knows that. Free of charge.",
+  "mio_says": "The cat shrine boy leaves at eight minutes to eight. His grandmother rings the bell after him three times. Fufu. So he always comes home.",
+  "likes": ["Senpai", "small boxes", "raw fish", "the sound of crumpled paper", "being called by name"], "dislikes": ["being left", "deep water", "people who stand too close to Senpai", "goodbyes"]
+ },
+ "lines": {
+  "wait_outside": [
+   "Behind the shoji someone is very quietly practising: \"Good morning, Senpai. Good morning, Senpai. G-good...\"",
+   "Three cats sit in a row on the step of the Nekomori house, watching you. The middle one yawns.",
+   "Inside, a cane taps twice on wood. Chiyo's voice: \"Your bento is lopsided again.\" Amane's: \"It's... it's meant to be a cat.\"",
+   "The shrine bell rings once by itself. Inside, someone gasps and drops something.",
+   "You hear a small thump, like a boy falling over his own school bag.",
+   "Through a gap in the shoji you glimpse a black hood moving back and forth, back and forth. Pacing.",
+   "Chiyo, inside: \"Stop looking at the clock. He walks the river road. You know which minute.\" \"I-I wasn't looking at the clock.\"",
+   "The smell of slightly burnt tamagoyaki drifts out of the kitchen window.",
+   "A paper is crumpled inside. Then an excited little noise. Then a stern \"Amane.\"",
+   "Very softly, from behind the door: \"...Is that Senpai's footsteps? It's Senpai's footsteps.\""
+  ],
+  "ring_self_low": [
+   "The door flies open and Amane stares at you, frozen, with half a rice ball in his mouth. His ears pop out. \"S-S-Senpai?!\"",
+   "\"Senpai... came to my house? Why? Did I do something? I didn't do anything. I don't think.\"",
+   "Amane peeks round the door, only his eyes and the tips of his ears showing. \"...Good morning.\"",
+   "\"Senpai! W-wait, I'm not ready, my hood's on backwards, don't look -\" The door slams. Opens again. \"Good morning.\"",
+   "\"You rang the bell. For me. Nobody rings the bell for me.\" His eyes are already wet. \"I'm not crying. It's - it's the incense.\"",
+   "\"H-how did Senpai know where I - oh. It's the only house up here. Right. Yes.\"",
+   "He clutches the door frame with both sleeves. \"Senpai came to get me. Senpai came to get ME.\"",
+   "\"Good morning, Senpai.\" Perfect, like he practised it. Then: \"...I practised it.\"",
+   "\"Is something wrong? Is Senpai hurt? Is the shop - is your aunt - \" He's halfway to tears. \"Oh. You just... came.\"",
+   "Amane opens the door, sees you, and closes it again. From behind it: \"Grandma. Grandma, he's here. What do I do.\""
+  ],
+  "ring_self_mid": [
+   "\"Senpai!\" His ears shoot up so fast his hood falls back. \"You came again!\"",
+   "\"Good morning, Senpai. I made two bento. One is... it's a coincidence.\"",
+   "Amane comes out already holding your sleeve. \"I heard you at the torii. I always hear you.\"",
+   "\"Senpai's here. Senpai's here. Okay. I'm okay. Let's go.\"",
+   "\"You came at seven fifty! I would have come to you at seven fifty-five. This is better. This is so much better.\"",
+   "\"Wait, wait, let me look at you.\" He studies your face. \"You slept badly. Was it raining in your dream too?\"",
+   "\"Grandma said 'your Senpai is here' and I fell down the stairs. I'm fine. My ears are fine.\"",
+   "\"Good morning!\" Too loud. He covers his mouth. \"...Good morning.\" Normal. \"Hi.\"",
+   "\"Senpai, I'll carry your bag. No? Then I'll carry mine closer to yours.\"",
+   "\"Every time the bell rings I hope it's you. It's usually the wind. Today it's you.\""
+  ],
+  "ring_self_high": [
+   "Amane opens the door and simply walks into you, forehead against your shoulder, for one second. \"...Good morning.\"",
+   "\"Senpai.\" He doesn't cry. He just smiles so much the cats on the step look up. \"Let's go together.\"",
+   "\"I was waiting by the door. I'm always waiting by the door. Today you were on the other side.\"",
+   "\"You came to get me again. I'm going to remember this. I remember everything, you know. Everything.\"",
+   "\"Good morning, Senpai. I'm not scared today. Not even a little. Because you came.\"",
+   "\"Senpai, your hand is cold. Here.\" He tucks his sleeve-covered hand against yours for warmth, then lets go, pink. \"S-sorry.\"",
+   "\"Grandma said I'm allowed to walk slowly today. She says I've been running after you for too long.\"",
+   "\"I had a dream we walked to school a hundred times. This is a hundred and one.\"",
+   "\"Look, the sky's clear. It's because of you. It's always because of you.\"",
+   "He holds out a little crumpled-paper charm. \"For Senpai. It's lucky. Probably. I crumpled it myself.\""
+  ],
+  "ring_parent": [
+   "A tiny old woman in faded miko robes opens the door, a cane with a bell in her hand. \"Asagiri.\" She looks at you for a long moment. \"So. You came up the hill.\"",
+   "Chiyo taps her cane once. \"He's been dressed since six. He tried four hoods. Wait.\" She turns. \"Amane. Your Senpai.\" Something crashes upstairs.",
+   "\"Good morning.\" Chiyo bows exactly as low as you. \"A cat that is called comes when it pleases. A boy who is called comes at once. Watch.\"",
+   "\"You came to fetch him.\" The old woman's eyes narrow, then soften. \"Good. Don't make it a thing you do once.\"",
+   "\"He made a bento. It is a disaster. Eat it anyway.\" She calls into the house without raising her voice. He hears.",
+   "Chiyo feeds a cat a fish head while you wait. \"Even a stone gets warm if you sit on it three years. Sit with him, boy.\"",
+   "\"Asagiri. Your grandfather stood on this step once. He also came to fetch someone.\" She doesn't explain. \"Amane!\"",
+   "\"He is not ready. He is never ready for you. He is ready for everything else.\" A tap of the cane. \"Amane.\"",
+   "\"Don't stand under the eaves, the swallows will bless your head.\" A dry smile. \"Wait by the cats.\"",
+   "The old shrine keeper looks past you at the town below. \"The rain stopped when you rang. Did you notice?\"",
+   "\"Morning. If he cries, it is not your fault. If he cries every day, it is.\" She goes in to fetch him.",
+   "\"Fall seven times, stand up eight. That boy has fallen down the stairs four times since he heard you. Wait for the eighth.\"",
+   "\"Ah. Asagiri-do's boy.\" She leans on her cane. \"Do you know what a promise is, up here? It's a rope. Don't tie one you'll cut.\"",
+   "\"He leaves at eight minutes to eight. Every day. To be on your road. You've saved him the walk.\" She almost smiles.",
+   "Chiyo rings the little bell on her cane three times. \"That's so he comes home. Now go and get him.\"",
+   "\"Good morning. The cats told me you were coming. Don't laugh. They tell me everything.\""
+  ],
+  "parent_about_you": [
+   "\"For nine years he waited on the shrine steps every Tanabata. This year he doesn't have to. Remember that.\"",
+   "\"He had no friends. Not one, since he was six. He talks about you at dinner until the rice is cold.\"",
+   "\"He fears being left more than anything. More than water. More than the dark. Do with that what an honest man would.\"",
+   "\"If you can't love him, be kind and clear. Clear is a kindness too. Muddy water drowns people.\"",
+   "\"The bell on his neck is older than this house. Don't ever ask him to take it off. Not for any reason.\"",
+   "\"I know who you are, boy. I knew the day you got off the train. Don't ask me how. Ask him, one day.\"",
+   "\"He cooks for you every morning. He burns everything. Tell him it's good. It is good. It's burnt with love.\"",
+   "\"Thank you for climbing the hill. Most people stop at the torii.\""
+  ],
+  "parent_left": [
+   "\"He left at eight minutes to eight. You know where he went. Down to your road. You'll find him behind a pillar.\"",
+   "\"Gone. He ran when he heard the shop shutters open below. He hears them from here. Don't ask.\"",
+   "\"You missed each other. He went down the steps, you came up the road. Like two cats circling a fish.\"",
+   "\"He's gone ahead. He'll be by the sweet shop looking surprised to see you. Act surprised back. It's kinder.\"",
+   "\"He left his bento for you on the step. He said if you came, give it. If you didn't, give it to the cats. Here.\"",
+   "\"Not here. He's been out since half past seven today. He said he 'had a feeling'. He always has a feeling.\""
+  ],
+  "parent_evening": [
+   "\"He's curled up in the box room. He does that when he's thinking. Or when he's happy. Hard to tell with cats.\"",
+   "\"He's on the shrine steps at dusk again. Waiting. Go and sit with him, if you want. Or don't, and tell him clearly.\"",
+   "\"Evening. He's doing homework. He's drawing you in the margins. Don't tell him I said so.\"",
+   "\"It is Omagatoki, boy. This shrine sees both towns at this hour. Go home before the bell stops.\"",
+   "\"He came home soaked and smiling. That's a new one. Whatever you did, it was the right kind of thing.\"",
+   "\"He's asleep with his phone on his chest. Waiting for a message. Send one, before it gets late.\""
+  ],
+  "come_out_low": [
+   "Amane steps out, hugging his bag. \"W-we're really walking together? Like... the whole way?\"",
+   "\"I'll walk behind you. No - beside you? Is beside allowed? I'll walk beside you. Sorry.\"",
+   "\"Senpai, if I talk too much, tell me. I don't talk to anyone else, so I don't know how much is too much.\"",
+   "He hesitates on the step, then jumps down to your level. His bell rings. \"...Ready.\"",
+   "\"Grandma says I should say thank you. Th-thank you, Senpai. For coming. For me.\"",
+   "\"I know the way to your road. I mean - the way to school. The way to school.\"",
+   "\"Is it okay if I hold your sleeve on the stairs? There are a lot of stairs. Nine hundred and ninety-nine.\"",
+   "\"It stopped raining when you came. I just thought you should know.\""
+  ],
+  "come_out_mid": [
+   "Amane slides out of the door and attaches to your sleeve. \"Good morning! Let's go! Slowly!\"",
+   "\"I made tamagoyaki. It's black on one side. That's the side with feelings.\"",
+   "\"Senpai, Senpai, Senpai. Okay. I said it three times. That's so I don't forget I'm awake.\"",
+   "\"Let's go down the steps. I'll count them for you. You always lose count at four hundred.\"",
+   "He's beaming so much his ears won't go back in. \"Don't look at them. They're happy. They're stupid.\"",
+   "\"Every morning I walk down alone and hope I'll see you at the bottom. Today you're at the top.\"",
+   "\"Can we stop at the cats? Just for a second? They want to see you. I want them to see you with me.\"",
+   "\"Good morning, Senpai. I'm not crying. The sky isn't crying. Nobody's crying.\""
+  ],
+  "come_out_high": [
+   "Amane comes out and takes your hand through his sleeve as if it's the most natural thing in the world. Then he realises. \"Oh. Um. Can I...?\"",
+   "\"Senpai.\" He says it like a whole sentence. \"Let's go.\"",
+   "\"I woke up and the sky was blue. I knew you'd come. Blue sky means you.\"",
+   "\"I'm not scared of the stairs today. I'm not scared of anything today. Except you letting go. Don't let go.\"",
+   "\"Good morning, my Senpai.\" He goes red to the ears. \"I - Grandma said I could say 'my'. She didn't. I'm saying it.\"",
+   "\"You know what I like? You don't walk ahead anymore. You wait. I noticed. I notice everything.\"",
+   "\"Let's be slow today. Slow like old people. Like a hundred years.\"",
+   "\"I said good morning to the cats, to the bell, to Grandma, and now to you. You're the last one. The best one.\""
+  ],
+  "come_out_rushed": [
+   "Amane trips out of the door with one shoe on. \"S-Senpai rang the BELL. Grandma said so. I fell off the futon!\"",
+   "\"You're early! Senpai is early! Did something happen? Are you okay? Is it a dream?\"",
+   "\"My hood's inside out. Don't look. Look at the cats.\"",
+   "\"I-I haven't finished the bento! It's only half a cat! It's a half cat!\"",
+   "He bursts out, then stops dead in front of you, ears trembling. \"...You came early. For me. Early.\"",
+   "\"Grandma pushed me. Literally. With the cane. I'm here.\"",
+   "\"I was practising what to say and you rang in the middle. Now I've forgotten. Good morning? Good morning.\"",
+   "\"You rang the bell! You rang the bell! Okay. Okay. Calm. Hi.\""
+  ],
+  "come_out_rain": [
+   "Amane comes out under a huge old umbrella. \"I'm sorry about the rain. It's... I know it's me. I'm trying.\"",
+   "\"It's raining because I was sad last night. Now you're here so it'll stop. Probably. Soon.\"",
+   "\"Share my umbrella? It was Grandpa's. It's big enough for two people and three cats.\"",
+   "\"I'm not crying. It's just raining.\" He wipes his eyes with his sleeve. \"See? Raining.\"",
+   "\"Don't step in the puddles. Cats hate puddles. I'm not a cat. I hate puddles.\""
+  ],
+  "pickup_accept": [
+   "\"Together. Okay. Together.\" He tests the word like a new sweet.",
+   "\"Yes! I'll walk on your left. The heart side. That's - that's just a side.\"",
+   "\"Let's go! I'll show you the shortcut. There isn't one. I just want to walk somewhere with you.\"",
+   "\"Senpai's walking me to school. Senpai's walking ME to school. I need to tell the cats.\"",
+   "\"I'll hold your sleeve. Just the sleeve. Just a corner of the sleeve.\"",
+   "\"Let's go before Grandma says something embarrassing.\" From inside: \"I heard that.\""
+  ],
+  "pickup_decline": [
+   "\"Oh.\" His ears go flat. \"You were just... passing. Up nine hundred and ninety-nine steps. Passing.\" Somewhere a drizzle starts.",
+   "\"That's okay! That's okay. I'll walk behind you. Like always. It's fine.\"",
+   "\"S-sorry. I thought... never mind what I thought. See you at school, Senpai.\"",
+   "He nods too many times. \"Okay. Yes. Okay.\" The cats look at you reproachfully.",
+   "\"Then why did you... no. I'm not asking. I'm not crying. It's just raining.\""
+  ],
+  "walk": [
+   "\"Senpai, did you know there are nine hundred and ninety-nine steps? I counted them every morning for six years. Sometimes there's a thousandth one. Don't step on it.\"",
+   "\"The black cat on the wall is called Kuro. The other black cat is called Kuro too. They don't mind.\"",
+   "\"I tried to make onigiri shaped like you. It looked like a potato. A cute potato.\"",
+   "\"Your favourite drink is the cold milk coffee from the machine by the bridge. ...I just noticed. Once. Many times.\"",
+   "\"Grandma says I'm bad at living. I'm good at waiting. Is that a kind of living?\"",
+   "\"I like small boxes. Don't laugh. You put yourself in a box and the whole world becomes the right size.\"",
+   "\"I saw a ghost at the crossroads this morning. A nice one. She was waiting for a bus that doesn't run anymore.\"",
+   "\"Senpai's hair has a petal in it. Can I... there. I'm keeping it. Is that weird? I'm keeping it.\"",
+   "\"If you crumple paper near me I'll get excited. I can't help it. Please don't test it. ...Please test it.\"",
+   "\"Your shoelace is the same as yesterday. You tie it in a bow with the left loop first. I just know things.\"",
+   "\"Do you like raw fish? I can eat a kilo. Grandma says that's not normal. Grandma says a lot of things.\"",
+   "\"The bell on my neck is called Rin. She's very old. She rings when I'm happy. Listen.\" Ring. \"See?\"",
+   "\"I don't like deep water. Or the sea at night. Or the river after rain. Or goodbyes. That's the whole list.\"",
+   "\"The class rep in 1-A said good morning to me. I panicked and bowed at the wall. It was a good wall.\"",
+   "\"Your aunt's shop smells like sweet beans. I go past it on purpose. Every day. Twice.\"",
+   "\"Do you remember the festival? Any festival? ...Never mind. I remember enough for both of us.\"",
+   "\"I'm good at maths. I'm bad at talking. I'm very bad at being away from you. That's not a subject.\"",
+   "\"The torii at the bottom of the steps is new. The old one fell in a storm a long time ago. I liked the old one.\"",
+   "\"If you hear a bell in the night, it's not me. Probably. Maybe. Don't come out to check.\"",
+   "\"I wrote your name in my notebook. Just once. Okay, a page. A page is once.\"",
+   "\"The crows are loud today. They're arguing about who gets to follow you. I told them me.\"",
+   "\"I don't have friends at school. That's okay. I have a Senpai.\"",
+   "\"Can I tell you a secret? I'm scared of the shrine at night. Even though I live there. It's very big when it's dark.\"",
+   "\"Your footsteps sound like a song. Two short, one long. I'd know them anywhere.\"",
+   "\"When I was small I told everyone I used to be a cat. They stopped playing with me. I'm not telling you that. Forget it.\"",
+   "\"Do you think Tanabata is real? The two stars that meet once a year? I think once a year is too little.\"",
+   "\"I've never been late to school. I've also never been on time. I'm always exactly when you are.\"",
+   "\"The cats at the shrine bring me presents. Mostly lizards. I say thank you. Manners are important.\"",
+   "\"Senpai looks tired. Did you dream about rain? I dreamed about rain. I hope it was the same rain.\"",
+   "\"Hold still - a ladybug. On your shoulder. That's lucky. You're lucky. I'm lucky. Because I'm here.\"",
+   "\"I'm going to try to talk to someone in my class today. One sentence. For you. So you don't worry.\"",
+   "\"If you want to walk faster, you can. I'll keep up. I always keep up.\"",
+   "\"I like when you say my name. You don't say it very much. That's okay. I like when you do.\"",
+   "\"The rain stopped. Look, a rainbow over the river. I didn't do that one. I think that one's yours.\"",
+   "\"The vending machine at the crossroads has a cat on it every morning. She's the boss of the street.\"",
+   "\"Grandma says I'm too attached. I'm the right amount of attached. Everyone else is not attached enough.\"",
+   "\"I'm learning to cook. Tomorrow's bento will be less black. Thirty percent less.\"",
+   "\"I like this road. On this road nobody else exists. Just the road, the cats and Senpai.\"",
+   "\"You can tell me if I'm annoying. You won't. But you can.\"",
+   "\"Every morning I say 'please let today be a good day'. Today I don't need to say it.\""
+  ],
+  "walk_close": [
+   "\"I'm scared you'll leave. Not today. Some day. Everybody leaves the Nekomori house some day. My mother did. My father did.\"",
+   "\"Sometimes I don't know if I like Senpai, or if someone inside me liked someone a long time ago. ...I think it's me. I hope it's me.\"",
+   "\"I have bad dreams when I'm jealous. I'm running on roofs. I'm very fast. I wake up tired and the town is wet.\"",
+   "\"Don't take my bell off. Even if I ask. Even if I'm asleep. Promise?\"",
+   "\"I waited on the shrine steps every Tanabata for nine years. I don't know who I was waiting for. Then you came, and I knew.\"",
+   "\"If you ever don't want me around, say it clearly. Please. I can survive clear. I can't survive maybe.\"",
+   "\"Grandma says the rain stops when I'm happy. It's been sunny a lot since you came. I wanted you to know whose fault that is.\"",
+   "\"When you're with other people I feel like a box with the lid closing. I'm trying to keep it open. I'm trying really hard.\"",
+   "\"I can see ghosts. I always could. I've never told anyone who believed me. Do you believe me? ...You do. Your face does.\"",
+   "\"I'm going to try to be a person who can stand on his own. Not because I don't need you. So that when I need you it's nice, not scary.\"",
+   "\"Senpai's hand is warm. I'll remember. I remember everything. That's my curse. Today it's not a curse.\"",
+   "\"I know you don't remember things. That's okay. I can remember them for you. Just don't forget today.\"",
+   "\"I think I was waiting for you a very long time. Longer than my life. Is that strange? It's strange. It's true.\"",
+   "\"If you say 'I'm home' one day, at the shrine... no. Never mind. One day.\"",
+   "\"Thank you for coming to get me. I'm going to be okay today. Really okay.\""
+  ],
+  "walk_rain": [
+   "\"I'm sorry about the rain. I'm sorry. It's me. I know it's me.\"",
+   "\"Walk under my umbrella. I'll get wet. It's fair. It's my rain.\"",
+   "\"The river is loud. I don't like it loud. Can we take the road by the shops?\"",
+   "\"If I hold your sleeve, maybe it'll stop. Let's see.\" It lightens, a little.",
+   "\"Cats hate rain and I hate rain and the rain is me. That's a lot of hate for one boy.\"",
+   "\"Look, the rain's getting softer. That's because you're here. Stay here.\""
+  ],
+  "arrive": [
+   "\"We're here. Together. I'm going to think about this all through maths.\"",
+   "\"Senpai, see you at lunch? I'll be at the rooftop door. I'm always at the rooftop door.\"",
+   "\"Thank you for walking with me.\" He bows so deep his hood falls over his face. \"Thank you.\"",
+   "\"I don't want to go to my classroom. It's very far from yours. Two floors. Two whole floors.\"",
+   "\"Can I walk you to your shoe locker? I'll go to mine after. Mine's lonely anyway.\"",
+   "He lets go of your sleeve one finger at a time. \"...See you, Senpai.\"",
+   "\"Same time tomorrow? Please? I'll practise my good morning.\"",
+   "\"The sky's clear. Look. That's today. Thank you for today.\""
+  ],
+  "ask_tell": [
+   "\"When I leave? Eight minutes to eight. I go down the steps and... and I walk your road. Ah. I said that out loud.\"",
+   "\"Seven fifty-two. Every day. You can come. You can come any day. You can come every day.\"",
+   "\"Senpai wants to know when I leave home? Seven fifty-two!\" He's so happy he nearly cries. \"Ring the bell. Grandma will answer. Don't be scared of Grandma.\"",
+   "\"I leave at seven fifty-two because that's when you pass the bridge. I mean. That's when I leave. Coincidence.\"",
+   "\"Seven fifty-two. If you come, I'll be ready at seven. Just in case.\""
+  ],
+  "ask_refuse": [
+   "\"W-why do you want to know? Are you going to... are you avoiding me? Don't avoid me.\"",
+   "\"My schedule is your schedule. That's the only answer I have.\"",
+   "\"I... I'll tell you when I'm sure you'll come. If I tell you and you don't come, I'll wait at the door all morning.\"",
+   "\"Senpai already knows where I am. I'm behind you. I'm always behind you.\"",
+   "\"I'm scared to say. If I say, then I'll wait. And waiting is the thing I'm worst at. And best at.\"",
+   "\"Ask Grandma. No. Don't ask Grandma. She'll tell you everything.\""
+  ],
+  "home_offer": [
+   "\"Senpai, can I walk you home? I'll walk you to your door and then I'll run up the stairs. All nine hundred and ninety-nine.\"",
+   "\"It's nearly Omagatoki. You shouldn't walk alone. Things look at you. I'll look back at them.\"",
+   "\"I'll walk you home! I know the way. I know the way very well. Too well. Let's go.\"",
+   "\"Let me take you home, Senpai. Please? Just to the noren. I won't go in. I'll just stand there a bit.\"",
+   "\"Can we walk back together? I want to hear the five o'clock song with you.\"",
+   "\"I'll walk you to Asagiri-do. The cats will follow us. It'll be a parade.\""
+  ],
+  "home_accept": [
+   "\"You'll walk me home? All the way up? All the steps?\" His bell rings without him moving.",
+   "\"Yes! Yes. I'll show you Grandma's cats. There are eleven. Twelve on Tuesdays.\"",
+   "\"Senpai's walking me home. I'm going to cry. Happy crying. Look, it's not raining. That's how you know.\"",
+   "\"Okay. But slowly. I want the steps to take a long time.\"",
+   "\"Let's go before you change your mind. You won't. But let's go.\"",
+   "\"I'll hold your sleeve on the stairs. For safety. It's for safety.\""
+  ],
+  "home_refuse": [
+   "\"No - I mean, I want to, but Grandma needs me to sweep the shrine. Tomorrow? Please tomorrow?\"",
+   "\"I-I can't today. I'm going to try to walk home with someone from my class. For practice. For you.\"",
+   "\"If Senpai walks me home I'll never let you leave the shrine. So no. For your sake.\"",
+   "\"Not today. I'm going to sit on the steps a bit. Alone. Grandma says it's good for me.\"",
+   "\"It's okay. I'll follow you home anyway. Just from further away.\"",
+   "\"Not yet. When you say it like you mean it.\""
+  ],
+  "home_walk": [
+   "\"Yuyake Koyake. Every day at five. When I was little I thought it was a song telling only me to go home alone.\"",
+   "\"The light's gold. Senpai's gold. Everything's gold. I'm going to remember this colour.\"",
+   "\"Omagatoki is when the other Suzunari shows through. Don't look at the long shadows. Look at me.\"",
+   "\"The crows are going home. Everyone's going home. Even me. With you.\"",
+   "\"The steps are long. I'm happy they're long.\"",
+   "\"When we get to the shrine, can you say something for me? Not now. Maybe one day. Two words.\"",
+   "\"I'm walking slower on purpose. Is that okay? Okay.\"",
+   "\"The lanterns are coming on. One, two, three. They light up for you. They used to light up for nobody.\"",
+   "\"Grandma will be on the steps. She'll look at you very hard. That means she likes you.\"",
+   "\"I don't want today to end. Can we make it end slower?\"",
+   "\"Senpai, look - the sea's pink. And there's a fishing boat. And there's you. Okay that's the best part.\"",
+   "\"I'm not jealous right now. Not even a little. That's new. It feels light.\"",
+   "\"Can you hear my bell? It's ringing because I'm happy. I'm not moving my neck. It's ringing by itself.\"",
+   "\"If someone calls your name from behind, don't turn round. Turn to me instead.\"",
+   "\"I'll walk you home tomorrow. Then you walk me home the day after. Then me. Then you. Forever.\"",
+   "\"The cats are following us. Eleven. Twelve. It's Tuesday. Twelve.\"",
+   "\"I love - the evening. I love the evening. That's what I was saying.\"",
+   "\"Your aunt's shop is closing. The shutter sound means you're nearly home. I hate that sound. I love that sound.\"",
+   "\"Thank you for walking with me in the dusk. I'm not scared of it now.\"",
+   "\"Hold my sleeve for the last bit. Just the last bit. Please.\""
+  ],
+  "goodbye": [
+   "\"Here. Home.\" He lingers. \"...Okay. Goodnight, Senpai. Message me? Message me.\"",
+   "\"Goodnight.\" He doesn't move. \"Goodnight.\" Still doesn't move. \"I'm going. I'm going.\"",
+   "Amane raises his left hand like a beckoning cat. \"Come back tomorrow. That's what this means.\"",
+   "\"Thank you. I'm going to sleep so well. No bad dreams tonight. Promise.\"",
+   "\"Grandma's waving. Wave back! She'll pretend she wasn't waving.\"",
+   "\"See you tomorrow. Not goodbye. I don't like goodbye. See you tomorrow.\"",
+   "\"Get home safe. I'll watch you down the steps. All of them.\"",
+   "\"Goodnight, Senpai. The rain won't come tonight. I'll make sure.\"",
+   "\"Thank you for bringing me home. Nobody... thank you.\"",
+   "He tugs your sleeve once, lets go, and runs up the last steps. His bell rings all the way."
+  ],
+  "amane_cut_in": [],
+  "offer_pickup": [
+   "\"S-Senpai. Can I come to your house tomorrow morning? To get you? I'll be on time. I'm always on time. For you.\"",
+   "\"Tomorrow, can I wait at your door? Not like a creepy wait. A nice wait. A planned wait.\"",
+   "\"I'll pick you up tomorrow! At the sweet shop! I'll bring bento! Two! Less burnt!\"",
+   "\"Let me come for you in the morning. I'll ring the bell. Like a normal person. I can do normal.\"",
+   "\"Tomorrow I'll be at your door at seven thirty. I'll practise my good morning all night.\"",
+   "\"Can I walk you to school tomorrow? From your door? Officially? Not from behind a pole?\""
+  ],
+  "at_your_door": [
+   "Amane is sitting on the step of Asagiri-do with two bento on his knees. He jumps up. \"G-good morning! I'm here officially!\"",
+   "\"I rang the bell! Your aunt answered! She gave me a mochi! I'm so nervous! Good morning!\"",
+   "He's standing perfectly straight outside the noren, holding his bag in both hands. \"I practised all night. Good morning, Senpai.\"",
+   "\"I came! On time! Not behind a pole! In front of the door! Like you said!\"",
+   "Three cats sit beside Amane on your step. \"They came with me. They wanted to see you too.\"",
+   "\"The sky's blue this morning. Because I knew I'd see you first. Let's go?\""
+  ],
+  "promise_yes": [
+   "\"Tomorrow again? You promise?\" His eyes fill. \"Okay. Okay. I'll be ready at seven. Six. Five.\"",
+   "\"A promise. Grandma says promises are ropes. I'll hold it very carefully.\"",
+   "\"I'm going to write it down. In ink. In my heart. In my notebook too.\"",
+   "\"Pinky?\" He holds out his little finger from his sleeve. \"Pinky.\""
+  ],
+  "promise_broken": [
+   "\"You didn't come. I waited by the door. It's okay. It's just raining.\"",
+   "\"I waited until the bell. Then I came down anyway. Behind you. Like before.\"",
+   "\"You said tomorrow. Tomorrow came. You didn't.\" He tries to smile. \"Maybe tomorrow-tomorrow.\"",
+   "\"I'm not angry. I'm only sad. Sad is quieter. You can hear the rain better.\""
+  ],
+  "morning_day": {
+   "Mon": ["\"Monday. The cats are grumpy on Mondays. So am I. Not today.\""],
+   "Tue": ["\"Tuesday. Twelve cats day. I'll introduce you to the twelfth.\""],
+   "Wed": ["\"Wednesday. Grandma does the big prayer. The bell rings longer.\""],
+   "Thu": ["\"Thursday. I'll try to talk to someone in my class. One sentence.\""],
+   "Fri": ["\"Friday. Two days without school. Two days without seeing you every day. I hate Fridays a little.\""]
+  }
+ },
+ "jealous": {
+  "_doc": "Amane while Senpai escorts somebody else: cut_in.<id> (romance: he walks up and stands between you), follow.<id> (friend / none: he trails close and barks), sulk (at the end), text.<id> (ignore route: phone), text_boundary (boundary route), cut_in_reply.<tone> after your answer, join (he walks with you both).",
+  "cut_in": {
+   "hayate": [
+    "Amane appears between you and Hayate as if he'd been there all along. \"Good morning, Senpai.\" He doesn't look at Hayate. \"Good morning, Inukai-senpai.\" The temperature drops.",
+    "\"Senpai, your bag's open.\" It isn't. He closes it anyway, taking your sleeve while he does. Hayate gets the other side of nothing.",
+    "\"Inukai-senpai smells like dogs.\" He says it sweetly. \"Senpai doesn't like dogs. Do you, Senpai?\"",
+    "Amane walks up holding a bento in both hands. \"I made this for Senpai. Just Senpai. Sorry, Inukai-senpai. Only one.\"",
+    "\"You're walking very close to Senpai, Inukai-senpai.\" A sweet, empty smile. \"The road is very wide.\"",
+    "Rain begins to fall on Hayate. Only on Hayate. Amane blinks innocently. \"Oh no.\"",
+    "\"Senpai, I need to tell you something. Alone. It's important. Very important.\" It is not important.",
+    "He slips his hand into your sleeve. \"Let's go this way, Senpai.\" This way is away from Hayate."
+   ],
+   "hina": [
+    "Amane is suddenly between you and Hina. \"Good morning, Senpai.\" To Hina, with a bow too polite to be friendly: \"Hayase-senpai. You take a lot of photos of Senpai.\"",
+    "\"Hayase-senpai remembers Senpai from when they were small.\" A dangerously sweet smile. \"I remember Senpai from before that.\"",
+    "\"Senpai, there's ink on your sleeve. From her pen.\" He rubs at it fiercely. \"There. Gone.\"",
+    "He stands in front of Hina's camera. \"No photos. Senpai is shy.\" You are not shy.",
+    "\"Hayase-senpai talks very fast. Senpai likes quiet.\" He goes very, very quiet beside you.",
+    "\"Let me walk on this side, Senpai. The road side. To protect you.\" Hina is on the road side. Was.",
+    "Amane holds out a strawberry milk. \"I bought one for Senpai. Hayase-senpai already gave him one? Then he has two. Mine's colder.\"",
+    "\"You're writing about Senpai, aren't you, Hayase-senpai.\" Ears flat. \"Write that I was here first. Very first.\""
+   ],
+   "mio": [
+    "Amane steps out of a shadow beside Mio and nearly makes her jump - which nobody has ever done. \"Kuroe-senpai. Good morning. Senpai is walking with ME now.\"",
+    "\"Kuroe-senpai can see my ears.\" He tugs his hood down hard. \"So she knows I'm serious.\"",
+    "\"Senpai, Kuroe-senpai is a bit scary. Walk with me. I'm not scary. I'm only a little cat.\"",
+    "He stares at Mio's charms. \"Those won't work on me.\" Then, quieter: \"...Will they?\"",
+    "\"Don't tell Senpai ghost stories. He doesn't sleep well. I know because... I just know.\"",
+    "Amane takes your sleeve. Mio smiles at the spot behind him. \"Your tails are showing, kitten.\" He hisses. Actually hisses.",
+    "\"Kuroe-senpai walks with ghosts. Senpai should walk with the living. With me. I'm living.\"",
+    "\"Senpai is on my side of the road. Kuroe-senpai can have the ghost side.\""
+   ],
+   "reiji": [
+    "Amane appears at your elbow. \"Shirasagi-senpai.\" A bow so stiff it creaks. \"Your family's cats are all made of plastic.\"",
+    "\"Senpai, the president's mother doesn't like me. So the president can walk on the far side. Very far.\"",
+    "He looks at Reiji's scarf. \"It's not cold, Shirasagi-senpai.\" \"I'm aware.\" \"...Then why are you standing so close to Senpai?\"",
+    "\"Shirasagi-senpai checks everyone's ties. Senpai's tie is perfect. I fixed it. This morning. In my head.\"",
+    "Rain starts. Reiji opens his umbrella over you. Amane opens his, bigger, over you both, and glares through the spokes.",
+    "\"Senpai, let's go faster. The president walks so slowly. Like a funeral.\" \"Procession,\" says Reiji.",
+    "\"You're always watching Senpai, Shirasagi-senpai. I know because I'm always watching Senpai.\"",
+    "Amane slides his hand into your sleeve. \"Shirasagi-senpai doesn't like broken promises. I've never broken one to Senpai. Not one.\""
+   ],
+   "other": [
+    "Amane is suddenly at your side. \"Senpai. Who's that?\" He smiles. His eyes don't. \"...I'm just asking.\"",
+    "\"Good morning, Senpai.\" He doesn't greet anyone else. He takes your sleeve.",
+    "\"Senpai, I was looking for you everywhere.\" He was right behind you the whole time.",
+    "\"Let's walk together, Senpai. Just us. Like normal.\"",
+    "The drizzle thickens. Amane blinks hard. \"I'm not crying. It's just raining.\"",
+    "\"Senpai's walking with someone. That's okay. That's okay. I'll walk too.\"",
+    "\"You look happy, Senpai.\" A small, brave smile that wobbles. \"I'm glad.\"",
+    "\"Can I come? I'll be quiet. I'm very good at quiet.\""
+   ]
+  },
+  "follow": {
+   "hayate": ["\"...Inukai-senpai's laughing too loud.\"", "(behind a pole) \"Dog. Dog dog dog.\"", "\"Senpai's walking at the dog's pace.\"", "*peeks, ears flat*", "\"He keeps putting his arm round Senpai. Who allowed that.\""],
+   "hina": ["\"...She took another photo.\"", "(behind a vending machine) \"Too close. Too close.\"", "\"Childhood friend. Hmph.\"", "*glares at the camera*", "\"I was a friend from before childhood.\""],
+   "mio": ["\"...She knows I'm here.\"", "(behind the hydrangeas) \"Don't look at me, Kuroe-senpai.\"", "\"Senpai, don't take her charms.\"", "*hood down, eyes up*", "\"She's smiling at me. Why is she smiling at me.\""],
+   "reiji": ["\"...The president is walking on Senpai's left. That's my side.\"", "(behind a lamp post) \"Plastic cats.\"", "\"Scarf in spring. Weird.\"", "*narrows eyes*", "\"He gave Senpai tea. I'll give Senpai two teas.\""],
+   "other": ["\"...Senpai?\"", "*stares*", "(hides)", "\"Hmm.\"", "\"Who's that.\""]
+  },
+  "sulk": [
+   "Amane is waiting at the gate with his cheeks puffed out. \"...You looked like you had fun.\" Pout.",
+   "He doesn't say anything. He just holds out a slightly squashed bento and looks at the ground.",
+   "\"I'm not sulking.\" He is curled up on the bench like a cat in a bad mood. \"I'm resting my face.\"",
+   "\"You walked with them all the way. All. The. Way.\" A tiny sniff. \"...Did you think of me at all?\"",
+   "His ears are flat and his hood is pulled down to his nose. \"I'm fine. The rain's fine. Everything's fine.\"",
+   "\"I saw you.\" Just that. Then he tugs your sleeve once, hard, and lets go."
+  ],
+  "text": {
+   "hayate": ["\"Senpai's walking with the dog boy.\"", "\"You're laughing a lot today. I can see you from here.\"", "\"Inukai-senpai has an ankle. Just saying. He should be careful on stairs.\"", "\"...I'll walk alone then.\""],
+   "hina": ["\"She remembers you from when you were small. I remember you from before.\"", "\"Don't let her put you in a story.\"", "\"The photo she took. Can I have a copy. I'm not asking for a reason.\"", "\"I'm by the sweet shop. Not waiting. Standing.\""],
+   "mio": ["\"Kuroe-senpai sees things. Don't let her see you too much.\"", "\"She smiled at me today. I didn't like it.\"", "\"Be careful by the river with her. She dreams about water.\"", "\"I'm not scared of her. I'm only scared of you liking her.\""],
+   "reiji": ["\"The president's mother hates my family. Did he tell you that?\"", "\"He walks so slowly. Are you slow now too?\"", "\"Plastic cats, Senpai. His whole house is plastic cats.\"", "\"Tell him I said good morning. Don't tell him.\""],
+   "other": ["\"Who are you walking with?\"", "\"I saw you from the steps.\"", "\"It's raining over here.\"", "\"...Senpai?\""]
+  },
+  "text_boundary": [
+   "\"Have a nice walk, Senpai. I'm going to try to walk with someone from my class. Wish me luck.\"",
+   "\"I saw you with your friend. It's okay. I'm practising being okay.\"",
+   "\"I'm at school already. I'm reading. A whole book without thinking about you. Okay, half.\"",
+   "\"Enjoy your morning. Mine's alright too. I talked to a cat and a person. The person answered.\"",
+   "\"You said clear is kind. I'm being clear: I'm jealous, but I'm going to be fine.\"",
+   "\"Have fun. See you at lunch? If you want. Only if you want.\""
+  ],
+  "cut_in_reply": {
+   "kind": [
+    "\"W-with you both?\" He looks at the other person, then at you. \"...Okay. I'll try.\" He walks on your side, quiet, but the rain eases.",
+    "\"You want me here?\" The ears come up slowly. \"Okay. Okay. I'll be good.\"",
+    "He takes the corner of your sleeve and, after a long moment, nods at the other person. \"Good morning.\" He means it, mostly.",
+    "\"You're not sending me away.\" He says it to himself, amazed. \"You're not sending me away.\"",
+    "\"Then I'll walk on your left and they can walk on your right. That's fair. That's very fair.\""
+   ],
+   "honest": [
+    "\"Just a friend.\" He repeats it like a lesson. \"Friends are okay. Friends are allowed. I'm allowed too?\"",
+    "He searches your face for a lie and doesn't find one. \"...Okay. I believe you. I always believe you.\"",
+    "\"Really?\" A sniff. \"Really really?\" A small nod. \"Okay.\"",
+    "\"I'm sorry. I know. I know they're your friend. My heart doesn't know yet. I'll tell it.\"",
+    "The rain softens. \"Then I'll go ahead to school. Not because I'm sad. Because I'm brave. A little.\""
+   ],
+   "boundary": [
+    "Amane stops. \"...Not now.\" He bites his lip. \"Okay. I'll go. I'm going.\" He walks ahead fast, and doesn't look back, and it rains.",
+    "\"Asagiri-san.\" Very quiet. Then, catching himself: \"No. Senpai. Okay. I heard you.\" He steps back.",
+    "His ears flatten, but he bows. \"Sorry. I'll see you at school.\" He's trying. You can see him trying.",
+    "\"Clear is kind,\" he says, mostly to himself. \"Grandma said. Clear is kind.\" He lets go of your sleeve.",
+    "He nods too many times and walks off. Halfway down the road he stops, wipes his face, and keeps going on his own."
+   ],
+   "hand": [
+    "You take his sleeve-covered hand. Amane makes a sound like a kettle. The rain stops so suddenly that people look up.",
+    "He stares at your hands for a long moment. \"...Senpai.\" His bell rings. His ears are entirely out. He doesn't care.",
+    "\"Y-you're holding - in front of - \" He goes red to the tips of his ears. He holds on tighter.",
+    "Amane says nothing at all. He just walks very straight, very proud, with the whole sky clearing above him.",
+    "\"I'll remember this.\" He doesn't let go until the gate. \"I remember everything. This is my favourite everything.\""
+   ]
+  },
+  "join": [
+   "Amane walks with you both, a little stiff, a little proud. Once, he even laughs at something.",
+   "He takes the space on your other side and stays there, quiet, the rain thinning above the three of you.",
+   "\"Is this what walking with friends is like?\" he whispers to you. \"It's loud. I don't hate it.\"",
+   "Amane says one whole sentence to them. You can see how much it cost him. You can also see he's pleased.",
+   "He walks between you and the road, guarding you from cars, ghosts, and other people's elbows.",
+   "\"I'm still jealous,\" he whispers. \"But I'm walking. Look. I'm walking.\""
+  ]
+ }
+}

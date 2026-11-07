@@ -186,6 +186,8 @@ func _notes_text() -> String:
 	t += "\n[color=#ffd6a0]PEOPLE[/color]\n"
 	for p in c.people:
 		t += "  - %s\n" % p
+	var mornings := People.notes_text().split("\n")
+	t += "\n[color=#ffd6a0]%s[/color]\n%s\n" % [mornings[0], "\n".join(mornings.slice(1))]
 	t += "\n[color=#ffd6a0]HYAKKI ZUKAN[/color]  (%d / %d)\n  %s\n" % [c.zukan.filter(func(z): return z != "???").size(), c.zukan.size(), ", ".join(c.zukan)]
 	t += "\n[color=#ffd6a0]PLACES[/color]  (%d)\n" % c.places.size()
 	for p in c.places:

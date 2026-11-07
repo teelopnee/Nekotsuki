@@ -9,7 +9,11 @@ const SHOTS := [["shrine_morning", Vector2i(24, 6), 480, 0.0, ""], ["steps_dusk"
 	["school_gate", Vector2i(22, 30), 800, 0.0, "fluster"], ["river_rain", Vector2i(17, 43), 720, 4.2, "wail"],
 	["jizo_crossroads", Vector2i(47, 33), 1095, 0.0, ""], ["station_night", Vector2i(9, 38), 1200, 1.0, ""],
 	["talk_words", Vector2i(27, 40), 900, 1.6, "talk"], ["street_noon", Vector2i(20, 39), 740, 0.0, "happy"],
-	["home_evening", Vector2i(24, 47), 1060, 0.0, ""]]
+	["home_evening", Vector2i(24, 47), 1060, 0.0, ""],
+	["house_inukai", Vector2i(53, 25), 466, 0.0, ""], ["house_shirasagi", Vector2i(51, 52), 456, 0.0, ""],
+	["house_kuroe", Vector2i(52, 40), 485, 1.6, ""], ["house_hayase", Vector2i(12, 40), 470, 0.0, ""],
+	["house_nekomori", Vector2i(34, 6), 466, 0.0, ""], ["pickup_hina", Vector2i(16, 40), 478, 0.0, "pickup:hina"],
+	["walk_reiji_dusk", Vector2i(40, 47), 1086, 0.0, "pickup:reiji"]]
 var _step := 0
 var _wait := 0
 var _shot := 0
@@ -72,6 +76,12 @@ func _process(_d: float) -> bool:
 					if not b.is_queued_for_deletion():
 						b.pressed.emit()
 						break
+			elif str(s[4]).begins_with("pickup:"):
+				var who := str(s[4]).split(":")[1]
+				root.get_node("People").start_escort(who, "school")
+				var c = current_scene.home._spawn_companion(who, p.global_position + Vector3(1.6, 0.1, 0.4))
+				c.say(root.get_node("People").line(who, "walk"), 30.0)
+				a.global_position = p.global_position + Vector3(-2.6, 0.1, 3.0)
 			elif str(s[4]) != "":
 				load("res://src/core/emotion.gd").express(a, str(s[4]), 30.0)
 			current_scene.camera_rig.snap_to_target()

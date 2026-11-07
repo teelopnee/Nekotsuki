@@ -1075,6 +1075,68 @@
    "again": [
     "\"Back again? Growing boy.\""
    ]
+  },
+  {
+   "id": "yui",
+   "name": "Sato Yui",
+   "look": "yui",
+   "tile": [
+    0,
+    0
+   ],
+   "indoor": "2f",
+   "itile": [
+    22,
+    6
+   ],
+   "hours": [
+    [
+     480,
+     1050
+    ]
+   ],
+   "open": [
+    "Sato Yui looks up from her phone with the politest smile in 2-B. \"Asagiri-kun. Need something? Notes? Homework? ...Information?\"",
+    "\"Ah, the transfer student.\" Yui closes a browser tab very fast. \"How can the class rep's best friend help you?\"",
+    "Yui is typing with both thumbs at terrifying speed. She stops. \"Hi! I wasn't doing anything. What do you want to know?\""
+   ],
+   "again": [
+    "\"Back again? Information's like bread, Asagiri-kun. Fresh every morning.\"",
+    "Yui waves without looking up. \"Busy. Unless you're buying.\""
+   ],
+   "choices": [
+    {
+     "t": "\"Do you know who runs the Ura board?\"",
+     "say": "\"The Ura board? That awful anonymous thing?\" Yui's smile doesn't move at all. \"No idea. Whoever it is must be very well informed. And very lonely, probably.\"",
+     "fx": {
+      "closeness": 2,
+      "who": "Sato Yui"
+     }
+    },
+    {
+     "t": "\"How do you know everybody's business?\"",
+     "say": "\"People tell me things. I'm the one who remembers whose birthday it is and lends out pens. If you lend enough pens, people forget you're listening.\"",
+     "fx": {
+      "closeness": 3,
+      "who": "Sato Yui"
+     }
+    },
+    {
+     "t": "\"What do people say about me?\"",
+     "say": "\"That you came back from the dead? That you talk to cats? That the crybaby from 1-A has a shrine to you in his locker?\" She tilts her head. \"Only one of those is a lie. I won't say which. Free sample.\"",
+     "fx": {
+      "closeness": 1,
+      "who": "Sato Yui"
+     }
+    },
+    {
+     "t": "\"Please don't post about me.\"",
+     "say": "\"Post? Me? I'm the class rep.\" A pause. \"...Okay. I'll keep you off the front page for a week. Bring me a melon bread and it's two weeks.\"",
+     "fx": {
+      "luck": 1
+     }
+    }
+   ]
   }
  ],
  "lore_titles": {

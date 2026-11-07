@@ -134,3 +134,14 @@
 - Fixes: light-haired sprites no longer bloom indoors (glow threshold); the roof at lunch is full (picnic sheets, seats
   filled near you); the bell moves students between rooms along door/corridor routes and brings new ones up the stairs.
   Open: students walk straight between waypoints and can brush through each other; a stuck walker is nudged after 3 s.
+
+## Homes, pick-ups and walking people home (2026-11-07)
+- Five houses (one new: Inukai house behind the dog shrine, one new: Kuroe house by the old temple stones, the
+  Shirasagi residence as its own building with a roofed gate and a cracked giant maneki-neko); door, nameplate, bell.
+- Schedules are learned, not shown: ask when close (35), buy from Sato Yui (new, 2-B, runs the Ura board in secret),
+  or trade Mio ghost stories. Ring or wait; parents answer with their own voices (Inukai Takeshi, Hayase Natsuko / Ken,
+  Kuroe Setsu, Sawada-san / Shirasagi Kyoko, Nekomori Chiyo). Walk to school, walk them home, they walk you home, they
+  pick you up. Amane reacts by route. 287 lines each for Hayate/Hina/Mio/Reiji, 400 for Amane (incl. jealousy).
+- Hayate no longer trails you after school by default: he walks over and asks (closeness >= 20), as his nature says.
+- Tests: people_test 77 checks; all suites pass. Open: companions steer straight (they pop behind you if stuck); the
+  houses are not enterable inside yet (doorstep scenes only); no weekend visits beyond the parents' lines.

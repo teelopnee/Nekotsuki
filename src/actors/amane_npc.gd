@@ -11,6 +11,7 @@ var _talking_now := false
 var _approach_cd := 25.0
 var _stuck := 0.0
 var _last_pos := Vector3.ZERO
+var _layer := 1
 
 
 func _ready() -> void:
@@ -20,6 +21,7 @@ func _ready() -> void:
 	super._ready()
 	name_label.text = "Amane"
 	add_to_group("amane")
+	_layer = collision_layer
 	Amane.tears_changed.connect(_on_tears)
 
 
@@ -30,6 +32,19 @@ func _physics_process(delta: float) -> void:
 		target = get_tree().get_first_node_in_group("player") as Node3D
 		if target == null:
 			return
+	# Mornings before 7:52 he's still at home (People autoload); afterwards the cats always know where Senpai is.
+	if People.hides("amane"):
+		if visible:
+			visible = false
+			talk.enabled = false
+			collision_layer = 0
+		return
+	if not visible:
+		visible = true
+		talk.enabled = true
+		collision_layer = _layer
+		if not People.escorting("amane"):
+			_slip_behind(Amane.follow_distance())
 	var to_me := global_position - target.global_position
 	to_me.y = 0.0
 	var dist := to_me.length()
@@ -43,7 +58,7 @@ func _physics_process(delta: float) -> void:
 			_start_talk()
 			return
 		vel = -to_me.normalized() * 3.4
-	elif looked_at and dist > 2.4:
+	elif looked_at and dist > 2.4 and not People.escorting("amane") and not has_meta("close_follow"):
 		if not _caught:
 			_caught = true
 			Emotion.express(self, "peek", 1.8)
@@ -51,12 +66,12 @@ func _physics_process(delta: float) -> void:
 				say(Amane.fill(str(Amane.data.get("peek_bark", ["!"]).pick_random())), 1.4)
 	else:
 		_caught = false
-		var want := Amane.follow_distance()
+		var want := 1.8 if People.escorting("amane") or has_meta("close_follow") else Amane.follow_distance()
 		if dist > 22.0 and not looked_at:
 			_slip_behind(want)
 		elif dist > want + 0.8:
 			vel = -to_me.normalized() * (3.6 if dist > want + 5.0 else 2.2)
-		if _approach_cd <= 0.0 and dist < 10.0 and Amane.st()["met"] and Amane.route() != "ignore":
+		if _approach_cd <= 0.0 and dist < 10.0 and Amane.st()["met"] and Amane.route() != "ignore" and not People.escorting():
 			_approaching = true
 			say(str(Amane.data.get("approach_bark", ["Senpai!"]).pick_random()), 1.2)
 	velocity.x = vel.x

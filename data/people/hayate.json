@@ -1,0 +1,409 @@
+{
+ "profile": {
+  "id": "hayate",
+  "name": "Inukai Hayate",
+  "short": "Hayate",
+  "look": "hayate",
+  "class": "2-B",
+  "home": "Inukai house, behind the dog shrine",
+  "door": [
+   53,
+   22
+  ],
+  "leave": 470,
+  "arrive": 490,
+  "home_leave": 1000,
+  "parent": "Inukai Takeshi",
+  "parent_role": "his father, the dog-shrine priest",
+  "nature": "Loud, loyal, impulsive, slow on paper and fast on instinct. Cannot stand anyone walking home alone. Ran sprints until his ankle went last year; still warms up every morning out of habit. Scared of falling. Growls at cats, apologises to them afterwards.",
+  "likes": [
+   "running",
+   "melon bread",
+   "the shrine dogs",
+   "loud music",
+   "you"
+  ],
+  "dislikes": [
+   "cats (officially)",
+   "being left behind",
+   "homework",
+   "his ankle"
+  ],
+  "fx": {
+   "rush": 1,
+   "wait": 1,
+   "broken": -3,
+   "pickup": 6,
+   "walk": 5
+  },
+  "answer": {
+   "parent": 0.45,
+   "self_high": 0.85
+  },
+  "rumour": "Inukai-kun? Out of the dog-shrine gate at 7:50, at the shoe lockers by 8:10. He runs the last bit and lies about it.",
+  "mio_says": "The dog boy leaves the shrine at ten to eight. The dogs see him off. Fufu. They always count him out and count him back."
+ },
+ "lines": {
+  "wait_outside": [
+   "From inside: thumping footsteps up and down the stairs. Somebody is warming up in a hallway.",
+   "You hear Hayate's voice through the wall: \"Dad! Where's my other sock? The lucky one!\"",
+   "A dog barks once from the shrine. Inside, Hayate barks back. Then: \"...Don't tell anyone I did that.\"",
+   "The radio inside plays morning exercise music. Someone is doing it, loudly, and counting wrong.",
+   "A clatter of a bento box being packed too fast. \"Rice, rice, more rice. Okay.\"",
+   "His father's voice, low: \"Stretch the ankle first.\" Hayate: \"I KNOW.\"",
+   "The front door rattles. Then doesn't open. \"Forgot my bag! Hang on, world!\"",
+   "You can hear him brushing his teeth and humming the track-meet fanfare at the same time.",
+   "A shrine dog wanders over, sniffs your shoes, approves of you, and lies down at your feet to wait too.",
+   "\"Is that Toru?\" he yells from somewhere inside, though you haven't made a sound. \"I can SMELL him!\""
+  ],
+  "ring_self_low": [
+   "The door bangs open. \"Yes? Oh! Transfer student! Asagiri, right? What are you doing at a shrine at this hour?\"",
+   "\"Heyyy - wait, is that you? You came to MY house? Why? Did I owe you money?\"",
+   "Hayate in one shoe. \"You rang? Nobody rings. Everyone just yells over the fence.\"",
+   "\"Morning! ...You're not a delivery. Are you lost? The school's the other way. Every way, actually.\"",
+   "\"Asagiri! Uh. Hi. I'm not dressed. I mean I'm dressed. Half. Give me a sec!\"",
+   "He opens the door with toast in his mouth. \"Mmph! Mmmph mmph?\" (He means 'What's up?')",
+   "\"Whoa. Okay. A visitor. Dad, we have a visitor! A real one!\"",
+   "\"You know where I live? ...Cool. Not creepy. Cool.\" He grins with one fang.",
+   "\"If you're here to fight the shrine dogs, they win. Just so you know.\"",
+   "\"Hi! I'm late. I'm always late. Wait, no, you're early. Why are you early?\""
+  ],
+  "ring_self_mid": [
+   "\"Toru! Thought I heard you. Two minutes! One! Thirty seconds and a sock!\"",
+   "\"Yo! You came to get me? Man. You're a good guy, you know that?\"",
+   "\"Toruuuu! Okay, okay, I'm coming, don't leave, don't you dare leave.\"",
+   "He opens the door already halfway out of it. \"Perfect timing, I was just thinking about you. And melon bread.\"",
+   "\"Morning, partner! The dogs said you'd come. Well, they barked. Same thing.\"",
+   "\"You're here! Great, now I can't be late, because you'd be late too, and that's not allowed.\"",
+   "\"Did you run here? You look like you ran here. Respect.\"",
+   "\"Ha! Knew it was you. You ring like you're apologising.\"",
+   "\"Wait right there, I'll grab my bag. And my other bag. And my - okay just one bag.\"",
+   "\"Hey hey hey. Rolling out together? Let's GO.\""
+  ],
+  "ring_self_high": [
+   "\"Best morning ever. Okay, second best. The best was when you came yesterday.\"",
+   "\"I KNEW you'd come. I told Dad. He said 'don't get your hopes up'. Ha!\"",
+   "He bounces on his toes like a wagging tail. \"Toru! Toru! Ready, ready, ready!\"",
+   "\"I saved you half my melon bread. The good half. The top.\"",
+   "\"You came again. You know what that makes us? A tradition. Can't break a tradition.\"",
+   "\"Hey. Morning. ...Thanks for coming. Seriously. It's a long way up here.\"",
+   "\"If you'd been five minutes later I was gonna come get YOU. So. Saved me a trip.\"",
+   "\"My partner in crime! Partner in commuting. Partner in everything.\"",
+   "\"Wait, wait - let me look at you. Yep. You slept badly again. Let's walk it off.\"",
+   "\"Toru! The dogs have been staring at the gate since six. They knew too.\""
+  ],
+  "ring_parent": [
+   "A tall man in a white priest's robe opens the door. \"...Yes.\" He looks at you as if reading a weather sign.",
+   "\"Asagiri.\" Inukai-san says the name like it's a word with history. \"I'll get him. HAYATE.\"",
+   "\"You're the grandson.\" He doesn't explain which grandson. \"Wait here. Don't touch the bell.\"",
+   "\"Early.\" A long silence. \"Good. Most people come late to this house.\" He turns. \"HAYATE. Company.\"",
+   "Inukai-san, holding a broom. \"He is eating his third bowl. Sit on the step. The dog will keep you company.\"",
+   "\"Hayate's friend.\" He nods slowly. \"He talks about you. Too much. HAYATE, your shadow is here.\"",
+   "The priest bows exactly as deep as you do. Not a millimetre more. \"One moment.\"",
+   "\"You smell of rain,\" he says, and frowns. \"Hm. Someone has been walking close to you.\" He calls his son.",
+   "\"He's stretching that ankle. If he isn't, tell me.\" Louder: \"HAYATE. ANKLE. THEN FRIEND.\"",
+   "\"Morning. The shrine opens at six, the boy at seven forty. Usually.\" He goes to fetch him.",
+   "Inukai-san looks past you, toward the cat shrine on the far hill. His jaw tightens. \"...Wait inside the gate.\"",
+   "\"Good. Someone to make him walk instead of run.\" He knocks twice on the stairs with his broom.",
+   "\"Asagiri-dō's boy. Your aunt sends us mochi every Obon.\" A tiny smile. \"Tell her they were too sweet. Again.\"",
+   "The priest is lighting incense. Without turning: \"He's coming. He heard the bell. Everyone heard the bell.\"",
+   "\"Ah.\" He studies your face. \"You have the look of someone who walks people home. He'll like that.\"",
+   "\"Do not let him race the train again,\" Inukai-san says gravely. \"HAYATE. TRAIN RULES.\""
+  ],
+  "parent_about_you": [
+   "\"He was alone a lot, after his ankle. Since you came he whistles in the mornings. Hm.\"",
+   "\"Our family walks people home. It's what we're for. Don't let him walk you home every day - he forgets to rest.\"",
+   "\"The Nekomori boy watches this gate sometimes. If he does, don't look at him too long. That's all.\"",
+   "\"You were in this town as a child. I remember a small boy on the steps. You don't remember. That's fine.\"",
+   "\"My son runs toward people. Make sure you're worth running toward.\"",
+   "\"Eat breakfast. You look like a ghost. We have enough of those up here.\"",
+   "\"If he falls, he says 'just resting'. Old habit. Old family. Don't laugh at him.\"",
+   "\"Thank you for coming. He won't say it properly, so I will.\""
+  ],
+  "parent_left": [
+   "Inukai-san shakes his head. \"Gone ten minutes ago. Ran. With the ankle. I said walk.\"",
+   "\"Left already. He said 'Toru won't come today anyway.' Hm. Wrong.\" A pause. \"Catch him at the bridge.\"",
+   "\"He went early for practice. Not practice. He just watches the others run.\" The priest's eyes soften.",
+   "\"You missed him. He'll be sorry. He'll say so loudly.\"",
+   "\"He went down the back steps. He thinks I don't know about the shortcut.\"",
+   "\"Gone. Shall I tell him you came?\" A nod. \"He'll bark about it all day.\""
+  ],
+  "parent_evening": [
+   "\"He's doing homework. Pretending to. Come in for tea? No? Another day.\"",
+   "\"He walked you home again, didn't he. Then ran back. That boy.\"",
+   "\"Evening, Asagiri. Shrines at dusk are no place to stand around. Go home before the hour turns.\"",
+   "\"He's asleep at his desk. I'll tell him you came. He'll be furious he missed you.\"",
+   "\"Dinner's on. Hayate! ...He's in the bath. Singing. Sorry.\"",
+   "\"You've come at Omagatoki. Walk home on the lit side of the road.\""
+  ],
+  "come_out_low": [
+   "Hayate jogs out, still pulling on his jacket. \"Okay! Hi! Why are we doing this? Not complaining. Just asking.\"",
+   "\"So... you walk this way too? Huh. Didn't think anyone lived near the dogs except us.\"",
+   "He looks at you, then at the road. \"Wanna walk together? I mean, we're going the same place. Probably.\"",
+   "\"You're the transfer guy. Asagiri. I'm Inukai. Hayate's fine. Everyone yells it anyway.\"",
+   "\"You look like you're carrying a ghost. Haha. Joke. Unless?\"",
+   "He sniffs the air near you. \"...Rain. You smell like rain. Weird. Anyway! Morning!\"",
+   "\"I'll warn you, I talk a lot in the morning. And the afternoon. Okay, all the time.\"",
+   "\"Don't step on the third stone. Dad says it's bad luck. I step on it every day. Look, nothing bad. Yet.\""
+  ],
+  "come_out_mid": [
+   "Hayate bursts out of the gate like a starting pistol went off. \"Let's go, let's go, let's go!\"",
+   "\"Toru! My man. Hold this.\" He hands you his bag, ties his shoe, takes it back. \"Teamwork.\"",
+   "\"Morning! You came all the way up here? You know there's a hill, right? Of course you know. You climbed it.\"",
+   "\"Ready! I ate. I stretched. I did NOT run here. I ran a little.\"",
+   "He throws an arm round your shoulders. \"Commute buddies. It's official. I'll make a badge.\"",
+   "\"You know what's better than walking to school? Walking to school with you. Wait, that sounded weird. It's true though.\"",
+   "\"Did you eat? You didn't eat. Here, rice ball. Tuna mayo. Don't argue.\"",
+   "\"Toru! You look less dead than yesterday. Improvement!\""
+  ],
+  "come_out_high": [
+   "Hayate stops at the gate and just grins at you for a second. \"...Yeah. This is the good part of the day.\"",
+   "\"You came. You always come now.\" He says it like a fact about the weather. \"Let's go.\"",
+   "\"Toru!\" He bumps your shoulder. \"I dreamed we ran the whole coast road. You were faster. I let you win.\"",
+   "\"Morning, partner. I already know your face for 'I didn't sleep'. Come on. I'll do the talking.\"",
+   "He bounces down the steps two at a time, then remembers his ankle and walks the rest. \"Hehe. Habit.\"",
+   "\"I saved the good route for you. The one with the dogs and the vending machine with the cold coffee.\"",
+   "\"If anyone asks, you came to pick ME up. Not the other way round. I have a reputation.\"",
+   "\"Hey. Thanks for this. I mean it. Okay, mushy time over. LET'S GO.\""
+  ],
+  "come_out_rushed": [
+   "Hayate stumbles out with his tie in his teeth. \"You rang the bell! Dad made me FINISH BREAKFAST.\"",
+   "\"Ten minutes early! You trying to kill me? I love it. Let's go.\"",
+   "He hops out on one foot, shoe in hand. \"Don't look at the ankle, look at the sky!\"",
+   "\"Dad said 'your friend is waiting' in the scariest voice. I ran down the stairs. Don't tell him.\"",
+   "\"Early bird! Early dog! Early... whatever you are. Morning!\"",
+   "\"I didn't brush my hair. Does it matter? It doesn't matter. Hair is a social construct.\"",
+   "He crams the last of a rice ball in his mouth. \"Mmph. Okay. Ready. Mostly.\"",
+   "\"You rang the doorbell. Nobody rings the doorbell! You're like a gentleman from an old movie!\""
+  ],
+  "come_out_rain": [
+   "Hayate comes out with no umbrella. \"Rain? What rain? Oh. That rain. Huh, it's raining a lot, huh.\"",
+   "\"Wet again. Every day this spring. You notice it rains more when that first-year's sad?\"",
+   "\"Share your umbrella? I'll hold it. I'm taller. By two centimetres. Shut up, it counts.\"",
+   "He sniffs the rain. \"...Smoke and rain. Same as always around you. Weird, huh.\"",
+   "\"Good weather for running! Bad weather for ankles. I'll walk. Grumpily.\""
+  ],
+  "pickup_accept": [
+   "\"YES. Okay. I'll take the road side. Cars go after me first, not you.\"",
+   "\"Together! Like the old days. We didn't have old days. We have them now.\"",
+   "\"Let's take the long way. The long way has the bakery.\"",
+   "\"Commute! Commute! I'm so awake now.\"",
+   "\"Walking, not running. I promised Dad. You're my witness.\"",
+   "\"Lead the way, partner. I'll follow. Dogs follow. It's in the job description.\""
+  ],
+  "pickup_decline": [
+   "\"Oh. Just passing? Cool. Cool cool. See you at school then!\" He waves a bit too long.",
+   "\"Okay! Next time, though. I'll hold you to it.\"",
+   "\"No worries! I'll race you. Kidding. Walking. See you!\"",
+   "\"Ahh, you came to see the dogs, huh. They're the real stars. See you!\"",
+   "He nods, then trots off, looking back twice to check you're really not coming."
+  ],
+  "walk": [
+   "\"You know Makabe-sensei can't read his own handwriting? I saw him squint at it. For five minutes.\"",
+   "\"I used to run this hill in four minutes. Now I walk it in ten. And you know what? Better view.\"",
+   "\"Did you see the vending machine by the bridge? It has corn soup. In April. A miracle.\"",
+   "\"The dogs at the shrine walk the dead home at Obon. Dad says. I've never seen them do it. They just eat.\"",
+   "\"Okay, important question. Melon bread or yakisoba bread. Choose wisely.\"",
+   "\"I swear that cat is following us. The black one. Don't look. Don't LOOK. ...You looked.\"",
+   "\"My ankle's fine. It's fine! I just can't race. Or jump. Or land. But walking's fine.\"",
+   "\"The track team still lets me time them. I'm the best stopwatch they've got.\"",
+   "\"Hina keeps asking me about you. I told her you're boring. Lie. You're not boring. You're quiet. Different.\"",
+   "\"Reiji-senpai stared at me in the corridor yesterday like I was a puddle. A puddle he wanted to fine.\"",
+   "\"You ever feel like you've walked a road before, but backwards? No? Just me? Okay.\"",
+   "\"I got a seventeen on the maths test. Out of a hundred. But that's up from twelve!\"",
+   "\"Dad made me sweep the shrine steps at five. Five! The sun wasn't even awake. Only me and the crows.\"",
+   "\"You should come to the river at Obon. The lanterns are ridiculous. In a good way.\"",
+   "\"There's a girl in 2-C who brings a different onigiri every day. I don't know her name. I know her onigiri.\"",
+   "\"You hear that? Toryanse. The station's crossing again. Creepy song, right? Catchy though.\"",
+   "\"I bet I can name every dog in this town. Pochi, Taro, Kuro, other Kuro, Big Kuro...\"",
+   "\"You smell like your aunt's mochi. That's a compliment. That's the best compliment.\"",
+   "\"If you ever need someone punched, I'm not allowed to punch people. But I can stand next to them. Menacingly.\"",
+   "\"Why do first-years always walk in a line? Like ducklings. Cute ducklings. Terrifying ducklings.\"",
+   "\"The first-year with the hood was at the shrine again at dawn. Just sitting. Waiting for something.\"",
+   "\"Mio-senpai told me there's a thirteenth stair at school. I counted. Twelve. She said 'not yet'. NOT YET?\"",
+   "\"I'm gonna be a PE teacher. Or a dog. Whichever happens first.\"",
+   "\"I tried to make my own bento once. The rice was crunchy. Rice shouldn't crunch.\"",
+   "\"Remember when we - no wait, you weren't here. Feels like you were.\"",
+   "\"The fishermen say there are lights out at sea again. Dad got very quiet about it.\"",
+   "\"I like this time of day. Everything's still deciding what it's gonna be.\"",
+   "\"Do you think the shrine bell sounds different lately? Like, sadder? No? Okay.\"",
+   "\"Look, look, the dango shop's open early. No? We're late? We're not late. We're efficiently timed.\"",
+   "\"If I could run again I'd run the coast road to the next town and back. Just to see the sea the whole way.\"",
+   "\"You're weird, Toru. You're like a guy who's lived in this town before and forgot.\"",
+   "\"The cats hate me. It's mutual. I mean it's not, I love them, but they started it.\"",
+   "\"I'm keeping a list of all the times you laughed. It's short. I'm working on it.\"",
+   "\"That old lady at the konbini gives me free oden if I carry her boxes. Life hack.\"",
+   "\"Want to see something cool? Watch.\" He whistles; three dogs bark from three different directions. \"Network.\"",
+   "\"You know my dad doesn't like the Nekomori family? Something from way back. Grown-ups and their feuds.\"",
+   "\"I had a dream I was a white dog walking someone home through the snow. For years. Long dream.\"",
+   "\"The bakery lady said I'm her best customer. I'm her ONLY customer before eight. Still counts.\"",
+   "\"I'm gonna take the stairs two at a time today. Kidding. One at a time. Like a grown-up. Boring.\"",
+   "\"Toru, if you ever want to walk home alone, just say. I'll walk behind you instead. Totally different.\""
+  ],
+  "walk_close": [
+   "\"Hey... you're the first person who came to get me since I got hurt. Just so you know.\"",
+   "\"I'm scared of falling. Not of the pain. Of being the guy on the ground while everyone runs past.\"",
+   "\"You ever have a friend you feel you've known way longer than you have? ...Yeah. That.\"",
+   "\"If something weird happens to me this week, it's not your fault, okay? Promise me you'll remember that.\"",
+   "\"Dad says our family's job is to make sure nobody walks home alone. I think he means more than walking.\"",
+   "\"I used to want to win everything. Now I just want to be there at the finish line when you get there.\"",
+   "\"The first-year with the bell. He looks at me like I took something from him. I didn't. Did I?\"",
+   "\"You're the only one I told about the ankle. The real version. The one where I cried.\"",
+   "\"When I'm with you the dogs stop barking. All of them. Like they're satisfied. Isn't that weird?\"",
+   "\"I'd walk you home every day for thirteen years if I had to. ...Why thirteen? No idea. Just came out.\"",
+   "\"Let's be the kind of friends who are old men and still walk together. Deal? Deal.\"",
+   "\"Sometimes I wake up and I'm sure I've forgotten to bring someone home. Then I remember it's you.\"",
+   "\"Don't laugh. I made a playlist for our walk. It's mostly marching bands.\"",
+   "\"You know you can tell me stuff, right? I'm loud, but I can keep a secret. I'm a vault. A loud vault.\"",
+   "\"I'm glad you came back to this town. ...'Back'? I said back. Huh. Weird.\""
+  ],
+  "walk_rain": [
+   "\"Puddle! Puddle! Big puddle! ...I jumped it. With my bad leg. Don't tell Dad.\"",
+   "\"Rain this heavy, the dogs won't come out. Even they think it's too much.\"",
+   "\"You think someone's crying somewhere? Dad says rain like this is somebody's grief.\"",
+   "\"I'm soaked. You're soaked. We're a soaked team. United by water.\"",
+   "\"Hold the umbrella more to your side. No, I'm fine. I like being wet. I'm a dog, basically.\"",
+   "\"The river's high. Don't walk on the bank today. Promise.\""
+  ],
+  "arrive": [
+   "\"We made it! On time! Write it down! Somebody write it down!\"",
+   "\"School. Ugh. Okay. See you at lunch. Save me a spot. Save me two spots.\"",
+   "\"Thanks, Toru. That was the best walk I've had all week. Okay, the only one. Still the best.\"",
+   "\"Gate's open. Race you to the shoe lockers. Walking race. Speed-walking. GO.\"",
+   "\"Hey. Same time tomorrow? Don't answer. I'll just be waiting.\"",
+   "He holds up a fist. You bump it. \"Partners.\"",
+   "\"Reiji-senpai's at the gate. Look innocent. LOOK INNOCENT.\"",
+   "\"Ahh, I'm awake now. Thanks for dragging me here.\""
+  ],
+  "ask_tell": [
+   "\"When do I leave? Seven fifty, usually. Unless the dogs need walking. Then seven fifty-five and I run. Don't tell Dad.\"",
+   "\"I'm out the gate at ten to eight, every day. Rain or shine. Why, you coming to get me? Heh. Come.\"",
+   "\"Seven fifty! And I'm at school by ten past. If I'm not, I'm dead. Or at the bakery.\"",
+   "\"Ten to eight. Behind the dog shrine, the house with too many sandals outside. Ring the bell - Dad'll answer, don't be scared.\"",
+   "\"Why do you want to - oh. OH. You're gonna come get me? Seven fifty! Don't be late! I'll be late, but you can't!\""
+  ],
+  "ask_refuse": [
+   "\"My schedule? Uh, why? Are you a spy? Are you from the track team? I'm not coming back to practice!\"",
+   "\"Haha, you're funny. Ask me again when we're actual friends. Like, sharing-bread friends.\"",
+   "\"Dad says don't tell strangers when the house is empty. You're not a stranger. You're... a semi-stranger.\"",
+   "\"I leave when I leave! Mysterious! Like a ninja! A loud ninja.\"",
+   "\"Ehh, I don't even know myself. Somewhere between 'late' and 'very late'.\"",
+   "\"Why, are you planning a surprise? I hate surprises. I love surprises. Ask me later.\""
+  ],
+  "home_offer": [
+   "\"Hey! Walking home? Course you are. I'm walking you. No arguments. It's a family thing.\"",
+   "\"Toru! Want company? I'll walk you to Asagiri-dō. Then I'll run home. Walk home. Walk.\"",
+   "\"Can't let you walk alone at Omagatoki. Bad luck. Let's go together.\"",
+   "\"Wanna walk back together? I'll buy the corn soup. You buy the next one.\"",
+   "\"I'm going your way! I'm always going your way. Funny how that works.\"",
+   "\"Dad says the road gets weird after five. Come on, I'll take you home.\""
+  ],
+  "home_accept": [
+   "\"You want to walk me home? Me? Okay that's adorable. Yes. Let's go.\"",
+   "\"Yes! Escort mission! Except I'm the one being escorted. Role reversal!\"",
+   "\"Sure! But you'll have to climb the hill back. Your loss. My gain.\"",
+   "\"You're a good guy, Toru. Come on, the dogs will want to meet you properly.\"",
+   "\"Walk me home? Ha. Nobody's done that since I was a kid. Let's go.\"",
+   "\"Deal. I'll show you the shortcut. It's not shorter. It has a cat. Somewhere.\""
+  ],
+  "home_refuse": [
+   "\"Ahh, I've got track. Watching track. Next time?\"",
+   "\"Nah, you go ahead. I'll be fine! I'm always fine!\"",
+   "\"Today's no good, Dad needs me at the shrine. Tomorrow!\"",
+   "\"Let's not. I'm gonna run. Walk-run. Don't wait up!\"",
+   "\"You don't have to do that! I'm the one who walks people home. That's my job.\"",
+   "\"Maybe when we're closer. I don't let just anyone see me trip on the steps.\""
+  ],
+  "home_walk": [
+   "\"Best part of the day. School's over and the sun's doing that orange thing.\"",
+   "\"You know the town bell plays Yuyake Koyake at five? Every kid in Suzunari goes home on that song.\"",
+   "\"Look, the sea's gone gold. Every evening I forget it does that and every evening I'm surprised.\"",
+   "\"I used to run home from school. I'd get home and nobody was there. Walking's better. You're here.\"",
+   "\"The crows are going home too. See? Everyone's going home. That's a nice thought, right?\"",
+   "\"Stop at the konbini? I'll get the corn soup. Two corn soups. I'm not sharing.\"",
+   "\"You notice the shadows get long at Omagatoki? Dad says that's when the two towns touch.\"",
+   "\"Tell me something weird about you. I'll tell you something weird about me. I talk to dogs. Your turn.\"",
+   "\"That first-year's behind us again. Don't turn around. ...Okay, he's gone. He's fast. For a cat. A guy. A guy.\"",
+   "\"My mum died when I was born. Dad says she walked me home the first night anyway. I like that story.\"",
+   "\"You think we'll still be friends after graduation? I do. I've decided.\"",
+   "\"The dango shop does half price after five. This is the most important fact I know.\"",
+   "\"Steps. Ugh. Okay. One at a time. You don't have to wait for me. ...Thanks for waiting.\"",
+   "\"If you hear footsteps behind you on the way home, say 'just resting' and sit down. Old Inukai rule.\"",
+   "\"Hey, did you see Hina's camera today? She took a photo of me eating. Betrayal.\"",
+   "\"I'm gonna miss this when it's summer. It'll be too hot to walk. We'll crawl.\"",
+   "\"Mio-senpai says the dusk hour is when the dead walk home too. Imagine. We're all going home together.\"",
+   "\"This is a good walk. Same walk as yesterday. Still good.\"",
+   "\"You know what, I think I like being slow now. You see more.\"",
+   "\"Promise you'll tell me if you ever need walking home at night. Any night. I'll come.\""
+  ],
+  "goodbye": [
+   "\"Here we are! Thanks, Toru. Get home safe. Text me when you're there. I mean it.\"",
+   "\"Night, partner. The dogs'll watch the road for you.\"",
+   "He bows way too deep. \"Thank you for escorting me! ...Haha. Okay. See you tomorrow!\"",
+   "\"Dad's at the gate. He's nodding at you. That's basically a hug from him.\"",
+   "\"Same time tomorrow? Don't answer, I already know.\"",
+   "\"Get home before the bell stops. Old rule. Bye!\"",
+   "\"Thanks for walking slow with me. ...See ya!\"",
+   "\"You're a good friend, Toru. The best. Okay, go, before I get mushy.\"",
+   "\"I'll watch you down the hill. I always do. Night!\"",
+   "\"Tomorrow I'll pick you up. Watch me. I'll be there at seven forty. Okay, seven fifty.\""
+  ],
+  "amane_cut_in": [
+   "Hayate stiffens. \"...Morning, first-year.\" His smile doesn't reach his eyes. \"You smell like rain. Again.\"",
+   "\"Whoa. Where'd you come from? You were not there a second ago.\"",
+   "Hayate steps half in front of you without meaning to. \"Hey. It's fine. We're just walking.\"",
+   "\"The hood kid. Hi. You can walk with us. ...You don't have to glare.\"",
+   "He growls - actually growls - then clears his throat. \"Sorry. Allergies. Morning!\"",
+   "\"Nekomori, right? My dad says hi. My dad doesn't say hi. Forget I said that.\"",
+   "\"Easy, easy. Nobody's stealing your Senpai. I'm just borrowing him for the walk.\"",
+   "Hayate lowers his voice to you: \"He's crying. Is he crying? It's raining. I can't tell.\"",
+   "\"You wanna walk in the middle? Here. I'll go on the road side. Everyone's happy.\"",
+   "\"Look, kid - I'm his friend. That's all. Friends are allowed. Right, Toru?\""
+  ],
+  "morning_day": {
+   "Mon": [
+    "\"Monday. The worst day. Let's make it the second-worst.\""
+   ],
+   "Tue": [
+    "\"Tuesday! Nothing ever happens on Tuesday. Which is why I like it.\""
+   ],
+   "Wed": [
+    "\"Wednesday! PE today. I'll be the best stopwatch you ever saw.\""
+   ],
+   "Thu": [
+    "\"Thursday. Curry day at the canteen. My favourite day. Don't tell Friday.\""
+   ],
+   "Fri": [
+    "\"FRIDAY. Tomorrow I'm sleeping till noon. Dad'll wake me at five. Still.\""
+   ]
+  },
+  "offer_pickup": [
+   "\"Hey. Tomorrow I'm coming to get you. Asagiri-do, seven thirty-something. Don't argue. Okay you can argue, but I'm still coming.\"",
+   "\"You know what? I'll pick you up tomorrow. The sweet shop's on my way. It's not. I'll make it on my way.\"",
+   "\"Let me come get you in the morning. You look like someone who gets lost between his bed and the door.\"",
+   "\"Tomorrow, wait at your door. I'll be the loud one.\"",
+   "\"Seriously, let me walk you to school tomorrow. Dad says it's what our family does. I just want to.\"",
+   "\"Pick-up service! Inukai Express! Free! Tips in melon bread!\""
+  ],
+  "at_your_door": [
+   "Hayate is sitting on the step of Asagiri-do, feeding a cat he insists he hates. \"Morning! It followed me. Let's go.\"",
+   "\"TORUUU! Oh. Your aunt's here. Good morning, Asagiri-san! Is Toru up? He's up. I can hear him.\"",
+   "He's stretching by your door. \"You're late. I'm early. Same thing. Let's go!\"",
+   "\"I came, like I said! I always do what I said. Mostly. Today definitely.\"",
+   "Hayate bows to the sweet-shop sign for no reason. \"Morning, shop. Morning, Toru. Ready?\"",
+   "\"Your aunt gave me a mochi. I'm your friend forever now. Come on!\""
+  ],
+  "promise_yes": [
+   "\"Tomorrow, same time? YES. Pinky swear. Dad says a promise is a word with weight. This one weighs a melon bread.\"",
+   "\"Deal! I'll be at the gate. Don't be late. I'll be late. Don't be late.\"",
+   "\"You'll come again? Okay. I'm gonna sleep so good tonight.\"",
+   "\"Promise? Ha. Okay. I'll hold you to it. With my teeth.\""
+  ],
+  "promise_broken": [
+   "\"You didn't come this morning. It's fine! It's totally fine. I just waited a bit. With the dogs. It's fine.\"",
+   "\"Hey, I waited at the gate. Ten minutes. Then I ran. With the ankle. ...Next time just text, okay?\"",
+   "\"Dad said 'he isn't coming'. I said 'he is'. I lost that one. Don't make me lose it twice.\"",
+   "\"I'm not mad! I'm a dog. Dogs don't get mad. We get sad and then we forget. Mostly.\""
+  ]
+ }
+}

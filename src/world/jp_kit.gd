@@ -274,6 +274,10 @@ func building(x0: int, z0: int, x1: int, z1: int) -> void:
 		zn = "oldschool"
 	elif x0 <= 7 and z0 >= 34 and z1 <= 38:
 		zn = "station"
+	if zn in ["dogshrine", "rokujizo"]:
+		zn = "keeper"  # the Inukai priest's house, the Kuroe house by the old temple stones
+	if x0 == 49 and z0 == 48:
+		zn = "mansion"  # the Shirasagi residence
 	# Narrow units side by side: Japanese streets are a row of different little houses.
 	var widths: Array[float] = []
 	if zn in ["street", "home"]:
@@ -366,6 +370,60 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			roof.albedo_texture = b._tex("jp_kawara_old")
 			_timber(body, w, h, front, [h - 0.12], deco)
 			gable(body, w, d, h, roof, wall, 0.55, true, deco)
+		"mansion":
+			# The Shirasagi residence: two white storeys over charred cedar, a deep roof, a roofed gate with a
+			# heron crest and a child-sized maneki-neko whose paint is cracking (the family's luck since 2010).
+			wall = _wall_mat("jp_plaster", Color(0.98, 0.97, 0.94))
+			h = 7.4
+			b.add_mesh(body, b.box(Vector3(w, h, d)), wall, Vector3(0, h * 0.5, 0))
+			var char_wall := _wall_mat("jp_yakisugi", Color(0.9, 0.86, 0.82))
+			b.add_mesh(body, b.box(Vector3(w + 0.04, 2.8, d + 0.04)), char_wall, Vector3(0, 1.4, 0))
+			fade.append(char_wall)
+			for sx in [-1.0, 1.0]:
+				_panel(body, "koshi", Vector2(w * 0.5 - 2.2, 2.4), Vector3(sx * (w * 0.25 + 0.9), 1.3, front + 0.04), deco, 2.0)
+			_panel(body, "door", Vector2(1.7, 2.4), Vector3(0, 1.2, front + 0.04), deco)
+			hisashi(body, w, front, 3.0, roof, deco)
+			_upper_windows(body, w, front, 4.9, ["shoji", "shoji", "win"], deco)
+			_timber(body, w, h, front, [2.8, h - 0.12], deco)
+			gable(body, w, d, h, roof, wall, 0.5, true, deco)
+			var post_mat := prop_mat("wood", Color(0.5, 0.42, 0.38))
+			for sx in [-1.35, 1.35]:
+				deco.append(b.add_mesh(body, b.box(Vector3(0.26, 3.0, 0.26)), post_mat, Vector3(sx, 1.5, front + 1.25)))
+			deco.append(b.add_mesh(body, b.box(Vector3(3.3, 0.24, 0.3)), post_mat, Vector3(0, 2.85, front + 1.25)))
+			var gate_roof: MeshInstance3D = b.add_mesh(body, b.box(Vector3(3.9, 0.14, 1.5)), roof, Vector3(0, 3.18, front + 1.25))
+			deco.append(gate_roof)
+			var crest: MeshInstance3D = b.add_mesh(body, b.cylinder(0.24, 0.05, 16), painted(Color(0.96, 0.96, 0.93)), Vector3(0, 2.85, front + 1.42), 0.0, false)
+			crest.rotation.x = PI * 0.5
+			deco.append(crest)
+			var neko := Node3D.new()
+			neko.position = Vector3(-w * 0.5 + 1.0, 0, front + 0.9)
+			body.add_child(neko)
+			deco.append(neko)
+			var white := painted(Color(0.95, 0.94, 0.9))
+			var base := MeshInstance3D.new()
+			base.mesh = b.box(Vector3(0.9, 0.4, 0.9))
+			base.material_override = prop_mat("stone", Color(0.8, 0.8, 0.8))
+			base.position.y = 0.2
+			neko.add_child(base)
+			for part in [[0.36, 0.85], [0.3, 1.45]]:
+				var sp := MeshInstance3D.new()
+				var sm := SphereMesh.new()
+				sm.radius = float(part[0])
+				sm.height = float(part[0]) * 2.0
+				sp.mesh = sm
+				sp.material_override = white
+				sp.position.y = float(part[1])
+				neko.add_child(sp)
+			var paw := MeshInstance3D.new()
+			paw.mesh = b.box(Vector3(0.14, 0.42, 0.14))
+			paw.material_override = white
+			paw.position = Vector3(-0.3, 1.45, 0.05)
+			neko.add_child(paw)
+			var koban := MeshInstance3D.new()
+			koban.mesh = b.box(Vector3(0.26, 0.16, 0.05))
+			koban.material_override = painted(Color(0.95, 0.75, 0.3))
+			koban.position = Vector3(0.0, 0.9, 0.36)
+			neko.add_child(koban)
 		"oldschool":
 			wall = _wall_mat("jp_yakisugi", Color(0.95, 0.92, 0.9))
 			h = 6.2
