@@ -678,43 +678,7 @@ func _ura_dressing() -> void:
 	root.name = "UraDressing"
 	add_child(root)
 	var T := LevelBuilder.TILE
-	var stone: Material = jp.prop_mat("stone", Color(0.46, 0.43, 0.42)) if jp else StandardMaterial3D.new()
-	var rng2 := RandomNumberGenerator.new()
-	rng2.seed = 1868
-	var bed_cells: Array[Vector2i] = []
-	for z in range(builder.height):
-		if z >= 50:
-			break  # the sea stays the sea
-		var x0 := -1
-		for x in range(builder.width + 1):
-			var water: bool = x < builder.width and builder.cell(x, z) == "~"
-			if water:
-				bed_cells.append(Vector2i(x, z))
-				if x0 < 0:
-					x0 = x
-			elif x0 >= 0:
-				var length := (x - x0) * T
-				builder.add_mesh(root, builder.box(Vector3(length, 0.24, T)), stone, Vector3(x0 * T + length * 0.5, 0.12, z * T + T * 0.5), 0.0, false)
-				x0 = -1
-	# Children's stone towers on the dry bed (sai no kawara).
-	var mm := MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.mesh = builder.box(Vector3(0.34, 0.16, 0.28))
-	var xforms: Array[Transform3D] = []
-	for i in mini(150, bed_cells.size() * 3):
-		var c: Vector2i = bed_cells[rng2.randi() % bed_cells.size()]
-		var base := builder.center(c.x, c.y) + Vector3(rng2.randf_range(-0.8, 0.8), 0.32, rng2.randf_range(-0.8, 0.8))
-		var h := rng2.randi_range(2, 5)
-		for k in h:
-			var sc := 1.0 - 0.14 * k
-			xforms.append(Transform3D(Basis(Vector3.UP, rng2.randf() * TAU).scaled(Vector3(sc, 1.0, sc)), base + Vector3(0, 0.15 * k, 0)))
-	mm.instance_count = xforms.size()
-	for i in xforms.size():
-		mm.set_instance_transform(i, xforms[i])
-	var towers := MultiMeshInstance3D.new()
-	towers.multimesh = mm
-	towers.material_override = stone
-	root.add_child(towers)
+	_dry_river(root)
 	# Festival stalls along the shopping street, lanterns in the air over the roads.
 	var wood: Material = jp.prop_mat("wood", Color(0.55, 0.36, 0.24)) if jp else StandardMaterial3D.new()
 	var cloth := StandardMaterial3D.new()
@@ -765,6 +729,59 @@ func _ura_dressing() -> void:
 	for l in find_children("*", "Label3D", true, false):
 		if str(l.text).contains("SUZUNARI  STATION"):
 			l.text = "KISARAGI  STATION"
+
+
+
+## The river runs dry (Ura-Suzunari; the homecoming ending): a stone bed over the water up to the sea, with the
+## children's stone towers of sai no kawara on it.
+func dry_river() -> void:
+	if find_child("DryRiver", false, false) == null:
+		var root := Node3D.new()
+		root.name = "DryRiver"
+		add_child(root)
+		_dry_river(root)
+
+
+func _dry_river(root: Node3D) -> void:
+	var jp = build.get("jp")
+	var T := LevelBuilder.TILE
+	var stone: Material = jp.prop_mat("stone", Color(0.46, 0.43, 0.42)) if jp else StandardMaterial3D.new()
+	var rng2 := RandomNumberGenerator.new()
+	rng2.seed = 1868
+	var bed_cells: Array[Vector2i] = []
+	for z in range(builder.height):
+		if z >= 50:
+			break  # the sea stays the sea
+		var x0 := -1
+		for x in range(builder.width + 1):
+			var water: bool = x < builder.width and builder.cell(x, z) == "~"
+			if water:
+				bed_cells.append(Vector2i(x, z))
+				if x0 < 0:
+					x0 = x
+			elif x0 >= 0:
+				var length := (x - x0) * T
+				builder.add_mesh(root, builder.box(Vector3(length, 0.24, T)), stone, Vector3(x0 * T + length * 0.5, 0.12, z * T + T * 0.5), 0.0, false)
+				x0 = -1
+	# Children's stone towers on the dry bed (sai no kawara).
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = builder.box(Vector3(0.34, 0.16, 0.28))
+	var xforms: Array[Transform3D] = []
+	for i in mini(150, bed_cells.size() * 3):
+		var c: Vector2i = bed_cells[rng2.randi() % bed_cells.size()]
+		var base := builder.center(c.x, c.y) + Vector3(rng2.randf_range(-0.8, 0.8), 0.32, rng2.randf_range(-0.8, 0.8))
+		var h := rng2.randi_range(2, 5)
+		for k in h:
+			var sc := 1.0 - 0.14 * k
+			xforms.append(Transform3D(Basis(Vector3.UP, rng2.randf() * TAU).scaled(Vector3(sc, 1.0, sc)), base + Vector3(0, 0.15 * k, 0)))
+	mm.instance_count = xforms.size()
+	for i in xforms.size():
+		mm.set_instance_transform(i, xforms[i])
+	var towers := MultiMeshInstance3D.new()
+	towers.multimesh = mm
+	towers.material_override = stone
+	root.add_child(towers)
 
 
 func _spawn_echo(e: Dictionary, solid: bool) -> void:

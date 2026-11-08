@@ -322,7 +322,7 @@ func _endings(week, game, amane) -> void:
 	# Every staged ending only uses actors, feelings and effects that exist (EndingStage).
 	var looks: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/cast_looks.json"))
 	var feels: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/emotions.json"))
-	var fxs := ["rain", "rain_stop", "bell", "red", "dawn", "day", "night", "fade_out", "fade_in", "flash", "cats"]
+	var fxs := ["rain", "rain_stop", "bell", "red", "dawn", "day", "night", "fade_out", "fade_in", "flash", "cats", "dry_river"]
 	var bad := []
 	for id in week.endings.endings:
 		var lines := 0

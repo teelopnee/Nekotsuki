@@ -10,7 +10,8 @@ extends Node
 ##   {"feel": who, "is": feeling, "s": s}   Emotion.express (data/emotions.json feelings)
 ##   {"hide": who} / {"show": who}          vanish / come back
 ##   {"camera": who}                         the camera follows someone else (Toru by default)
-##   {"fx": "rain" | "rain_stop" | "bell" | "red" | "dawn" | "day" | "night" | "fade_out" | "fade_in" | "flash" | "cats"}
+##   {"fx": "rain" | "rain_stop" | "bell" | "red" | "dawn" | "day" | "night" | "fade_out" | "fade_in" | "flash" | "cats"
+##          | "dry_river"}
 ##   {"wait": s}
 ## who = "toru" (the player), "amane" (the AmaneNPC in the level) or a cast look id (data/cast_looks.json); spawned
 ## people are named from NAMES. Each beat waits for its longest action, then shows the line.
@@ -43,6 +44,12 @@ func _init(lvl: Node = null) -> void:
 func play(beats: Array, hud: Node) -> void:
 	instant = DisplayServer.get_name() == "headless"
 	Clock.running = false
+	# A finale, not gameplay: letterbox, no status / objective / ticker / touch buttons, no date and phone overlay.
+	if hud != null and hud.has_method("cinematic"):
+		hud.cinematic(true)
+	var ov = level.get("overlay")
+	if ov is CanvasItem or ov is CanvasLayer:
+		ov.visible = false
 	_build_fade()
 	_lamp = OmniLight3D.new()
 	_lamp.name = "StageLamp"
@@ -228,6 +235,9 @@ func _fx(kind: String, a: Dictionary = {}) -> float:
 			return _fade_to(kind)
 		"cats":
 			_cats_watch(a.get("around", [3.5, 13]))
+		"dry_river":
+			if level.has_method("dry_river"):
+				level.dry_river()  # the river of the other side: a dry bed of stones and children's towers
 	return 0.0
 
 

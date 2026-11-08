@@ -113,4 +113,7 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
   `StageNPC` (`src/actors/stage_npc.gd`); new looks reuse sheets: sayo / kyoko (c_haruka), makoto / takeshi (c_makabe).
   Spirited-away rivals stay invisible; schedules can't hide anyone on stage; a warm stage lamp follows the people.
   Headless = no tweens or waits (tests click straight through). Off the Suzunari level the same lines show as text.
+  During a staged ending the HUD is in `cinematic(true)` (letterbox; no status, objective, ticker, touch buttons) and
+  the date / phone overlay is hidden. fx `dry_river` = `Suzunari.dry_river()` (the same stone bed + sai no kawara
+  towers `_ura_dressing` builds, shared in `_dry_river`), used by the homecoming ending.
   Shots: `tools/shot_ending.gd -- <dir> [id,id]` (one PNG per line). week_test checks actors / feelings / fx exist.

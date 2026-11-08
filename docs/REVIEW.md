@@ -375,5 +375,7 @@ rendered on lavapipe (town, talk, cat night) plus the repo's Ura shots.
   flags in choice conditions (no new unread flags). life_test validates every event.
 - Found on the way: Suzunari street signs still said NEON AVE / DEBT ST (a code list, so leak_check never saw it) -
   now EKIMAE-DORI, SHOTENGAI, SUZUNARI 2-CHOME...; leak_check also reads clubs/toru/party/cat_night.
-- Open: the ending scenes were checked on lavapipe only (check the tablet: lamp, fades, timing); the HUD objective line
-  stays up during the ending; the riverbed in the homecoming ending is the ordinary river re-lit red.
+- Open: the ending scenes were checked on lavapipe only (check the tablet: lamp, fades, timing).
+- Fixed right after: endings play in the HUD's cinematic mode (letterbox, no status / objective / ticker / touch
+  buttons, no date or phone overlay); the homecoming ending dries the river into Ura's stone bed with the children's
+  stone towers (`fx dry_river`, shared with Ura-Suzunari).

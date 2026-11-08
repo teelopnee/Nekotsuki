@@ -82,7 +82,7 @@
   "homecoming": {
    "title": "Homecoming",
    "stage": [
-    {"do": [{"fx": "red"}, {"fx": "rain"}, {"at": "toru", "tile": [23.4, 47.4]}, {"at": "amane", "tile": [24.4, 47.4]}, {"at": "sayo", "tile": [27.3, 46.4]}, {"face": "sayo", "to": [30, 46.4]}, {"walk": "toru", "tile": [25.8, 47.4], "t": 2.6}, {"walk": "amane", "tile": [26.8, 47.4], "t": 2.6}], "say": "You don't go up for yourself. With Letter 101 in your pocket and Amane's hand in yours, you walk into the red dusk to the dry riverbed where the children build their little towers of stones."},
+    {"do": [{"fx": "red"}, {"fx": "rain"}, {"fx": "dry_river"}, {"at": "toru", "tile": [23.4, 47.4]}, {"at": "amane", "tile": [24.4, 47.4]}, {"at": "sayo", "tile": [27.3, 46.4]}, {"face": "sayo", "to": [30, 46.4]}, {"walk": "toru", "tile": [25.8, 47.4], "t": 2.6}, {"walk": "amane", "tile": [26.8, 47.4], "t": 2.6}], "say": "You don't go up for yourself. With Letter 101 in your pocket and Amane's hand in yours, you walk into the red dusk to the dry riverbed where the children build their little towers of stones."},
     {"do": [{"face": "sayo", "to": "amane"}, {"feel": "sayo", "is": "shock", "s": 5}], "say": "She is there, a woman in a faded summer kimono, helping a small ghost balance one more stone. She looks up. She sees her son - fifteen, not one - and drops every stone she is holding."},
     {"do": [{"feel": "amane", "is": "cry", "s": 8}], "who": "Sayo", "say": "Amane?"},
     {"do": [{"fx": "bell"}, {"feel": "sayo", "is": "cry", "s": 8}, {"walk": "amane", "tile": [27.0, 47.0], "t": 1.0}], "say": "Rin reads Letter 101 aloud, all of it, in her rude old voice that cracks on the last line. It was never about debts. It was about coming home."},
