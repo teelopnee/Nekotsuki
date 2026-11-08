@@ -137,6 +137,7 @@ func _pick(arr) -> String:
 
 
 func _lesson(b: String, late: int) -> void:
+	Playtest.mark("Lesson %s%s" % [b, " (late)" if late > 0 else ""])
 	var hud := _hud()
 	_busy = true
 	today()["lesson_" + b] = true
@@ -561,6 +562,8 @@ func fill(t: String) -> String:
 func before_day_end(hud: Node) -> void:
 	if hud == null:
 		return
+	Playtest.mark("Day end")
+	Playtest.save()
 	var s := st()
 	var cons: Dictionary = lessons.get("consequence", {})
 	if int(s["late"]) >= 3 and not s["told"].has("late_3"):
@@ -573,6 +576,7 @@ func before_day_end(hud: Node) -> void:
 	for bt in day_data().get("beats", []):  # dreams and other night scenes
 		if str(bt.get("when", "")) == "night" and not s["done"].has(str(bt.id)) and _needs_ok(bt):
 			await play_beat(bt)
+	await _genzo_food(hud)
 	if Game.flags.has("ending"):
 		return
 	await Toru.day_end(hud)  # club attendance, debt, Saki's Sunday call, new quirks
@@ -588,6 +592,21 @@ func before_day_end(hud: Node) -> void:
 		await _exam_results(hud)
 	if day_in_week() == 7 and not (s["closed"] as Array).has(week_no()):
 		await close_week(hud, week_no())
+
+
+## The night after the dango stall in Ura-Suzunari, Grandpa comes into the dream about it (data/ura.json food).
+func _genzo_food(hud: Node) -> void:
+	var f: Dictionary = ura.get("food", {})
+	var told: Dictionary = st()["told"]
+	var key := ""
+	if bool(Game.flags.get("ate_in_ura", false)):
+		key = "genzo_broken" if bool(Game.flags.get("broke_genzo_promise", false)) else "genzo_ate"
+	elif bool(Game.flags.get("refused_ura_food", false)):
+		key = "genzo_refused"
+	if key == "" or told.has("food_" + key) or str(f.get(key, "")) == "":
+		return
+	told["food_" + key] = true
+	await hud.say(str(f.get("dream_speaker", "Grandpa Genzo (dream)")), fill(str(f[key])))
 
 
 func summary() -> Array[String]:
@@ -691,6 +710,10 @@ func ending(choice: String) -> void:
 		var goal := Toru.goal_epilogue(id)  # Toru's own goal (NEW GAME), one line
 		if goal != "":
 			epi += "\n\n" + fill(goal)
+		var mem := remembered(id)
+		if not mem.is_empty():
+			await hud.say("", "%s\n\n%s" % [str(endings.get("remembers", {}).get("title", "WHAT SUZUNARI REMEMBERS")),
+				"\n\n".join(mem)])
 		await hud.say("", "%s\n\n%s%s\n\n%s" % [str(e.get("title", id)).to_upper(), "\n".join(summary()), epi,
 			str(endings.get("end_card", "EPISODE 0 - END"))])
 		await Ledger.show_page(_level() if _level() else hud)  # Domyo and Dosho write the page
@@ -699,6 +722,31 @@ func ending(choice: String) -> void:
 	Game.save_game()
 	Clock.running = false
 	Router.goto(Router.TITLE)
+
+
+## Story choices the town remembers (data/endings.json "remembers"): every line needs all its `flags`, none of `none`,
+## an ending not in `not_endings`, and its `who` still in town (not hidden, not the two_of_us ending). Best `p` first.
+func remembered(id: String) -> Array[String]:
+	var r: Dictionary = endings.get("remembers", {})
+	var picks: Array = []
+	var i := 0
+	for c in r.get("lines", []):
+		i += 1
+		var ok := not (c.get("not_endings", []) as Array).has(id)
+		for fl in c.get("flags", []):
+			ok = ok and bool(Game.flags.get(str(fl), false))
+		for fl in c.get("none", []):
+			ok = ok and not bool(Game.flags.get(str(fl), false))
+		var who := str(c.get("who", ""))
+		if who != "" and (id == "two_of_us" or Amane.fate(who) == "hidden"):
+			ok = false
+		if ok:
+			picks.append([int(c.get("p", 1)), i, fill(str(c.get("t", "")))])
+	picks.sort_custom(func(x, y): return x[0] > y[0] or (x[0] == y[0] and x[1] < y[1]))
+	var out: Array[String] = []
+	for pk in picks.slice(0, int(r.get("max", 4))):
+		out.append(str(pk[2]))
+	return out
 
 
 const SEEN_PATH := "user://endings_seen.json"
@@ -778,6 +826,7 @@ func _closest() -> String:
 
 ## Step onto the thousandth stair: the town level reloads as Ura-Suzunari (Suzunari._setup reads Router.params).
 func enter_ura(goal: String) -> void:
+	Playtest.mark("Ura-Suzunari (%s)" % goal)
 	st()["ura_goal"] = goal
 	Game.flags["ura_visits"] = int(Game.flags.get("ura_visits", 0)) + 1
 	Game.flags["in_ura"] = true
@@ -800,8 +849,9 @@ func leave_ura(thrown_out: bool = false) -> void:
 			Amane.rescue(str(who), str(h.get("home", "")).replace("{who}", n))
 	if thrown_out:
 		var lore: Dictionary = Amane.st()["lore"]
-		if not lore.is_empty():
-			lore.erase(lore.keys()[_rng.randi() % lore.size()])
+		for i in (2 if bool(Game.flags.get("ate_in_ura", false)) else 1):  # what you ate there takes a second memory
+			if not lore.is_empty():
+				lore.erase(lore.keys()[_rng.randi() % lore.size()])
 		Clock.next_day()
 		Clock.st()["minute"] = Clock.START_MIN
 		Router.goto(Router.SUZUNARI, {"spawn_tile": [4, 21]})
@@ -815,6 +865,7 @@ func leave_ura(thrown_out: bool = false) -> void:
 ## fx race {kind: cat|lantern, seconds, to [x, z] (lantern), speed (cat), speaker, ok {say, fx}, fail {say, fx}}:
 ## the level spawns the target, you have `seconds` to reach it, then the matching outcome plays.
 func race(spec: Dictionary) -> void:
+	Playtest.mark("Race (%s)" % str(spec.get("kind", "")))
 	var lvl := _level()
 	var hud := _hud()
 	var won := false

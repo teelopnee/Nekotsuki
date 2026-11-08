@@ -90,6 +90,6 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
   `taught_hayate`); exam choice `copy` (catch chance from agility/courage, see-through ~0; `Week.copy_roll` for
   tests) -> F + Makabe -8 + Ura post; `_exam_results` after the last exam day = ranking board (`st().ranks`).
   Grades in `Game.flags["exam_d<day>_<am|pm>"]` + `st().grades`. Test: `tools/friends_test.gd`.
-- Cat night readability (2026-11-08): the cat's sprite tint is brightened (`base_modulate` 1.35/1.3/1.55 = moonlit
+- Cat night readability (2026-11-08): `cat_night.json pixel_size` 0.08 (was 0.06), the cat's sprite tint is brightened (`base_modulate` 1.35/1.3/1.55 = moonlit
   fur), the halo is stronger and sits in front of the cat, the camera is closer and steeper (`configure(40, 12, fov)`),
   facade windows drop to `JPKit.window_scale` 0.15 and the notice board is hidden. Talk close-up also hides bystanders' speech bubbles (`CameraRig._talk_labels`).

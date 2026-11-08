@@ -344,3 +344,21 @@ rendered on lavapipe (town, talk, cat night) plus the repo's Ura shots.
   food promise); endings as staged scenes on the steps, not text pages; fewer, deeper clubs and jobs; rain streaks
   render as grey squares on lavapipe (check on the tablet); Toru is still seen from behind outside talks; the cat
   still reads small at night (a bigger cat sprite or a closer cat-night camera is the next step).
+
+## Second review, open items (2026-11-08)
+- Playtest log for the owner's timed run: pause menu "Playtest" (debug builds) shows real time per day split into
+  walk / talk / menu / idle, scenes per day and the first 80 scenes / lessons / Ura visits / races / day ends with their
+  real time (`src/autoload/playtest.gd`, `user://playtest.json`, reset by NEW GAME).
+- Consequences: all 53 story flags that nothing read now come back at the end - "WHAT SUZUNARI REMEMBERS" (up to 4
+  lines, `data/endings.json remembers`, skips rivals who were spirited away). Two also change play: the old umbrella
+  (`kasa_friend`) buys 20 s on the other side; Grandpa's "don't eat over there" is a real choice now - a dango stall in
+  Ura (eat one bite until Rin knocks it away / refuse / ask): eating calls the bells sooner (x0.7), costs a second
+  memory if you're thrown out, breaks the promise, and Grandpa's dream that night knows (Ledger deeds too).
+- Cat night: the cat sprite is a third bigger (pixel_size 0.08).
+- Found on the way: the ODD-SPACE "FLAW & PERK - the universe offers you a deal" modal could pop up in Suzunari after
+  two thefts; off in Suzunari now. It also made interact_back_test fail ~1 in 6 runs (12/12 + 6/6 green after).
+- Tests: ura_test +7 checks (stall, promise, bells, once per visit, dream), week_test +4 (remembered lines, hidden
+  friends, the page before the end card, every line's flag is set by a choice); all suites pass, leak_check 0.
+- Still open: the owner's timed playtest of week 1 (use the Playtest page); endings as staged scenes on the steps;
+  fewer, deeper clubs and jobs (8 clubs share 17 events); rain streaks as grey squares on lavapipe; Toru seen from
+  behind outside talks.

@@ -58,5 +58,45 @@
   {"id": "e2016", "tile": [3, 19], "look": "amane", "label": "An echo: 2016", "speaker": "",
    "text": "A seven-year-old boy with a candy apple stands at the top of the steps, dazed. A five-year-old in a black hood runs up, a bell ringing on its wrist, slaps the candy out of his hand and drags him down by his little finger. \"Next year I'll come again,\" the boy says at the bottom. \"Promise.\"",
    "choices": [{"t": "Watch the promise.", "say": "Two little fingers. A red line that wasn't there before. You know this one. You remember it now - or you will.", "fx": {"lore": "promise_2016"}}, {"t": "Pick up the candy apple.", "say": "Your hand goes straight through it. Good. Don't eat anything here. Not even memories.", "fx": {"lore": "kamikakushi_2016"}}]}
- ]
+ ],
+ "kasa_bonus": 20,
+ "kasa_text": "The old umbrella you took home opens by itself and leans over you. The rain falling up can't reach you. The bells sound further away.",
+ "food": {
+  "_doc": "Yomotsuhegui (food of the other side, LORE 1.1): one festival stall offers dango once per visit (stall_x on the shopping street). eat = one bite, then Rin knocks the skewer away (as in 2016): flag ate_in_ura -> bells at bell_mult, being thrown out costs a second memory; if Genzo's promise dont_eat_ura was made it is broken (flag broke_genzo_promise). Refusing = flag refused_ura_food. Grandpa's dream the same night: genzo_broken / genzo_ate / genzo_refused.",
+  "stall_x": 17,
+  "bell_mult": 0.7,
+  "prompt": "The dango stall",
+  "speaker": "A woman at the stall",
+  "text": "Under a red lantern, a stall sells dango on bamboo skewers: three balls, pink, white and green, still warm. The woman behind it has a face you can't keep hold of. \"For the festival,\" she says, and holds one out. \"You look hungry, child. You always did.\"",
+  "choices": [
+   {
+    "kind": "eat",
+    "t": "Take it and eat. \"Thank you.\"",
+    "say": "It tastes like the summer you were seven: sugar, smoke, a hand holding yours. Before the second bite something small and gold strikes your fingers and the skewer falls into the dust. A bell swings in the air beside you, furious. One ball of dango is already inside you. The woman smiles with a mouth you can't see. \"There. Now a little of you lives here.\"",
+    "fx": {
+     "lore": "yomotsuhegui"
+    }
+   },
+   {
+    "kind": "refuse",
+    "t": "\"Thank you, but I've already eaten.\"",
+    "say": "\"Clever child.\" She puts the skewer back. \"Somebody taught you well. Old Asagiri, was it? He never ate here either, the stubborn man.\" For a moment the lantern light is almost warm.",
+    "fx": {
+     "lore": "yomotsuhegui"
+    }
+   },
+   {
+    "kind": "ask",
+    "t": "\"Who are these for?\"",
+    "say": "\"For the ones who stay.\" She turns the skewer slowly. \"Eat on this side and this side keeps you. That's all. That's the whole rule.\" She doesn't offer it again.",
+    "fx": {
+     "lore": "yomotsuhegui"
+    }
+   }
+  ],
+  "dream_speaker": "Grandpa Genzo (dream)",
+  "genzo_broken": "Grandpa is sitting on the end of your bed, which he never did. He doesn't look angry. He looks tired. \"You ate.\" Not a question. \"I asked you one thing, Toru.\" The room smells of incense. \"The bell saved you again. She won't always be that fast. Over there, the bells will come quicker for you now. Don't stay long. Promise me that, at least.\"",
+  "genzo_ate": "Grandpa is at the window again. \"You ate something over there.\" He sniffs. \"Festival sugar. I can smell it from here.\" He shakes his head. \"Nobody warned you. That's on me. Over there, food is a hook. Whatever you swallow keeps a piece of you. The bells will come quicker now - don't stay long.\"",
+  "genzo_refused": "Grandpa is grinning in the dream, actually grinning. \"You didn't eat.\" He looks as if he wants to ruffle your hair and can't decide if he's allowed. \"That stall-keeper tried the same on me when I was your age. Sugar and kind words. Good boy.\""
+ }
 }

@@ -37,9 +37,15 @@ func _process(_delta: float) -> bool:
 			_step = 3
 			_wait = 200
 		3:
-			if _approachers[0].state == "approach" and _approach_polls < 600:
+			# Still walking over. Poll on the NPC's own clock (it talks from where it is when its 9 s run out), not a
+			# frame count: headless frames run faster than physics ticks, so 600 frames was sometimes only ~1 s of NPC time.
+			if _approachers[0].state == "approach" and _approachers[0]._approach_time > -1.0 and _approach_polls < 6000:
 				_approach_polls += 1
-				return false  # still walking over (crowd LOD ticks idle NPCs less often)
+				# Another modal (e.g. a FLAW & PERK offer after the theft verbs) pauses the tree and freezes the walk.
+				var hud = get_first_node_in_group("hud")
+				if hud != null and bool(hud.get("_dialogue_open")) and _last.is_empty():
+					hud._on_choice("")
+				return false
 			_approaches_check()
 			print("\nINTERACT-BACK TEST DONE - %d failures" % _fails)
 			quit(_fails)
@@ -162,11 +168,22 @@ func _approaches_start() -> void:
 	_last = []
 
 
+## What froze the walk-over, if anything (diagnostics for the failure message).
+func _blocker() -> String:
+	var lvl = current_scene
+	var hud = lvl.get("hud") if lvl else null
+	var t := ""
+	if hud != null and bool(hud.get("_dialogue_open")):
+		t = str(hud._dialogue_text.text).substr(0, 60)
+	return " paused=%s dialogue=%s level=%s" % [str(paused), t, str(lvl.name) if lvl else "?"]
+
+
 func _approaches_check() -> void:
 	var npc = _approachers[0]
 	var got: bool = not _last.is_empty() and (_last[2] as Array).size() >= 2
-	_check(got, "an NPC walked up and started a conversation (%s)" % (_last[1].substr(0, 70) if got else "none: state=%s kind=%s wait=%.2f d=%.1f" % [
-		npc.state, npc._approach_kind, npc._approach_wait, npc.global_position.distance_to(get_first_node_in_group("player").global_position)]))
+	_check(got, "an NPC walked up and started a conversation (%s)" % (_last[1].substr(0, 70) if got else "none: state=%s kind=%s wait=%.2f d=%.1f t=%.2f stuck=%.2f polls=%d" % [
+		npc.state, npc._approach_kind, npc._approach_wait, npc.global_position.distance_to(get_first_node_in_group("player").global_position),
+		npc._approach_time, npc._approach_stuck, _approach_polls]) + _blocker())
 	_close()
 	# Play each approach scene directly too.
 	var inter = root.get_node("Interactions")

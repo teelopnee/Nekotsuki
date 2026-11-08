@@ -34,6 +34,8 @@ func threshold_for(kind: String) -> int:
 
 
 func report_mishap(kind: String) -> void:
+	if DataDB.theme == "suzunari":
+		return  # ODD-SPACE's "the universe offers you a deal" flaws and skill points don't exist in Suzunari (Toru has quirks)
 	var rule: Dictionary = DataDB.flaws_perks.get("mishaps", {}).get(kind, {})
 	if rule.is_empty():
 		return

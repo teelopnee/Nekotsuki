@@ -197,6 +197,7 @@ func scene(speaker: String, text: String, choices: Array, key: String, extras: A
 	var h := _hud()
 	if h == null or (choices.is_empty() and extras.is_empty()):
 		return ""
+	Playtest.scene("%s (%s)" % [speaker if speaker != "" else "Scene", key])
 	var picked: Array = st()["picked"].get(key, [])
 	var menu := []
 	for i in choices.size():

@@ -88,3 +88,19 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
 - Ura light (2026-11-08): red key light over cold violet ambient (`_ura_light`: ambient (0.36, 0.28, 0.56) x0.85,
   saturation 1.08, facade windows at `window_scale` 0.45), so the riverbed reads in two tones instead of one red wash. The HUD notice board is hidden in Ura
   (`HUD.set_ticker_shown(false)` in `_build_ura`). The objective line omits "Route:" until a route exists.
+- Yomotsuhegui stall (2026-11-08, `data/ura.json food`, `Suzunari._ura_food_stall/_ura_food`): one dango stall on
+  the Ura shopping street (stall_x 17) offers a skewer once per visit (eat / refuse / ask, all give lore
+  `yomotsuhegui`). Eat = one bite, then Rin knocks it away (as in 2016, LORE 1.1 says a full meal keeps you there):
+  flag `ate_in_ura` -> `bell_seconds()` x `bell_mult` 0.7 and being thrown out forgets 2 lore instead of 1; if Genzo's
+  week-6 promise `dont_eat_ura` was made it is removed and `broke_genzo_promise` set. Refuse/ask = `refused_ura_food`.
+  Deeds `ura_food_broken` / `ura_food` / `ura_food_refused` reach the Ledger page; the same night `Week._genzo_food`
+  plays Grandpa's dream (`genzo_broken` / `genzo_ate` / `genzo_refused`). `kasa_friend` (week 6, you took the old
+  umbrella home) adds `kasa_bonus` 20 s to the bells, with a toast on arrival.
+- What Suzunari remembers (`data/endings.json remembers`, `Week.remembered(id)`): after the ending pages, up to 4 lines
+  about story choices (every flag that week choices set has one; one line per entry for tablet editing). Line keys:
+  `flags` (all), `none`, `not_endings`, `who` (a rival's full name: skipped when hidden or in two_of_us), `p` (3 first).
+  week_test checks every line's flags are set by some choice.
+- Playtest log (`src/autoload/playtest.gd`, debug builds only): real seconds per game day split into walk / talk /
+  menu / idle, scene count, and a timeline of the first 80 scenes, lessons, Ura visits, races, cat nights and day ends
+  (`Playtest.scene/mark`, hooked in `Town.scene`, `Amane.converse`, `Week._lesson/enter_ura/race/before_day_end`,
+  `Suzunari._build_cat_night`). `user://playtest.json`, reset by NEW GAME; pause menu page "Playtest".

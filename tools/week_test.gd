@@ -109,13 +109,28 @@ func _process(_d: float) -> bool:
 			_check(clock.minute() >= 940, "a conversation costs 10 minutes (%d)" % clock.minute())
 			clock.running = false
 			# The real ending flow: pages, then the end card with the summary (then back to the title).
+			# What the town remembers: flags from story choices come back at the end (data/endings.json remembers).
+			var fates: Dictionary = amane.st()["fates"]
+			var hina_was = fates.get("Hayase Hina", null)
+			game.flags["festival_hina"] = true
+			fates["Hayase Hina"] = "hidden"
+			_check(not "\n".join(week.remembered("okaeri")).contains("with Hina"), "a spirited-away friend isn't remembered as here")
+			fates.erase("Hayase Hina")
+			if hina_was != null:
+				fates["Hayase Hina"] = hina_was
+			var mem_n: int = week.remembered("cat_who_waits").size()
+			_check(mem_n > 0 and mem_n <= 4, "the town remembers up to 4 of your choices (%d)" % mem_n)
 			game.flags.erase("ending")
 			week.ending("leave")
 			_check(hud._dialogue_open and str(hud._dialogue_text.text).contains("Toryanse"), "an ending plays its pages")
-			for _i in 6:
+			var saw_mem := false
+			for _i in 10:
+				if str(hud._dialogue_text.text).begins_with("WHAT SUZUNARI REMEMBERS"):
+					saw_mem = true
 				if str(hud._dialogue_text.text).contains("EPISODE 0"):
 					break
 				hud._on_choice("")
+			_check(saw_mem, "WHAT SUZUNARI REMEMBERS plays before the end card")
 			_check(str(hud._dialogue_text.text).contains("THE CAT WHO WAITS") and str(hud._dialogue_text.text).contains("EPISODE 0"), "the end card names the ending")
 			_check(str(game.flags.get("ending", "")) == "cat_who_waits", "the ending is recorded for Enma's Ledger")
 			print("week_test: %d failure(s)" % fails)
@@ -125,6 +140,20 @@ func _process(_d: float) -> bool:
 
 
 func _data_checks(week, town, amane) -> void:
+	var set_by := {"ate_in_ura": true, "refused_ura_food": true, "sayo_found": true, "makabe_letter_sent": true}
+	for wn in week.weeks:
+		for d in week.weeks[wn].days:
+			for bt in week.weeks[wn].days[d].get("beats", []):
+				for c in bt.get("choices", []):
+					var fl = c.get("fx", {}).get("flag", [])
+					for x in (fl if fl is Array else [fl]):
+						set_by[str(x)] = true
+	var orphan := []
+	for ln in week.endings.get("remembers", {}).get("lines", []):
+		for x in ln.get("flags", []):
+			if not set_by.has(str(x)):
+				orphan.append(str(x))
+	_check(orphan.is_empty(), "every remembered line hangs on a flag some choice sets %s" % str(orphan))
 	var missing := []
 	var titles: Dictionary = town.data.get("lore_titles", {})
 	for wn in week.weeks:

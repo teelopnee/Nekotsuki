@@ -97,6 +97,7 @@ func new_suzunari(player_name: String = "Toru", origin: Dictionary = {}) -> void
 	Game.location_name = "Suzunari"
 	Ledger.clear_mirror()
 	Toru.apply_origin(origin)
+	Playtest.new_life()
 	goto(SUZUNARI)
 
 

@@ -94,6 +94,28 @@ func _process(_d: float) -> bool:
 			_check(hud._dialogue_open and str(hud._dialogue_text.text).length() > 60, "an echo replays the past")
 			_buttons(hud)[0].pressed.emit()
 			_close_all(hud)
+			# Yomotsuhegui: the dango stall (data/ura.json food). Eating breaks Grandpa's promise and calls the bells sooner.
+			var stall = lvl.find_child("UraFood", true, false)
+			_check(stall != null, "a dango stall on the other side")
+			if stall:
+				var b0: float = lvl.bell_seconds()
+				(amane.st()["promises"] as Array).append("dont_eat_ura")
+				lvl._ura_food(stall)
+				var bs: Array = _buttons(hud)
+				_check(hud._dialogue_open and bs.size() == 3, "the stall-keeper offers dango (eat / refuse / ask)")
+				for btn in bs:
+					if str(btn.text).contains("and eat"):
+						btn.pressed.emit()
+						break
+				_close_all(hud)
+				_check(bool(game.flags.get("ate_in_ura", false)) and bool(game.flags.get("broke_genzo_promise", false)),
+					"ate one bite: a hook in you, and Grandpa's promise broken")
+				_check(not (amane.st()["promises"] as Array).has("dont_eat_ura"), "the broken promise left the open list")
+				_check(lvl.bell_seconds() < b0 - 1.0, "the bells come sooner (%.0f -> %.0f s)" % [b0, lvl.bell_seconds()])
+				_check(not stall.enabled, "she doesn't offer twice in one visit")
+				week._genzo_food(hud)
+				_check(hud._dialogue_open and str(hud._dialogue_text.text).contains("You ate"), "Grandpa's dream knows you ate")
+				_close_all(hud)
 			# Stay too long: the second bell throws you out, a day later.
 			lvl._ura_t = lvl.bell_seconds() * 2.0 + 1.0
 			lvl._ura_bells = 1

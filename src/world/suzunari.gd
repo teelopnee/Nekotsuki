@@ -604,6 +604,8 @@ func _build_ura() -> void:
 	Clock.running = false
 	if hud and hud.has_method("set_ticker_shown"):
 		hud.set_ticker_shown(false)  # no school notices or radio on the other side
+	if bool(Game.flags.get("kasa_friend", false)) and hud and hud.has_method("toast"):
+		hud.toast(str(u.get("kasa_text", "")), Color(0.8, 0.85, 1.0))
 	var arrive: Array = u.get("arrive", [4, 20])
 	player.global_position = builder.center(int(arrive[0]), int(arrive[1])) + Vector3(0, 0.1, 0)
 	if amane and Amane.st()["met"]:
@@ -730,6 +732,8 @@ func _ura_dressing() -> void:
 		for sx in [-0.9, 0.9]:
 			builder.add_mesh(root, builder.box(Vector3(0.08, 2.0, 0.08)), wood, p + Vector3(sx, 1.0, 0.55), 0.0, false)
 			builder.add_mesh(root, builder.cylinder(0.16, 0.3, 8), glow, p + Vector3(sx * 0.7, 1.6, 0.75), 0.0, false)
+		if x == int(Week.ura.get("food", {}).get("stall_x", 17)):
+			_ura_food_stall(p)
 	var lm := MultiMesh.new()
 	lm.transform_format = MultiMesh.TRANSFORM_3D
 	lm.mesh = builder.cylinder(0.2, 0.36, 8)
@@ -850,9 +854,50 @@ func ura_scene_done(id: String) -> void:
 			hud.toast("Get back to the steps before the second bell.", Color(1.0, 0.8, 0.6))
 
 
-## Seconds before the first bell on the other side (the second rings at twice this). Courage buys time.
+## Seconds before the first bell on the other side (the second rings at twice this). Courage buys time, the old
+## umbrella you took home (kasa_friend) keeps the upward rain off you, and food eaten over there calls you sooner.
 func bell_seconds() -> float:
-	return float(Week.ura.get("bell_seconds", 150)) + Toru.bell_bonus()
+	var s := float(Week.ura.get("bell_seconds", 150)) + Toru.bell_bonus()
+	if bool(Game.flags.get("kasa_friend", false)):
+		s += float(Week.ura.get("kasa_bonus", 20))
+	if bool(Game.flags.get("ate_in_ura", false)):
+		s *= float(Week.ura.get("food", {}).get("bell_mult", 0.7))
+	return s
+
+
+## Yomotsuhegui (food of the other side): one dango stall offers you a skewer, once per visit (data/ura.json food).
+func _ura_food_stall(p: Vector3) -> void:
+	var f: Dictionary = Week.ura.get("food", {})
+	if f.is_empty():
+		return
+	var it := Interactable.new()
+	it.name = "UraFood"
+	it.prompt = str(f.get("prompt", "The dango stall"))
+	it.radius = 1.8
+	add_child(it)
+	it.global_position = p + Vector3(0, 0.6, 1.1)
+	it.interacted.connect(func(_p): _ura_food(it))
+
+
+func _ura_food(it: Interactable) -> void:
+	var f: Dictionary = Week.ura.get("food", {})
+	var choices: Array = f.get("choices", [])
+	var pick: String = await Town.scene(str(f.get("speaker", "")), Week.fill(str(f.get("text", ""))), choices, "ura_food")
+	if not pick.is_valid_int() or int(pick) >= choices.size():
+		return
+	it.enabled = false  # she doesn't offer twice in one visit
+	if str(choices[int(pick)].get("kind", "")) == "eat":
+		Game.flags["ate_in_ura"] = true
+		var pr: Array = Amane.st()["promises"]
+		if pr.has("dont_eat_ura"):  # Grandpa's warning in the week 6 dream
+			pr.erase("dont_eat_ura")
+			Game.flags["broke_genzo_promise"] = true
+			Ledger.deed("ura_food_broken", "dango")
+		else:
+			Ledger.deed("ura_food", "dango")
+	else:
+		Game.flags["refused_ura_food"] = true
+		Ledger.deed("ura_food_refused", "dango")
 
 
 func _ura_process(delta: float) -> void:
@@ -1048,6 +1093,7 @@ func start_race(spec: Dictionary) -> bool:
 
 func _build_cat_night() -> void:
 	Clock.running = false
+	Playtest.mark("Cat night")
 	for n in get_tree().get_nodes_in_group("npc"):
 		if n == amane or n.is_in_group("cat"):
 			continue

@@ -12,6 +12,9 @@
   "close": "Close the ledger",
   "stamps": {"good": "GOOD DEED", "bad": "BAD DEED", "argued": "UNDECIDED"},
   "entries": {
+    "ura_food_broken": {"text": "You promised Grandpa not to eat on the other side. You ate.", "verdict": "bad", "domyo": ["One bite. And the bell got there first. I'm writing 'one bite'."], "dosho": ["He asked you ONE thing. Red ink. The other side has your taste now."]},
+    "ura_food": {"text": "You ate dango on the other side.", "verdict": "undecided", "domyo": ["Nobody warned him. You can't fail a test nobody set."], "dosho": ["Yomotsuhegui. One ball of dango and the other side has a hook in you. I'm not writing 'nobody warned him'."]},
+    "ura_food_refused": {"text": "You refused the food of the other side.", "verdict": "good", "domyo": ["Polite AND sensible. His grandfather will be insufferable about this."], "dosho": ["Hm. Fine. Good. I'll allow it."]},
     "route_romance": {"text": "Nekomori Amane, 1-A: you chose him. Confessions, festival dates, a hand held at the bridge.", "verdict": "argued",
       "domyo": ["Love is the oldest good deed there is. He waited a hundred and fifty years. You came."],
       "dosho": ["You dated a boy whose jealousy walks around at night with two tails. Bold. Stupid. Bold."]},

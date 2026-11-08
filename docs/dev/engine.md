@@ -110,3 +110,7 @@ Rename and rewrite these notes as systems are replaced (GDD section 10). `docs/R
 - `src/ui/` HUD (code-built), touch controls, pause menu, title, character creation, star map.
 - `docs/ARCHITECTURE.md` explains the systems; `docs/GDD.md` the design.
 
+- Flaws & perks are ODD-SPACE only: `FlawPerkSystem.report_mishap` returns at once in Suzunari (no "MISHAP PATTERN
+  DETECTED / the universe offers you a deal" modal; the pause menu has no Perks tab there). `interact_back_test` closes
+  unrelated modals while it waits for the walk-over and polls on the NPC's own timer (it was flaky ~1 in 6: the flaw
+  offer after the theft verbs paused the tree).

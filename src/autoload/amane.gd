@@ -186,6 +186,7 @@ func converse(actor: Node3D, hud: Node) -> void:
 	var s := st()
 	if hud == null:
 		return
+	Playtest.scene("Talk: Amane")
 	if not s["met"]:
 		s["met"] = true
 		Ledger.capture("The boy at the gate")  # for the Johari mirror

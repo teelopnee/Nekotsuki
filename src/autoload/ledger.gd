@@ -135,7 +135,7 @@ func entries() -> Array:
 	var deeds := {}
 	for d in Game.flags.get("deeds", []):
 		deeds[str(d.get("kind", ""))] = int(deeds.get(str(d.get("kind", "")), 0)) + 1
-	for k in ["eavesdrop", "knock", "seen", "cheat", "cheat_caught"]:
+	for k in ["eavesdrop", "knock", "seen", "cheat", "cheat_caught", "ura_food_broken", "ura_food", "ura_food_refused"]:
 		if deeds.has(k):
 			out.append(_entry(k, {"n": deeds[k]}))
 	for d in Game.flags.get("deeds", []):

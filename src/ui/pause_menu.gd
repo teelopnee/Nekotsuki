@@ -77,6 +77,8 @@ func _rebuild() -> void:
 	_tab_causality()
 	_tab_items()
 	_tab_system()
+	if town and Playtest.shown():
+		_tab_playtest()
 	if keep >= 0 and keep < _tabs.get_tab_count():
 		_tabs.current_tab = keep
 	_focus_first.call_deferred()
@@ -328,6 +330,14 @@ func _tab_items() -> void:
 				Game.use_item(item_id)
 				_rebuild())
 			row.add_child(b)
+
+
+## Debug builds only: real time per day (walk / talk / menu / idle) and the first scenes (Playtest autoload).
+func _tab_playtest() -> void:
+	var v := _page("Playtest")
+	var l := HUD.make_label(Playtest.report(), 15, Color(0.92, 0.9, 0.86))
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(l)
 
 
 func _tab_system() -> void:
