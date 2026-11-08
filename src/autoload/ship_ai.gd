@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 
 ## Say a random line for `key`. vars fill {tokens}. force ignores cooldowns.
 func say(key: String, vars: Dictionary = {}, force: bool = false) -> void:
-	if not enabled:
+	if not enabled or DataDB.theme == "suzunari":  # no ship and no Q.U.A.C.K. in Suzunari
 		return
 	if not force and (_global > 0.0 or _cooldowns.has(key)):
 		return

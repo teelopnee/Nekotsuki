@@ -409,8 +409,7 @@
    },
    "fail": {
     "lines": [
-     "\"Get a job.\" They have two. Neither pays.",
-     "They walk past you like you're an ad they've already skipped."
+     "\"Get a job.\" They have two. Neither pays."
     ],
     "effects": {}
    }
@@ -472,7 +471,7 @@
    },
    "success": {
     "lines": [
-     "You become one more grey shape under the ads. {npc} blinks. \"Where... I swear someone was right there.\""
+     "You become one more grey shape under the shop awnings. {npc} blinks. \"Where... I swear someone was right there.\""
     ],
     "effects": {
      "npc": "silenced"
@@ -625,7 +624,6 @@
    "chance": 0.8,
    "success": {
     "lines": [
-     "\"Of course, sir or madam or esteemed relic. Fifteen percent off, and a free ad.\"",
      "They check your face, then the law. The law, grudgingly, agrees."
     ],
     "effects": {
@@ -690,7 +688,7 @@
    "chance": 0.9,
    "success": {
     "lines": [
-     "You describe the sky with no ads. {npc} goes quiet. \"Where would someone even go to find that again?\" A spark. A dangerous one."
+     "You describe a sky with no power lines in it. {npc} goes quiet. \"Where would someone even go to find that again?\" A spark. A dangerous one."
     ],
     "effects": {
      "attitude": 25,
@@ -715,7 +713,7 @@
    "once": true,
    "verb": "charity",
    "requires_item_any": [
-    "medkit",
+    "first-aid kit",
     "painkillers"
    ],
    "success": {
@@ -1135,7 +1133,7 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Could you get this to my sister on another town? the police reads all the mail.\" You pocket it. You never look inside."
+     "\"Could you get this to my sister in another town? The police read all the mail.\" You pocket it. You never look inside."
     ],
     "effects": {
      "credits": 20,
@@ -1383,7 +1381,7 @@
    },
    "fail": {
     "lines": [
-     "\"Thanks for the confession. the police gives a bonus for those.\""
+     "\"Thanks for the confession. The police give a bonus for those.\""
     ],
     "effects": {
      "attitude": -10
@@ -1895,7 +1893,6 @@
    },
    "success": {
     "lines": [
-     "A medkit migrates from the counter to your pocket. The merchant is busy arguing with an ad.",
      "You browse. You 'browse'. Your pockets are heavier."
     ],
     "effects": {
@@ -1941,7 +1938,7 @@
     "lines": [
      "\"...Fine. Maybe it wasn't what it looked like. #after_talk_ok#\"",
      "They listen. Really listen. \"Okay. I'll let it go. This once.\"",
-     "\"Self-defence, huh? On {town} everything's self-defence. Alright.\""
+     "\"Self-defence, huh? On Suzunari everything's self-defence. Alright.\""
     ],
     "effects": {
      "attitude": 15,
@@ -2156,7 +2153,7 @@
    },
    "success": {
     "lines": [
-     "\"An apology? On {town}? I need to sit down.\"",
+     "\"An apology? On Suzunari? I need to sit down.\"",
      "\"...Okay. Thanks. Nobody says sorry here. It's not in the contract.\"",
      "They soften. \"We all have bad days. Yours are just louder.\""
     ],
@@ -2322,7 +2319,7 @@
    },
    "success": {
     "lines": [
-     "\"the police asks, you were at the noodle stall with me. All night.\"",
+     "\"The police ask, you were at the noodle stall with me. All night.\"",
      "\"Cover for you? I'll lie to their faces. It's my hobby.\"",
      "\"We look after our own here. You're our own now.\""
     ],
@@ -2539,7 +2536,6 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Your face? Yeah - on a #brand# ad. Different hair. Happier.\"",
      "\"There's a guy at the instant noodles plant with your face. He's nicer.\"",
      "They squint. \"#num# of you came through last month. You're the only one who asked.\""
     ],
@@ -2689,7 +2685,6 @@
    "once": true,
    "success": {
     "lines": [
-     "\"A town where the ads ask permission.\" They're smiling. \"You'd do that?\"",
      "\"Honestly? Just don't bill us for the sky.\""
     ],
     "effects": {
@@ -2744,7 +2739,7 @@
     "lines": [
      "\"The clinic on the corner waters down the good stuff. Ask for the back room.\" They press a blister pack into your hand.",
      "\"My aunt swore by a fortune teller's tonic. My aunt also died.\" Still, they give you something for the pain.",
-     "\"Real medicine? On {town}?\" But they know a guy. They always know a guy."
+     "\"Real medicine? On Suzunari?\" But they know a guy. They always know a guy."
     ],
     "effects": {
      "items": {
@@ -2820,7 +2815,7 @@
    }
   },
   "goal_escape": {
-   "text": "Ask about ships leaving {town}",
+   "text": "Ask about ships leaving Suzunari",
    "roles": [
     "civilian"
    ],
@@ -2871,7 +2866,7 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Nice to meet you, uh... that.\" When the police asks, they'll describe someone else entirely.",
+     "\"Nice to meet you, uh... that.\" When the police ask, they'll describe someone else entirely.",
      "Your other name rolls off your tongue like you were born with it. They'll never connect the two.",
      "\"Funny, you don't look like a {name}.\" Exactly."
     ],
@@ -3033,7 +3028,7 @@
     "lines": [
      "\"My dad visits in dreams. Still asks about his debt.\" You both stand in the quiet for a moment.",
      "\"They don't. You learn to set a place for them.\" They don't ask who yours are.",
-     "\"On {town}? The dead get billed too. They leave eventually.\""
+     "\"On Suzunari? The dead get billed too. They leave eventually.\""
     ],
     "effects": {
      "attitude": 6,
@@ -3151,7 +3146,6 @@
    "artsy": [
     "An audience that isn't bots",
     "A wall the TV news doesn't own",
-    "Ten minutes of silence, no ads",
     "A muse. Or rent. Rent first",
     "Someone to buy my soul at a fair price"
    ],
@@ -3196,8 +3190,7 @@
     "\"Hey, I know that look. Two jobs, no sleep. Same.\""
    ],
    "0": [
-    "\"You sleep under the ad-bridge too? I think I've seen you there.\"",
-    "\"Careful, the police sweeps this corner for people who look like us.\""
+    "\"Careful, the police sweep this corner for people who look like us.\""
    ]
   },
   "greet_by_age": {
@@ -3229,7 +3222,6 @@
     "\"Move along. I'm on the clock. The clock belongs to #faction#.\""
    ],
    "neutral": [
-    "\"Don't look at the ads too long. They look back.\"",
     "\"#chatter#\"",
     "\"Careful. #pa_body.cap#\" They shrug. \"That's what the speakers say, anyway.\""
    ]

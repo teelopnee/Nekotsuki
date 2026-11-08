@@ -23,6 +23,7 @@ var _comm_text: RichTextLabel
 var _comm_time := 0.0
 var _toasts: VBoxContainer
 var _ticker_clip: Control
+var _ticker_bar: Control
 var _ticker_label: Label
 var _ticker_items: Array[String] = []
 var _ticker_index := 0
@@ -417,6 +418,7 @@ func _build_ticker() -> void:
 		sb.border_color = Color(0.86, 0.7, 0.42, 0.8)
 	bar.add_theme_stylebox_override("panel", sb)
 	root.add_child(bar)
+	_ticker_bar = bar
 	_ticker_clip = Control.new()
 	_ticker_clip.clip_contents = true
 	_ticker_clip.custom_minimum_size = Vector2(0, 26)
@@ -429,6 +431,12 @@ func _build_ticker() -> void:
 	for h in Causality.latest_headlines(3):
 		_ticker_items.push_front(h)
 	_next_ticker()
+
+
+## The other side and the cat night have no school notices or radio: Suzunari hides the bar there.
+func set_ticker_shown(on: bool) -> void:
+	if _ticker_bar:
+		_ticker_bar.visible = on
 
 
 func _build_target_panel() -> void:
@@ -1162,7 +1170,9 @@ func show_death_screen() -> void:
 	_death_panel.visible = true
 	var box := _death_panel.get_child(0)
 	(box.get_node("DeathTitle") as Label).text = Copy.make("death_title")
-	(box.get_node("DeathLine") as Label).text = Copy.make("death_line") + "\nThe Causality Log keeps everything you did up to your last save."
+	var keeps := "Enma's Ledger keeps everything you did up to your last save." if DataDB.theme == "suzunari" \
+		else "The Causality Log keeps everything you did up to your last save."
+	(box.get_node("DeathLine") as Label).text = Copy.make("death_line") + "\n" + keeps
 	for c in box.get_children():
 		if c is Button:
 			_safe_focus.call_deferred(c)

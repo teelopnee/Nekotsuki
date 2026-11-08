@@ -301,3 +301,46 @@ Worked through the priority list in order; no new world systems or visual passes
 - Still open (bigger jobs): house interiors (doorstep scenes only), the station has no trains, water has no
   reflections, companions/students steer straight (they pop behind you when stuck), time the first 10 minutes on the
   tablet (owner).
+
+## Second hard review (2026-11-08, at 41beee4): "is it a game nobody has played?"
+Nine commits since the first review (+12,659 lines in ~11 hours). All 14 suites pass, no SCRIPT ERROR; fresh screenshots
+rendered on lavapipe (town, talk, cat night) plus the repo's Ura shots.
+- Score: **6/10** (was 4). Concept 8.5 · writing 7 · daily life 7 · visuals 6 · UI 6 · sound 6 (not listened to) ·
+  can be finished 7. It starts, runs 91 days and ends; whether it is fun is still unknown.
+- Fixed and checked: 13 weeks / 102 beats / 289 choices / 13 endings (week_test plays every choice); lessons as one
+  event, lates and absences; replies shuffled per day + once-only topics; content notice; washi UI without HP/ROLL;
+  talk close-up with Toru's face; three tracks + ambience + Ura music; the flaky interact_back_test.
+- 1. Nobody has played it: weeks 2-13 (~16k words) were committed 30 minutes after week 1; tests prove every choice
+  runs, not that it is fun or well paced. The "time the first 10 minutes" item is still open.
+- 2. Consequences mostly on paper: 53 of the 82 flags set by story choices are never read again (by name). Genzo's
+  "don't eat anything over there" promise can't be kept or broken - there is nothing to eat in Ura. Endings are
+  103-164 words each.
+- 3. Wide but shallow: 6 stats, 6 quirks, 8 clubs, 5 jobs, companions, exams, races, cat nights, all built in one
+  afternoon. 8 clubs share 17 events (~2 each over 13 weeks), 5 jobs share 9.
+- 4. Readability: the cat night was almost black (a purple blob with two pink eyes, blown-out school windows, the
+  "SUZUNARI GAKUEN" sign floating over the roofs); Ura was one red wash with a cyan vending machine as the brightest
+  thing and the school notice board scrolling; a bystander's bubble ("...the police") over the talk close-up; rain as
+  grey squares; "Route: -" on the objective line.
+- 5. leak_check said 0 but only knew "ad network": 39 lines with "ads", "Ad-sponsored earbuds" (in talk_fail, used by
+  smalltalk), "the police says / doesn't", a broken `{town}` placeholder.
+- 6. Engine debt unchanged (smoke_test is still the sci-fi flow, 28k lines of GDScript) and CLAUDE.md had grown to
+  49 KB, paid by every session.
+
+## Fix pass for the second review (2026-11-08)
+- Text: `suzunari_theme.py` fixes "the police" verbs and capitals, `{planet}` -> Suzunari (fixes the broken `{town}`),
+  drops ODD-SPACE ad lines and the `crisis:*` barks, rewrites the single-string leftovers; `leak_check.py` now also
+  checks ads / ad-* / medkits / `{town}` / `{planet}` and the "the police says" grammar (0 leaks in 34 files).
+- Found while checking Ura: dying there showed ODD-SPACE's "SUBSCRIPTION TO LIFE: EXPIRED / Your funeral is sponsored
+  by ..." with a Q.U.A.C.K. ship-AI comment. Now: Suzunari death titles and lines (Enma's Ledger keeps your save),
+  ShipAI silent in Suzunari, no Perks / Crew tabs in the pause menu, Causality tab = "Rumours".
+- Cat night: moonlit fur tint, stronger halo in front of the cat, closer and steeper camera (pitch 40, 12 m), facade
+  windows at 15% (a sleeping town), school ribbon windows at 30% at night, the school sign shaded and hidden with the
+  cut-away building, no notice board.
+- Ura: red key light over a cold violet ambient (two tones instead of one red wash), shop windows at 45%, no notice board.
+- Town: vending machines are white-lit and dimmer (they were ODD-SPACE's cyan AIR-O-MAT at full glow, day and night);
+  the talk close-up also hides bystanders' speech bubbles; no "Route: -" before a route exists.
+- CLAUDE.md is a 9 KB index now; the system notes moved verbatim to `docs/dev/{town,story,life,engine,pipeline}.md`.
+- Still open: a human playtest of week 1 (owner, timed); wire or cut the 53 unread story flags (start with the Ura
+  food promise); endings as staged scenes on the steps, not text pages; fewer, deeper clubs and jobs; rain streaks
+  render as grey squares on lavapipe (check on the tablet); Toru is still seen from behind outside talks; the cat
+  still reads small at night (a bigger cat sprite or a closer cat-night camera is the next step).

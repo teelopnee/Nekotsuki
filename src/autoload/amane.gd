@@ -531,8 +531,9 @@ func _objective_base() -> String:
 		return "Go to school. (Someone is waiting at the gate.)"
 	if Clock.minute() >= Clock.NIGHT:
 		return "Go home before it gets late. (Phone: end the day)"
-	return "%s · %s · Route: %s · Forecast: %s" % [Clock.period(), "Amane is " + TEAR_NAMES[tears_level()],
-		ROUTE_NAMES.get(route(), "-"), FORECAST[tears_level()]]
+	var r: String = ROUTE_NAMES.get(route(), "-")
+	var rt := "" if r == "-" else " · Route: " + r
+	return "%s · %s%s · Forecast: %s" % [Clock.period(), "Amane is " + TEAR_NAMES[tears_level()], rt, FORECAST[tears_level()]]
 
 
 # --- Rivals and the living spirit (生霊) --------------------------------------------------

@@ -352,6 +352,18 @@
    "Tetsuo",
    "Chieko",
    "Shigeru"
+  ],
+  "death_title": [
+   "THE LANTERNS GO OUT",
+   "THE BELL RINGS A THIRD TIME",
+   "LOST ON THE OTHER SIDE",
+   "THE RIVERBED KEEPS YOU"
+  ],
+  "death_line": [
+   "Something with two tails drags you down to the dry riverbed. Then nothing, for a while.",
+   "Your umbrella rolls away across the stones. The festival music goes on without you.",
+   "Cold hands, a smell of incense, and someone crying your name from very far away.",
+   "The kasha carry you off the way they carry off the dead. Somebody on the other side of the steps won't let go of you."
   ]
  }
 }

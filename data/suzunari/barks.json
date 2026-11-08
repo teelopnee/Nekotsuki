@@ -47,7 +47,6 @@
   "Not in front of the noodle stand!",
   "I just bought these shoes on money!",
   "Run! Running's still free!",
-  "Is this an ad?! Tell me this is an ad!",
   "Why is it always MY street?!",
   "Somebody call #faction#! No, wait, don't!",
   "Great. Now the rent's going up.",
@@ -62,39 +61,6 @@
   "My cat ate my homework. -- Literally? -- Spiritually.",
   "Who rang the shrine bell? -- Nobody. -- Somebody did. -- ...Nobody did."
  ],
- "crisis:air_bubble": [
-  "Breathing futures are up again. I'm shorting my lungs.",
-  "My air canister was worth more than my flat this morning. Now it's worth a sandwich.",
-  "Analysts say breathing is overvalued. I say breathing is breathing.",
-  "I'm holding my breath until prices drop. Day three.",
-  "Sold my lungs at the peak. Bought them back at the peak. Don't ask."
- ],
- "crisis:debt_strike": [
-  "We're not paying! They can't repossess ALL of us. ...Can they?",
-  "Solidarity! Also, does anyone have a spare filter?",
-  "My landlord tried to evict me. I evicted him back. It's legal now. I think.",
-  "The debt collectors are confused. Nobody's answering the door.",
-  "First proper sleep in years. Turns out debt is loud."
- ],
- "crisis:paste_recall": [
-  "They found a tooth in Batch 88. Not a human tooth. Not an animal tooth.",
-  "Batch 88 is fine, they said. Batch 88 blinked at me.",
-  "I've eaten instant noodles every day for twenty years and I'm FINE. I'm fine. I'm fine.",
-  "Recall notice says 'return unused portions'. What about the used portions?",
-  "the konbini chain's offering a coupon for the next batch. As compensation."
- ],
- "crisis:ad_overload": [
-  "Even my dreams have unskippable ads now.",
-  "I blinked and an ad played behind my eyelids.",
-  "My shadow has a sponsor now.",
-  "I tried to scream and it came out as a jingle."
- ],
- "crisis:compliance_week": [
-  "Report a neighbour, win a toaster! I already reported myself twice.",
-  "I smiled at a stranger. Got a commendation AND a fine.",
-  "My neighbour reported my neighbour. I reported them both. We're all getting toasters.",
-  "Be compliant. Be visible. Be home by curfew. Be quiet about it."
- ],
  "famous": [
   "Hey, you're the one from the rumour board!",
   "Everyone's talking about you, you know."
@@ -103,9 +69,9 @@
   "That's the face from the posters...",
   "Don't look. DON'T LOOK. Okay, look a little.",
   "There's a reward for you, you know. A big one.",
-  "the police's been asking about you all week.",
+  "The police's been asking about you all week.",
   "I didn't see you. I don't see anybody. I'm blind on Thursdays.",
-  "the police says you're armed and handsome. Or dangerous. I forget which.",
+  "The police say you're armed and handsome. Or dangerous. I forget which.",
   "If they ask, I was never here. If they pay, I was totally here."
  ],
  "rich_player": [

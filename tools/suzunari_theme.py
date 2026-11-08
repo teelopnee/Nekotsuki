@@ -30,6 +30,8 @@ REPLACE = [
     (r"\b(\d+)\s*(?:cr|credits?)\b", lambda m: _yen(int(m.group(1)))),
     (r"\b(a|one|two|three|four|five|six|ten|twenty|fifty) credits?\b", lambda m: _yen(WORDS[m.group(1).lower()])),
     (r"\bcredit chips?\b", "coins"), (r"\bCredits\b", "Money"), (r"\bcredits?\b", "money"), (r"\bCR\b", "YEN"),
+    (r"\bon another planet\b", "in another town"), (r"\{PLANET\}", "SUZUNARI"), (r"\{planet\}", "Suzunari"),
+    (r"\bParagon (habits|heirs)\b", r"police \1"),
     (r"\bParagon Compliance(?: Services)?\b", "the police"), (r"\bParagon officers?\b", "police officers"),
     (r"\bthe Paragon\b", "the police"), (r"\bParagon\b", "the police"),
     (r"\bthe Consortium\b", "the town council"), (r"\bConsortium\b", "council"),
@@ -55,19 +57,55 @@ REPLACE = [
     (r"\bREPO\b", "DEBT"), (r"Interface with their implants", "Look at their phone"), (r"\bimplants\b", "phones"),
     (r"\ba cyberdeck\b", "an old laptop"), (r"\bCyberdeck\b", "Old Laptop"), (r"\bPlanet-sized\b", "Town-sized"), (r"\bPlanet\b", "Town"),
     (r"\bthe the\b", "the"), (r"\bThe the\b", "The"),
+    (r"\bAD-BOMB\b", "FIRECRACKER"), (r"\b[Aa]d-bomb\b", "firecracker"), (r"\bA medkit\b", "A first-aid kit"),
+    (r"\bmedkits?\b", "first-aid kit"),
+    (r"Heals 25 HP if you're synthetic\. Tingles if you're not\.", "A spare phone battery. Licking it is a bad idea. Heals 25 HP."),
+    (r"Everything is sharper\. Including the ads\. Especially the ads\.", "Everything is sharper. Including the crack in your screen."),
+    (r"The ad-bridge\. .*? patrol under the ads\.", "Under the bridge. The police never walk down there."),
+    (r"The ads hypnotise you after a while\.", "I was miles away. This town does that to you."),
+    (r"one more grey shape under the ads", "one more grey shape under the shop awnings"),
+    (r"You describe the sky with no ads\.", "You describe a sky with no power lines in it."),
+    (r"\bMedkit\b", "First-aid Kit"), (r"Your family's ad wakes", "Your family's TV jingle wakes"),
 ]
+## "the police" replaced a singular name (Paragon): fix the verb and capitalise it at the start of a sentence.
+POLICE_VERBS = {"doesn't": "don't", "does": "do", "is": "are", "isn't": "aren't", "has": "have", "hasn't": "haven't",
+                "was": "were", "wasn't": "weren't"}
+POLICE_S = ("says thanks reads gives asks sweeps reminds checks shows wants knows sees files patrols pays calls keeps "
+            "comes takes likes needs watches scans gets hates loves finds tracks hunts logs runs sends buys sells owns leaves "
+            "makes uses tells thinks raids stops fines arrests follows flags notices bans catches questions searches records "
+            "puts").split()
+
+
+def _police(m):
+    v = m.group(2)
+    low = v.lower()
+    if low in POLICE_VERBS:
+        nv = POLICE_VERBS[low]
+    elif low in POLICE_S:
+        nv = v[:-2] if low.endswith(("ches", "shes", "sses")) else v[:-1]
+    else:
+        return m.group(0)
+    return m.group(1) + " " + nv
+
+
+def fix_police(s):
+    if s.strip().lower() == "the police":  # a grammar symbol used mid-sentence (#faction#)
+        return s
+    s = re.sub(r"\b([Tt]he police) ([A-Za-z']+)\b", _police, s)
+    return re.sub(r"(^|[.!?]\s+|[\"(]\s*)the police\b", lambda m: m.group(1) + "The police", s)
 ## Whole bark families that only make sense in ODD-SPACE (enemy taunts, planets, crew recruiting, the station).
-DROP_BARK_KEYS = ("taunt", "hurt", "yield", "standdown", "biome", "recruit", "station")
+DROP_BARK_KEYS = ("taunt", "hurt", "yield", "standdown", "biome", "recruit", "station", "crisis")
 BAD = re.compile(r"implant|android|robot|cyber|laser|blaster|hover|warp|orbit|chrome|\bvat\b|cryo|quack|q\.u\.a\.c\.k|"
                  r"\bair\b(?! of)|\bO2\b|oxygen|breath|lungs|asteroid|space|synth-|alien|mutant|\bgrub|subsystem|jetpack|"
                  r"hull|airlock|terraform|clone|ad-bomb|odd duck|compliance|megacorp|sprawl|ad network|gravity|scanning|freighter|"
-                 r"\bship\b|\bcrew\b|sub-asset|section \d|barcode|\btank\b|in hock|\bcorp\b|credit check|uploading", re.I)
+                 r"\bship\b|\bcrew\b|sub-asset|section \d|barcode|\btank\b|in hock|\bcorp\b|credit check|uploading|"
+                 r"\bads?\b|\bad-\w+|ad blockers?|\bscanners?\b", re.I)
 
 
 def conv(s):
     for pat, rep in REPLACE:
         s = re.sub(pat, rep, s)
-    return s
+    return fix_police(s)
 
 
 stats = {"strings": 0, "changed": 0, "dropped": 0, "kept_bad": 0}

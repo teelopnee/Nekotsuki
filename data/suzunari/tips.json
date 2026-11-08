@@ -50,9 +50,9 @@
  },
  "medkit": {
   "title": "LOW HEALTH",
-  "touch": "Tap MED to use a medkit. Clinics and street traders sell more.",
-  "pad": "Use a medkit from the menu (START > ITEMS). Clinics sell more.",
-  "key": "Use a medkit from the menu (ESC > ITEMS). Clinics sell more."
+  "touch": "Tap MED to use a first-aid kit. Clinics and street traders sell more.",
+  "pad": "Use a first-aid kit from the menu (START > ITEMS). Clinics sell more.",
+  "key": "Use a first-aid kit from the menu (ESC > ITEMS). Clinics sell more."
  },
  "overclock": {
   "title": "OVERCLOCK READY",
@@ -73,7 +73,7 @@
   "key": "Shots from the front bounce off. Flank them, parry their swing, charge a shot, or blow them up."
  },
  "boom": {
-  "title": "AD-BOMB BOT",
+  "title": "FIRECRACKER BOT",
   "touch": "It runs at you and explodes. Shoot it first - near its friends.",
   "pad": "It runs at you and explodes. Shoot it first - near its friends.",
   "key": "It runs at you and explodes. Shoot it first - near its friends."

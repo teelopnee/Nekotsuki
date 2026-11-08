@@ -432,8 +432,8 @@
      }
     },
     {
-     "id": "medkit",
-     "text": "Buy a medkit (2,800 yen)",
+     "id": "first-aid kit",
+     "text": "Buy a first-aid kit (2,800 yen)",
      "cost": 28,
      "success": {
       "text": "\"Don't tell the bank where you got it.\"",
@@ -1029,7 +1029,7 @@
      "cost": 100,
      "once": true,
      "success": {
-      "text": "Everything is sharper. Including the ads. Especially the ads.",
+      "text": "Everything is sharper. Including the crack in your screen.",
       "effects": {
        "mods": {
         "add": {
@@ -1123,7 +1123,7 @@
      "success": {
       "text": "Everything is shiny and slightly overpriced.",
       "shop": [
-       "medkit",
+       "first-aid kit",
        "air_canister",
        "antihistamine",
        "painkillers",

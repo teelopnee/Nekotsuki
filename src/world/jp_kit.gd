@@ -19,6 +19,8 @@ var b  ## LevelBuilder
 var rng: RandomNumberGenerator
 var night_mats: Array[StandardMaterial3D] = []
 var night_lights: Array[OmniLight3D] = []
+## Facade windows only (meta "window"): the cat night's sleeping town turns most of them off.
+var window_scale := 1.0
 var _facades := {}
 var _petal_spots: Array[Transform3D] = []
 var _tufts: Array[Vector3] = []
@@ -194,6 +196,7 @@ func facade(name: String) -> StandardMaterial3D:
 		m.emission_texture = e
 		m.emission = Color.WHITE
 		m.emission_energy_multiplier = 0.0
+		m.set_meta("window", true)
 		night_mats.append(m)
 	_facades[name] = m
 	return m
@@ -207,6 +210,7 @@ func _panel(body: Node3D, name: String, size: Vector2, at: Vector3, deco: Array[
 		mat = mat.duplicate()
 		mat.uv1_scale = Vector3(repeat_x, 1, 1)
 		if mat.emission_enabled:
+			mat.set_meta("window", true)
 			night_mats.append(mat)
 	var mi: MeshInstance3D = b.add_mesh(body, q, mat, at, 0.0, false)
 	deco.append(mi)
@@ -452,7 +456,10 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			h = 11.2
 			b.add_mesh(body, b.box(Vector3(w, h, d)), wall, Vector3(0, h * 0.5, 0))
 			for fy in [1.95, 5.6, 9.2]:
-				_panel(body, "alu", Vector2(w - 1.2, 1.7), Vector3(0, fy, front + 0.04), deco, roundf(w / 2.2))
+				var rib := _panel(body, "alu", Vector2(w - 1.2, 1.7), Vector3(0, fy, front + 0.04), deco, roundf(w / 2.2))
+				var rm := rib.material_override as StandardMaterial3D
+				if rm and rm != _facades.get("alu"):
+					rm.set_meta("night_mult", 0.3)  # a school after hours: a few lights, not a lit office block
 			for sy in [3.55, 7.2]:
 				deco.append(b.add_mesh(body, b.box(Vector3(w + 0.1, 0.22, 0.3)), b._mats["concrete"], Vector3(0, sy, front + 0.12)))
 			deco.append(b.add_mesh(body, b.box(Vector3(w + 0.2, 0.5, d + 0.2)), b._mats["concrete"], Vector3(0, h + 0.25, 0)))
@@ -476,8 +483,10 @@ func _unit(pos: Vector3, w: float, d: float, style: String, venue: bool, asagiri
 			sign.pixel_size = 0.012
 			sign.modulate = Color(0.2, 0.25, 0.3)
 			sign.outline_size = 0
+			sign.shaded = true  # lit like the wall: unshaded, it glowed over the dark town at night
 			sign.position = Vector3(0, 3.95, front + 0.3)
 			body.add_child(sign)
+			deco.append(sign)  # hide it with the building, or it floats over the roofs when the camera cuts it away
 			deco.append(sign)
 		"station":
 			wall = _wall_mat("jp_plaster", Color(0.96, 0.96, 0.94))
@@ -922,7 +931,8 @@ func margin() -> void:
 ## 0 = day, 1 = full night: windows, lanterns and shop lights come on at dusk.
 func set_night(t: float) -> void:
 	for m in night_mats:
-		m.emission_energy_multiplier = 0.05 + 1.05 * t
+		var k: float = float(m.get_meta("night_mult", 1.0)) * (window_scale if m.get_meta("window", false) else 1.0)
+		m.emission_energy_multiplier = (0.05 + 1.05 * t) * k
 	for l in night_lights:
 		if is_instance_valid(l):
 			l.light_energy = 1.1 * t

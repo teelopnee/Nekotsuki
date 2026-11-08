@@ -8,7 +8,11 @@ import glob, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAT = re.compile(r"\b(credits?|paragon|planets?|consortium|corp|corporate|neon|drones?|ad network|gravity|scanning|collateral|"
                  r"uploading|android|robots?|cyborg|laser|blaster|hover|orbit|spaceport|galaxy|aliens?|synth|holograms?|holo|"
-                 r"implants?|chrome|cyber\w*|repo|bounty|plasma|starship|spaceship|airlock|oxygen|freighter|keytar|in hock)\b", re.I)
+                 r"implants?|chrome|cyber\w*|repo|bounty|plasma|starship|spaceship|airlock|oxygen|freighter|keytar|in hock|"
+                 r"ads?|ad-\w+|ad blockers?|medkits?)\b", re.I)
+# "the police" stands in for a singular name (Paragon): "the police says" / a sentence starting "the police".
+GRAMMAR = re.compile(r"\b[Tt]he police (doesn't|does|is|isn't|has|hasn't|was|wasn't|says|thanks|reads|gives|asks|sweeps|"
+                     r"reminds|checks|shows|wants|knows|sees|files|patrols|pays|calls|keeps)\b|(^|[.!?]\s+)the police\b\s*\S")
 FILES = (sorted(glob.glob(os.path.join(ROOT, "data/suzunari/*.json"))) + [os.path.join(ROOT, "data/copy_suzunari_auto.json")]
          + sorted(glob.glob(os.path.join(ROOT, "data/people/*.json")))
          + sorted(glob.glob(os.path.join(ROOT, "data/weeks/*.json")))
@@ -20,7 +24,8 @@ SKIP_KEYS = {"flag", "requires", "id", "icon", "look", "variant", "verb", "kind"
 
 def walk(v, path, out):
     if isinstance(v, str):
-        m = PAT.search(re.sub(r"\{[A-Za-z_]+\}|#[A-Za-z_.]+#", "", v))
+        m = (PAT.search(re.sub(r"\{[A-Za-z_]+\}|#[A-Za-z_.]+#", "", v)) or re.search(r"\{(?:town|planet|PLANET)\}", v)
+             or GRAMMAR.search(v))
         if m:
             out.append("%s  [%s]  %s" % (path, m.group(0), v[:110]))
     elif isinstance(v, list):

@@ -602,6 +602,8 @@ func _build_clouds() -> void:
 func _build_ura() -> void:
 	var u: Dictionary = Week.ura
 	Clock.running = false
+	if hud and hud.has_method("set_ticker_shown"):
+		hud.set_ticker_shown(false)  # no school notices or radio on the other side
 	var arrive: Array = u.get("arrive", [4, 20])
 	player.global_position = builder.center(int(arrive[0]), int(arrive[1])) + Vector3(0, 0.1, 0)
 	if amane and Amane.st()["met"]:
@@ -883,11 +885,12 @@ func _ura_light() -> void:
 	if sun_node:
 		sun_node.light_color = Color(1.0, 0.36, 0.26)
 		sun_node.light_energy = 0.9
-	environment.ambient_light_color = Color(0.7, 0.22, 0.3)
-	environment.ambient_light_energy = 0.9
-	environment.fog_light_color = Color(0.62, 0.14, 0.22)
-	environment.adjustment_saturation = 1.25
+	environment.ambient_light_color = Color(0.36, 0.28, 0.56)
+	environment.ambient_light_energy = 0.85
+	environment.fog_light_color = Color(0.5, 0.12, 0.24)
+	environment.adjustment_saturation = 1.08
 	if jp_night_ok():
+		build.get("jp").window_scale = 0.45  # shop windows were the brightest thing on the other side
 		build.get("jp").set_night(0.8)
 
 
@@ -1063,14 +1066,22 @@ func _build_cat_night() -> void:
 	player.set_meta("speed_mult", float(cat.get("speed", 1.45)))
 	player.set_meta("cat_mode", true)
 	player.collision_mask |= LevelBuilder.LAYER_ROOF  # the roofs are a road tonight
+	# A black cat on black roofs: moonlit fur (brighter tint) and a sleeping town (most windows dark, no notice board).
+	player.sprite.base_modulate = Color(1.35, 1.3, 1.55)
+	if build.get("jp") != null:
+		build.get("jp").window_scale = 0.15
+	# Closer and steeper than the street camera: the cat is small and the roofs are the road tonight.
+	camera_rig.configure(40.0, 12.0, camera_fov)
+	if hud and hud.has_method("set_ticker_shown"):
+		hud.set_ticker_shown(false)
 	# A soft violet halo of its own (the player's glow light is driven every frame by the player), so a black cat
 	# still reads against black roofs at night.
 	var halo := OmniLight3D.new()
 	halo.name = "CatHalo"
 	halo.light_color = Color(0.7, 0.55, 1.0)
-	halo.light_energy = 2.2
-	halo.omni_range = 4.5
-	halo.position = Vector3(0, 1.3, 0.6)
+	halo.light_energy = 2.6
+	halo.omni_range = 5.0
+	halo.position = Vector3(0, 1.6, 1.2)
 	player.add_child(halo)
 	_cat_spots()
 	_apply_light()

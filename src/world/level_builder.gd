@@ -1255,7 +1255,11 @@ func _vending(p: Vector3) -> void:
 	var body := static_body(p)
 	add_mesh(body, box(Vector3(1.3, 2.1, 0.8)), _mats["metal"], Vector3(0, 1.05, 0))
 	var c := DataDB.faction_color("oxy")
-	add_mesh(body, box(Vector3(1.0, 1.1, 0.04)), emissive(c, 2.2), Vector3(0, 1.3, 0.41), 0.0, false)
+	var glow := 2.2
+	if theme == "suzunari":
+		c = Color(0.86, 0.93, 1.0)
+		glow = 0.75
+	add_mesh(body, box(Vector3(1.0, 1.1, 0.04)), emissive(c, glow), Vector3(0, 1.3, 0.41), 0.0, false)
 	add_box_collider(body, Vector3(1.3, 2.1, 0.8), Vector3(0, 1.05, 0))
 	var label := Label3D.new()
 	label.text = "DRINKS\n120 YEN" if theme == "suzunari" else "AIR-O-MAT\nby OxyGenix"
@@ -1264,7 +1268,7 @@ func _vending(p: Vector3) -> void:
 	label.modulate = Color(0.05, 0.1, 0.2)
 	label.position = Vector3(0, 1.45, 0.44)
 	body.add_child(label)
-	add_light(p + Vector3(0, 1.4, 1.0), c, 1.2, 4.0)
+	add_light(p + Vector3(0, 1.4, 1.0), c, 0.55 if theme == "suzunari" else 1.2, 3.0 if theme == "suzunari" else 4.0)
 	var it := PropInteractable.new()
 	it.kind = "vending"
 	it.owner_faction = "oxy"

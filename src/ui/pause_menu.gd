@@ -66,11 +66,14 @@ func _rebuild() -> void:
 	for c in _tabs.get_children():
 		_tabs.remove_child(c)
 		c.queue_free()
+	var town := DataDB.theme == "suzunari"
 	_tab_journal()
 	_tab_status()
-	_tab_perks()
+	if not town:  # ODD-SPACE perks (air subscriptions, subsystems) and the ship's crew don't exist in Suzunari
+		_tab_perks()
 	_tab_factions()
-	_tab_crew()
+	if not town:
+		_tab_crew()
 	_tab_causality()
 	_tab_items()
 	_tab_system()
@@ -281,13 +284,17 @@ func _tab_crew() -> void:
 
 
 func _tab_causality() -> void:
-	var v := _page("Causality")
+	var town := DataDB.theme == "suzunari"
+	var v := _page("Rumours" if town else "Causality")
 	var total := Causality.nodes.size()
-	v.add_child(HUD.make_label("CAUSALITY GRAPH  //  %d events remembered, %d reported, %d suppressed, %d secret" % [
+	var head := "WHAT SUZUNARI SAW  //  %d things remembered, %d told the police, %d hushed up, %d still secret" if town \
+		else "CAUSALITY GRAPH  //  %d events remembered, %d reported, %d suppressed, %d secret"
+	v.add_child(HUD.make_label(head % [
 		total, Causality.query("", Causality.STATUS_REPORTED).size(), Causality.query("", Causality.STATUS_SUPPRESSED).size(),
 		Causality.query("", Causality.STATUS_SECRET).size()], 16, Color(0.6, 0.85, 1.0)))
 	if total == 0:
-		v.add_child(HUD.make_label("Nothing yet. The universe is waiting for you to do something regrettable.", 16))
+		v.add_child(HUD.make_label("Nothing yet. The town is waiting for you to do something it can talk about." if town
+			else "Nothing yet. The universe is waiting for you to do something regrettable.", 16))
 	var colors := {"secret": "#8fa8ff", "pending": "#ffd23e", "reported": "#ff5a6a", "suppressed": "#6aff9a"}
 	for i in range(total - 1, maxi(-1, total - 60), -1):
 		var n: Dictionary = Causality.nodes[i]

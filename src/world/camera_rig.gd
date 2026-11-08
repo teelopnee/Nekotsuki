@@ -196,6 +196,9 @@ func _talk_labels(talking: bool) -> void:
 			if l is Label3D and l.visible:
 				l.visible = false
 				_hidden_labels.append(l)
+			var bub = n.get("_bubble")
+			if bub is Label3D:
+				bub.visible = false  # its fade tween ends hidden anyway; the next say() shows it again
 	elif not talking and not _hidden_labels.is_empty():
 		for l in _hidden_labels:
 			if is_instance_valid(l):

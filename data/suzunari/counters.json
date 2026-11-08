@@ -4,7 +4,7 @@
   "charity_ok": [
    {
     "ask": [
-     "\"Why are you helping me? Nobody helps anybody on {town}.\"",
+     "\"Why are you helping me? Nobody helps anybody on Suzunari.\"",
      "\"What's the catch? There's always a catch.\"",
      "\"I... don't know what to say. Why me?\"",
      "\"Is this a the TV news prank? Where's the camera?\""
@@ -311,7 +311,7 @@
    {
     "ask": [
      "\"Wait! I can be useful. I know things. I know PEOPLE.\"",
-     "\"Don't! I can help you! Anything you need on {town}!\""
+     "\"Don't! I can help you! Anything you need on Suzunari!\""
     ],
     "choices": [
      {
@@ -720,7 +720,7 @@
       "cost": 10
      },
      {
-      "text": "Leave before the police shows up",
+      "text": "Leave before the police show up",
       "reply": [
        "You melt into the crowd. Smart."
       ],
@@ -803,7 +803,7 @@
      {
       "text": "\"Next time.\"",
       "reply": [
-       "\"There's always a next time on {town}.\""
+       "\"There's always a next time on Suzunari.\""
       ],
       "effects": {
        "attitude": 5
@@ -883,7 +883,7 @@
      {
       "text": "\"For you? Free.\"",
       "reply": [
-       "\"FREE? On {town}?\" They hug you. Hard."
+       "\"FREE? On Suzunari?\" They hug you. Hard."
       ],
       "effects": {
        "attitude": 15,
@@ -1030,7 +1030,7 @@
      {
       "text": "Tell them the truth",
       "reply": [
-       "They listen to all of it. Then they hug you. Nobody hugs on {town}."
+       "They listen to all of it. Then they hug you. Nobody hugs on Suzunari."
       ],
       "effects": {
        "attitude": 12,
@@ -1176,7 +1176,7 @@
    },
    {
     "ask": [
-     "\"Begging's illegal after #time# on {town}, you know.\"",
+     "\"Begging's illegal after #time# on Suzunari, you know.\"",
      "\"Do you have a begging licence? They check now.\""
     ],
     "choices": [
@@ -1203,7 +1203,7 @@
      {
       "text": "Ask where it IS legal",
       "reply": [
-       "\"The ad-bridge. the police doesn't patrol under the ads.\""
+       "\"Under the bridge. The police never walk down there.\""
       ],
       "effects": {
        "rumor": true
@@ -1267,8 +1267,7 @@
    },
    {
     "ask": [
-     "\"Tell no one. #faction# takes a cut of everything on {town}.\"",
-     "\"Keep this quiet. The walls have ads.\""
+     "\"Tell no one. #faction# takes a cut of everything on Suzunari.\""
     ],
     "choices": [
      {
@@ -1575,7 +1574,7 @@
      {
       "text": "Do something even weirder",
       "reply": [
-       "Nobody on {town} will forget it. Nobody will be able to explain it either."
+       "Nobody on Suzunari will forget it. Nobody will be able to explain it either."
       ],
       "effects": {
        "fame": 1,
@@ -1616,7 +1615,7 @@
       }
      },
      {
-      "text": "Ask about {town}",
+      "text": "Ask about Suzunari",
       "reply": [
        "\"#pc_planet#\"",
        "\"#pc_saga#\""
@@ -1630,7 +1629,7 @@
    {
     "ask": [
      "\"Want to know a secret about this street?\"",
-     "\"Can I ask you something? Why did you come to {town}?\""
+     "\"Can I ask you something? Why did you come to Suzunari?\""
     ],
     "choices": [
      {
@@ -1726,14 +1725,13 @@
    },
    {
     "ask": [
-     "They're staring at a billboard instead of you.",
-     "They've got earbuds in. Ad-sponsored earbuds."
+     "They're staring at a billboard instead of you."
     ],
     "choices": [
      {
       "text": "Wait patiently",
       "reply": [
-       "Eventually they notice you. \"Oh! Sorry. The ads hypnotise you after a while.\""
+       "Eventually they notice you. \"Oh! Sorry. I was miles away. This town does that to you.\""
       ],
       "effects": {
        "attitude": 4
@@ -1800,7 +1798,7 @@
      {
       "text": "Twist the knife",
       "reply": [
-       "\"And tell your friends.\" They do. Everyone on {town} hears what your family's lawyers can do."
+       "\"And tell your friends.\" They do. Everyone on Suzunari hears what your family's lawyers can do."
       ],
       "effects": {
        "fame": 2,
@@ -1822,7 +1820,7 @@
      {
       "text": "The gift",
       "reply": [
-       "They hand you a medkit wrapped in a #brand# flyer. \"Stay alive, okay?\""
+       "They hand you a first-aid kit wrapped in a #brand# flyer. \"Stay alive, okay?\""
       ],
       "effects": {
        "items": {
@@ -2044,7 +2042,6 @@
       "chance": 0.7,
       "chance_mods": {},
       "fail_reply": [
-       "the police scanners ping. The package was not what they said.",
        "A crow flags the package. You drop it and run - but it got your face."
       ],
       "fail_effects": {
@@ -2101,7 +2098,7 @@
      {
       "text": "Report them to the police",
       "reply": [
-       "You make a call. the police thanks you. Your partner will never speak to you again."
+       "You make a call. The police thank you. Your partner will never speak to you again."
       ],
       "effects": {
        "rep": {
@@ -2285,7 +2282,7 @@
    {
     "ask": [
      "\"Remember me? I remember YOU. We're settling this, here and now.\"",
-     "\"You thought I'd forget? On {town}, we never forget.\""
+     "\"You thought I'd forget? On Suzunari, we never forget.\""
     ],
     "choices": [
      {
@@ -2324,7 +2321,7 @@
      {
       "text": "Laugh in their face",
       "reply": [
-       "\"Laugh all you like. the police's laughing too - on line two.\""
+       "\"Laugh all you like. The police's laughing too - on line two.\""
       ],
       "effects": {
        "grudge": "now",
@@ -2543,7 +2540,7 @@
      {
       "text": "Tip them ({cost} cr)",
       "reply": [
-       "\"A TIP? On {town}?\" You've made their week."
+       "\"A TIP? On Suzunari?\" You've made their week."
       ],
       "effects": {
        "attitude": 10
