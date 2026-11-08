@@ -379,3 +379,24 @@ rendered on lavapipe (town, talk, cat night) plus the repo's Ura shots.
 - Fixed right after: endings play in the HUD's cinematic mode (letterbox, no status / objective / ticker / touch
   buttons, no date or phone overlay); the homecoming ending dries the river into Ura's stone bed with the children's
   stone towers (`fx dry_river`, shared with Ura-Suzunari).
+
+## Third review: the bot plays a week (2026-11-08, at bfa124e)
+`tools/playbot.gd` played week 1 twice through the real day flow (random and cold choices; it teleports instead of
+walking, joins a club, talks to Amane every two hours and to townsfolk in between): 7 days each, no SCRIPT ERROR,
+~286 lines of dialogue a week, week 1 closes with its summary and hook.
+- Score: **6.5/10** (was 6). Concept 8.5 · Amane / story writing 7.5 · townsfolk writing 3 · daily life 7 · visuals
+  6.5 · UI 6.5 · sound 6 (not listened to) · can be finished 8 · repetition 5.
+- 1. The town still talks like ODD-SPACE: ~40% of non-Amane lines are procedural townsfolk talk, and runtime-built
+  gossip pulls in the generated galaxy and its people ("Oruarsar-79? Run by Halcyon Debt & Trust now", "Kofi Szabo does
+  the dirty work for Teo 'Quarterly' Tanaka. Never seen without a smile. Or a body", "Lumen keeps running this...",
+  "Stay safe on Suzunari", billing-dystopia jokes, "police officers can be bribed. the bank crows can't"). leak_check
+  can't see these: they are composed at runtime from Copy symbols and Game.galaxy.
+- 2. Repetition: 18-21% of all lines in a week were repeats; Amane's openers came back 5-6 times a week ("your tie is
+  crooked", "I saved you a seat on the roof", "I made too much rice").
+- 3. The route flips on single replies (Friend -> Ignore -> Friend -> Romance inside one conversation on day 1): one
+  flirt line = romance, one cold line = ignore, and the HUD shows it.
+- 4. Bugs: Toru's origin "morning" line can play in the afternoon (every Suzunari load rolls it, e.g. after school);
+  "Later." repeats his previous answer in the goodbye box; school beats have no marker (the bot missed Makabe's
+  staff-room scene on day 6 both times; the objective line does name it).
+- Better than last time: lessons, clubs, story beats and the week close all play in the real flow; Amane's lines stay
+  good; the endings are scenes.

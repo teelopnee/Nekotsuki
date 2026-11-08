@@ -38,7 +38,8 @@ Tests (`godot --headless --path . --script res://tools/<name>.gd`, exit code = f
 `people_test`, `ura_test`, `life_test`, `friends_test`, `emote_test`; inherited `impact_test`, `interact_back_test`,
 `keeper_test`, `combat_test`, `story_test`, `voice_test`, `pad_test`. Text: `python3 tools/leak_check.py` (every themed
 line, sci-fi words + "the police" grammar; exit code = leaks). Screenshots (not headless): `tools/shot_suzunari.gd`,
-`shot_school.gd`, `shot_ura.gd`, `shot_life.gd` -- `<dir> [names]`.
+`shot_school.gd`, `shot_ura.gd`, `shot_life.gd`, `shot_ending.gd` -- `<dir> [names]`. Play-through bot:
+`tools/playbot.gd -- <out.txt> [days] [seed] [random|kind|cold]` plays the real day flow and writes a transcript.
 
 Screenshot command (software Vulkan, needs `apt-get update && apt-get install -y mesa-vulkan-drivers`):
   `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.json xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --resolution 1280x800 --script res://tools/shot_suzunari.gd -- <dir>`
