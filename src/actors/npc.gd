@@ -389,7 +389,9 @@ func react_cheer() -> void:
 	_act_face = (_player.global_position - global_position) * Vector3(1, 0, 1)
 	_act_time = _rng.randf_range(2.0, 3.5)
 	if _rng.randf() < 0.4:
-		say(["WOOO!", "Legend!", "Did you see that?!", "Finally, someone did something!", "Put it on Lumen!"][_rng.randi() % 5], 2.0)
+		var cheers := ["WOOO!", "Legend!", "Did you see that?!", "Finally, someone did something!",
+			"Somebody tell the Shimbun!" if DataDB.theme == "suzunari" else "Put it on Lumen!"]
+		say(cheers[_rng.randi() % cheers.size()], 2.0)
 
 
 func _wander() -> Vector3:
@@ -508,6 +510,11 @@ func _on_talk(_player: Node) -> void:
 		_talk_civilian()
 
 
+## Who they call: Paragon in ODD-SPACE, the police in Suzunari.
+func _cops() -> String:
+	return "the police" if DataDB.theme == "suzunari" else "Paragon"
+
+
 func bribe_cost() -> int:
 	var sev := 0
 	for id in witness.reports:
@@ -575,7 +582,7 @@ func _silence_by_bribe(method: String) -> void:
 	make_loyal()
 	attitude = maxi(attitude, 10)
 	FX.damage_number(get_parent(), global_position + Vector3(0, 2.6, 0), "CALL CUT", Color(0.5, 1.0, 0.6), true)
-	EventBus.dialogue_requested.emit(npc_name, "\"Sorry, Paragon, wrong number. Just ordering a pizza.\" They pocket the cash and look away." + _call_footer(true), [], Callable())
+	EventBus.dialogue_requested.emit(npc_name, ("\"Sorry, officer, wrong number. Just ordering ramen.\"" if DataDB.theme == "suzunari" else "\"Sorry, Paragon, wrong number. Just ordering a pizza.\"") + " They pocket the cash and look away." + _call_footer(true), [], Callable())
 
 
 ## Result block for the stop-the-call dialogue: did it work, who else is still calling.
@@ -655,7 +662,8 @@ func _talk_civilian() -> void:
 		for n in known:
 			if int(n.severity) > int(worst.severity):
 				worst = n
-		lines.append("\"Wait... you're the one from the news! The %s at %s!\"" % [str(worst.label).to_lower(), worst.location_name])
+		var acc := TownTalk.line("accuse", self) if TownTalk.active() else ""
+		lines.append(acc if acc != "" else "\"Wait... you're the one from the news! The %s at %s!\"" % [str(worst.label).to_lower(), worst.location_name])
 		attitude -= 10
 	else:
 		lines.append(_opening_line())
@@ -683,6 +691,10 @@ func _on_civilian_choice(choice: String) -> void:
 
 ## First thing they say: what they saw you do, what the street says about you, or who you are.
 func _opening_line() -> String:
+	if TownTalk.active():
+		var tt := TownTalk.open(self)
+		if tt != "":
+			return tt
 	if not memories.is_empty() and _rng.randf() < 0.85:
 		return NPCVoice.recall(self, memories[0], _rng)
 	if not NPCVoice.street_memory().is_empty() and _rng.randf() < 0.35:
@@ -901,13 +913,13 @@ func react(kind: String) -> String:
 			_kneel(3.0)
 			grudge = true
 			_grudge_wait = _rng.randf_range(8.0, 14.0)
-			return "Repossessed. They're left with nothing - and they look like they're about to call Paragon."
+			return "Repossessed. They're left with nothing - and they look like they're about to call %s." % _cops()
 		"grudge":
 			grudge = true
 			_grudge_wait = _rng.randf_range(9.0, 15.0)
 			if _rng.randf() < 0.5:
 				_schedule_approach("confront", _rng.randf_range(3.0, 7.0))
-			return "They're furious. They're going to confront you - or go straight to Paragon."
+			return "They're furious. They're going to confront you - or go straight to %s." % _cops()
 		"smitten":
 			react_cheer()
 			_start_follow("smitten", 22.0)
@@ -1154,7 +1166,7 @@ func _impact_tick(delta: float) -> void:
 				_approach_kind = ""
 			if attitude <= -15:
 				say(Copy.expand("#grudge_call#", _rng), 2.6)
-				EventBus.toast.emit("%s is filing a complaint about you with Paragon!" % npc_name, Color(1.0, 0.6, 0.3))
+				EventBus.toast.emit("%s is filing a complaint about you with %s!" % [npc_name, _cops()], Color(1.0, 0.6, 0.3))
 				witness.active = true
 				Causality.record("complaint", {"target": npc_name, "target_faction": "paragon", "position": global_position})
 	# Tagging along: questions, compliments, commentary.

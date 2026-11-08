@@ -3,9 +3,28 @@
  "again": ["\"You asked me that {when}, Senpai.\" He tilts his head. \"...It's okay. I like answering you.\"", "\"Senpai asked me that {when}.\" A tiny frown. \"Were you not listening? ...I'll say it again. Slower.\"", "He blinks. \"You asked the same thing {when}. Do you want a different answer? I only have the one.\"", "\"Again?\" He hides a smile in his sleeve. \"You asked {when}. Maybe you just like hearing me talk.\"", "\"I told you {when}.\" His ears droop a little. \"You forget things. I know. I'll remember for both of us.\"", "\"That's the same question as {when}.\" He thinks. \"...My answer's the same. Mostly.\""],
  "bye": ["\"See you, Amane.\"", "\"I have to go.\"", "\"Later.\"", "\"Go to class, Amane.\""],
  "farewell": {
-  "0": ["Okay! I'll be... around. Not following. Around.", "See you, Senpai. (He doesn't move until you're out of sight.)"],
-  "2": ["Okay... *sniff* See you.", "You're leaving already? ...Okay."],
-  "4": ["Don't go-- I mean. Go. It's fine. *it is not fine*"]
+  "0": [
+   "Okay! I'll be... around. Not following. Around.",
+   "See you, Senpai. (He doesn't move until you're out of sight.)",
+   "Bye, Senpai. Same place tomorrow? I'll be there. I'm always there.",
+   "Okay. Go. I'll watch you go. That's my favourite part. No it isn't.",
+   "See you! ...That was a normal goodbye, right? I'm practising normal.",
+   "Bye-bye, Senpai. Mind the puddles. They're deeper than they look.",
+   "Okay. I'm going to go and tell the cats about this.",
+   "See you later. Not too much later. Normal later."
+  ],
+  "2": [
+   "Okay... *sniff* See you.",
+   "You're leaving already? ...Okay.",
+   "S-see you. I'm fine. The rain's just... loud today.",
+   "Bye, Senpai. Sorry. I'll be better tomorrow. Drier.",
+   "Okay. I'll go. Don't look back. I mean - you can look back."
+  ],
+  "4": [
+   "Don't go-- I mean. Go. It's fine. *it is not fine*",
+   "...Bye. *He pulls his hood down over his face and doesn't move.*",
+   "*He nods without looking up. The rain gets louder as you walk away.*"
+  ]
  },
  "topics": {
   "rain": {

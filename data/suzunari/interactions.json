@@ -9,14 +9,12 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Honestly? Nobody's asked me anything in weeks. I'm {job}. It's... a job.\"",
-     "\"Small talk is taxed at 3% here, but I'll risk it.\" They actually smile.",
-     "\"Did you catch #media_product# last night? #show_opinion#\"",
+     "\"Honestly? Nobody's asked me anything in weeks. I'm {job_a}. It's... a job.\"",
      "\"#chatter#\" They seem glad somebody listened.",
-     "\"Know what I miss? #thing.cap#. Before they started billing for it.\"",
-     "\"The #team# play tonight. I've got #small_num# money on them. That's my rent.\"",
-     "\"I'm {job}. Don't ask what it pays. It pays in #product#.\"",
-     "\"Somebody wrote '#graffiti#' on the wall by my place. I've started to agree with it.\""
+     "\"The Suzunari Seagulls lost again. I put a hundred yen on them every week. It's loyalty, not betting.\"",
+     "\"I'm {job_a}. Don't ask what it pays. It pays in leftover dango.\"",
+     "\"Somebody wrote '#graffiti#' on the wall by my place. I've started to agree with it.\"",
+     "\"Rain again. My laundry's been on the line since Tuesday. It's wetter than when I washed it.\""
     ],
     "effects": {
      "attitude": 8,
@@ -42,8 +40,7 @@
    "success": {
     "lines": [
      "\"What do I need? {need}. Same as everyone.\"",
-     "They look at you like nobody has ever asked. \"{need}. Can you believe it?\"",
-     "\"What do I need? {need}. And #aspiration#, one day. A person can dream. Dreams are billed, but still.\""
+     "They look at you like nobody has ever asked. \"{need}. Can you believe it?\""
     ],
     "effects": {
      "attitude": 5,
@@ -67,8 +64,9 @@
    "once": true,
    "success": {
     "lines": [
-     "\"...No catch? Is this a prank show?\" They pocket it fast, before reality corrects itself.",
-     "\"I'll pay you back. I won't, but I'll think about it.\""
+     "\"...No catch? Is this a prank show?\" They pocket it fast, before the world changes its mind.",
+     "\"I'll pay you back. I won't, but I'll think about it.\"",
+     "They bow so low their glasses slide off. \"I'll light a stick of incense for you. Two.\""
     ],
     "effects": {
      "attitude": 20,
@@ -98,7 +96,8 @@
    },
    "success": {
     "lines": [
-     "They eat like the instant noodles might be repossessed mid-bite. \"I owe you. Here's something nobody's supposed to know...\""
+     "They eat like they haven't had a hot meal since spring. \"I owe you. Here's something nobody's supposed to know...\"",
+     "Melon bread from the konbini, still warm. They tear it in half and give you the bigger piece. \"Listen. Between us...\""
     ],
     "effects": {
      "attitude": 25,
@@ -133,8 +132,8 @@
    },
    "success": {
     "lines": [
-     "They go pale and empty their pockets. \"Take it. Take it! I have a family. Well, a subscription to one.\"",
-     "\"Okay, okay! I don't want trouble. I can't afford trouble.\""
+     "\"Okay, okay! I don't want trouble. I can't afford trouble.\"",
+     "They go pale. \"Fine. Fine! Just - not in front of the shrine.\""
     ],
     "effects": {
      "credits": 20,
@@ -144,8 +143,8 @@
    },
    "fail": {
     "lines": [
-     "\"Are you threatening me? I have a the police panic button and I'm not afraid to subscribe.\"",
-     "They laugh. Actually laugh. That hurts more than a punch."
+     "They laugh. Actually laugh. That hurts more than a punch.",
+     "\"Threatening me? I raised four sons. Try harder.\""
     ],
     "effects": {
      "attitude": -20,
@@ -190,8 +189,8 @@
    },
    "fail": {
     "lines": [
-     "\"HEY! THIEF! Somebody call the police! Somebody bill this person!\"",
-     "Their hand clamps on your wrist. \"That's my rent, you absolute ledger.\""
+     "\"HEY! THIEF! Somebody call the police! Somebody call his AUNT!\"",
+     "Their hand clamps on your wrist. \"That's my shopping money, you little tanuki.\""
     ],
     "effects": {
      "attitude": -40,
@@ -221,8 +220,8 @@
    },
    "success": {
     "lines": [
-     "\"Ha! Finally someone says it. They charge for the echo in here, you know.\"",
-     "They lean in. \"Keep talking like that and they'll bill you. I like you.\""
+     "\"Ha! Finally someone says it. I've been thinking it for forty years.\"",
+     "They lean in. \"Keep talking like that and the old women will hear. I like you.\""
     ],
     "effects": {
      "attitude": 15,
@@ -234,8 +233,8 @@
    },
    "fail": {
     "lines": [
-     "\"I'm reporting this to my loyalty-points manager.\"",
-     "\"The council feeds my kids. Mostly instant noodles. But still.\""
+     "\"I'm telling your aunt.\"",
+     "\"Rude. My grandmother would have thrown salt at you.\""
     ],
     "effects": {
      "attitude": -15
@@ -431,7 +430,7 @@
    "success": {
     "lines": [
      "\"You hear things down here, right? Me too. Swap?\"",
-     "Gossip is the only currency the town council hasn't taxed. Yet."
+     "They lower their voice to the level the cats can't hear."
     ],
     "effects": {
      "attitude": 10,
@@ -441,7 +440,7 @@
    },
    "fail": {
     "lines": [
-     "\"I don't talk to gutter people.\" They say it from about one paycheck away."
+     "\"Gossip? Me? Never.\" They look both ways first, though."
     ],
     "effects": {
      "attitude": -5
@@ -560,7 +559,6 @@
    },
    "success": {
     "lines": [
-     "You do the eyes. The big ones. \"Aw. Kids today. Go on, run home before the curfew billing starts.\"",
      "\"You? A criminal? You're barely billable.\""
     ],
     "effects": {
@@ -718,7 +716,6 @@
    ],
    "success": {
     "lines": [
-     "You clean, stitch, bandage. \"No invoice? No... invoice?\" They hold your hand a second too long.",
      "\"the bank wanted 400 for that. You did it with gum and a smile.\""
     ],
     "effects": {
@@ -1062,7 +1059,8 @@
    },
    "success": {
     "lines": [
-     "\"Unlicensed? Untaxed? ...It smells like a forest. Two, please.\""
+     "\"Unlicensed? Untaxed? ...It smells like a forest. Two, please.\"",
+     "They inhale. Real air. Their eyes water. \"Where do you GET this?\""
     ],
     "effects": {
      "credits": 70,
@@ -1133,7 +1131,7 @@
    "once": true,
    "success": {
     "lines": [
-     "\"Could you get this to my sister in another town? The police read all the mail.\" You pocket it. You never look inside."
+     "\"Could you get this to my sister in the next town? The post office here loses things. On purpose, I think.\" You pocket it. You never look inside."
     ],
     "effects": {
      "credits": 20,
@@ -1371,8 +1369,7 @@
    },
    "success": {
     "lines": [
-     "You tell them exactly what you did and why. Nobody has told them the truth in years. They hang up on the police.",
-     "\"That's... the most honest thing I've heard since the town council patented honesty.\""
+     "You tell them exactly what you did and why. Nobody has told them the truth in years. They hang up on the police."
     ],
     "effects": {
      "npc": "silenced",
@@ -1381,7 +1378,7 @@
    },
    "fail": {
     "lines": [
-     "\"Thanks for the confession. The police give a bonus for those.\""
+     "\"Thanks for telling me. I'm going to tell everybody.\""
     ],
     "effects": {
      "attitude": -10
@@ -1527,7 +1524,7 @@
    },
    "fail": {
     "lines": [
-     "\"Change? The last guy who said that got repossessed. By his own shoes.\""
+     "\"Change? In Suzunari? The last change here was the bus timetable, in 1994.\""
     ],
     "effects": {}
    },
@@ -1556,8 +1553,8 @@
    },
    "success": {
     "lines": [
-     "\"How many the water company execs does it take to change a light? None - they bill you for the dark.\" They wheeze. The phone call is forgotten.",
-     "Your joke is so bad it loops back to good. They're laughing too hard to report anything."
+     "\"Why did the kappa cross the road? To get to the other cucumber.\" It's terrible. They laugh anyway, then hate themselves.",
+     "Your joke is so bad it loops back to good. They're laughing too hard to stay cross with you."
     ],
     "effects": {
      "attitude": 20,
@@ -1567,7 +1564,7 @@
    },
    "fail": {
     "lines": [
-     "Silence. A billboard laughs instead, pre-recorded. Somehow that's worse."
+     "Silence. Somewhere a crow laughs instead. Somehow that's worse."
     ],
     "effects": {
      "attitude": -5
@@ -1638,7 +1635,8 @@
    },
    "success": {
     "lines": [
-     "They squint. \"Same eyes as you... I saw someone like that. Heading off-world, in a the bank transport.\""
+     "They squint. \"Same eyes as you... I saw someone like that. Heading off-world, in a the bank transport.\"",
+     "\"Yeah! Worked the vats with them. They talked about a sibling in cryo. Said they'd find you first.\""
     ],
     "effects": {
      "attitude": 10,
@@ -1683,7 +1681,7 @@
    },
    "fail": {
     "lines": [
-     "\"Everyone's lost someone. Here they bill you for the grief.\""
+     "\"Everyone here has lost someone. The sea's greedy like that.\""
     ],
     "effects": {}
    },
@@ -1864,7 +1862,7 @@
    },
    "fail": {
     "lines": [
-     "\"Haggling? That's a premium feature.\" The price goes UP."
+     "\"Haggling? In this economy?\" The price goes UP."
     ],
     "effects": {
      "discount": -0.1
@@ -2021,9 +2019,9 @@
    },
    "success": {
     "lines": [
-     "\"Oh, I'm telling EVERYONE. My cousin has #small_num# followers.\"",
+     "\"Oh, I'm telling EVERYONE. My cousin runs the shopping street group chat.\"",
      "\"By tonight the whole queue at the noodle stall will know.\"",
-     "\"Leave it with me. Gossip is the one thing #faction# can't tax.\""
+     "\"Leave it with me. By tomorrow even the jizo will know.\""
     ],
     "effects": {
      "fame": 2,
@@ -2032,7 +2030,7 @@
    },
    "fail": {
     "lines": [
-     "\"And get on the police's list? No thanks.\"",
+     "\"And have the whole street know I said it? No thanks.\"",
      "\"I'll keep that one to myself, if it's all the same.\""
     ],
     "effects": {}
@@ -2153,8 +2151,8 @@
    },
    "success": {
     "lines": [
-     "\"An apology? On Suzunari? I need to sit down.\"",
-     "\"...Okay. Thanks. Nobody says sorry here. It's not in the contract.\"",
+     "\"An apology? From a teenager? I need to sit down.\"",
+     "\"...Okay. Thanks. Nobody says sorry here. They just bring round mikan.\"",
      "They soften. \"We all have bad days. Yours are just louder.\""
     ],
     "effects": {
@@ -2170,8 +2168,8 @@
    },
    "fail": {
     "lines": [
-     "\"Sorry doesn't pay for the damage.\"",
-     "\"Tell it to #faction#.\""
+     "\"Sorry doesn't fix my shutter.\"",
+     "\"Tell it to the shrine.\""
     ],
     "effects": {
      "attitude": -3
@@ -2202,9 +2200,8 @@
    },
    "success": {
     "lines": [
-     "For one song, nobody's billing anybody. \"#judge_amused#\"",
-     "They spin, you spin, a crow films it. \"Worth it.\"",
-     "\"I haven't danced since #time#... last year.\" They're laughing."
+     "They spin, you spin, a cat watches with deep disapproval. \"Worth it.\"",
+     "\"I haven't danced since the Obon festival... last year.\" They're laughing."
     ],
     "effects": {
      "attitude": 15,
@@ -2213,7 +2210,6 @@
    },
    "fail": {
     "lines": [
-     "\"Dancing is billed by the minute here.\"",
      "They step back. \"I'll watch. Watching is free.\""
     ],
     "effects": {}
@@ -2430,7 +2426,9 @@
    "once": true,
    "success": {
     "lines": [
-     "\"#thing.cap# went up again.\" \"Mine too.\" A whole friendship, built on invoices."
+     "You compare how many days it's rained. They win. You both laugh until the awning drips on you.",
+     "\"#thing.cap# went up again.\" \"Mine too.\" A whole friendship, built on complaining.",
+     "They share a trick: the bakery puts out yesterday's melon bread at seven, round the back. Free."
     ],
     "effects": {
      "attitude": 12,
@@ -3027,8 +3025,7 @@
    "success": {
     "lines": [
      "\"My dad visits in dreams. Still asks about his debt.\" You both stand in the quiet for a moment.",
-     "\"They don't. You learn to set a place for them.\" They don't ask who yours are.",
-     "\"On Suzunari? The dead get billed too. They leave eventually.\""
+     "\"They don't. You learn to set a place for them.\" They don't ask who yours are."
     ],
     "effects": {
      "attitude": 6,
@@ -3131,47 +3128,40 @@
   },
   "needs": {
    "poor": [
-    "A bed that isn't rented by the hour",
-    "Food that isn't instant noodles",
-    "Someone to pay off my water debt",
-    "Medicine my kid can afford"
+    "A day without rain, so the laundry dries",
+    "My grandson to call. Just once",
+    "Someone to fix the shop shutter",
+    "A winning lottery ticket. A small one"
    ],
    "worker": [
     "A day off. One. Ever",
-    "My overtime, which the konbini chain 'forgot'",
-    "A union nobody can repossess",
-    "A boss who goes missing. Permanently",
-    "Shoes that don't belong to the bank"
+    "A boss who goes home before me",
+    "The last bus to wait for me, just once",
+    "My back to stop hurting"
    ],
    "artsy": [
-    "An audience that isn't bots",
-    "A wall the TV news doesn't own",
-    "A muse. Or rent. Rent first",
-    "Someone to buy my soul at a fair price"
+    "A wall I'm allowed to paint",
+    "One customer who buys a painting instead of a postcard",
+    "The light at Omagatoki, in a jar"
    ],
    "corporate": [
-    "Proof my manager embezzles",
-    "Three more loyalty points for Platinum",
-    "Someone to blame for the quarterly",
-    "A way out that doesn't void my pension"
+    "A transfer back to Tokyo",
+    "Proof my manager takes long lunches",
+    "Someone to blame for the quarterly report"
    ],
    "rebel": [
-    "Explosives. Legally, glitter",
-    "A broadcast slot the TV news doesn't control",
-    "My cell-mate out of a the police colony",
-    "Proof the town council lies. More proof"
+    "A town that stays up past nine",
+    "My bike back. Someone took my bike",
+    "A band. Any band"
    ],
    "weird": [
-    "The sky to stop humming at me",
-    "A pre-war spoon (long story)",
-    "To be believed, once",
-    "My reflection back. It left",
-    "To know what's in the instant noodles. Really"
+    "A cucumber the kappa hasn't touched",
+    "To find out what's in the sealed tunnel",
+    "A ghost who answers questions properly"
    ]
   },
   "greet_by_wealth": {
    "5": [
-    "\"Is that a {heir} crest? Oh. OH. Can I... get you anything? Anything at all?\"",
     "\"Rich people don't come down here. Unless they're lost. Or buying the street.\""
    ],
    "4": [
@@ -3195,11 +3185,11 @@
   },
   "greet_by_age": {
    "teen": [
-    "\"Shouldn't you be in a learning-subscription somewhere, kid?\"",
     "\"Kids these days. Already in debt. Respect.\""
    ],
    "elder": [
-    "\"Respect your elders, they said. Then they billed the elders.\""
+    "\"Respect your elders, they said. Then they billed the elders.\"",
+    "\"You remember when air was free, grandparent? Tell me it was real.\""
    ],
    "ancient": [
     "\"You're... really old. Like, museum old. Are you on loan?\"",
@@ -3222,8 +3212,7 @@
     "\"Move along. I'm on the clock. The clock belongs to #faction#.\""
    ],
    "neutral": [
-    "\"#chatter#\"",
-    "\"Careful. #pa_body.cap#\" They shrug. \"That's what the speakers say, anyway.\""
+    "\"#chatter#\""
    ]
   },
   "rumors": {

@@ -55,14 +55,21 @@ func _process(_d: float) -> bool:
 			_check(float(ch[3].scale) < float(ch[0].get("scale", 1.0)) and ch[2].get("disabled", false), "'no' shrinks, boundary locked while crying")
 			_check(amane.rain_target() >= 0.7, "storm clouds over Suzunari")
 			var r: Dictionary = amane.choose("flirt")
-			_check(amane.route() == "romance" and str(r.text).contains("> Tears"), "flirting -> romance + impact block")
+			_check(amane.route() == "ignore" and str(r.text).contains("> Tears"), "one flirt after four rejections: still ignore (hysteresis) + impact")
+			for i in 5:
+				amane.choose("flirt")
+			_check(amane.route() == "romance", "keep flirting -> romance")
 			amane.set_tears(0.0)
 			var self_before := float(amane.st()["self"])
 			amane.choose("boundary")
 			_check(float(amane.st()["self"]) > self_before and amane.route() == "romance", "boundaries grow his self, romance stays")
 			amane.st()["route"] = "friend"
+			amane.st()["tone_pts"] = {"friend": 4.0}  # a settled friendship, nothing else
 			amane.choose("boundary")
-			_check(amane.route() == "boundary", "friend -> boundary route")
+			_check(amane.route() == "friend", "one boundary doesn't undo a friendship (hysteresis)")
+			amane.choose("boundary")
+			amane.choose("boundary")
+			_check(amane.route() == "boundary", "friend -> boundary route after a few clear boundaries")
 			# Amane follows: put the player far away, he slips back behind.
 			var p = get_first_node_in_group("player")
 			p.global_position = lvl.builder.center(21, 20) + Vector3(0, 0.2, 0)

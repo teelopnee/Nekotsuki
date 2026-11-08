@@ -588,7 +588,12 @@ func morning_note() -> String:
 	for n in s["notes"]:
 		out.append(str(n))
 	s["notes"] = []
-	if _rng.randf() < 0.3:
+	# A line from Toru's past belongs to waking up: once a day, in the morning (it used to roll on every Suzunari load,
+	# so it could turn up after school).
+	var waking := Clock.minute() <= Clock.START_MIN + 45 and int(s.get("morning_day", -1)) != Clock.day()
+	if waking:
+		s["morning_day"] = Clock.day()
+	if waking and _rng.randf() < 0.3:
 		var lines := []
 		for cat in s["origin"]:
 			lines.append_array(option(str(cat), str(s["origin"][cat])).get("mornings", []))

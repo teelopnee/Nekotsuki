@@ -30,7 +30,8 @@ REPLACE = [
     (r"\b(\d+)\s*(?:cr|credits?)\b", lambda m: _yen(int(m.group(1)))),
     (r"\b(a|one|two|three|four|five|six|ten|twenty|fifty) credits?\b", lambda m: _yen(WORDS[m.group(1).lower()])),
     (r"\bcredit chips?\b", "coins"), (r"\bCredits\b", "Money"), (r"\bcredits?\b", "money"), (r"\bCR\b", "YEN"),
-    (r"\bon another planet\b", "in another town"), (r"\{PLANET\}", "SUZUNARI"), (r"\{planet\}", "Suzunari"),
+    (r"\bon another planet\b", "in another town"), (r"\bon \{planet\}", "in Suzunari"), (r"\bON \{PLANET\}", "IN SUZUNARI"),
+    (r"\{PLANET\}", "SUZUNARI"), (r"\{planet\}", "Suzunari"), (r"I'm \{job\}", "I'm {job_a}"),
     (r"\bParagon (habits|heirs)\b", r"police \1"),
     (r"\bParagon Compliance(?: Services)?\b", "the police"), (r"\bParagon officers?\b", "police officers"),
     (r"\bthe Paragon\b", "the police"), (r"\bParagon\b", "the police"),
@@ -56,11 +57,13 @@ REPLACE = [
     (r"old synth record", "old enka record"), (r"smiling cyborg: UPGRADE OR BE UPGRADED", "smiling mascot: NEW YEAR, NEW YOU"),
     (r"\bREPO\b", "DEBT"), (r"Interface with their implants", "Look at their phone"), (r"\bimplants\b", "phones"),
     (r"\ba cyberdeck\b", "an old laptop"), (r"\bCyberdeck\b", "Old Laptop"), (r"\bPlanet-sized\b", "Town-sized"), (r"\bPlanet\b", "Town"),
-    (r"\bthe the\b", "the"), (r"\bThe the\b", "The"),
+    (r"\bthe the\b", "the"), (r"\bThe the\b", "The"), (r"\ba the police\b", "a police"), (r"\bon Suzunari\b", "in Suzunari"),
     (r"\bAD-BOMB\b", "FIRECRACKER"), (r"\b[Aa]d-bomb\b", "firecracker"), (r"\bA medkit\b", "A first-aid kit"),
     (r"\bmedkits?\b", "first-aid kit"),
     (r"Heals 25 HP if you're synthetic\. Tingles if you're not\.", "A spare phone battery. Licking it is a bad idea. Heals 25 HP."),
     (r"Everything is sharper\. Including the ads\. Especially the ads\.", "Everything is sharper. Including the crack in your screen."),
+    (r"about the Odd Duck, the debt, the stars\.", "about Tokyo, the move, the rain that hasn't stopped since."),
+    (r"I'm from the Odd Duck\.", "I'm Asagiri-do's nephew."), (r"\bthe Odd Duck\b", "Asagiri-do"),
     (r"The ad-bridge\. .*? patrol under the ads\.", "Under the bridge. The police never walk down there."),
     (r"The ads hypnotise you after a while\.", "I was miles away. This town does that to you."),
     (r"one more grey shape under the ads", "one more grey shape under the shop awnings"),
@@ -99,7 +102,13 @@ BAD = re.compile(r"implant|android|robot|cyber|laser|blaster|hover|warp|orbit|ch
                  r"\bair\b(?! of)|\bO2\b|oxygen|breath|lungs|asteroid|space|synth-|alien|mutant|\bgrub|subsystem|jetpack|"
                  r"hull|airlock|terraform|clone|ad-bomb|odd duck|compliance|megacorp|sprawl|ad network|gravity|scanning|freighter|"
                  r"\bship\b|\bcrew\b|sub-asset|section \d|barcode|\btank\b|in hock|\bcorp\b|credit check|uploading|"
-                 r"\bads?\b|\bad-\w+|ad blockers?|\bscanners?\b", re.I)
+                 r"\bads?\b|\bad-\w+|ad blockers?|\bscanners?\b|"
+                 # ODD-SPACE's billing dystopia: fine satire there, wrong for a seaside town (third review #1)
+                 r"\bbill(?:ed|ing)\b|invoice|subscri|repossess|\bfees?\b|taxed|sponsored|off-world|isn't bots|speakers say|"
+                 r"overlord|customer delight|liquidity|upsell|synergy|explosive|patent|"
+                 # the ODD-SPACE saga / galaxy vars: its people, planets and plots don't exist in Suzunari
+                 r"\{(?:ally|antagonist|antagonist_title|lieutenant|macguffin|scheme|objective_planet|other_planet|"
+                 r"other_crisis|other_controller|local_hint|local_name|crew|heir|controller|crisis)\}", re.I)
 
 
 def conv(s):

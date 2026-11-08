@@ -197,6 +197,12 @@ func _act(lvl, hud, game, clock, week) -> void:
 		if _club_time(clock):
 			return
 		var b: String = week.block(m)
+		var due_here := false
+		for bt in week._candidates():
+			if str(bt.get("where", "")) == "school" and m >= int(bt.get("after", 0)) - 30 and (not bt.has("before") or m < int(bt["before"])):
+				due_here = true
+		if due_here and m < 1080:
+			return  # a scene is due in the school: stay (a player would read the objective line)
 		if b == "" and week.block(m + 20) == "" and (m >= 920 or m < 500):
 			_log("[%s] (leaves school)" % _clock())
 			lvl.leave()

@@ -404,7 +404,7 @@
      "chance": 0.35,
      "once": true,
      "success": {
-      "text": "NEW HIGH SCORE. Your initials replace a the police captain's. The arcade chants your name.",
+      "text": "NEW HIGH SCORE. Your initials replace a police captain's. The arcade chants your name.",
       "fame": 4
      },
      "fail": {

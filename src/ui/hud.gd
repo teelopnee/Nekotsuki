@@ -949,6 +949,10 @@ func _next_ticker() -> void:
 	var desk: String = ["LUMEN NEWS", "LUMEN NEWS", "BREAKING", "MARKETS", "LUMEN SPORT", "WEATHER", "LOCAL"][randi() % 7]
 	if Game.location_id in ["suzunari", "school"]:
 		desk = ["SUZUNARI FM", "TOWN NEWS", "WEATHER", "SCHOOL BOARD"][randi() % 4]
+		var heads := Causality.latest_headlines(1)
+		if not heads.is_empty() and randf() < 0.3:  # what you did, in the town's words (TownTalk headline)
+			desk = "TOWN NEWS"
+			item = heads[0]
 	_ticker_label.text = desk + " //  " + item + "  //  "
 	_ticker_label.reset_size()
 	_ticker_label.position = Vector2(_ticker_clip.size.x + 20.0, 2)

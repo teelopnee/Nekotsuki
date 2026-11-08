@@ -87,10 +87,17 @@ static func vars(npc: Node = null, extra: Dictionary = {}) -> Dictionary:
 	if npc:
 		v["npc"] = npc.npc_name
 		v["job"] = npc.job
+		v["job_a"] = Interactions.job_a(str(npc.job))
 		v["need"] = str(npc.need).to_lower()
 		v["their_faction"] = DataDB.faction_name(npc.faction) if npc.faction != "" else "nobody"
 		if "venue_sign" in npc and str(npc.venue_sign) != "":
 			v["sign"] = str(npc.venue_sign).capitalize()
+	if DataDB.theme == "suzunari":  # no saga people or planets in town talk: what they mean here
+		v.merge({"ally": "someone on the shopping street", "antagonist": "the Shirasagi family", "lieutenant": "their lawyer",
+			"antagonist_title": "the old money", "macguffin": "the shrine bell", "scheme": "buy up the shopping street",
+			"objective_planet": "Tokyo", "other_planet": "Tokyo", "other_crisis": "the rain", "other_controller": "the Shirasagi family",
+			"controller": "the town council", "crisis": "the rain", "crew": "your friends", "heir": "nobody",
+			"local_hint": "Something about the rain.", "local_name": "the shopping street association"}, true)
 	v.merge(extra, true)
 	return v
 
@@ -118,6 +125,10 @@ static func say(template: String, npc: Node = null, extra: Dictionary = {}, rng:
 
 ## A remark about who you are, voiced by this NPC. `bubble` = short form for speech bubbles.
 static func remark(npc: Node, rng: RandomNumberGenerator, bubble: bool = false) -> String:
+	if TownTalk.active():
+		var tt := TownTalk.line("mutter" if bubble else "remark", npc)
+		if tt != "":
+			return tt
 	var topic := _pick_topic(npc, rng)
 	var body := "#%s#" % topic
 	var m := mood(npc)
@@ -198,6 +209,10 @@ static func _judge(kind: String, stance: String) -> String:
 ## Muttered aside about something they saw (speech bubble).
 static func aside(npc: Node, mem: Dictionary, rng: RandomNumberGenerator) -> String:
 	var kind := str(mem.get("kind", "weird"))
+	if TownTalk.active():
+		var tt := TownTalk.line("mutter", npc, {"kind": kind})
+		if tt != "":
+			return tt
 	return say("#aside_open# #act_%s#. %s" % [kind, _judge(kind, str(mem.get("stance", "amused")))], npc,
 		{"target": str(mem.get("target", "someone"))}, rng)
 
@@ -214,6 +229,10 @@ static func react_now(npc: Node, kind: String, stance: String, target: String, r
 ## Bringing it up later, when you talk to them.
 static func recall(npc: Node, mem: Dictionary, rng: RandomNumberGenerator) -> String:
 	var kind := str(mem.get("kind", "weird"))
+	if TownTalk.active():
+		var tt := TownTalk.line("recall", npc, {"kind": kind})
+		if tt != "":
+			return tt
 	var tpl := "#recall_open# #act_%s#. %s" % [kind, _judge(kind, str(mem.get("stance", "amused")))]
 	return "\"%s\"" % say(tpl, npc, {"target": str(mem.get("target", "someone"))}, rng)
 
@@ -225,6 +244,10 @@ static func gossip(npc: Node, rng: RandomNumberGenerator) -> String:
 		return ""
 	var kinds := street.keys()
 	var kind: String = kinds[rng.randi() % kinds.size()]
+	if TownTalk.active():
+		var tt := TownTalk.line("gossip", npc, {"kind": kind})
+		if tt != "":
+			return tt
 	var tpl := "#gossip_open# #act_%s#. %s" % [kind, _judge(kind, stance_for(npc, kind))]
 	return "\"%s\"" % say(tpl, npc, {"target": "someone"}, rng)
 

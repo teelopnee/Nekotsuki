@@ -84,3 +84,20 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
 - No ODD-SPACE chrome in Suzunari (2026-11-08): `ShipAI.say` is silent (no Q.U.A.C.K. comm panel); the death screen uses
   `suzunari_death_title` / `suzunari_death_line` from `data/suzunari/_manual/copy.json` + "Enma's Ledger keeps everything
   ..."; the pause menu has no Perks or Crew tab and the Causality tab is "Rumours" ("WHAT SUZUNARI SAW").
+- Townsfolk voice (2026-11-08, `src/core/town_talk.gd` `TownTalk`, `data/town_talk.json`): Valve-style dynamic dialogue
+  (Ruskin, GDC 2012): rules `{c, when, t, cool, once}`; of the rules whose criteria all hold, the one with the MOST
+  criteria wins (specific beats general), ties are random; said lines rest `cool` days (`Game.flags.town_talk`), and
+  when everything matching is resting the line said longest ago comes back - the ODD-SPACE pools never answer in
+  Suzunari. Concepts: open, recall (what they saw: kind), gossip (street memory: kind), accuse (a known crime),
+  remark, rumour, mutter (bubbles), headline (news ticker: verb). Facts: period, weekday, weekend, week, days_left,
+  rain (Amane's tears), place (shrine / school / river / beach / station / street), job category, temper (stable per
+  name), mood, met, route, rival + fate, club, job, late / truant / study, lore count, deeds, tags, story flags, Amane's
+  tears / bond / self / jealousy / cat nights; any number takes `<fact>_min` / `<fact>_max`. Hooked into
+  `NPC._opening_line` / `_talk_civilian` (accuse), `NPCVoice.remark / recall / aside / gossip`, `Interactions.rumor /
+  greeting`, `CausalityGraph` headlines and the HUD ticker. Town verb results and townsfolk needs are hand-written in
+  `data/suzunari/_manual/interactions.json`; the theme script also drops the billing-dystopia jokes (`BAD`), fixes
+  "on Suzunari", "a the police" and "I'm {job}" (-> `{job_a}`, `Interactions.job_a`). `Copy._tidy` fixes "the the"
+  and lower-case sentence starts inside composed lines. Money in effect lines shows as yen; nobody calls Paragon.
+- `tools/town_voice_test.gd` makes 30 townspeople talk through every runtime generator (2,300 lines) and fails on
+  sci-fi words, generated planet / faction / saga names, non-Japanese names, placeholders, broken grammar or too much
+  billing satire (was 111 leaks + 18 tone lines, now 0). `-- <file> all` also dumps every distinct line for reading.

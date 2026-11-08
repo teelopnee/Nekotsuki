@@ -313,6 +313,10 @@ func _apply_consequences(node: Dictionary) -> void:
 		var template: String = news[_rng.randi() % news.size()]
 		var target_name: String = DataDB.faction_name(target_faction) if target_faction != "" else str(node.target)
 		node.headline = template.format({"location": node.location_name, "target_name": target_name})
+		if TownTalk.active():  # Suzunari Shimbun / the town board, not Lumen
+			var hl := TownTalk.line("headline", null, {"verb": str(node.verb)})
+			if hl != "":
+				node.headline = hl
 		EventBus.news_broadcast.emit(node.headline, node)
 	if node.verb == "theft" and not node.witnesses.is_empty():
 		FlawPerk.report_mishap("caught_stealing")

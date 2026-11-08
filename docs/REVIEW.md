@@ -400,3 +400,27 @@ walking, joins a club, talks to Amane every two hours and to townsfolk in betwee
   staff-room scene on day 6 both times; the objective line does name it).
 - Better than last time: lessons, clubs, story beats and the week close all play in the real flow; Amane's lines stay
   good; the endings are scenes.
+
+## Fix pass for the third review (2026-11-08)
+Research: Valve's dynamic dialogue (Elan Ruskin, GDC 2012: criteria over world facts, the most specific rule wins,
+ties random, lines remembered with expiry, a generic baseline under specific exceptions), Stardew Valley's dialogue
+keys (day / season / hearts with generic fallbacks), Hades' requirement-gated pools with priorities, Emily Short's
+storylets / salience-based narrative.
+- 1. The town's voice: `TownTalk` (`src/core/town_talk.gd`, `data/town_talk.json`, 117 rules / 191 lines) answers every
+  townsfolk generator in Suzunari - openings, what they saw you do, street gossip, accusations, remarks, rumours,
+  passing mutters, news-ticker headlines - by context (time, weather = Amane's tears, place, job, temper, week, Toru's
+  club / job / lates / deeds / tags, rival fates, story flags). Town verb results and needs rewritten by hand; the
+  theme script drops billing satire and the saga / galaxy vars; yen in effect lines; "The police" instead of
+  Paragon; "in Suzunari", job articles, sentence capitals. New runtime test `town_voice_test` (2,330 lines through
+  the real generators): 111 leaks + 18 tone lines -> 0.
+- 2. Repetition: Amane's openers come from 81 contextual lines (`data/amane_openers.json`, same matcher, 5-day rest);
+  the goodbye box no longer repeats his answer; 16 goodbyes instead of 5.
+- 3. Route hysteresis: points per route, 15% nightly fade, a change needs 6 points and a 3-point lead; story
+  questions stay decisive.
+- 4. Bugs: Toru's origin line only at wake-up; a due school scene plays right after the bell; the bot waits for it.
+- Bot week (same seeds as the review, random / cold): leaks 29 / 20 -> 0 / 0, route changes 18 / 19 -> 1-3, repeated
+  lines 18% / 21% -> ~10%, story beats 7 / 6 -> 8 / 8 of 8. All suites pass.
+- Score now: **7/10** (townsfolk writing 3 -> 6.5, repetition 5 -> 7, daily life 7 -> 7.5).
+- Still open: a human playtest on the tablet (use the Playtest page); the town has ~330 distinct lines in a heavy
+  session - more TownTalk rules by place / person would help; Toru seen from behind outside talks; rain squares on
+  lavapipe; ODD-SPACE engine debt (smoke_test, saga still generated in the background).

@@ -187,6 +187,8 @@ func _lesson(b: String, late: int) -> void:
 	Clock.advance(jump)
 	await hud.say("", res + "\n" + "\n".join(notes))
 	_busy = false
+	# A scene waiting in the school after the bell (Makabe's staff room...) plays now, before you can walk out.
+	_check_beats.call_deferred(Clock.minute())
 
 
 ## Exam days (midterms week 5, finals week 10): what you studied (lessons attended) decides the grade.

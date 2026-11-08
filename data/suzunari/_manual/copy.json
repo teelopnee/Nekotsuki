@@ -137,7 +137,10 @@
    "cat",
    "shiba",
    "goldfish",
-   "turtle"
+   "turtle",
+   "parakeet",
+   "rabbit",
+   "tanuki (allegedly)"
   ],
   "weather": [
    "Rain.",
@@ -364,6 +367,28 @@
    "Your umbrella rolls away across the stones. The festival music goes on without you.",
    "Cold hands, a smell of incense, and someone crying your name from very far away.",
    "The kasha carry you off the way they carry off the dead. Somebody on the other side of the steps won't let go of you."
+  ],
+  "pet_desc": [
+   "a fat",
+   "a very old",
+   "a one-eyed",
+   "a nervous",
+   "a tiny",
+   "a loud",
+   "a lazy",
+   "a grumpy"
+  ],
+  "pet_name": [
+   "Mochi",
+   "Kinako",
+   "Daikon",
+   "Tama",
+   "Hachi",
+   "Pon",
+   "Sakura",
+   "Taro",
+   "Ikura",
+   "Shogun"
   ]
  }
 }

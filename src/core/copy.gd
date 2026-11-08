@@ -89,11 +89,30 @@ static func _expand(text: String, rng: RandomNumberGenerator, vars: Dictionary) 
 
 ## Typography after expansion: "..", "!." and "?." collapse (an ellipsis survives), and each
 ## line starts with a capital even when it opens on "the Forever Loan".
+static var _stop_re: RegEx = null
+
+
+## "...was fine. the police said" -> "...was fine. The police said" (a single full stop, ! or ?, or an opening quote,
+## then a lower-case letter). Ellipses ("Senpai... you came back") are left alone on purpose.
+static func _caps_after_stop(t: String) -> String:
+	if _stop_re == null:
+		_stop_re = RegEx.new()
+		_stop_re.compile("((?<![.])[.!?][\"']?\\s+[\"']?|(?:^|\\s)\")([a-z])")
+	var out := ""
+	var at := 0
+	for m in _stop_re.search_all(t):
+		out += t.substr(at, m.get_start(2) - at) + m.get_string(2).to_upper()
+		at = m.get_end(2)
+	return out + t.substr(at)
+
+
 static func _tidy(text: String) -> String:
 	if _tidy_re == null:
 		_tidy_re = RegEx.new()
 		_tidy_re.compile("(?<!\\.)\\.\\.(?!\\.)")
 	var out := _tidy_re.sub(text, ".", true).replace("!.", "!").replace("?.", "?")
+	out = out.replace(" the the ", " the ").replace("The the ", "The ").replace("\"the the ", "\"The ")
+	out = _caps_after_stop(out)
 	var lines := out.split("\n")
 	for i in lines.size():
 		var l: String = lines[i]

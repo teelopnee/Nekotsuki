@@ -35,7 +35,7 @@ When you add or change a system, update its `docs/dev/` file, not this one (keep
 
 Tests (`godot --headless --path . --script res://tools/<name>.gd`, exit code = failures): `check_project`, `smoke_test`
 (still the old sci-fi flow), `day_test`, `week_test` (plays every story choice), `talk_test`, `m3_test`, `school_test`,
-`people_test`, `ura_test`, `life_test`, `friends_test`, `emote_test`; inherited `impact_test`, `interact_back_test`,
+`people_test`, `ura_test`, `life_test`, `friends_test`, `emote_test`, `town_voice_test` (every runtime townsfolk line); inherited `impact_test`, `interact_back_test`,
 `keeper_test`, `combat_test`, `story_test`, `voice_test`, `pad_test`. Text: `python3 tools/leak_check.py` (every themed
 line, sci-fi words + "the police" grammar; exit code = leaks). Screenshots (not headless): `tools/shot_suzunari.gd`,
 `shot_school.gd`, `shot_ura.gd`, `shot_life.gd`, `shot_ending.gd` -- `<dir> [names]`. Play-through bot:

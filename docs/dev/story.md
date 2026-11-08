@@ -117,3 +117,13 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
   the date / phone overlay is hidden. fx `dry_river` = `Suzunari.dry_river()` (the same stone bed + sai no kawara
   towers `_ura_dressing` builds, shared in `_dry_river`), used by the homecoming ending.
   Shots: `tools/shot_ending.gd -- <dir> [id,id]` (one PNG per line). week_test checks actors / feelings / fx exist.
+- Amane's openers (2026-11-08): `data/amane_openers.json` (81 lines in 49 rules: time, place, rain = his tears, bond,
+  route, jealousy and the rival, cat nights, Toru's club / job / lates, the story's flags and weeks) picked by the
+  TownTalk matcher (`TownTalk.line_in`), resting 5 days after use; `data/amane.json openers` stay as the fallback.
+  The goodbye box no longer repeats his last answer.
+- Route hysteresis (`Amane.nudge_route`): every choice adds points to a route (talk replies: flirt / boundary / cold
+  2, kind 1.5, tease / curious / honest 0.5; the four big choices 2-3), points fade 15% a night, and the route only
+  changes when another route has 6+ points and leads the current one by 3. Story questions (`amane_choose` fx, e.g.
+  Sunday's "What am I to you?") are decisive. day_test: one flirt after four rejections stays "ignore".
+- A school scene that is due plays right after the lesson's bell (`Week._lesson` -> `_check_beats`), before you can
+  walk out (the bot missed Makabe's staff room twice).

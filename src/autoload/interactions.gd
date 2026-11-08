@@ -54,6 +54,10 @@ func setup_npc(npc: Node, rng: RandomNumberGenerator) -> void:
 
 ## Greeting line that reacts to your class, age, notoriety and the NPC's mood.
 func greeting(npc: Node) -> String:
+	if TownTalk.active():
+		var tt := TownTalk.line("open", npc)
+		if tt != "":
+			return tt
 	var t := npc_text()
 	var lines: Array[String] = []
 	var heir := DataDB.faction_name(Origin.heir_of())
@@ -73,11 +77,21 @@ func greeting(npc: Node) -> String:
 	return "\n".join(lines)
 
 
+## "calligraphy teacher" -> "a calligraphy teacher", "owner of Kissa Amagasa" -> "the owner of Kissa Amagasa".
+static func job_a(job: String) -> String:
+	if job == "":
+		return "nobody in particular"
+	if job.begins_with("owner of") or job.begins_with("head of") or job.begins_with("keeper of"):
+		return "the " + job
+	return ("an " if job.substr(0, 1).to_lower() in ["a", "e", "i", "o", "u"] else "a ") + job
+
+
 func fill(text: String, npc: Node = null) -> String:
 	var vars := {
 		"name": Game.player_name, "age": Game.age, "heir": DataDB.faction_name(Origin.heir_of()),
 		"npc": npc.npc_name if npc else "they", "job": npc.job if npc else "", "need": npc.need if npc else "",
 		"faction": DataDB.faction_name(npc.faction) if npc else "",
+		"job_a": job_a(str(npc.job)) if npc else "",
 	}
 	var out := text.format(vars)
 	return Copy.expand(out, _rng) if out.contains("#") or out.contains("{") else out
@@ -475,7 +489,8 @@ func _bystander_lines(npc: Node) -> Array[String]:
 	for st in ["approve", "amused", "disapprove", "fear"]:
 		if tally.has(st):
 			parts.append("%d %s" % [tally[st], {"approve": "approve", "amused": "amused", "disapprove": "disapprove", "fear": "scared"}[st]])
-	return ["Seen by %d %s: %s. Word will spread on %s." % [n, "person" if n == 1 else "people", ", ".join(parts), Game.location_name]]
+	var where := ("in " if DataDB.theme == "suzunari" else "on ") + Game.location_name  # a town, not a planet
+	return ["Seen by %d %s: %s. Word will spread %s." % [n, "person" if n == 1 else "people", ", ".join(parts), where]]
 
 
 ## Everyone else still on the phone about you.
@@ -551,6 +566,10 @@ func _apply_npc_effects(npc: Node, e: Dictionary) -> String:
 # --- Rumours ------------------------------------------------------------------------------
 
 func rumor(npc: Node = null) -> String:
+	if TownTalk.active():  # Suzunari: the town's own rumours, not the saga, the galaxy or Lumen (TownTalk)
+		var tt := TownTalk.line("rumour", npc)
+		if tt != "":
+			return tt
 	var r: Dictionary = npc_text().get("rumors", {})
 	var pools := ["planet", "tips"]
 	if Saga.index < Saga.beats.size():
@@ -719,7 +738,8 @@ func _on_closed_choice(choice: String) -> void:
 			var cr := _rng.randi_range(30, 90)
 			Game.add_credits(cr)
 			Causality.record("theft", {"target": str(_venue_ctx.sign), "position": p.global_position if p else Vector3.ZERO})
-			EventBus.dialogue_requested.emit(str(_venue_ctx.sign), "The till sticks, then gives. %d credits. The photo by the door watches you.\n[color=#ffd23e]+%d credits[/color]" % [cr, cr], [], Callable())
+			var mt := DataDB.money(cr) if DataDB.theme == "suzunari" else "%d credits" % cr
+			EventBus.dialogue_requested.emit(str(_venue_ctx.sign), "The till sticks, then gives. %s. The photo by the door watches you.\n[color=#ffd23e]+%s[/color]" % [mt, mt], [], Callable())
 		"flowers":
 			if Game.spend(10):
 				NPCVoice.add_street_memory("charity")

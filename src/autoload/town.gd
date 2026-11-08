@@ -302,7 +302,7 @@ func apply_fx(fx: Dictionary, again: bool = false) -> String:
 					lines.append("> You said his name to the cat. It stopped.")
 			"amane_choose":
 				if not again:
-					lines.append(str(Amane.choose(str(v)).text))
+					lines.append(str(Amane.choose(str(v), true).text))  # a story question: the answer decides the route
 			"bond":
 				if not again:
 					Amane.add("bond_now", float(v))

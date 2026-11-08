@@ -62,12 +62,10 @@
    "Feel safe. Feel watched. Feel both.",
    "Debt is just future you being generous",
    "Love what you're told to love",
-   "The best things in life are subscriptions",
    "Comply in style",
    "Chew less. Work more.",
    "Now legally addictive",
    "Upgrade your exhale",
-   "Life, but with fees",
    "Freedom (terms apply)"
   ],
   "suzunari_feature": [
@@ -88,7 +86,6 @@
    "Ask your debt counsellor if #product# is right for you.",
    "Available at every vending machine you can't afford.",
    "Scan your face to accept.",
-   "Don't think. Subscribe.",
    "Act now - the offer expires when you do.",
    "Tell a friend. We'll bill them too.",
    "Visit your nearest kiosk. It's watching you.",
@@ -111,7 +108,6 @@
   "suzunari_price": [
    "#small_num#.99 YEN",
    "NOW #pct#% OFF*",
-   "BUY 2, GET 1 BILLED",
    "FREE* (*not free)",
    "#big_num# YEN OR YOUR SOUL",
    "0% APR FOR 3 SECONDS",
@@ -123,14 +119,11 @@
    "OBEY & ENJOY",
    "YOU ARE VALUED*",
    "STAY LOYAL. STAY ALIVE.",
-   "SMILE: YOU'RE BILLED",
    "DEBT IS FREEDOM",
    "TRUST THE NOODLES",
    "THE TOWN COUNCIL LOVES YOU (BACK)",
    "#product.upper#: #price#",
-   "WHY THINK WHEN YOU CAN SUBSCRIBE?",
    "LUMEN: WATCH. MORE.",
-   "HAPPINESS IS A SUBSCRIPTION",
    "BE THE CUSTOMER YOU WANT TO SEE",
    "#num# MILLION CITIZENS CAN'T BE WRONG"
   ],
@@ -161,29 +154,35 @@
    "Jingle"
   ],
   "suzunari_pet_name": [
-   "Biscuit",
-   "Mister Whiskers",
-   "Sergeant Wiggles",
-   "Debt",
-   "Princess instant noodles",
-   "Bolt",
-   "Noodle",
-   "Kevin",
-   "Captain Fluff",
-   "Static",
-   "Mochi"
+   "Mochi",
+   "Kinako",
+   "Daikon",
+   "Tama",
+   "Hachi",
+   "Pon",
+   "Sakura",
+   "Taro",
+   "Ikura",
+   "Shogun"
   ],
   "suzunari_pet_kind": [
    "cat",
    "shiba",
    "goldfish",
-   "turtle"
+   "turtle",
+   "parakeet",
+   "rabbit",
+   "tanuki (allegedly)"
   ],
   "suzunari_pet_desc": [
-   "#pet_kind#, answers to '#pet_name#' and the sound of cans",
-   "#pet_kind#, very fat, very loved",
-   "#pet_kind#, wears a tiny the police badge (fake)",
-   "#pet_kind#, may be glowing"
+   "a fat",
+   "a very old",
+   "a one-eyed",
+   "a nervous",
+   "a tiny",
+   "a loud",
+   "a lazy",
+   "a grumpy"
   ],
   "suzunari_adj_shop": [
    "Lucky",
@@ -290,13 +289,12 @@
    "LUMEN"
   ],
   "suzunari_absurd_event": [
-   "A SNEEZE ON SUZUNARI",
+   "A SNEEZE IN SUZUNARI",
    "CEO SMILES",
    "RAIN STAYS FREE FOR ONE MORE DAY",
    "A RUMOUR",
    "THE MOON DOING SOMETHING",
-   "LAYING OFF ITS LAYOFF TEAM",
-   "PATENTING A COLOUR"
+   "LAYING OFF ITS LAYOFF TEAM"
   ],
   "suzunari_weather": [
    "Rain.",
@@ -319,8 +317,7 @@
    "UNLICENSED SMILING",
    "WHISTLING A COMPETITOR'S JINGLE",
    "POSSESSION OF A REAL APPLE",
-   "WALKING TOO HOPEFULLY",
-   "SHARING A SUBSCRIPTION"
+   "WALKING TOO HOPEFULLY"
   ],
   "suzunari_discovery": [
    "A NEW SMELL",
@@ -377,7 +374,6 @@
   ],
   "suzunari_cult_name": [
    "the Silent Ones",
-   "the Unsubscribed",
    "the Order of the Duck",
    "the Last Exhale"
   ],
@@ -420,9 +416,12 @@
    "The police remind you: #pa_body#",
    "#brand# would like to remind you: #pa_body#"
   ],
+  "suzunari_pa_daypart": [
+   "morning",
+   "evening",
+   "night shift"
+  ],
   "suzunari_pa_body": [
-   "loitering is now billed by the minute.",
-   "a lost child has been found and invoiced.",
    "smiling in queues improves your money score.",
    "please report unlicensed happiness.",
    "curfew begins in #num# minutes. Enjoy your last free steps.",
@@ -470,15 +469,20 @@
    "a real egg",
    "one day off",
    "a quieter apartment",
-   "my mum's debt",
-   "a ticket off-world"
+   "my mum's debt"
   ],
   "suzunari_review": [
    "Tastes like a Tuesday.",
-   "Changed my life. Billed me for the change.",
    "Five stars. The stars were extra.",
    "My dog likes it. My dog is a crow.",
    "It's fine. Everything's fine."
+  ],
+  "suzunari_absurd_policy_lower": [
+   "tax sleeping",
+   "privatise the wind",
+   "rename poverty 'unlocked potential'",
+   "bill ghosts for trespassing",
+   "ban unlicensed whistling"
   ],
   "suzunari_implants_name": [
    "Upgrade Shack",
@@ -491,7 +495,6 @@
    "Same. Every day.",
    "Shh! The billboard can hear you.",
    "You can't say that out loud.",
-   "My cousin said that once. Then she got repossessed.",
    "Ugh. #review#",
    "At least the rain's free.",
    "No way. Really?",
@@ -525,7 +528,6 @@
    "1 NEW BILL",
    "PAYMENT DUE",
    "RATE US 5 STARS",
-   "SUBSCRIBE",
    "DON'T BLINK",
    "HUNGRY? #gristle_brand.upper#",
    "ASK ME ABOUT LOANS",
@@ -588,7 +590,6 @@
   ],
   "suzunari_motel_keeper": [
    "The clerk doesn't look up from #media_product#. \"Pod or premium pod? Premium has a window. It's painted on.\"",
-   "\"Checkout is at #time#. Late checkout is billed per snore.\"",
    "\"Dreams are recorded for quality purposes. Opting out is #small_num# money.\""
   ],
   "suzunari_loans_scene": [
@@ -604,7 +605,6 @@
   ],
   "suzunari_tattoo_scene": [
    "Needles buzz like angry bees. Flash sheets cover every wall.",
-   "A customer winces in the chair, getting a #brand# logo. Sponsored ink pays the rent.",
    "Lantern light, antiseptic and an old enka record crackling."
   ],
   "suzunari_tattoo_keeper": [
@@ -627,14 +627,11 @@
   ],
   "suzunari_fortune_scene": [
    "Incense, a cracked crystal ball and a card reader.",
-   "Beaded curtains and a cat with one eye. The eye is a camera.",
-   "Tarot cards on the table, every one of them sponsored.",
-   "A lantern palm glows in the window: YOUR FUTURE, SUBSCRIPTION-FREE."
+   "Beaded curtains and a cat with one eye. The eye is a camera."
   ],
   "suzunari_fortune_keeper": [
    "\"I see... debt. No, wait. That's everyone.\"",
-   "\"Cross my palm with money and I'll cross yours with destiny.\"",
-   "\"The stars say #weather.lower#. The stars are sponsored.\""
+   "\"Cross my palm with money and I'll cross yours with destiny.\""
   ],
   "suzunari_corp_store_scene": [
    "Bright, clean, scentless. Music designed to make you forget you have a home.",
@@ -680,7 +677,6 @@
   ],
   "suzunari_sponsor_line": [
    "#brand# reminds you: #pa_body#",
-   "This title screen is sponsored by #product#. #benefit#.",
    "#brand#: #cta#",
    "A message from #faction#: '#slogan#'",
    "#product#. #disclaimer#",
@@ -719,7 +715,6 @@
   ],
   "suzunari_close_corporate": [
    "Let's circle back.",
-   "Synergy.",
    "Let's take this offline.",
    "I have a #time# meeting.",
    "Think about your personal brand.",
@@ -745,20 +740,19 @@
   "suzunari_pc_class_heir_paragon": [
    "Your family's cops arrested my cousin for coughing. Nothing personal.",
    "A the police heir walking without bodyguards? Bold.",
-   "Does daddy know you're slumming it on Suzunari?",
+   "Does daddy know you're slumming it in Suzunari?",
    "Every badge on this street answers to your family. Must be nice.",
    "They say police heirs learn to salute before they learn to walk.",
-   "Your family's slogan is on every baton on Suzunari.",
-   "Somebody said a the police heir walked in. I assumed it was a raid."
+   "Your family's slogan is on every baton in Suzunari.",
+   "Somebody said a police heir walked in. I assumed it was a raid."
   ],
   "suzunari_pc_class_heir_halcyon": [
    "the bank owns the debt on my bed. So, technically, you're standing on my mattress.",
    "A the bank heir. My whole family's in your ledger.",
-   "Your family repossessed my uncle's kidney. He wants it back.",
    "Interest compounds, they say. So does resentment.",
    "Do you get a discount on your own debt? Asking for Suzunari.",
    "My whole street owes your surname money.",
-   "the bank heir on Suzunari? Collecting in person now?"
+   "the bank heir in Suzunari? Collecting in person now?"
   ],
   "suzunari_pc_class_heir_gristle": [
    "the konbini chain heir, huh? I've eaten your family's instant noodles every day for #small_num# years.",
@@ -834,23 +828,22 @@
   "suzunari_pc_class_collateral": [
    "Somebody's paying interest on YOU. Must feel strange.",
    "Owned and still walking around. Respect.",
-   "Does your owner know you're on Suzunari?",
+   "Does your owner know you're in Suzunari?",
    "Owned? Me too, kind of. My landlord thinks so."
   ],
   "suzunari_pc_class_off_grid": [
    "The crows look right through you. Teach me.",
-   "Off-grid on Suzunari? That's practically a superpower.",
+   "Off-grid in Suzunari? That's practically a superpower.",
    "I can't even find you on the TV news. Nobody's not on the TV news.",
    "How do you buy anything without a face scan?",
    "The crows went quiet when you walked past. Creepy. Good creepy."
   ],
   "suzunari_pc_age_teen": [
-   "Shouldn't you be in a learning-subscription?",
    "Aren't you a bit young for Suzunari?",
    "Kids these days. Already in debt. Respect.",
    "Go home, kid. Oh. This is home. Sorry.",
    "{years}? I had three jobs at {years}. Kidding. Four.",
-   "Does your mum know you're on Suzunari?"
+   "Does your mum know you're in Suzunari?"
   ],
   "suzunari_pc_age_young": [
    "Young and broke. Classic Suzunari combo.",
@@ -858,6 +851,13 @@
    "You look like you still think things get better.",
    "Enjoy your knees while they're original.",
    "You'll get used to the smog. Or it'll get used to you."
+  ],
+  "suzunari_pc_age_prime": [
+   "You look like you've seen a few things.",
+   "You've got that 'survived a recession' look.",
+   "Not young, not old. Just tired, right?",
+   "You've got good years left. Billable years.",
+   "Old enough to know better, young enough to do it anyway."
   ],
   "suzunari_pc_age_middle": [
    "Middle-aged and still out here. Respect.",
@@ -895,8 +895,7 @@
   ],
   "suzunari_pc_bg_corp_lawyer": [
    "Lawyer. I can tell. You're reading the small print on my face.",
-   "Company lawyer on Suzunari? Who are you suing?",
-   "Is talking to you billable? Am I being billed right now?"
+   "Company lawyer in Suzunari? Who are you suing?"
   ],
   "suzunari_pc_bg_ad_copywriter": [
    "You people wrote the jingle that lives in my skull rent-free.",
@@ -904,8 +903,7 @@
   ],
   "suzunari_pc_bg_repo_agent": [
    "You've got debt eyes. Pricing everything you look at.",
-   "Ex-debt? You took my neighbour's door once. Just the door.",
-   "Please don't repossess my shoes. They're all I have."
+   "Ex-debt? You took my neighbour's door once. Just the door."
   ],
   "suzunari_pc_bg_paste_worker": [
    "You smell like the vats. instant noodles worker?",
@@ -949,7 +947,7 @@
    "Hide your wrists. The police check wrists."
   ],
   "suzunari_pc_bg_courier": [
-   "Courier legs. You've run every alley on Suzunari.",
+   "Courier legs. You've run every alley in Suzunari.",
    "Got anything for me? A package? A message? A life?",
    "Couriers know every shortcut. Where's the one out of here?"
   ],
@@ -989,6 +987,9 @@
    "You've got family somewhere. You keep your hand near your phone, waiting for their call.",
    "Somebody depends on you. I can tell."
   ],
+  "suzunari_pc_goal_escape_sprawl": [
+   "You look at the sky like it's an exit."
+  ],
   "suzunari_pc_secret_synth_air_allergy": [
    "Your eyes go red near the canisters. Interesting."
   ],
@@ -1024,19 +1025,24 @@
    "You've got money. I can hear it jingle.",
    "Rich today, huh? Buy something for the street.",
    "With that many money you could buy this whole corner.",
-   "Careful flashing that. Pickpockets on Suzunari have pickpockets.",
+   "Careful flashing that. Pickpockets in Suzunari have pickpockets.",
    "That's a lot of money for one coat pocket."
   ],
   "suzunari_pc_broke": [
    "Broke? Me too. Let's be broke together.",
    "Empty pockets. I know that sound. That's no sound.",
    "No money? The noodle stand gives leftovers after midnight.",
-   "Don't worry, everyone's broke. The rich just call it 'liquidity'.",
    "Want some advice? It's free. It's the only free thing here.",
    "Broke is just rich without the money."
   ],
   "suzunari_pc_debt": [
    "I can hear your debt growing from here."
+  ],
+  "suzunari_pc_crew": [
+   "You travel with {crew}, right? Good people. Weird, but good.",
+   "Heard {crew} is on your ship. Tell them hi.",
+   "A crew, huh? On Asagiri-do? That ship's a legend. A bad legend.",
+   "Your crew looks out for you. Hold on to that."
   ],
   "suzunari_pc_upgraded": [
    "You've had work done. Good work. Expensive work.",
@@ -1046,7 +1052,7 @@
    "People die around you. I've noticed.",
    "They say you've got a body count. They say a lot of things.",
    "Stay back. I heard what you did.",
-   "Murderer. That's what they call you on Suzunari."
+   "Murderer. That's what they call you in Suzunari."
   ],
   "suzunari_pc_saint": [
    "You're the one who helps people. Everybody's talking.",
@@ -1072,6 +1078,17 @@
    "{ally} said someone like you would come through. I thought they were drunk.",
    "People whisper about {macguffin} like it's a ghost story."
   ],
+  "suzunari_npc_life": [
+   "My #kin# just started as #job.a#. So proud. So poor.",
+   "I've got #pet_desc# #pet_kind# called #pet_name#. Best thing in my life.",
+   "I'm saving up for #aspiration#. #small_num# more years.",
+   "My #kin# wants to be #dream.a# when they grow up.",
+   "Don't tell anyone, but I #secret_habit#.",
+   "Honestly? My big worry is #worry#.",
+   "Today's my day off. I'm spending it standing here. It's free.",
+   "I'm {job_a}. It's a job. That's the best thing I can say about it.",
+   "You know what I need? {need}. Same as everyone."
+  ],
   "suzunari_dream": [
    "shareholder",
    "billboard",
@@ -1093,8 +1110,7 @@
    "the next recall",
    "The police's new curfew",
    "the rent",
-   "what's really in the instant noodles",
-   "being repossessed in my sleep"
+   "what's really in the instant noodles"
   ],
   "suzunari_tic": [
    "You know?",
@@ -1151,8 +1167,7 @@
    "One less debt collectors!",
    "the bank's gonna bill somebody for that.",
    "That collector won't collect again.",
-   "Somebody grab the parts!",
-   "Ha! Repossess THAT!"
+   "Somebody grab the parts!"
   ],
   "suzunari_now_deal": [
    "Money's changing hands.",
@@ -1210,6 +1225,10 @@
    "Better than #media_product#.",
    "I laughed. Is that bad?"
   ],
+  "suzunari_judge_dance_disapprove": [
+   "Some of us are working.",
+   "Unlicensed joy. Disgusting."
+  ],
   "suzunari_act_charity": [
    "gave {target} money for nothing",
    "helped {target} out when nobody else would",
@@ -1221,7 +1240,7 @@
   "suzunari_act_kill_cop": [
    "dropped a police officers",
    "took down a cop in the street",
-   "left a the police pension unclaimed",
+   "left a police pension unclaimed",
    "put {target} down. A cop. In the street"
   ],
   "suzunari_act_kill_repo": [
@@ -1256,7 +1275,6 @@
   ],
   "suzunari_act_dance": [
    "danced in the street",
-   "danced like nobody was billing you",
    "busted moves by the billboard",
    "danced to the jingle"
   ],
@@ -1281,7 +1299,7 @@
   ],
   "suzunari_rep_nothing": [
    "People? About you? Nothing. You're nobody yet. Enjoy it.",
-   "Never heard of you. That's a compliment on Suzunari.",
+   "Never heard of you. That's a compliment in Suzunari.",
    "Nobody's said a word. Either you're careful or you're boring.",
    "Clean slate. Don't waste it."
   ],
@@ -1290,7 +1308,7 @@
    "I'm going to tell everyone about you.",
    "Nobody's done that for me in years.",
    "I'll pay it forward. Probably. Eventually.",
-   "You're not like the others on Suzunari.",
+   "You're not like the others in Suzunari.",
    "Thank you. Really."
   ],
   "suzunari_after_show_ok": [
@@ -1298,7 +1316,7 @@
    "Do it again! Do it again!",
    "I'm telling my friends.",
    "You should have a show on the TV news.",
-   "Best thing I've seen on Suzunari all week."
+   "Best thing I've seen in Suzunari all week."
   ],
   "suzunari_after_show_fail": [
    "...Are you done?",
@@ -1314,7 +1332,7 @@
    "Nice talking to you. Really.",
    "Come by again.",
    "You're alright.",
-   "Stay safe on Suzunari."
+   "Stay safe in Suzunari."
   ],
   "suzunari_wave_hi": [
    "Hey! It's you!",
@@ -1323,7 +1341,7 @@
    "Thanks for before!",
    "{name}! Over here!",
    "Hey hey! My favourite drifter!",
-   "Back on Suzunari, huh?",
+   "Back in Suzunari, huh?",
    "You again! Good!",
    "Oi! {name}!"
   ],
@@ -1379,17 +1397,16 @@
    "Can you teach me that?",
    "What's your secret?",
    "How old are you, really?",
-   "What's it like out there? Off-world?",
    "Why Suzunari? Nobody comes to Suzunari."
   ],
   "suzunari_intrigued_bye": [
    "Okay, I've got to go. But listen - one thing.",
    "Thanks for not being boring. Here's something for you.",
-   "You're the most interesting thing on Suzunari. Take this tip."
+   "You're the most interesting thing in Suzunari. Take this tip."
   ],
   "suzunari_keeper_greet_warm": [
    "{name}! Good to see you!",
-   "Look who's back! Best customer on Suzunari.",
+   "Look who's back! Best customer in Suzunari.",
    "For you? Anything. Within reason.",
    "There's my favourite face.",
    "Come in, come in! Mind the puddle."

@@ -10,7 +10,17 @@
     "\"Nice day for it. ...Whatever 'it' is.\"",
     "\"Have you lived in Suzunari long?\"",
     "\"The cats here stare a lot, don't they?\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Honestly? Nobody's asked me anything in weeks. I'm {job_a}. It's... a job.\"",
+     "\"#chatter#\" They seem glad somebody listened.",
+     "\"The Suzunari Seagulls lost again. I put a hundred yen on them every week. It's loyalty, not betting.\"",
+     "\"I'm {job_a}. Don't ask what it pays. It pays in leftover dango.\"",
+     "\"Somebody wrote '#graffiti#' on the wall by my place. I've started to agree with it.\"",
+     "\"Rain again. My laundry's been on the line since Tuesday. It's wetter than when I washed it.\""
+    ]
+   }
   },
   "ask_need": {
    "text": "Ask if they need anything",
@@ -27,7 +37,14 @@
     "\"Here. For the vending machine. Don't argue.\"",
     "\"Take it. Pay me back in melon bread someday.\"",
     "\"For the train fare. Go home, it's getting dark.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"...No catch? Is this a prank show?\" They pocket it fast, before the world changes its mind.",
+     "\"I'll pay you back. I won't, but I'll think about it.\"",
+     "They bow so low their glasses slide off. \"I'll light a stick of incense for you. Two.\""
+    ]
+   }
   },
   "buy_meal": {
    "text": "Buy them a snack",
@@ -35,7 +52,13 @@
     "\"Let me buy you a yakisoba bread. I insist.\"",
     "\"Konbini onigiri? My treat. Tuna mayo or salmon?\"",
     "\"There's a ramen stand by the station. I'm paying.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "They eat like they haven't had a hot meal since spring. \"I owe you. Here's something nobody's supposed to know...\"",
+     "Melon bread from the konbini, still warm. They tear it in half and give you the bigger piece. \"Listen. Between us...\""
+    ]
+   }
   },
   "share_meal": {
    "text": "Share your lunch",
@@ -52,7 +75,18 @@
     "\"What's the story with the shrine on the hill?\"",
     "\"Is it true about the 1000th step?\"",
     "\"Who's the girl in the red kimono near my aunt's shop?\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"You hear things down here, right? Me too. Swap?\"",
+     "They lower their voice to the level the cats can't hear."
+    ]
+   },
+   "fail": {
+    "lines": [
+     "\"Gossip? Me? Never.\" They look both ways first, though."
+    ]
+   }
   },
   "spread_the_word": {
    "text": "Start a rumour",
@@ -60,7 +94,20 @@
     "\"Tell people the Asagiri sweet shop has a new mochi.\"",
     "\"If anyone asks - I'm just a normal guy. Spread that around.\"",
     "\"Could you put in a good word for me? With... everyone?\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Oh, I'm telling EVERYONE. My cousin runs the shopping street group chat.\"",
+     "\"By tonight the whole queue at the noodle stall will know.\"",
+     "\"Leave it with me. By tomorrow even the jizo will know.\""
+    ]
+   },
+   "fail": {
+    "lines": [
+     "\"And have the whole street know I said it? No thanks.\"",
+     "\"I'll keep that one to myself, if it's all the same.\""
+    ]
+   }
   },
   "ask_reputation": {
    "text": "Ask what people say about you",
@@ -86,7 +133,18 @@
     "\"I asked the maneki-neko for luck. It waved goodbye.\"",
     "\"My aunt says I'm sweet. Occupational hazard.\"",
     "\"Knock knock. - Who's there? - Hanako. - ...Oh no.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Why did the kappa cross the road? To get to the other cucumber.\" It's terrible. They laugh anyway, then hate themselves.",
+     "Your joke is so bad it loops back to good. They're laughing too hard to stay cross with you."
+    ]
+   },
+   "fail": {
+    "lines": [
+     "Silence. Somewhere a crow laughs instead. Somehow that's worse."
+    ]
+   }
   },
   "lie": {
    "text": "Tell a white lie",
@@ -103,7 +161,12 @@
     "\"Can I tell you something? I'm scared of this town.\"",
     "\"I have dreams about a man in 1868. Every night.\"",
     "\"I think something's following me. Something small. With ears.\""
-   ]
+   ],
+   "fail": {
+    "lines": [
+     "\"Thanks for telling me. I'm going to tell everybody.\""
+    ]
+   }
   },
   "apologise": {
    "text": "Apologise",
@@ -111,7 +174,20 @@
     "\"Sorry about earlier. That was out of line.\"",
     "\"I'm really sorry. I'll make it up to you, promise. ...Wait, not promise.\"",
     "\"Gomen. I mean it.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"An apology? From a teenager? I need to sit down.\"",
+     "\"...Okay. Thanks. Nobody says sorry here. They just bring round mikan.\"",
+     "They soften. \"We all have bad days. Yours are just louder.\""
+    ]
+   },
+   "fail": {
+    "lines": [
+     "\"Sorry doesn't fix my shutter.\"",
+     "\"Tell it to the shrine.\""
+    ]
+   }
   },
   "commiserate": {
    "text": "Complain about life together",
@@ -119,7 +195,14 @@
     "\"Rough day? Yeah. Me too.\"",
     "\"Exams, rain, and cats. This town, huh.\"",
     "\"It'll be okay. ...I don't know that. But it might.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "You compare how many days it's rained. They win. You both laugh until the awning drips on you.",
+     "\"#thing.cap# went up again.\" \"Mine too.\" A whole friendship, built on complaining.",
+     "They share a trick: the bakery puts out yesterday's melon bread at seven, round the back. Free."
+    ]
+   }
   },
   "inspire": {
    "text": "Cheer them up",
@@ -127,7 +210,12 @@
     "\"You can do it. Seriously - I've seen you try.\"",
     "\"Don't give up on it. Things in this town have waited longer.\"",
     "\"If you want to leave and become a manga artist - go. Write about us.\""
-   ]
+   ],
+   "fail": {
+    "lines": [
+     "\"Change? In Suzunari? The last change here was the bus timetable, in 1994.\""
+    ]
+   }
   },
   "ask_love": {
    "text": "Ask about their crush",
@@ -135,7 +223,12 @@
     "\"Is there someone you like? You can tell me.\"",
     "\"How do you know when someone likes you? Asking for a... cat.\"",
     "\"Tanabata's coming. Got someone to wish for?\""
-   ]
+   ],
+   "fail": {
+    "lines": [
+     "\"Everyone here has lost someone. The sea's greedy like that.\""
+    ]
+   }
   },
   "insult": {
    "text": "Make fun of them",
@@ -143,7 +236,19 @@
     "\"Wow. Did you get dressed in the dark?\"",
     "\"Your bike bell is the most annoying sound in Suzunari.\"",
     "\"You talk like the station announcement. Slow and wrong.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Ha! Finally someone says it. I've been thinking it for forty years.\"",
+     "They lean in. \"Keep talking like that and the old women will hear. I like you.\""
+    ]
+   },
+   "fail": {
+    "lines": [
+     "\"I'm telling your aunt.\"",
+     "\"Rude. My grandmother would have thrown salt at you.\""
+    ]
+   }
   },
   "threaten": {
    "text": "Threaten them",
@@ -151,7 +256,19 @@
     "\"Back off. Now.\"",
     "\"Say that again and see what happens.\"",
     "\"I know where the 1000th step is. Want to go there?\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Okay, okay! I don't want trouble. I can't afford trouble.\"",
+     "They go pale. \"Fine. Fine! Just - not in front of the shrine.\""
+    ]
+   },
+   "fail": {
+    "lines": [
+     "They laugh. Actually laugh. That hurts more than a punch.",
+     "\"Threatening me? I raised four sons. Try harder.\""
+    ]
+   }
   },
   "pickpocket": {
    "text": "Pick their pocket",
@@ -159,7 +276,13 @@
     "(Bump into them. \"Ah - sorry!\")",
     "(Ask the time while your hand moves.)",
     "(Point at a cat on the roof. \"Look!\")"
-   ]
+   ],
+   "fail": {
+    "lines": [
+     "\"HEY! THIEF! Somebody call the police! Somebody call his AUNT!\"",
+     "Their hand clamps on your wrist. \"That's my shopping money, you little tanuki.\""
+    ]
+   }
   },
   "haggle": {
    "text": "Haggle",
@@ -167,21 +290,37 @@
     "\"Come on, a little discount for a local?\"",
     "\"My aunt runs Asagiri-do. Neighbours' price?\"",
     "\"Two for the price of one? It's raining.\""
-   ]
+   ],
+   "fail": {
+    "lines": [
+     "\"Haggling? In this economy?\" The price goes UP."
+    ]
+   }
   },
   "deliver_message": {
    "text": "Offer to pass on a message",
    "say": [
     "\"I've got a note for you. From... a friend.\"",
     "\"Someone asked me to give you this. Don't ask who.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "\"Could you get this to my sister in the next town? The post office here loses things. On purpose, I think.\" You pocket it. You never look inside."
+    ]
+   }
   },
   "dance_with_them": {
    "text": "Dance with them",
    "say": [
     "\"Bon-odori practice? Teach me the steps.\"",
     "\"Dance with me. Nobody's watching. ...The cats are watching.\""
-   ]
+   ],
+   "success": {
+    "lines": [
+     "They spin, you spin, a cat watches with deep disapproval. \"Worth it.\"",
+     "\"I haven't danced since the Obon festival... last year.\" They're laughing."
+    ]
+   }
   }
  },
  "npc": {
@@ -226,6 +365,40 @@
     "cat whisperer",
     "self-proclaimed ghost hunter",
     "person who talks to the vending machine"
+   ]
+  },
+  "needs": {
+   "poor": [
+    "A day without rain, so the laundry dries",
+    "My grandson to call. Just once",
+    "Someone to fix the shop shutter",
+    "A winning lottery ticket. A small one"
+   ],
+   "worker": [
+    "A day off. One. Ever",
+    "A boss who goes home before me",
+    "The last bus to wait for me, just once",
+    "My back to stop hurting"
+   ],
+   "artsy": [
+    "A wall I'm allowed to paint",
+    "One customer who buys a painting instead of a postcard",
+    "The light at Omagatoki, in a jar"
+   ],
+   "corporate": [
+    "A transfer back to Tokyo",
+    "Proof my manager takes long lunches",
+    "Someone to blame for the quarterly report"
+   ],
+   "rebel": [
+    "A town that stays up past nine",
+    "My bike back. Someone took my bike",
+    "A band. Any band"
+   ],
+   "weird": [
+    "A cucumber the kappa hasn't touched",
+    "To find out what's in the sealed tunnel",
+    "A ghost who answers questions properly"
    ]
   }
  }

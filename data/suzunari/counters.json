@@ -4,7 +4,7 @@
   "charity_ok": [
    {
     "ask": [
-     "\"Why are you helping me? Nobody helps anybody on Suzunari.\"",
+     "\"Why are you helping me? Nobody helps anybody in Suzunari.\"",
      "\"What's the catch? There's always a catch.\"",
      "\"I... don't know what to say. Why me?\"",
      "\"Is this a the TV news prank? Where's the camera?\""
@@ -311,7 +311,7 @@
    {
     "ask": [
      "\"Wait! I can be useful. I know things. I know PEOPLE.\"",
-     "\"Don't! I can help you! Anything you need on Suzunari!\""
+     "\"Don't! I can help you! Anything you need in Suzunari!\""
     ],
     "choices": [
      {
@@ -803,7 +803,7 @@
      {
       "text": "\"Next time.\"",
       "reply": [
-       "\"There's always a next time on Suzunari.\""
+       "\"There's always a next time in Suzunari.\""
       ],
       "effects": {
        "attitude": 5
@@ -1030,7 +1030,7 @@
      {
       "text": "Tell them the truth",
       "reply": [
-       "They listen to all of it. Then they hug you. Nobody hugs on Suzunari."
+       "They listen to all of it. Then they hug you. Nobody hugs in Suzunari."
       ],
       "effects": {
        "attitude": 12,
@@ -1176,7 +1176,7 @@
    },
    {
     "ask": [
-     "\"Begging's illegal after #time# on Suzunari, you know.\"",
+     "\"Begging's illegal after #time# in Suzunari, you know.\"",
      "\"Do you have a begging licence? They check now.\""
     ],
     "choices": [
@@ -1267,7 +1267,7 @@
    },
    {
     "ask": [
-     "\"Tell no one. #faction# takes a cut of everything on Suzunari.\""
+     "\"Tell no one. #faction# takes a cut of everything in Suzunari.\""
     ],
     "choices": [
      {
@@ -1476,7 +1476,7 @@
       }
      },
      {
-      "text": "\"I'm from the Odd Duck.\"",
+      "text": "\"I'm Asagiri-do's nephew.\"",
       "reply": [
        "\"The shrine? THE shrine? Oh, that explains everything.\""
       ],
@@ -1574,7 +1574,7 @@
      {
       "text": "Do something even weirder",
       "reply": [
-       "Nobody on Suzunari will forget it. Nobody will be able to explain it either."
+       "Nobody in Suzunari will forget it. Nobody will be able to explain it either."
       ],
       "effects": {
        "fame": 1,
@@ -1645,7 +1645,7 @@
      {
       "text": "Tell them about your journey",
       "reply": [
-       "You tell them about the Odd Duck, the debt, the stars. They listen like it's a show."
+       "You tell them about Tokyo, the move, the rain that hasn't stopped since. They listen like it's a show."
       ],
       "effects": {
        "attitude": 10,
@@ -1798,7 +1798,7 @@
      {
       "text": "Twist the knife",
       "reply": [
-       "\"And tell your friends.\" They do. Everyone on Suzunari hears what your family's lawyers can do."
+       "\"And tell your friends.\" They do. Everyone in Suzunari hears what your family's lawyers can do."
       ],
       "effects": {
        "fame": 2,

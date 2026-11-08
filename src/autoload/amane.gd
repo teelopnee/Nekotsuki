@@ -104,6 +104,14 @@ func fill(t: String) -> String:
 
 func opener() -> String:
 	var lv := tears_level()
+	# Context first (data/amane_openers.json, TownTalk matcher: most specific wins, said lines rest for days).
+	if _ctx_openers.is_empty() and FileAccess.file_exists("res://data/amane_openers.json"):
+		var d = JSON.parse_string(FileAccess.get_file_as_string("res://data/amane_openers.json"))
+		_ctx_openers = d.get("rules", []) if d is Dictionary else []
+	if not _ctx_openers.is_empty() and DataDB.theme == "suzunari":
+		var l := TownTalk.line_in(_ctx_openers, "")
+		if l != "":
+			return l
 	if lv <= 1 and Clock.is_dusk() and _rng.randf() < 0.6:
 		return _pick(data.get("dusk", []))
 	if lv <= 1 and data.get("openers_route", {}).has(route()) and _rng.randf() < 0.6:
@@ -112,6 +120,9 @@ func opener() -> String:
 
 
 ## Choices for HUD.say. The more he cries, the smaller and fainter "reject" gets - and the bigger "kind".
+var _ctx_openers: Array = []
+
+
 func choices() -> Array:
 	var lv := tears_level()
 	var c: Dictionary = data.get("choices", {})
@@ -125,7 +136,7 @@ func choices() -> Array:
 
 
 ## Apply a conversation choice. Returns {"text", "feeling"} for the reply and his body language.
-func choose(id: String) -> Dictionary:
+func choose(id: String, decisive: bool = false) -> Dictionary:
 	var s := st()
 	var before := {"tears": tears_level(), "bond": int(s["bond_now"]), "route": route()}
 	var resp: Dictionary = data.get("responses", {})
@@ -136,34 +147,61 @@ func choose(id: String) -> Dictionary:
 			add("tears", -1.5)
 			add("bond_now", 5.0)
 			add("trust", 3.0)
-			if route() in ["none", "ignore"]:
-				s["route"] = "friend"
+			nudge_route("friend", 2.0, decisive and route() in ["none", "ignore"])
 			text = _pick(resp.get("kind", []))
 			feeling = "content" if before.tears >= 3 else "happy"
 		"flirt":
 			add("tears", -2.0)
 			add("bond_now", 9.0)
-			s["route"] = "romance"
+			nudge_route("romance", 3.0, decisive)
 			text = _pick(resp.get("flirt", []))
 			feeling = "love"
 		"boundary":
 			add("tears", 0.7)
 			add("self", 8.0)
 			add("bond_now", 2.0)
-			if route() in ["none", "ignore", "friend"]:
-				s["route"] = "boundary"
+			nudge_route("boundary", 3.0, decisive and route() in ["none", "ignore", "friend"])
 			text = _pick(resp.get("boundary", []))
 			feeling = "pout"
 		"reject":
 			add("tears", 1.3)
 			add("bond_now", -4.0)
 			add("trust", -3.0)
-			s["route"] = "ignore"
+			nudge_route("ignore", 3.0, decisive)
 			var lv := tears_level()
 			text = _pick(resp.get("reject_wail" if lv >= 4 else ("reject_cry" if lv >= 2 else "reject_soft"), []))
 			feeling = "wail" if lv >= 4 else ("cry" if lv >= 2 else "sulk")
 	s["talks"] = int(s["talks"]) + 1
 	return {"text": text + "\n" + impact(before), "feeling": feeling}
+
+
+## Route with hysteresis (third review #3: one line used to flip Friend -> Ignore -> Romance). Every choice adds points to
+## a route; points fade 15% a night; the route only changes when another one has ROUTE_SET points and leads the
+## current one by ROUTE_MARGIN. `decisive` (the story's own questions, e.g. Sunday's "What am I to you?") sets it outright.
+const ROUTE_SET := 6.0
+const ROUTE_MARGIN := 3.0
+
+
+func nudge_route(to: String, pts: float, decisive: bool = false) -> void:
+	var s := st()
+	if not s.has("tone_pts") or not (s["tone_pts"] is Dictionary):
+		s["tone_pts"] = {}
+	var tp: Dictionary = s["tone_pts"]
+	tp[to] = float(tp.get(to, 0.0)) + pts
+	if decisive:
+		tp[to] = maxf(float(tp[to]), ROUTE_SET + ROUTE_MARGIN)
+		s["route"] = to
+		return
+	var cur := route()
+	var cur_pts := float(tp.get(cur, 0.0)) if cur != "none" else 0.0
+	var best := cur
+	var best_pts := cur_pts
+	for k in tp:
+		if float(tp[k]) > best_pts:
+			best = str(k)
+			best_pts = float(tp[k])
+	if best != cur and best_pts >= ROUTE_SET and best_pts - cur_pts >= ROUTE_MARGIN:
+		s["route"] = best
 
 
 ## Odd-Space style "> what changed" block.
@@ -197,12 +235,14 @@ func converse(actor: Node3D, hud: Node) -> void:
 		return
 	var text := opener()
 	var feel := ""
+	var shown := false  # has `text` already been on screen (with a menu under it)?
 	for round in 3:
 		var menu := topic_choices()
 		if menu.is_empty():
 			break
 		menu.append({"id": "bye", "text": _pick(talk.get("bye", ["\"Bye.\""]))})
 		var topic: String = await hud.say("Amane", text, menu)
+		shown = true
 		if topic == "bye" or topic == "" or not talk.get("topics", {}).has(topic):
 			break
 		(s["topics_today"] as Array).append(topic)
@@ -214,9 +254,11 @@ func converse(actor: Node3D, hud: Node) -> void:
 		Clock.spend(5)
 		text = str(r.text)
 		feel = str(r.feel)
+		shown = false
 	var fw: Dictionary = talk.get("farewell", {})
 	var lv := tears_level()
-	await hud.say("Amane", text + "\n\n" + _pick(fw.get("4" if lv >= 4 else ("2" if lv >= 2 else "0"), ["..."])))
+	var bye := _pick(fw.get("4" if lv >= 4 else ("2" if lv >= 2 else "0"), ["..."]))
+	await hud.say("Amane", bye if shown else text + "\n\n" + bye)  # "Later." used to repeat his last answer
 	if feel != "":
 		Emotion.express(actor, feel, 3.2)
 
@@ -368,15 +410,17 @@ func answer(topic: String, idx: int) -> Dictionary:
 			add(k, float(fx[k]) * Toru.tone_mult(tone))  # personality: kind / sharp / indifferent words land differently
 	match tone:
 		"flirt":
-			s["route"] = "romance"
+			nudge_route("romance", 2.0)
+		"tease":
+			nudge_route("romance", 0.5)
 		"kind":
-			if route() in ["none", "ignore"]:
-				s["route"] = "friend"
+			nudge_route("friend", 1.5)
+		"curious", "honest":
+			nudge_route("friend", 0.5)
 		"boundary":
-			if route() in ["none", "ignore", "friend"]:
-				s["route"] = "boundary"
+			nudge_route("boundary", 2.0)
 		"cold":
-			s["route"] = "ignore"
+			nudge_route("ignore", 2.0)
 	var extra := ""
 	if r.has("lore") and not s["lore"].has(str(r.lore)):
 		s["lore"][str(r.lore)] = true
@@ -457,6 +501,9 @@ func _tick(m: int) -> void:
 
 func _new_day(_d: int) -> void:
 	var s := st()
+	if s.get("tone_pts") is Dictionary:
+		for k in s["tone_pts"]:
+			s["tone_pts"][k] = float(s["tone_pts"][k]) * 0.85  # old feelings fade; the route itself stays
 	_ikiryo_night()
 	if Clock.weekday() == "Mon":
 		pick_rival()

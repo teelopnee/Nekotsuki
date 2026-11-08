@@ -105,3 +105,5 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
   Choice `when` reads existing flags (kendo_point, kendo_regional, lullaby_known, has_negative, hina_published).
   life_test checks every event (2+ open choices, known fx / lore / zukan / stats); leak_check also reads clubs.json,
   toru.json, party.json and cat_night.json.
+- `Toru.morning_note`: the origin "mornings" line rolls once a day and only before 08:15 (it used to roll on every
+  Suzunari load, e.g. after school).

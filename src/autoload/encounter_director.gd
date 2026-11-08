@@ -142,6 +142,19 @@ func resolve(encounter: Dictionary, choice: Dictionary) -> Dictionary:
 	return {"text": format_text(outcome.get("text", "...")), "lines": lines, "success": success}
 
 
+## ODD-SPACE's factions, as Suzunari sees them: the police, or simply the town's opinion of you.
+func _who(fid: String) -> String:
+	if DataDB.theme != "suzunari":
+		return DataDB.faction_name(fid)
+	return "The police" if fid == "paragon" else "Your name in town"
+
+
+func _money_line(amount: int) -> String:
+	if DataDB.theme == "suzunari":
+		return ("+" if amount >= 0 else "-") + DataDB.money(absi(amount))  # Suzunari: yen, not credits
+	return "%+d credits" % amount
+
+
 ## Applies an effects dictionary. Returns human-readable result lines.
 func apply_effects(effects: Dictionary) -> Array[String]:
 	var lines: Array[String] = []
@@ -150,11 +163,11 @@ func apply_effects(effects: Dictionary) -> Array[String]:
 		if amount > 0:
 			amount = roundi(amount * Game.stat("loot_mult"))
 		Game.add_credits(amount)
-		lines.append("%+d credits" % amount)
+		lines.append(_money_line(amount))
 	if effects.has("credits_pct"):
 		var amount := roundi(Game.credits * float(effects["credits_pct"]))
 		Game.add_credits(amount)
-		lines.append("%+d credits" % amount)
+		lines.append(_money_line(amount))
 	if effects.get("heal_full", false):
 		Game.heal(Game.max_hp())
 		lines.append("Fully healed")
@@ -180,11 +193,11 @@ func apply_effects(effects: Dictionary) -> Array[String]:
 	var rep: Dictionary = effects.get("rep", {})
 	for fid in rep:
 		Factions.change_rep(fid, int(rep[fid]), "encounter")
-		lines.append("%s %+d" % [DataDB.faction_name(fid), int(rep[fid])])
+		lines.append("%s %+d" % [_who(fid), int(rep[fid])])
 	var bounty: Dictionary = effects.get("bounty", {})
 	for fid in bounty:
 		Factions.add_bounty(fid, int(bounty[fid]))
-		lines.append("Bounty (%s) %+d" % [DataDB.faction_name(fid), int(bounty[fid])])
+		lines.append(("Trouble with %s %+d" if DataDB.theme == "suzunari" else "Bounty (%s) %+d") % [_who(fid), int(bounty[fid])])
 	if effects.get("clear_bounty", false):
 		Factions.clear_bounties()
 		lines.append("All bounties cleared")
