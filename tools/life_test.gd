@@ -60,6 +60,7 @@ func _process(_d: float) -> bool:
 	var hud = lvl.get("hud") if lvl else null
 	match _step:
 		0:
+			_club_data(toru)
 			# The creator screen: five categories, every option a button, random + name + begin.
 			var c: Control = load("res://src/ui/toru_creator.gd").new()
 			root.add_child(c)
@@ -328,3 +329,41 @@ func _process(_d: float) -> bool:
 			quit(fails)
 	_step += 1
 	return false
+
+
+## Every club / job event is playable and only points at things that exist (data/clubs.json).
+func _club_data(toru) -> void:
+	var town_data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/town.json"))
+	var titles: Dictionary = town_data.get("lore_titles", {})
+	var zukan: Dictionary = root.get_node("Town").ZUKAN
+	var ok_fx := ["stats", "hp", "flag", "lore", "zukan", "closeness", "who", "bond", "trust", "amane_self", "tears", "money",
+		"luck", "promise", "egg", "minutes", "study"]
+	var bad := []
+	var counts := []
+	for sec in ["clubs", "jobs"]:
+		for id in toru.clubs.get(sec, {}):
+			var evs: Array = toru.clubs[sec][id].get("events", [])
+			counts.append(evs.size())
+			for ev in evs:
+				var free := 0
+				for c in ev.get("choices", []):
+					if not c.has("when"):
+						free += 1
+					if str(c.get("t", "")) == "" or str(c.get("say", "")) == "":
+						bad.append("%s/%s: empty choice" % [id, ev.get("title", "?")])
+					var f: Dictionary = c.get("fx", {})
+					for k in f:
+						if not ok_fx.has(str(k)):
+							bad.append("%s: fx %s" % [id, k])
+					if f.has("lore") and not titles.has(str(f.lore)):
+						bad.append("%s: lore %s" % [id, f.lore])
+					if f.has("zukan") and not zukan.has(str(f.zukan)):
+						bad.append("%s: zukan %s" % [id, f.zukan])
+					for st in f.get("stats", {}):
+						if not toru.STATS.has(str(st)):
+							bad.append("%s: stat %s" % [id, st])
+				if free < 2:
+					bad.append("%s/%s: fewer than 2 choices always open" % [id, ev.get("title", "?")])
+	_check(bad.is_empty(), "every club and job event is playable %s" % str(bad.slice(0, 4)))
+	_check(counts.min() >= 4, "every club and job has 4+ events (%s)" % str(counts))
+

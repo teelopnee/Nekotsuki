@@ -35,6 +35,9 @@ const LAYER_OCCLUDER := 128
 const LAYER_ROOF := 512  ## sloped roof surfaces only Amane's cat walks on (cat spirit night)
 const WALKABLE_EXCLUDE := ["#", " ", "b", "O", "~", "^"]
 const WATER_SHADER := "res://assets/shaders/water.gdshader"
+## Suzunari street signs: district and street names, not ODD-SPACE's NEON AVE / DEBT ST.
+const STREETS_JP := ["EKIMAE-DORI", "HAMA-DORI", "SAKURA-NAMIKI", "SHOTENGAI", "JINJA-MAE", "KAWABATA-DORI",
+	"SUZUNARI 1-CHOME", "SUZUNARI 2-CHOME", "SUZUNARI 3-CHOME", "MINATO-MACHI", "TERA-MACHI", "GAKKO-MAE"]
 const STREETS := ["NEON AVE", "DEBT ST", "PASTE BLVD", "OBEY LN", "4TH QTR", "AIR WAY", "COLLATERAL RD", "SYNERGY SQ", "MARKUP ALLEY", "REFUND? NO", "LOYALTY PKWY", "CLAUSE 9 ST"]
 const SHOP_TYPES := ["food", "food", "bar", "bar", "clinic", "pawn", "motel", "arcade", "karaoke", "tattoo", "loans", "tapes", "implants", "fortune"]
 const STALL_TYPES := ["food", "food", "food", "air", "implants", "fortune", "tapes", "pawn"]
@@ -1680,9 +1683,10 @@ func _bench(p: Vector3) -> void:
 func _street_sign(p: Vector3) -> void:
 	var body := static_body(p + Vector3(0.6, 0, 0.6))
 	add_mesh(body, cylinder(0.05, 2.8, 5), _mats["metal"], Vector3(0, 1.4, 0))
-	var names := STREETS.duplicate()
+	var jp := theme == "suzunari"
+	var names := (STREETS_JP if jp else STREETS).duplicate()
 	for i in 2:
-		var name: String = Copy.make("street", rng).to_upper() if rng.randf() < 0.75 else str(names[rng.randi() % names.size()])
+		var name: String = Copy.make("street", rng).to_upper() if not jp and rng.randf() < 0.75 else str(names[rng.randi() % names.size()])
 		names.erase(name)
 		var blade := add_mesh(body, box(Vector3(1.3, 0.28, 0.05)), emissive(Color(0.1, 0.45, 0.35), 1.2), Vector3(0.45, 2.55 - i * 0.34, 0), 0.0, false)
 		blade.rotation.y = i * PI * 0.5

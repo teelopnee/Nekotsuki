@@ -362,3 +362,18 @@ rendered on lavapipe (town, talk, cat night) plus the repo's Ura shots.
 - Still open: the owner's timed playtest of week 1 (use the Playtest page); endings as staged scenes on the steps;
   fewer, deeper clubs and jobs (8 clubs share 17 events); rain streaks as grey squares on lavapipe; Toru seen from
   behind outside talks.
+
+## Staged endings and deeper clubs (2026-11-08)
+- Endings are scenes now, not text pages: all 13 are staged on the 999 steps, at the shrine, the riverbed or the school
+  gate (81 beats; `EndingStage`, `data/endings.json stage`). People walk, turn, emote and vanish; rain stops, the sky
+  turns red, bells ring, the screen fades between "years later" moments; Sayo, Toru's father, Shirasagi Kyoko and
+  Inukai Takeshi have looks (recoloured existing sheets). A warm stage lamp lights faces at night. Spirited-away
+  rivals never appear in someone else's ending. `tools/shot_ending.gd` renders one PNG per line; preview: docs/preview/endings_staged.png.
+- Clubs and jobs, written out: 31 new club events (every club 6, was 1-3) and 11 job events (every job 4, was 1-2),
+  in story order from April to Tanabata, each with 3 exact-word choices, tied to the lore (tsukumogami armour,
+  okuri-inu, Toryanse, kitsune no yomeiri, the thirteenth step, salt, funayurei ladles, go-en) and reading existing
+  flags in choice conditions (no new unread flags). life_test validates every event.
+- Found on the way: Suzunari street signs still said NEON AVE / DEBT ST (a code list, so leak_check never saw it) -
+  now EKIMAE-DORI, SHOTENGAI, SUZUNARI 2-CHOME...; leak_check also reads clubs/toru/party/cat_night.
+- Open: the ending scenes were checked on lavapipe only (check the tablet: lamp, fades, timing); the HUD objective line
+  stays up during the ending; the riverbed in the homecoming ending is the ordinary river re-lit red.

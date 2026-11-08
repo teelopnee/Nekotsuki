@@ -104,3 +104,13 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
   menu / idle, scene count, and a timeline of the first 80 scenes, lessons, Ura visits, races, cat nights and day ends
   (`Playtest.scene/mark`, hooked in `Town.scene`, `Amane.converse`, `Week._lesson/enter_ura/race/before_day_end`,
   `Suzunari._build_cat_night`). `user://playtest.json`, reset by NEW GAME; pause menu page "Playtest".
+- Staged endings (2026-11-08): `data/endings.json endings.<id>.stage` replaces the old text pages. `Week.ending` ->
+  `Suzunari.stage_ending(beats, hud)` -> `EndingStage` (`src/world/ending_stage.gd`): one beat per line
+  `{do: [...], who, say}`; actions `at / walk / face / feel / hide / show / camera / wait / fx` (fx rain, rain_stop, bell,
+  red, dawn, day, night, fade_out, fade_in, flash, cats {around}); positions are map tiles (floats ok, Y = ray onto the
+  ground). Steps are x 4-5, z 10-19 (x 3 and 6 are bamboo and stone lanterns), the landing z 9, the shrine hall (27,2)
+  with the offering box (27,4) and torii (27,8). Actors: toru (player), amane (AmaneNPC), or a cast look id - spawned as
+  `StageNPC` (`src/actors/stage_npc.gd`); new looks reuse sheets: sayo / kyoko (c_haruka), makoto / takeshi (c_makabe).
+  Spirited-away rivals stay invisible; schedules can't hide anyone on stage; a warm stage lamp follows the people.
+  Headless = no tweens or waits (tests click straight through). Off the Suzunari level the same lines show as text.
+  Shots: `tools/shot_ending.gd -- <dir> [id,id]` (one PNG per line). week_test checks actors / feelings / fx exist.

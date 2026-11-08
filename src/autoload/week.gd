@@ -702,8 +702,17 @@ func ending(choice: String) -> void:
 	Game.flags["ending_choice"] = choice
 	Ledger.capture(str(e.get("title", id)))
 	if hud:
-		for page in e.get("pages", []):
-			await hud.say("", fill(str(page)))
+		var stage: Array = e.get("stage", [])
+		var lvl := _level()
+		if not stage.is_empty() and lvl and lvl.has_method("stage_ending"):
+			await lvl.stage_ending(stage, hud)  # acted on the steps (EndingStage)
+		elif not stage.is_empty():
+			for bt in stage:  # no stage to act on: the same lines as text
+				if str(bt.get("say", "")) != "":
+					await hud.say(str(bt.get("who", "")), fill(str(bt.say)))
+		else:
+			for page in e.get("pages", []):
+				await hud.say("", fill(str(page)))
 		var epi := ""
 		if bool(Game.flags.get("makoto_apologised", false)) and not id in ["god_returned", "two_of_us", "hidden"]:
 			epi = "\n\n" + fill(str(endings.get("family_epilogue", "")))

@@ -939,6 +939,13 @@ func _ura_light() -> void:
 		build.get("jp").set_night(0.8)
 
 
+## Week.ending: play an ending on the steps with the people in it (EndingStage, data/endings.json stage).
+func stage_ending(beats: Array, hud_node: Node) -> void:
+	var st := EndingStage.new(self)
+	add_child(st)
+	await st.play(beats, hud_node)
+
+
 func jp_night_ok() -> bool:
 	return build.get("jp") != null and build.get("jp").has_method("set_night")
 

@@ -93,3 +93,15 @@ Moved out of `CLAUDE.md` so sessions only read what they need. Keep it current w
 - Cat night readability (2026-11-08): `cat_night.json pixel_size` 0.08 (was 0.06), the cat's sprite tint is brightened (`base_modulate` 1.35/1.3/1.55 = moonlit
   fur), the halo is stronger and sits in front of the cat, the camera is closer and steeper (`configure(40, 12, fov)`),
   facade windows drop to `JPKit.window_scale` 0.15 and the notice board is hidden. Talk close-up also hides bystanders' speech bubbles (`CameraRig._talk_labels`).
+- Club and job events (2026-11-08): every club has 6 events, every job 4 (story order: April -> Tanabata), e.g. kendo
+  (Gotoda-senpai's letter to the kyudo captain, Grandpa's armour practising at night = tsukumogami, the last tournament),
+  track (Hayate's ankle, an okuri-inu walks you home, breaking 11.0), music (Toryanse plays itself, the festival song,
+  Amane's tambourine, concert night), cooking (inari for a fox wedding, Chiyo-san's nikujaga, rainy season, the last
+  bento), occult (the thirteenth step, Kuroe Setsu's salt, mapping the hundred-demon parade, the club photo with Rin),
+  newspaper (the rain/attendance chart, the maneki-neko factory, a letter from "a reader", the last issue), council
+  (lantern order, the cat petition, Reiji's speech, tanzaku wishes), go_home (the long way, one umbrella, 120 yen,
+  new members, the last walk -> promise `tanabata_steps`); jobs: Yamane-san's neck, the faceless last customer, the
+  cat committee, Amane's warm milk, Kiku sulks, 300 dango, the cats' strike, funayurei ladles, Gen's boat, ema, go-en.
+  Choice `when` reads existing flags (kendo_point, kendo_regional, lullaby_known, has_negative, hina_published).
+  life_test checks every event (2+ open choices, known fx / lore / zukan / stats); leak_check also reads clubs.json,
+  toru.json, party.json and cat_night.json.

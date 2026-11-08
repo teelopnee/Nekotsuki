@@ -315,10 +315,33 @@ func _endings(week, game, amane) -> void:
 		ids[week.ending_id(cs[0])] = true
 	var missing := []
 	for id in ids:
-		if not (week.endings.endings as Dictionary).has(id) or (week.endings.endings[id].get("pages", []) as Array).is_empty():
+		if not (week.endings.endings as Dictionary).has(id) or (week.endings.endings[id].get("stage", []) as Array).is_empty():
 			missing.append(id)
-	_check(missing.is_empty() and ids.size() >= 12, "final choices reach %d different endings, all written %s" % [ids.size(), str(missing)])
+	_check(missing.is_empty() and ids.size() >= 12, "final choices reach %d different endings, all staged %s" % [ids.size(), str(missing)])
 	_check((week.endings.endings as Dictionary).size() >= 13, "%d endings written" % (week.endings.endings as Dictionary).size())
+	# Every staged ending only uses actors, feelings and effects that exist (EndingStage).
+	var looks: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/cast_looks.json"))
+	var feels: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/emotions.json"))
+	var fxs := ["rain", "rain_stop", "bell", "red", "dawn", "day", "night", "fade_out", "fade_in", "flash", "cats"]
+	var bad := []
+	for id in week.endings.endings:
+		var lines := 0
+		for bt in week.endings.endings[id].get("stage", []):
+			if str(bt.get("say", "")) != "":
+				lines += 1
+			for a in bt.get("do", []):
+				for k in ["at", "walk", "face", "feel", "hide", "show", "camera"]:
+					if a.has(k):
+						var who := str(a[k])
+						if not who in ["toru", "amane"] and not looks.has(who) and not who.begins_with("first_year"):
+							bad.append("%s: who %s" % [id, who])
+				if a.has("feel") and not feels.has(str(a.get("is", ""))):
+					bad.append("%s: feeling %s" % [id, str(a.get("is", ""))])
+				if a.has("fx") and not fxs.has(str(a.fx)):
+					bad.append("%s: fx %s" % [id, str(a.fx)])
+		if lines < 3:
+			bad.append("%s: only %d lines" % [id, lines])
+	_check(bad.is_empty(), "every staged ending uses real actors, feelings and effects %s" % str(bad.slice(0, 4)))
 
 
 func _calendar(week, clock, game, hud) -> void:

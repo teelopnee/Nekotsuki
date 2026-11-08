@@ -1,73 +1,154 @@
 {
- "_doc": "Episode 0 endings (docs/GDD.md section 6). Week.ending_id(choice) picks one from the last choice on the 999 steps (week 13, 7 July) + route, bond, self, flags (memory_2016, sayo_found, letter_101, makabe_letter_sent, makoto_apologised) and rival fates. pages = shown in order, then the title + the week summary + end card. family_epilogue is added when Makoto apologised (week 10) and the ending isn't a dark one.",
+ "_doc": "Episode 0 endings (docs/GDD.md section 6). Week.ending_id(choice) picks one from the last choice on the 999 steps (week 13, 7 July) + route, bond, self, flags (memory_2016, sayo_found, letter_101, makabe_letter_sent, makoto_apologised) and rival fates. stage = acted on the steps by EndingStage (src/world/ending_stage.gd, one beat per line: do / who / say), or shown as text off the Suzunari level, then the title + the week summary + end card. family_epilogue is added when Makoto apologised (week 10) and the ending isn't a dark one.",
  "end_card": "EPISODE 0 - NEKOTSUKI - END\nEnma's Ledger has written it all down. The next episode will remember.",
  "family_epilogue": "In August a man in a Tokyo suit climbs the 999 steps for the first time in twenty-five years. He stops at the top, takes off his glasses, and says a woman's name to the empty shrine. The bell on the offering box rings once, very softly. He sits on the step until the lanterns go out, and for once he does not run.",
  "endings": {
-  "okaeri": {"title": "Okaeri - Welcome home",
-   "pages": [
-    "You climb. Nine hundred and ninety-nine steps, and then one more that has never been there for anyone who wasn't meant to stand on it. Your foot finds it. The lanterns below go silent all at once, like a town holding its breath.",
-    "Amane is at the top, exactly where a white-and-black cat waited for twenty-two years. He is not crying. He is waiting, the way only he knows how.\n\nYou say it. Not because a ghost said it first in 1890. Because you mean it, tonight, in this life.\n\n\"Tadaima.\"",
-    "The bell on his collar rings once - the longest, clearest note anyone in Suzunari has ever heard.\n\n\"...Okaeri, Senpai.\"\n\nA debt of a thousand needles is paid. His cat ears are gone in the morning. So is the rain. What the two of you are to each other from now on is yours to decide - and for the first time, nobody else is deciding it for you."]},
-  "red_thread": {"title": "The Red Thread",
-   "pages": [
-    "At the top of the steps the old shrine bell hangs from its frayed rope. Amane looks at it, then at you, and holds out the end of the rope like a question.",
-    "You ring it together. The sound rolls down the 999 steps and out over the river and the shopping street and the sea. Every cat in Suzunari - on walls, on roofs, in windows - sits down and turns to face the shrine.",
-    "The faint red line around your little finger glows, just for a second, and then it is simply there, like it always was. Tied. Not a debt any more. A choice, made twice.\n\nHe holds your hand all the way down. It takes a very long time. Neither of you minds."]},
-  "this_life_love": {"title": "This Life",
-   "pages": [
-    "You ask him for the bell. He understands before you finish the sentence. His hands shake on the red cord - and then he unties it himself, and puts it in your palm.",
-    "Something leaves him. You see it go: three hundred years of waiting, a cat on a staircase, a hundred letters he never heard. His eyes go wide and empty and very young.\n\n\"Senpai...?\" He looks at you as if for the first time. A long pause. Then, slowly, a small new smile that belongs to nobody but him. \"...Hi. I think I like you. Is that weird? We just met.\"",
-    "He doesn't remember anything. He chose you anyway.\n\nThe bell goes back to the shrine, where it can finally be quiet. In Enma's Ledger, under Nekomori Amane, the past-life column is blank - and the present one is full."]},
-  "this_life_stranger": {"title": "This Life (a stranger)",
-   "pages": [
-    "The cord comes undone. The bell is warm in your hand. Amane blinks at the shrine, at the lanterns, at you.",
-    "\"Sorry,\" he says politely, the way you'd speak to a stranger on a staircase. \"Do I... know you?\" He bows, and walks down the 999 steps on his own, and doesn't look back.",
-    "Weeks later you see him at the school gate laughing with two first-years from his class. He is fine. He is better than fine. He walks past you like the rain walks past a closed window.\n\nIt stops raining in Suzunari that July. You are not sure that's a happy ending. Neither is the bell."]},
-  "cat_who_waits": {"title": "The Cat Who Waits",
-   "pages": [
-    "You don't climb. You catch the last train instead, the one that plays Toryanse at the crossing. Going is easy. Coming back is the frightening part.",
-    "Years pass in Tokyo. You get a job, an apartment, an umbrella you never need, because it never rains on you.",
-    "In Suzunari it rains every day. Every Tanabata a boy - then a young man - in a black hood sits on the 999th step until the lanterns go out, waiting for someone he can't stop remembering.\n\nThe town calls him the cat who waits. He doesn't mind the name. He only minds the waiting."]},
-  "endless_festival": {"title": "The Endless Festival",
-   "pages": [
-    "You take his hand and step onto the thousandth stair together, at the dusk hour, on purpose. The world turns red. The rain falls upward. The festival on the other side never ends.",
-    "In Ura-Suzunari the lanterns are always lit and the takoyaki is always hot and nobody ever has to go home. Amane laughs more than you have ever heard him laugh. Rin grumbles from his collar that this is the laziest ending she has seen in three hundred years.",
-    "In the real Suzunari two students are listed as missing. The rain stops the same night. Every Tanabata, if you stand on the 999th step and hold your breath, you can hear festival music from very far away - and two people laughing."]},
-  "hidden": {"title": "Kamikakushi - Hidden",
-   "pages": [
-    "You step onto the thousandth stair alone, the way you did when you were seven. Nobody runs after you this time.",
-    "Ura-Suzunari takes you gently. The red sky, the upward rain, the festival. You forget your name somewhere near the station that doesn't exist. Then you forget that you forgot.",
-    "Amane searches the steps every evening for a year. Mio films the dusk every day and finds, on one tape, a boy in a school blazer counting stairs and never reaching the top.\n\nThe Ledger lists Asagiri Toru under 'hidden'. The next episode will have to come and find him."]},
-  "homecoming": {"title": "Homecoming",
-   "pages": [
-    "You don't go up for yourself. With Letter 101 in your pocket and Amane's hand in yours, you walk into the red dusk to the dry riverbed where the children build their little towers of stones.",
-    "She is there, a woman in a faded summer kimono, helping a small ghost balance one more stone. She looks up. She sees her son - fifteen, not one - and drops every stone she is holding.\n\n\"Amane?\"",
-    "Rin reads Letter 101 aloud, all of it, in her rude old voice that cracks on the last line. It was never about debts. It was about coming home.\n\nThree people walk down the 999 steps in the morning. The town will spend a year arguing about what that means. Episode 8 begins exactly here."]},
-  "god_returned": {"title": "The God Returns to the Shrine",
-   "pages": [
-    "You do what Shirasagi Kyoko asked. You walk him to the empty shrine and stand aside, and the bell on his collar is lifted onto the offering stand where it sat for a hundred years.",
-    "The shrine doors close. Behind them, something that was a boy is a god again, and a god does not cry, and a god does not wait for anybody.",
-    "Suzunari's luck comes back overnight. The shops reopen, the maneki-neko factory hires again, the Shirasagi ships come home full. It never rains again.\n\nYou never see him again either. Sometimes, at the dusk hour, the bell in the closed shrine rings once, by itself, when you walk past."]},
-  "dog_and_cat": {"title": "The Dog and the Cat",
-   "pages": [
-    "Inukai Takeshi climbs the 999 steps with a lantern and a length of sacred rope, his son beside him. \"The old way,\" the priest says. \"Dogs guard the road. Cats keep what they shouldn't.\"",
-    "The rope goes around the cat shrine three times. Hayate stands in front of you with his bad ankle and his arms out, the way a white dog once stood in front of a ghost on a long road. Amane does not fight. He just looks at you until the seal closes.",
-    "The rain stops. The two-tailed cat is never seen again. Hayate walks you home every evening for the rest of high school and never once lets you walk alone.\n\nOn quiet nights you still hear a small bell from the hill. The priest says it's the wind. Hayate doesn't say anything."]},
-  "right_distance": {"title": "Just the Right Distance",
-   "pages": [
-    "You walk down the steps beside him. Not ahead, not behind. When he reaches for your sleeve you let him hold it for the last ten steps, and then he lets go on his own.",
-    "In September he joins the photography club with Hina. In October he argues with Reiji at a council meeting and wins. In November Mio teaches him a ghost story and he tells it better than she does.\n\nYou are not together. You are something with a different, quieter name, and he is the one who chose it.",
-    "On New Year's Day you climb the steps to pray. His cat ears pop out the moment he sees you - just for a second, just on that day.\n\n\"Happy new year, Senpai,\" he says, perfectly steady. It doesn't rain."]},
-  "unsent_letter": {"title": "The Letter That Was Never Sent",
-   "pages": [
-    "At the foot of the steps, Makabe-sensei is waiting with an envelope he wrote in 2001 and finally sent. \"Not you, Asagiri,\" he says. \"This one's mine to walk.\"",
-    "He climbs the thousandth stair in his school cardigan, holding the letter, the way he should have climbed after her twenty-five years ago. The dusk closes behind him.",
-    "In the morning a woman walks down the 999 steps holding an opened letter and crying the ordinary way, with no rain at all. Makabe-sensei does not come down.\n\nOn his desk in the staff room, every letter he ever kept is neatly tied with red string. Episode 4 begins with them."]},
-  "two_of_us": {"title": "Just the Two of Us",
-   "pages": [
-    "Nobody else comes to the festival. Hayate is in the hospital, or the hospital says he never existed. Hina's newspaper has blank pages. Mio's camera films only rain. The president's chair in the council room is empty.",
-    "Amane is waiting at the top of the steps with two cups of festival lemonade. \"Everyone's busy tonight,\" he says brightly. His smile does not reach his eyes. \"So it's just us. Isn't that nice, Senpai? Isn't that what we wanted?\"",
-    "The town is very quiet after that. The cats watch from every wall. Somewhere, very far down in Enma's Ledger, a column of names is crossed out in a small, neat, two-tailed hand.\n\nThis is the worst ending. You can find your way back from it in the next life. Probably."]}
+  "okaeri": {
+   "title": "Okaeri - Welcome home",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 16]}, {"at": "amane", "tile": [4, 9]}, {"face": "amane", "to": [4, 14]}, {"walk": "toru", "tile": [4, 10.2], "t": 3.5}], "say": "You climb. Nine hundred and ninety-nine steps, and then one more that has never been there for anyone who wasn't meant to stand on it. Your foot finds it. The lanterns below go silent all at once, like a town holding its breath."},
+    {"do": [{"face": "toru", "to": "amane"}, {"feel": "amane", "is": "content", "s": 6}], "say": "Amane is at the top, exactly where a white-and-black cat waited for twenty-two years. He is not crying. He is waiting, the way only he knows how."},
+    {"say": "You say it. Not because a ghost said it first in 1890. Because you mean it, tonight, in this life."},
+    {"do": [{"feel": "toru", "is": "kind"}], "who": "{player}", "say": "Tadaima."},
+    {"do": [{"fx": "bell"}, {"feel": "amane", "is": "cry", "s": 6}], "say": "The bell on his collar rings once - the longest, clearest note anyone in Suzunari has ever heard."},
+    {"do": [{"feel": "amane", "is": "happy", "s": 6}], "who": "Amane", "say": "...Okaeri, Senpai."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"fx": "dawn"}, {"fx": "rain_stop"}, {"at": "toru", "tile": [4, 10]}, {"at": "amane", "tile": [5, 10]}, {"face": "toru", "to": [4, 15]}, {"face": "amane", "to": [5, 15]}, {"feel": "amane", "is": "happy", "s": 8}, {"fx": "fade_in"}], "say": "A debt of a thousand needles is paid. His cat ears are gone in the morning. So is the rain. What the two of you are to each other from now on is yours to decide - and for the first time, nobody else is deciding it for you."}
+   ]
+  },
+  "red_thread": {
+   "title": "The Red Thread",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [26, 7]}, {"at": "amane", "tile": [28, 7]}, {"walk": "toru", "tile": [26.6, 4.9], "t": 2.2}, {"walk": "amane", "tile": [27.4, 4.9], "t": 2.2}, {"feel": "amane", "is": "offer", "s": 5}], "say": "At the top of the steps the old shrine bell hangs from its frayed rope. Amane looks at it, then at you, and holds out the end of the rope like a question."},
+    {"do": [{"face": "toru", "to": [27, 2]}, {"face": "amane", "to": [27, 2]}, {"fx": "bell"}, {"wait": 0.9}]},
+    {"do": [{"fx": "bell"}, {"fx": "cats", "around": [27, 5]}], "say": "You ring it together. The sound rolls down the 999 steps and out over the river and the shopping street and the sea. Every cat in Suzunari - on walls, on roofs, in windows - sits down and turns to face the shrine."},
+    {"do": [{"face": "toru", "to": "amane"}, {"face": "amane", "to": "toru"}, {"feel": "amane", "is": "love", "s": 6}, {"feel": "toru", "is": "fluster", "s": 4}], "say": "The faint red line around your little finger glows, just for a second, and then it is simply there, like it always was. Tied. Not a debt any more. A choice, made twice."},
+    {"do": [{"walk": "toru", "tile": [26.6, 8.4], "t": 3.0}, {"walk": "amane", "tile": [27.4, 8.4], "t": 3.0}, {"feel": "amane", "is": "content", "s": 6}], "say": "He holds your hand all the way down. It takes a very long time. Neither of you minds."}
+   ]
+  },
+  "this_life_love": {
+   "title": "This Life",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 10.3]}, {"at": "amane", "tile": [5, 10.3]}, {"face": "toru", "to": "amane"}, {"face": "amane", "to": "toru"}, {"feel": "amane", "is": "offer", "s": 5}], "say": "You ask him for the bell. He understands before you finish the sentence. His hands shake on the red cord - and then he unties it himself, and puts it in your palm."},
+    {"do": [{"fx": "flash"}, {"feel": "amane", "is": "shock", "s": 5}], "say": "Something leaves him. You see it go: three hundred years of waiting, a cat on a staircase, a hundred letters he never heard. His eyes go wide and empty and very young."},
+    {"do": [{"feel": "amane", "is": "confused", "s": 5}], "who": "Amane", "say": "Senpai...?"},
+    {"say": "He looks at you as if for the first time. A long pause. Then, slowly, a small new smile that belongs to nobody but him."},
+    {"do": [{"feel": "amane", "is": "fluster", "s": 6}], "who": "Amane", "say": "...Hi. I think I like you. Is that weird? We just met."},
+    {"do": [{"fx": "rain_stop"}, {"feel": "toru", "is": "happy", "s": 4}], "say": "He doesn't remember anything. He chose you anyway."},
+    {"do": [{"fx": "bell"}, {"feel": "amane", "is": "happy", "s": 6}], "say": "The bell goes back to the shrine, where it can finally be quiet. In Enma's Ledger, under Nekomori Amane, the past-life column is blank - and the present one is full."}
+   ]
+  },
+  "this_life_stranger": {
+   "title": "This Life (a stranger)",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 10.3]}, {"at": "amane", "tile": [5, 10.3]}, {"face": "toru", "to": "amane"}, {"face": "amane", "to": [5, 7]}, {"fx": "flash"}, {"feel": "amane", "is": "confused", "s": 5}], "say": "The cord comes undone. The bell is warm in your hand. Amane blinks at the shrine, at the lanterns, at you."},
+    {"do": [{"face": "amane", "to": "toru"}], "who": "Amane", "say": "Sorry. Do I... know you?"},
+    {"do": [{"feel": "amane", "is": "bow", "s": 3}], "say": "He says it politely, the way you'd speak to a stranger on a staircase. He bows, and walks down the 999 steps on his own, and doesn't look back."},
+    {"do": [{"walk": "amane", "tile": [5, 19.6], "t": 5.0}]},
+    {"do": [{"hide": "amane"}, {"fx": "fade_out"}]},
+    {"do": [{"fx": "day"}, {"at": "toru", "tile": [25.5, 32.4]}, {"face": "toru", "to": [22, 31]}, {"at": "amane", "tile": [21.6, 30.2]}, {"at": "first_year_a", "tile": [21.0, 30.6]}, {"at": "first_year_b", "tile": [22.2, 30.7]}, {"fx": "fade_in"}, {"walk": "amane", "tile": [26.8, 33.6], "t": 4.0}, {"walk": "first_year_a", "tile": [26.2, 34.0], "t": 4.0}, {"walk": "first_year_b", "tile": [27.4, 34.0], "t": 4.0}, {"feel": "amane", "is": "laugh", "s": 5}], "say": "Weeks later you see him at the school gate laughing with two first-years from his class. He is fine. He is better than fine. He walks past you like the rain walks past a closed window."},
+    {"do": [{"fx": "rain_stop"}, {"face": "toru", "to": [27, 34]}], "say": "It stops raining in Suzunari that July. You are not sure that's a happy ending. Neither is the bell."}
+   ]
+  },
+  "cat_who_waits": {
+   "title": "The Cat Who Waits",
+   "stage": [
+    {"do": [{"fx": "night"}, {"fx": "rain"}, {"at": "toru", "tile": [4, 18]}, {"at": "amane", "tile": [4, 10]}, {"face": "amane", "to": [4, 16]}, {"face": "toru", "to": [4, 24]}, {"walk": "toru", "tile": [4.5, 21.5], "t": 2.6}], "say": "You don't climb. You catch the last train instead, the one that plays Toryanse at the crossing. Going is easy. Coming back is the frightening part."},
+    {"do": [{"fx": "fade_out"}], "say": "Years pass in Tokyo. You get a job, an apartment, an umbrella you never need, because it never rains on you."},
+    {"do": [{"hide": "toru"}, {"camera": "amane"}, {"at": "amane", "tile": [4, 11]}, {"face": "amane", "to": [4, 16]}, {"fx": "rain"}, {"fx": "fade_in"}, {"feel": "amane", "is": "sad", "s": 10}], "say": "In Suzunari it rains every day. Every Tanabata a boy - then a young man - in a black hood sits on the 999th step until the lanterns go out, waiting for someone he can't stop remembering."},
+    {"do": [{"feel": "amane", "is": "sad", "s": 10}], "say": "The town calls him the cat who waits. He doesn't mind the name. He only minds the waiting."}
+   ]
+  },
+  "endless_festival": {
+   "title": "The Endless Festival",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 12]}, {"at": "amane", "tile": [5, 12]}, {"walk": "toru", "tile": [4, 9.3], "t": 2.0}, {"walk": "amane", "tile": [5, 9.3], "t": 2.0}], "say": "You take his hand and step onto the thousandth stair together, at the dusk hour, on purpose."},
+    {"do": [{"fx": "flash"}, {"fx": "red"}, {"fx": "rain"}, {"face": "toru", "to": [4, 14]}, {"face": "amane", "to": [5, 14]}, {"feel": "amane", "is": "laugh", "s": 6}], "say": "The world turns red. The rain falls upward. The festival on the other side never ends."},
+    {"do": [{"face": "toru", "to": "amane"}, {"face": "amane", "to": "toru"}, {"feel": "amane", "is": "happy", "s": 8}], "say": "In Ura-Suzunari the lanterns are always lit and the takoyaki is always hot and nobody ever has to go home. Amane laughs more than you have ever heard him laugh. Rin grumbles from his collar that this is the laziest ending she has seen in three hundred years."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"hide": "toru"}, {"hide": "amane"}, {"fx": "night"}, {"fx": "rain_stop"}, {"fx": "fade_in"}], "say": "In the real Suzunari two students are listed as missing. The rain stops the same night. Every Tanabata, if you stand on the 999th step and hold your breath, you can hear festival music from very far away - and two people laughing."}
+   ]
+  },
+  "hidden": {
+   "title": "Kamikakushi - Hidden",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 15]}, {"at": "amane", "tile": [4, 19.6]}, {"face": "amane", "to": [4, 22]}, {"walk": "toru", "tile": [4, 9.3], "t": 3.6}], "say": "You step onto the thousandth stair alone, the way you did when you were seven. Nobody runs after you this time."},
+    {"do": [{"fx": "flash"}, {"fx": "red"}, {"face": "toru", "to": [4, 14]}], "say": "Ura-Suzunari takes you gently. The red sky, the upward rain, the festival. You forget your name somewhere near the station that doesn't exist. Then you forget that you forgot."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"hide": "toru"}, {"fx": "night"}, {"fx": "rain"}, {"camera": "amane"}, {"at": "mio", "tile": [5.2, 19.4]}, {"face": "mio", "to": [4, 12]}, {"fx": "fade_in"}, {"walk": "amane", "tile": [4, 13], "t": 3.0}, {"feel": "amane", "is": "sad", "s": 10}], "say": "Amane searches the steps every evening for a year. Mio films the dusk every day and finds, on one tape, a boy in a school blazer counting stairs and never reaching the top."},
+    {"do": [{"face": "amane", "to": [4, 9]}], "say": "The Ledger lists Asagiri Toru under 'hidden'. The next episode will have to come and find him."}
+   ]
+  },
+  "homecoming": {
+   "title": "Homecoming",
+   "stage": [
+    {"do": [{"fx": "red"}, {"fx": "rain"}, {"at": "toru", "tile": [23.4, 47.4]}, {"at": "amane", "tile": [24.4, 47.4]}, {"at": "sayo", "tile": [27.3, 46.4]}, {"face": "sayo", "to": [30, 46.4]}, {"walk": "toru", "tile": [25.8, 47.4], "t": 2.6}, {"walk": "amane", "tile": [26.8, 47.4], "t": 2.6}], "say": "You don't go up for yourself. With Letter 101 in your pocket and Amane's hand in yours, you walk into the red dusk to the dry riverbed where the children build their little towers of stones."},
+    {"do": [{"face": "sayo", "to": "amane"}, {"feel": "sayo", "is": "shock", "s": 5}], "say": "She is there, a woman in a faded summer kimono, helping a small ghost balance one more stone. She looks up. She sees her son - fifteen, not one - and drops every stone she is holding."},
+    {"do": [{"feel": "amane", "is": "cry", "s": 8}], "who": "Sayo", "say": "Amane?"},
+    {"do": [{"fx": "bell"}, {"feel": "sayo", "is": "cry", "s": 8}, {"walk": "amane", "tile": [27.0, 47.0], "t": 1.0}], "say": "Rin reads Letter 101 aloud, all of it, in her rude old voice that cracks on the last line. It was never about debts. It was about coming home."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"fx": "dawn"}, {"fx": "rain_stop"}, {"at": "sayo", "tile": [5, 10]}, {"at": "amane", "tile": [4, 10]}, {"at": "toru", "tile": [4, 11.4]}, {"fx": "fade_in"}, {"walk": "sayo", "tile": [5, 16.5], "t": 4.5}, {"walk": "amane", "tile": [4, 16.5], "t": 4.5}, {"walk": "toru", "tile": [4, 17.8], "t": 4.5}, {"feel": "amane", "is": "happy", "s": 8}], "say": "Three people walk down the 999 steps in the morning. The town will spend a year arguing about what that means. Episode 8 begins exactly here."}
+   ]
+  },
+  "god_returned": {
+   "title": "The God Returns to the Shrine",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [25.6, 8.2]}, {"at": "amane", "tile": [26.8, 8.2]}, {"at": "kyoko", "tile": [27.9, 5.9]}, {"face": "kyoko", "to": "amane"}, {"walk": "toru", "tile": [25.6, 6.4], "t": 2.0}, {"walk": "amane", "tile": [26.8, 6.2], "t": 2.0}, {"feel": "kyoko", "is": "content", "s": 6}], "say": "You do what Shirasagi Kyoko asked. You walk him to the empty shrine and stand aside, and the bell on his collar is lifted onto the offering stand where it sat for a hundred years."},
+    {"do": [{"walk": "amane", "tile": [27, 3.3], "t": 1.8}]},
+    {"do": [{"face": "amane", "to": "toru"}, {"feel": "amane", "is": "sad", "s": 3}, {"wait": 1.2}], "say": "The shrine doors close. Behind them, something that was a boy is a god again, and a god does not cry, and a god does not wait for anybody."},
+    {"do": [{"hide": "amane"}, {"fx": "bell"}, {"fx": "fade_out"}]},
+    {"do": [{"fx": "day"}, {"fx": "rain_stop"}, {"hide": "kyoko"}, {"at": "toru", "tile": [26.4, 6.4]}, {"face": "toru", "to": [27, 2]}, {"fx": "fade_in"}], "say": "Suzunari's luck comes back overnight. The shops reopen, the maneki-neko factory hires again, the Shirasagi ships come home full. It never rains again."},
+    {"do": [{"fx": "bell"}, {"feel": "toru", "is": "sad", "s": 6}], "say": "You never see him again either. Sometimes, at the dusk hour, the bell in the closed shrine rings once, by itself, when you walk past."}
+   ]
+  },
+  "dog_and_cat": {
+   "title": "The Dog and the Cat",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 11.2]}, {"at": "amane", "tile": [4, 9.2]}, {"face": "amane", "to": "toru"}, {"at": "takeshi", "tile": [5, 17]}, {"at": "hayate", "tile": [4, 17.5]}, {"walk": "takeshi", "tile": [5, 12], "t": 3.4}, {"walk": "hayate", "tile": [4, 12.6], "t": 3.4}, {"face": "toru", "to": [4, 16]}], "say": "Inukai Takeshi climbs the 999 steps with a lantern and a length of sacred rope, his son beside him."},
+    {"do": [{"face": "takeshi", "to": [4, 9]}], "who": "Inukai Takeshi", "say": "The old way. Dogs guard the road. Cats keep what they shouldn't."},
+    {"do": [{"walk": "hayate", "tile": [4, 10.2], "t": 1.2}, {"face": "hayate", "to": "amane"}, {"face": "toru", "to": "amane"}, {"feel": "hayate", "is": "angry", "s": 6}, {"feel": "amane", "is": "sad", "s": 8}], "say": "The rope goes around the cat shrine three times. Hayate stands in front of you with his bad ankle and his arms out, the way a white dog once stood in front of a ghost on a long road. Amane does not fight. He just looks at you until the seal closes."},
+    {"do": [{"fx": "flash"}, {"hide": "amane"}, {"fx": "rain_stop"}, {"wait": 1.0}]},
+    {"do": [{"walk": "toru", "tile": [4, 18], "t": 4.0}, {"walk": "hayate", "tile": [5, 18], "t": 4.0}, {"feel": "hayate", "is": "content", "s": 5}], "say": "The rain stops. The two-tailed cat is never seen again. Hayate walks you home every evening for the rest of high school and never once lets you walk alone."},
+    {"do": [{"fx": "bell"}, {"face": "toru", "to": [4, 9]}, {"face": "hayate", "to": [5, 9]}], "say": "On quiet nights you still hear a small bell from the hill. The priest says it's the wind. Hayate doesn't say anything."}
+   ]
+  },
+  "right_distance": {
+   "title": "Just the Right Distance",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 10.2]}, {"at": "amane", "tile": [5, 10.2]}, {"walk": "toru", "tile": [4, 17.6], "t": 5.0}, {"walk": "amane", "tile": [5, 17.6], "t": 5.0}, {"feel": "amane", "is": "content", "s": 7}], "say": "You walk down the steps beside him. Not ahead, not behind. When he reaches for your sleeve you let him hold it for the last ten steps, and then he lets go on his own."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"fx": "day"}, {"fx": "rain_stop"}, {"at": "toru", "tile": [23, 30.6]}, {"at": "amane", "tile": [23, 28.2]}, {"at": "hina", "tile": [24.3, 28.4]}, {"at": "reiji", "tile": [21.8, 28.6]}, {"at": "mio", "tile": [24.8, 29.4]}, {"face": "toru", "to": "amane"}, {"face": "amane", "to": "toru"}, {"face": "hina", "to": "amane"}, {"face": "reiji", "to": "amane"}, {"face": "mio", "to": "amane"}, {"fx": "fade_in"}, {"feel": "amane", "is": "laugh", "s": 6}], "say": "In September he joins the photography club with Hina. In October he argues with Reiji at a council meeting and wins. In November Mio teaches him a ghost story and he tells it better than she does."},
+    {"do": [{"feel": "amane", "is": "happy", "s": 6}], "say": "You are not together. You are something with a different, quieter name, and he is the one who chose it."},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"fx": "dawn"}, {"hide": "hina"}, {"hide": "reiji"}, {"hide": "mio"}, {"at": "toru", "tile": [4, 12.4]}, {"at": "amane", "tile": [5, 10]}, {"face": "toru", "to": "amane"}, {"face": "amane", "to": "toru"}, {"fx": "fade_in"}, {"feel": "amane", "is": "fluster", "s": 4}], "say": "On New Year's Day you climb the steps to pray. His cat ears pop out the moment he sees you - just for a second, just on that day."},
+    {"do": [{"feel": "amane", "is": "happy", "s": 6}], "who": "Amane", "say": "Happy new year, Senpai."},
+    {"say": "He says it perfectly steady. It doesn't rain."}
+   ]
+  },
+  "unsent_letter": {
+   "title": "The Letter That Was Never Sent",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 17.6]}, {"at": "makabe", "tile": [4.6, 20.2]}, {"face": "toru", "to": "makabe"}, {"face": "makabe", "to": "toru"}], "say": "At the foot of the steps, Makabe-sensei is waiting with an envelope he wrote in 2001 and finally sent."},
+    {"do": [{"feel": "makabe", "is": "kind", "s": 5}], "who": "Makabe-sensei", "say": "Not you, Asagiri. This one's mine to walk."},
+    {"do": [{"camera": "makabe"}, {"walk": "makabe", "tile": [4.6, 9.3], "t": 5.5}], "say": "He climbs the thousandth stair in his school cardigan, holding the letter, the way he should have climbed after her twenty-five years ago. The dusk closes behind him."},
+    {"do": [{"fx": "flash"}, {"fx": "red"}, {"hide": "makabe"}, {"wait": 1.2}]},
+    {"do": [{"fx": "fade_out"}]},
+    {"do": [{"camera": "toru"}, {"fx": "dawn"}, {"fx": "rain_stop"}, {"at": "sayo", "tile": [4, 10]}, {"face": "toru", "to": [4, 10]}, {"fx": "fade_in"}, {"walk": "sayo", "tile": [4.4, 16.4], "t": 4.6}, {"feel": "sayo", "is": "cry", "s": 8}], "say": "In the morning a woman walks down the 999 steps holding an opened letter and crying the ordinary way, with no rain at all. Makabe-sensei does not come down."},
+    {"do": [{"face": "sayo", "to": "toru"}], "say": "On his desk in the staff room, every letter he ever kept is neatly tied with red string. Episode 4 begins with them."}
+   ]
+  },
+  "two_of_us": {
+   "title": "Just the Two of Us",
+   "stage": [
+    {"do": [{"fx": "night"}, {"at": "toru", "tile": [4, 15]}, {"at": "amane", "tile": [4, 9.6]}, {"face": "amane", "to": "toru"}, {"walk": "toru", "tile": [4, 11.0], "t": 3.2}], "say": "Nobody else comes to the festival. Hayate is in the hospital, or the hospital says he never existed. Hina's newspaper has blank pages. Mio's camera films only rain. The president's chair in the council room is empty."},
+    {"do": [{"face": "toru", "to": "amane"}, {"feel": "amane", "is": "offer", "s": 5}], "say": "Amane is waiting at the top of the steps with two cups of festival lemonade."},
+    {"do": [{"feel": "amane", "is": "happy", "s": 4}], "who": "Amane", "say": "Everyone's busy tonight."},
+    {"say": "He says it brightly. His smile does not reach his eyes."},
+    {"do": [{"feel": "amane", "is": "yandere", "s": 7}], "who": "Amane", "say": "So it's just us. Isn't that nice, Senpai? Isn't that what we wanted?"},
+    {"do": [{"fx": "cats", "around": [4, 10.5]}], "say": "The town is very quiet after that. The cats watch from every wall. Somewhere, very far down in Enma's Ledger, a column of names is crossed out in a small, neat, two-tailed hand."},
+    {"do": [{"fx": "fade_out"}], "say": "This is the worst ending. You can find your way back from it in the next life. Probably."}
+   ]
+  }
  },
  "remembers": {
   "_doc": "Week.remembered(ending): after the ending pages, up to `max` lines about choices the town remembers. Each line needs all `flags`, none of `none`, not one of `not_endings`; `who` (a rival's full name) skips it when that person is hidden or in two_of_us. Highest p first, then file order.",
